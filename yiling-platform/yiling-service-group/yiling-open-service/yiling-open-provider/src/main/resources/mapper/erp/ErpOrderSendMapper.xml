@@ -1,0 +1,319 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.open.erp.dao.ErpOrderSendMapper">
+    <resultMap id="ErpOrderSendResult" type="com.yiling.open.erp.entity.ErpOrderSendDO">
+        <result property="id" column="id"/>
+        <result property="suId" column="su_id"/>
+        <result property="suDeptNo" column="su_dept_no"/>
+        <result property="osiId" column="osi_id"/>
+        <result property="orderId" column="order_id"/>
+        <result property="orderDetailId" column="order_detail_id"/>
+        <result property="sendBatchNo" column="send_batch_no"/>
+        <result property="effectiveTime" column="effective_time"/>
+        <result property="productTime" column="product_time"/>
+        <result property="sendNum" column="send_num"/>
+        <result property="deliveryNumber" column="delivery_number"/>
+        <result property="easSendOrderId" column="eas_send_order_id"/>
+        <result property="sendTime" column="send_time"/>
+        <result property="sendType" column="send_type"/>
+        <result property="dataMd5" column="data_md5"/>
+        <result property="addTime" column="add_time"/>
+        <result property="editTime" column="edit_time"/>
+        <result property="operType" column="oper_type"/>
+        <result property="syncStatus" column="sync_status"/>
+        <result property="syncMsg" column="sync_msg"/>
+        <result property="failedCount" column="failed_count"/>
+    </resultMap>
+
+    <!-- select公共部分 -->
+    <sql id="selectSql">
+		SELECT
+		id,
+		su_id,
+		su_dept_no,
+		osi_id,
+		order_id,
+		order_detail_id,
+	    send_batch_no,
+	    effective_time,
+	    product_time,
+		send_num,
+		send_time,
+		delivery_number,
+		eas_send_order_id,
+		send_type,
+		data_md5,
+		add_time,
+		edit_time,
+		oper_type,
+		sync_status,
+		sync_msg,
+		failed_count
+	</sql>
+
+    <!-- 查询同一批发货单信息 -->
+    <select id="findSendOrderByOdId" resultMap="ErpOrderSendResult">
+        SELECT
+        t.id,
+        t.su_id,
+        t.su_dept_no,
+        t.osi_id,
+        t.order_id,
+        t.order_detail_id,
+        t.send_batch_no,
+        t.effective_time,
+        t.product_time,
+        t.send_time,
+        t.send_num,
+        t.delivery_number,
+        t.eas_send_order_id,
+        t.send_type,
+        t.data_md5,
+        t.add_time,
+        t.edit_time,
+        t.oper_type,
+        t.sync_status,
+        t.sync_msg,
+        t.failed_count
+        from `erp_order_send` t
+        where t.`su_id` = #{suId} AND t.su_dept_no=#{suDeptNo} and
+        <if test="odIdList != null and odIdList.size() > 0">
+            t.order_detail_id IN
+            <foreach collection="odIdList" item="odId" open="(" close=")"
+                     separator=",">
+                #{odId}
+            </foreach>
+        </if>
+        <if test="operType!=null and operType!=0">
+            and  t.oper_type=#{operType}
+        </if>
+        order by add_time ASC
+    </select>
+
+    <!-- 更改同步状态 -->
+    <update id="updateSyncStatusByStatusAndId">
+        update `erp_order_send` set
+        `sync_status`=#{syncStatus},`sync_time`=Now(),`sync_msg`=#{syncMsg}
+        where `id` = #{id} AND `sync_status`=#{oldSyncStatus}
+    </update>
+
+    <!-- 更改同步失败理由 -->
+    <update id="updateSyncStatusAndMsg">
+		update `erp_order_send`
+		set
+		`sync_msg`=#{syncMsg},
+        `sync_status`=#{syncStatus},
+        `sync_time`=Now()
+		where `id` = #{id}
+	</update>
+
+    <!-- 更改同步状态,同步信息 -->
+    <update id="updateMsgAndNextTimeById">
+        update `erp_order_send` set
+        `next_sync_time` = #{nextSyncTime},
+        `sync_msg`=#{syncMsg},
+        `sync_time`=Now()
+        where `id` = #{id}
+    </update>
+
+    <!-- 批量新增 -->
+    <insert id="batchInsert" parameterType="com.yiling.open.erp.entity.ErpOrderSendDO" useGeneratedKeys="true"
+            keyProperty="id">
+        INSERT INTO erp_order_send (
+        id,
+        su_id,
+        su_dept_no,
+        osi_id,
+        order_id,
+        order_detail_id,
+        send_batch_no,
+        effective_time,
+        product_time,
+        send_time,
+        send_num,
+        delivery_number,
+        eas_send_order_id,
+        send_type,
+        data_md5,
+        add_time,
+        oper_type,
+        sync_status,
+        sync_msg,
+        failed_count
+        ) VALUES
+        <foreach collection="list" item="item" index="index"
+                 separator=",">
+            (
+            #{item.id},
+            #{item.suId},
+            #{item.suDeptNo},
+            #{item.osiId},
+            #{item.orderId},
+            #{item.orderDetailId},
+            #{item.sendBatchNo},
+            #{item.effectiveTime},
+            #{item.productTime},
+            #{item.sendTime},
+            #{item.sendNum},
+            #{item.deliveryNumber},
+            #{item.easSendOrderId},
+            #{item.sendType},
+            #{item.dataMd5},
+            NOW(),
+            1,
+            1,
+            #{item.syncMsg},
+            #{item.failedCount}
+            )
+        </foreach>
+    </insert>
+    <!-- 修改同步状态 -->
+    <update id="updateSyncInfoByPrimaryKey" parameterType="com.yiling.open.erp.entity.ErpOrderSendDO">
+		UPDATE erp_order_send
+		SET
+		`sync_status` = #{syncStatus},
+		`sync_msg` = #{syncMsg}
+		WHERE `id` = #{id}
+	</update>
+    <!-- 修改同步信息 -->
+    <update id="updateByPrimaryKey" parameterType="com.yiling.open.erp.entity.ErpOrderSendDO">
+        UPDATE erp_order_send
+        SET
+        <if test="suId != null">
+            `su_id` = #{suId},
+        </if>
+        <if test="suDeptNo != null and suDeptNo != ''">
+            `su_dept_no` = #{suDeptNo},
+        </if>
+        <if test="osiId != null and osiId != ''">
+            `osi_id` = #{osiId},
+        </if>
+        <if test="orderDetailId != null">
+            `order_detail_id` = #{orderDetailId},
+        </if>
+        <if test="orderId != null and orderId != ''">
+            `order_id` = #{orderId},
+        </if>
+        <if test="sendBatchNo != null and sendBatchNo != ''">
+            `send_batch_no` = #{sendBatchNo},
+        </if>
+        <if test="effectiveTime != null">
+            `effective_time` = #{effectiveTime},
+        </if>
+        <if test="productTime != null">
+            `product_time` = #{productTime},
+        </if>
+        <if test="sendNum != null">
+            `send_num` = #{sendNum},
+        </if>
+        <if test="sendTime != null">
+            `send_time` = #{sendTime},
+        </if>
+        <if test="deliveryNumber != null">
+            `delivery_number` = #{deliveryNumber},
+        </if>
+        <if test="easSendOrderId != null">
+            `eas_send_order_id` = #{easSendOrderId},
+        </if>
+        <if test="sendType != null">
+            `send_type` = #{sendType},
+        </if>
+        <if test="dataMd5 != null and dataMd5 != ''">
+            `data_md5` = #{dataMd5},
+        </if>
+        `edit_time` = NOW(),
+        `sync_status` = #{syncStatus},
+        <if test="syncMsg != null and syncMsg != ''">
+            `sync_msg` = #{syncMsg},
+        </if>
+        <if test="failedCount != null">
+            `failed_count` = #{failedCount},
+        </if>
+        `oper_type` = 2
+        WHERE id = #{id}
+    </update>
+
+    <update id="deleteByPrimaryKeys">
+        UPDATE erp_order_send
+        SET
+        `edit_time` = NOW(),
+        `oper_type` = 3,
+        `sync_status` = 1
+        WHERE id IN
+        <foreach item="item" index="index" collection="list" open="("
+                 separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+
+    <!-- 查询历史数据 -->
+    <select id="queryHistoryList" resultMap="ErpOrderSendResult">
+        SELECT id,su_id,su_dept_no,osi_id,oper_type
+        FROM erp_order_send
+        WHERE su_id = #{suId}
+        <if test="suDeptNoSet != null and suDeptNoSet.size() > 0">
+            AND su_dept_no IN
+            <foreach item="item" index="index" collection="suDeptNoSet"
+                     open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="erpPrimaryKeySet != null and erpPrimaryKeySet.size() > 0">
+            AND osi_id IN
+            <foreach item="item" index="index" collection="erpPrimaryKeySet"
+                     open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+    </select>
+
+    <select id="findById" resultMap="ErpOrderSendResult">
+         SELECT
+        t.id,
+        t.su_id,
+        t.su_dept_no,
+        t.osi_id,
+        t.order_id,
+        t.order_detail_id,
+        t.send_batch_no,
+        t.effective_time,
+        t.product_time,
+        t.send_time,
+        t.send_num,
+        t.delivery_number,
+        t.eas_send_order_id,
+        t.send_type,
+        t.data_md5,
+        t.add_time,
+        t.edit_time,
+        t.oper_type,
+        t.sync_status,
+        t.sync_msg,
+        t.failed_count
+        from `erp_order_send` t
+        where t.id=#{id}
+    </select>
+
+    <select id="findMd5BySuId" resultMap="ErpOrderSendResult">
+        <include refid="selectSql"/>
+        from
+        erp_order_send
+        where su_id=#{suId} and oper_type!=3 and sync_status=2
+    </select>
+
+    <select id="syncOrderSend" resultMap="ErpOrderSendResult">
+        <include refid="selectSql"/>
+        FROM erp_order_send t
+        WHERE t.sync_status = 0
+        AND (t.su_id, t.su_dept_no) IN (
+        SELECT
+        c.su_id,
+        c.su_dept_no
+        FROM
+        erp_client c
+        WHERE
+        c.client_status = 1
+        AND c.sync_status = 1) LIMIT 1000
+    </select>
+
+</mapper>

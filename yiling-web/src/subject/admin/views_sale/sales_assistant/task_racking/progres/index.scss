@@ -1,0 +1,31 @@
+.progress{
+  width: 600px;
+  height: 20px;
+  position: relative;
+  .progress-conter{
+    width: 600px;
+    height: 16px;
+    background: #ebeef5;
+    overflow: hidden;
+    position: relative;
+    border-radius: 10px;
+    padding: 0;
+    span{
+      height: 100%;
+      float: left;
+      display: inline-block;
+    }
+  }
+  p{
+    width: 14px;
+    height: 14px;
+    background: #E6A23C;
+    border-radius: 50%;
+    display: inline-block;
+    padding: 0;
+    margin: 0;
+    position: absolute;
+    top: 1px;
+    z-index: 9;
+  }
+}

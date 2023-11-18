@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.user.shop.dao.ShopPaymentMethodMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.user.shop.entity.ShopPaymentMethodDO">
+        <result column="id" property="id" />
+        <result column="shop_id" property="shopId" />
+        <result column="eid" property="eid" />
+        <result column="payment_method" property="paymentMethod" />
+        <result column="del_flag" property="delFlag" />
+        <result column="create_user" property="createUser" />
+        <result column="create_time" property="createTime" />
+        <result column="update_user" property="updateUser" />
+        <result column="update_time" property="updateTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,
+        shop_id, eid, payment_method, del_flag, create_user, create_time, update_user, update_time
+    </sql>
+
+    <insert id="addPayMethods">
+        insert into b2b_shop_payment_method(
+            shop_id, eid, payment_method, create_user, create_time, update_user, update_time
+        ) values
+        <foreach collection="list" item="item" separator=",">
+            ( #{item.shopId}, #{item.eid}, #{item.paymentMethod}, #{item.opUserId}, now(), #{item.opUserId}, now() )
+        </foreach>
+    </insert>
+
+</mapper>

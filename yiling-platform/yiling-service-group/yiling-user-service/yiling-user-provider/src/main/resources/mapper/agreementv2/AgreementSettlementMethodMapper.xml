@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.user.agreementv2.dao.AgreementSettlementMethodMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.user.agreementv2.entity.AgreementSettlementMethodDO">
+    <result column="id" property="id" />
+        <result column="agreement_id" property="agreementId" />
+        <result column="advance_payment_flag" property="advancePaymentFlag" />
+        <result column="payment_days_flag" property="paymentDaysFlag" />
+        <result column="payment_days_settlement_period" property="paymentDaysSettlementPeriod" />
+        <result column="payment_days_settlement_day" property="paymentDaysSettlementDay" />
+        <result column="payment_days_pay_days" property="paymentDaysPayDays" />
+        <result column="pay_delivery_flag" property="payDeliveryFlag" />
+        <result column="press_group_flag" property="pressGroupFlag" />
+        <result column="press_group_number" property="pressGroupNumber" />
+        <result column="credit_flag" property="creditFlag" />
+        <result column="credit_amount" property="creditAmount" />
+        <result column="arrive_period" property="arrivePeriod" />
+        <result column="min_shipment_number" property="minShipmentNumber" />
+        <result column="delivery_type" property="deliveryType" />
+        <result column="buyer_id" property="buyerId" />
+        <result column="del_flag" property="delFlag" />
+        <result column="create_time" property="createTime" />
+        <result column="create_user" property="createUser" />
+        <result column="update_time" property="updateTime" />
+        <result column="update_user" property="updateUser" />
+        <result column="remark" property="remark" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,
+        agreement_id, advance_payment_flag, payment_days_flag, payment_days_settlement_period, payment_days_settlement_day, payment_days_pay_days, pay_delivery_flag, press_group_flag, press_group_number, credit_flag, credit_amount, arrive_period, min_shipment_number, delivery_type, buyer_id, del_flag, create_time, create_user, update_time, update_user, remark
+    </sql>
+
+</mapper>

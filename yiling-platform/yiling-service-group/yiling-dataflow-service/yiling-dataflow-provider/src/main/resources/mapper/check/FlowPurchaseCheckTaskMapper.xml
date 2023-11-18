@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.dataflow.check.dao.FlowPurchaseCheckTaskMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.dataflow.check.entity.FlowPurchaseCheckTaskDO">
+        <result column="id" property="id" />
+        <result column="check_job_id" property="checkJobId" />
+        <result column="eid" property="eid" />
+        <result column="ename" property="ename" />
+        <result column="supplier_id" property="supplierId" />
+        <result column="po_time" property="poTime" />
+        <result column="specification_id" property="specificationId" />
+        <result column="total_po_quantity" property="totalPoQuantity" />
+        <result column="total_so_quantity" property="totalSoQuantity" />
+        <result column="sale_flag" property="saleFlag" />
+        <result column="check_status" property="checkStatus" />
+        <result column="check_msg" property="checkMsg" />
+        <result column="del_flag" property="delFlag" />
+        <result column="create_time" property="createTime" />
+        <result column="create_user" property="createUser" />
+        <result column="update_time" property="updateTime" />
+        <result column="update_user" property="updateUser" />
+        <result column="remark" property="remark" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Table_Name">
+        `flow_purchase_check_task`
+    </sql>
+
+    <sql id="Base_Column_List">
+        id,
+        check_job_id, eid, ename, supplier_id, po_time, specification_id, total_po_quantity, total_so_quantity, sale_flag, check_status, check_msg, del_flag, create_time, create_user, update_time, update_user, remark
+    </sql>
+
+    <select id="getPurchaseExceptionCount" resultType="java.lang.Long">
+        SELECT COUNT(*)
+        FROM <include refid="Base_Table_Name"/>
+        WHERE del_flag = 0
+        AND sale_flag IN (0,1)
+        AND check_status = 2
+        <if test="startTime != null">
+            AND po_time <![CDATA[ >= ]]> #{startTime}
+        </if>
+        <if test="endTime != null">
+            AND po_time <![CDATA[ <= ]]> #{endTime}
+        </if>
+    </select>
+
+</mapper>

@@ -1,0 +1,100 @@
+.app-container {
+  .box-search {
+    position: relative;
+    .search-box {
+      position: relative;
+      .box {
+        margin-bottom: 18px;
+        .title {
+          font-size: $font-size-large;
+          line-height: 22px;
+          color: $font-important-color;
+          margin-bottom: 8px;
+        }
+      }
+      .el-select {
+        width: 220px;
+      }
+      .bottom-btn {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+      }
+    }
+    .search-btn-box {
+      margin-top: 24px;
+    }
+    .statistical-tab {
+      .info {
+        margin-bottom: 16px;
+      }
+      .statistical-item-wrap {
+        display: flex;
+        .statistical-item {
+          display: flex;
+          width: 387px;
+          height: 108px;
+          padding: 24px;
+          border-radius: 4px;
+          margin-bottom: 16px;
+          margin-right: 16px;
+          .icon {
+            width: 60px;
+            height: 60px;
+            margin-right: 16px;
+            border-radius: 4px;
+            font-size: 24px;
+            font-family: PingFangSC-Semibold, PingFang SC;
+            font-weight: 600;
+            line-height: 60px;
+            text-align: center;
+          }
+          .data-box {
+            .count {
+              font-size: 24px;
+              font-family: PingFangSC-Semibold, PingFang SC;
+              font-weight: 600;
+              color: #333333;
+              line-height: 33px;
+            }
+            .info {
+              font-size: 14px;
+              font-family: PingFangSC-Regular, PingFang SC;
+              font-weight: 400;
+              color: #999999;
+              line-height: 20px;
+            }
+          }
+        }
+        .pop-buy {
+          background: #F7FEFF;
+          .pop-buy-icon {
+            background: #D0F2FF;
+            color: #19BDFD;
+          }
+        }
+        .pop-income {
+          background: #FFFAFA;
+          .pop-income-icon {
+            background: #FFDCDA;
+            color: #FF635A;
+          }
+        }
+        .b2b {
+          background: #F6FFFE;
+          .b2b-icon {
+            background: #D4FEFB;
+            color: #1BBFB0;
+          }
+        }
+        .platform {
+          background: #FFFCF7;
+          .platform-icon {
+            background: #FFECD2;
+            color: #FF9500;
+          }
+        }
+      }
+    }
+  }
+}

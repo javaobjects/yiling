@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.marketing.presale.dao.MarketingPresaleBuyRecordMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.marketing.presale.entity.MarketingPresaleBuyRecordDO">
+        <result column="id" property="id"/>
+        <result column="order_id" property="orderId"/>
+        <result column="goods_quantity" property="goodsQuantity"/>
+        <result column="marketing_presale_id" property="marketingPresaleId"/>
+        <result column="eid" property="eid"/>
+        <result column="goods_id" property="goodsId"/>
+        <result column="del_flag" property="delFlag"/>
+        <result column="create_user" property="createUser"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_user" property="updateUser"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="remark" property="remark"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id
+        ,
+        order_id, goods_quantity, marketing_presale_id, eid, goods_id, del_flag, create_user, create_time, update_user, update_time, remark
+    </sql>
+    <select id="getGooodsBuyCount" resultType="com.yiling.marketing.presale.dto.PresaleActivityBuyRecorderDTO">
+        SELECT
+        marketing_presale_id as presaleActivityId,goods_id as goodsId, sum(goods_quantity) as countNum
+        FROM
+        `marketing_presale_buy_record`
+        WHERE
+        del_flag = 0
+        <if test="buyEid!=null and buyEid!=0">
+            AND eid = #{buyEid}
+        </if>
+        and marketing_presale_id IN
+        <foreach item="item" index="index" collection="presaleIds" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        AND goods_id IN
+        <foreach item="item" index="index" collection="goodsIds" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+       GROUP BY presaleActivityId,goodsId
+    </select>
+    <select id="getOrderCountBypresaleIds" resultType="com.yiling.marketing.presale.dto.PresaleActivityDTO">
+        SELECT marketing_presale_id AS id,COUNT(1) as orderNum FROM `marketing_presale_buy_record` where marketing_presale_id in
+        <foreach item="item" index="index" collection="orderIds" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+       GROUP BY marketing_presale_id
+    </select>
+
+</mapper>

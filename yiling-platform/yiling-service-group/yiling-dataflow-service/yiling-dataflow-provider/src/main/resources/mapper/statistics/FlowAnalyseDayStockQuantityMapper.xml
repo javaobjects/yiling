@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.dataflow.statistics.dao.FlowAnalyseDayStockQuantityMapper">
+
+    <!-- 通用查询映射结果 -->
+
+    <resultMap id="BaseResultMap" type="com.yiling.dataflow.statistics.entity.FlowAnalyseDaySaleQuantityDO">
+        <result column="id" property="id"/>
+        <result column="eid" property="eid"/>
+        <result column="specification_id" property="specificationId"/>
+        <result column="date_time" property="dateTime"/>
+        <result column="so_quantity" property="soQuantity"/>
+        <result column="del_flag" property="delFlag"/>
+        <result column="create_user" property="createUser"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_user" property="updateUser"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="remark" property="remark"/>
+    </resultMap>
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,
+        eid, specification_id, date_time, so_quantity,stock_quantity, del_flag, create_user, create_time, update_user, update_time, remark
+    </sql>
+
+    <delete id="deleteDayStockQuantity">
+        delete from flow_analyse_day_stock_quantity
+    </delete>
+
+    <select id="selectCurrentStockByEidsAndSpecIds" resultType="com.yiling.dataflow.statistics.bo.DaySaleStatisticsBO">
+        SELECT
+        s.eid,
+        s.specification_id as specId,
+        SUM(s.gb_number) AS quantity
+        FROM
+        flow_goods_batch s
+        WHERE
+        s.del_flag = 0
+        and s.gb_number>0
+        AND specification_id IN
+        <foreach collection="specIds" item="specId" open="(" close=")" separator=",">
+            #{specId}
+        </foreach>
+        AND eid IN
+        <foreach collection="eids" item="eid" open="(" close=")" separator=",">
+            #{eid}
+        </foreach>
+        GROUP BY
+        eid,
+        specification_id
+    </select>
+
+    <select id="selectSafetyStockByEidsAndSpecIds" resultType="com.yiling.dataflow.statistics.bo.DaySaleStatisticsBO">
+        SELECT
+        s.eid,
+        s.specification_id as specId,
+        avg(s.gb_number) AS quantity
+        FROM
+        flow_goods_batch_detail s
+        WHERE
+        s.del_flag = 0
+        and s.gb_number>0
+        AND s.gb_detail_time >= date_add(DATE_FORMAT(now(), '%Y-%m-%d'), interval -60 day)
+        AND specification_id IN
+        <foreach collection="specIds" item="specId" open="(" close=")" separator=",">
+            #{specId}
+        </foreach>
+        AND eid IN
+        <foreach collection="eids" item="eid" open="(" close=")" separator=",">
+            #{eid}
+        </foreach>
+        GROUP BY
+        eid,
+        specification_id
+    </select>
+
+
+    <select id="selectDayStockQuantityByEidsAndSpecIds"
+            resultType="com.yiling.dataflow.statistics.bo.DaySaleStatisticsBO">
+        SELECT
+        s.crm_enterprise_id as crmEnterpriseId,
+        s.specification_id as specId,
+        sum(s.gb_number) as quantity,
+        DATE_FORMAT(s.gb_detail_time, '%Y-%m-%d') as dateTime
+        FROM
+        flow_goods_batch_detail s
+        WHERE
+        s.del_flag = 0
+        and specification_id!=0
+        AND specification_id IN
+        <foreach collection="specIds" item="specId" open="(" close=")" separator=",">
+            #{specId}
+        </foreach>
+        AND crm_enterprise_id IN
+        <foreach collection="eids" item="ceid" open="(" close=")" separator=",">
+            #{ceid}
+        </foreach>
+        AND gb_detail_time >= date_add(DATE_FORMAT(now(), '%Y-%m-%d'), interval -60 day)
+        <![CDATA[ and gb_detail_time < DATE_FORMAT(now(), '%Y-%m-%d') ]]>
+        GROUP BY
+        crm_enterprise_id,
+        specification_id,
+        DATE_FORMAT(s.gb_detail_time, '%Y-%m-%d')
+    </select>
+    <select id="getPeriodDayStockQuantity" resultType="com.yiling.dataflow.statistics.bo.PeriodDayStockQuantityBO">
+    SELECT
+    DATE_FORMAT( b.date_time,'%Y-%m-%d') as dateTime,
+    IF( a.specificationId IS NULL, 0, a.specificationId ) as specificationId,
+    IF( a.stockQuantity IS NULL, 0, a.stockQuantity ) as stockQuantity
+    FROM
+    flow_analyse_day b
+    LEFT JOIN (
+    SELECT
+    DATE_FORMAT(flow_stock.date_time,'%Y-%m-%d') as dateTime ,flow_stock.specification_id as specificationId
+    ,SUM(flow_stock.stock_quantity ) as stockQuantity
+    FROM
+    flow_analyse_day_stock_quantity flow_stock
+    WHERE
+    flow_stock.specification_id = #{request.specificationId}
+    and flow_stock.date_time&gt;= date_add(DATE_FORMAT(now(), '%Y-%m-%d'), interval -#{request.referenceTime} day)
+    and
+    flow_stock.date_time&lt;= date_add(DATE_FORMAT(now(), '%Y-%m-%d'), interval -1 day)
+    ) a ON a.dateTime = b.date_time
+    WHERE
+    b.date_time >= date_add( DATE_FORMAT( now(), '%Y-%m-%d' ), INTERVAL - #{request.referenceTime} DAY )
+    AND b.date_time &gt;= date_add(DATE_FORMAT( now(), '%Y-%m-%d' ),
+    INTERVAL - 1 DAY)
+
+</select>
+    <select id="safeStockQuantity" resultType="Long">
+        SELECT
+        floor(
+        sum( stockQuantity ) / count( a.dateTime )) as stockQuantity
+        from (
+        SELECT
+        flow_stock.date_time as dateTime ,flow_stock.specification_id as specificationId
+        ,SUM(flow_stock.stock_quantity ) as stockQuantity
+        FROM
+        flow_analyse_day_stock_quantity flow_stock
+        WHERE
+        flow_stock.specification_id = #{request.specificationId}
+        <if test="crmIds !=null and crmIds.size>0">
+            and flow_stock.crm_enterprise_id in
+            <foreach item="crmId" collection="crmIds" separator="," open="(" close=")" index="">
+                #{crmId}
+            </foreach>
+        </if>
+        and flow_stock.date_time&gt;= date_add(DATE_FORMAT(now(), '%Y-%m-%d'), interval -60 day)
+        and flow_stock.date_time&lt;= date_add(DATE_FORMAT(now(), '%Y-%m-%d'), interval -1 day)
+        GROUP BY
+        flow_stock.date_time,
+        flow_stock.specification_id
+        ) a
+    </select>
+    <select id="getCurStockQuantity" resultType="Long">
+        SELECT
+        SUM(flow_stock.stock_quantity ) as stockQuantity
+        FROM
+        flow_analyse_day_stock_quantity flow_stock
+        WHERE
+        flow_stock.specification_id = #{request.specificationId}
+        <if test="crmIds !=null and crmIds.size>0">
+            and flow_stock.crm_enterprise_id in
+            <foreach item="crmId" collection="crmIds" separator="," open="(" close=")" index="">
+                #{crmId}
+            </foreach>
+        </if>
+        and flow_stock.date_time= date_add(DATE_FORMAT(now(), '%Y-%m-%d'), interval -1 day)
+        GROUP BY flow_stock.specification_id
+    </select>
+    <select id="getCurStock2Quantity" resultType="Long">
+        SELECT
+        SUM(flow_stock.stock_quantity ) as stockQuantity
+        FROM
+        flow_analyse_day_stock_quantity flow_stock
+        WHERE
+        flow_stock.specification_id = #{request.specificationId}
+        <if test="crmIds !=null and crmIds.size>0">
+            and flow_stock.crm_enterprise_id in
+            <foreach item="crmId" collection="crmIds" separator="," open="(" close=")" index="">
+                #{crmId}
+            </foreach>
+        </if>
+        and flow_stock.date_time= date_add(DATE_FORMAT(now(), '%Y-%m-%d'), interval -2 day)
+        GROUP BY flow_stock.specification_id
+    </select>
+
+    <select id="getCurStockQuantityBatch" resultType="com.yiling.dataflow.statistics.bo.DaySaleStatisticsBO">
+        SELECT
+        flow_stock.specification_id as specId,
+        flow_stock.crm_enterprise_id as crmEnterpriseId,
+        SUM(flow_stock.stock_quantity ) as quantity
+        FROM
+        flow_analyse_day_stock_quantity flow_stock
+        WHERE
+        <if test="specificationIds !=null and specificationIds.size>0">
+            flow_stock.specification_id in
+            <foreach item="specificationId" collection="specificationIds" separator="," open="(" close=")" index="">
+                #{specificationId}
+            </foreach>
+        </if>
+        <if test="cEIds !=null and cEIds.size>0">
+            and flow_stock.crm_enterprise_id in
+            <foreach item="ceid" collection="cEIds" separator="," open="(" close=")" index="">
+                #{ceid}
+            </foreach>
+        </if>
+        and flow_stock.date_time= date_add(DATE_FORMAT(now(), '%Y-%m-%d'), interval -1 day)
+        GROUP BY flow_stock.specification_id,flow_stock.crm_enterprise_id
+    </select>
+    <select id="getCurStock2QuantityBatch" resultType="com.yiling.dataflow.statistics.bo.DaySaleStatisticsBO">
+        SELECT
+        flow_stock.specification_id as specId,
+        flow_stock.crm_enterprise_id as crmEnterpriseId,
+        SUM(flow_stock.stock_quantity ) as quantity
+        FROM
+        flow_analyse_day_stock_quantity flow_stock
+        WHERE
+        <if test="specificationIds !=null and specificationIds.size>0">
+            flow_stock.specification_id in
+            <foreach item="specificationId" collection="specificationIds" separator="," open="(" close=")" index="">
+                #{specificationId}
+            </foreach>
+        </if>
+        <if test="cEIds !=null and cEIds.size>0">
+            and flow_stock.crm_enterprise_id in
+            <foreach item="ceid" collection="cEIds" separator="," open="(" close=")" index="">
+                #{ceid}
+            </foreach>
+        </if>
+        and flow_stock.date_time= date_add(DATE_FORMAT(now(), '%Y-%m-%d'), interval -2 day)
+        GROUP BY flow_stock.specification_id,flow_stock.crm_enterprise_id
+    </select>
+
+    <select id="getNear10StockQuantity" resultType="com.yiling.dataflow.statistics.dto.StockForecastIconDTO">
+        SELECT
+        b.date_time as pointTime,
+        IF( a.specificationId IS NULL, 0, a.specificationId ) as specificationId,
+        0 as replenish1,
+        0 as replenish2,
+        0 as stockForecastQuantity1,
+        0 as stockForecastQuantity2,
+        IF( a.stockQuantity IS NULL, 0, a.stockQuantity ) as nearStockQuantity
+        FROM
+        flow_analyse_day b
+        LEFT JOIN (
+        SELECT
+        flow_stock.date_time as dateTime ,flow_stock.specification_id as specificationId
+        ,SUM(flow_stock.stock_quantity ) as stockQuantity
+        FROM
+        flow_analyse_day_stock_quantity flow_stock
+
+        WHERE
+        flow_stock.specification_id = #{request.specificationId}
+        <if test="crmIds !=null and crmIds.size>0">
+            and flow_stock.crm_enterprise_id in
+            <foreach item="crmId" collection="crmIds" separator="," open="(" close=")" index="">
+                #{crmId}
+            </foreach>
+        </if>
+        and flow_stock.date_time&gt;= date_add(DATE_FORMAT(now(), '%Y-%m-%d'), interval -10 day)
+        and flow_stock.date_time&lt;= date_add(DATE_FORMAT(now(), '%Y-%m-%d'), interval -1 day)
+        group by flow_stock.date_time
+        ) a ON a.dateTime = b.date_time
+        WHERE
+        b.date_time >= date_add( DATE_FORMAT( now(), '%Y-%m-%d' ), INTERVAL - 10 DAY )
+        AND b.date_time &lt;= date_add(DATE_FORMAT( now(), '%Y-%m-%d' ),INTERVAL - 1 DAY)
+        order by b.date_time
+    </select>
+    <select id="getSafeStockQuantityBatch" resultType="com.yiling.dataflow.statistics.bo.DaySaleStatisticsBO">
+        SELECT
+        flow_stock.specification_id AS specId,
+        flow_stock.crm_enterprise_id AS crmEnterpriseId,
+        floor(
+        avg( flow_stock.stock_quantity )) AS quantity
+        FROM
+        flow_analyse_day_stock_quantity flow_stock
+        WHERE 1=1
+        <if test="specificationIds !=null and specificationIds.size>0">
+            and flow_stock.specification_id in
+            <foreach item="specificationId" collection="specificationIds" separator="," open="(" close=")" index="">
+                #{specificationId}
+            </foreach>
+        </if>
+        <if test="cEIds !=null and cEIds.size>0">
+            and flow_stock.crm_enterprise_id in
+            <foreach item="ceid" collection="cEIds" separator="," open="(" close=")" index="">
+                #{ceid}
+            </foreach>
+        </if>
+        AND flow_stock.date_time >= date_add( DATE_FORMAT( now(), '%Y-%m-%d' ), INTERVAL - 60 DAY )
+        AND flow_stock.date_time &lt;= date_add( DATE_FORMAT( now(), '%Y-%m-%d' ), INTERVAL - 1 DAY )
+        GROUP BY
+        flow_stock.specification_id ,flow_stock.crm_enterprise_id
+    </select>
+</mapper>
+

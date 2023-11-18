@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.user.procrelation.dao.ProcRelationSnapshotMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.user.procrelation.entity.ProcRelationSnapshotDO">
+    <result column="id" property="id" />
+        <result column="relation_id" property="relationId" />
+        <result column="version" property="version" />
+        <result column="version_id" property="versionId" />
+        <result column="proc_relation_number" property="procRelationNumber" />
+        <result column="factory_eid" property="factoryEid" />
+        <result column="factory_name" property="factoryName" />
+        <result column="delivery_eid" property="deliveryEid" />
+        <result column="delivery_name" property="deliveryName" />
+        <result column="channel_partner_eid" property="channelPartnerEid" />
+        <result column="channel_partner_name" property="channelPartnerName" />
+        <result column="start_time" property="startTime" />
+        <result column="end_time" property="endTime" />
+        <result column="enterprise_customer_id" property="enterpriseCustomerId" />
+        <result column="delivery_type" property="deliveryType" />
+        <result column="snapshot_type" property="snapshotType" />
+        <result column="del_flag" property="delFlag" />
+        <result column="create_user" property="createUser" />
+        <result column="create_time" property="createTime" />
+        <result column="update_user" property="updateUser" />
+        <result column="update_time" property="updateTime" />
+        <result column="remark" property="remark" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,
+        relation_id, version, version_id, proc_relation_number, factory_eid, factory_name, delivery_eid, delivery_name, channel_partner_eid, channel_partner_name, start_time, end_time, enterprise_customer_id, delivery_type, snapshot_type, del_flag, create_user, create_time, update_user, update_time, remark
+    </sql>
+
+</mapper>

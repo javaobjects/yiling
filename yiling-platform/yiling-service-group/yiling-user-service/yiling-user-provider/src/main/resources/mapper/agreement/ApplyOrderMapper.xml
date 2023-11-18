@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.user.agreement.dao.ApplyOrderMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.user.agreement.entity.ApplyOrderDO">
+        <result column="id" property="id" />
+        <result column="apply_id" property="applyId" />
+        <result column="apply_code" property="applyCode" />
+        <result column="eid" property="eid" />
+        <result column="second_eid" property="secondEid" />
+        <result column="agreement_id" property="agreementId" />
+        <result column="agreement_condition_id" property="agreementConditionId" />
+        <result column="version" property="version" />
+        <result column="eas_code" property="easCode" />
+        <result column="order_id" property="orderId" />
+        <result column="rebate_order_id" property="rebateOrderId" />
+        <result column="order_code" property="orderCode" />
+        <result column="type" property="type" />
+        <result column="rebate_order_detail_id" property="rebateOrderDetailId" />
+        <result column="discount_amount" property="discountAmount" />
+        <result column="del_flag" property="delFlag" />
+        <result column="create_time" property="createTime" />
+        <result column="create_user" property="createUser" />
+        <result column="update_time" property="updateTime" />
+        <result column="update_user" property="updateUser" />
+        <result column="remark" property="remark" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,
+        apply_id, apply_code, eid, second_eid, agreement_id, agreement_condition_id, version, eas_code, order_id, rebate_order_id, order_code, type, rebate_order_detail_id, discount_amount, del_flag, create_time, create_user, update_time, update_user, remark
+    </sql>
+
+</mapper>

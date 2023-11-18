@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.bi.resource.dao.UploadResourceMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.bi.resource.entity.UploadResourceDO">
+        <result column="id" property="id"/>
+        <result column="file_stream" property="fileStream"/>
+        <result column="data_id" property="dataId"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,
+       file_stream,
+       data_id
+    </sql>
+
+    <delete id="deleteUploadResourceById">
+        delete from upload_resource where id=#{id}
+    </delete>
+
+</mapper>

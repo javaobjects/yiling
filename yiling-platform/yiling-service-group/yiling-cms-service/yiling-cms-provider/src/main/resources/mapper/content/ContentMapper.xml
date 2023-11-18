@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.cms.content.dao.ContentMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.cms.content.entity.ContentDO">
+        <result column="id" property="id"/>
+        <result column="title" property="title"/>
+        <result column="subtitle" property="subtitle"/>
+        <result column="cover" property="cover"/>
+        <result column="source" property="source"/>
+        <result column="author" property="author"/>
+        <result column="source_content_type" property="sourceContentType"/>
+        <result column="link_url" property="linkUrl"/>
+        <result column="is_top" property="isTop"/>
+        <result column="publish_now" property="publishNow"/>
+        <result column="page_view" property="pageView"/>
+        <result column="is_draft" property="isDraft"/>
+        <result column="content" property="content"/>
+        <result column="publish_time" property="publishTime"/>
+        <result column="doc_id" property="docId"/>
+        <result column="like_count" property="likeCount"/>
+        <result column="status" property="status"/>
+        <result column="create_source" property="createSource"/>
+        <result column="del_flag" property="delFlag"/>
+        <result column="create_user" property="createUser"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_user" property="updateUser"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="remark" property="remark"/>
+    </resultMap>
+
+    <resultMap id="appContentResultMap" type="com.yiling.cms.content.dto.AppContentDTO">
+        <result column="id" property="id"/>
+        <result column="title" property="title"/>
+        <result column="cover" property="cover"/>
+        <result column="page_view" property="pageView"/>
+        <result column="hmc_view" property="hmcView"/>
+        <result column="publish_time" property="publishTime"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="doc_id" property="docId"/>
+        <result column="vedio_file_url" property="vedioFileUrl"/>
+        <result column="speaker" property="speaker"/>
+        <result column="content_type" property="contentType"/>
+        <result column="line_id" property="lineId"/>
+        <result column="module_id" property="moduleId"/>
+        <result column="category_id" property="categoryId"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, title, subtitle, cover, `source`, author,vedio_file_url, is_top, publish_now, page_view, is_draft, content, publish_time, doc_id, status,
+        like_count,create_source, del_flag, create_user, create_time, update_user, update_time, remark, source_content_type, link_url
+    </sql>
+
+    <update id="updatePv" parameterType="com.yiling.cms.content.entity.ContentDO">
+        UPDATE cms_content
+        SET page_view = #{pageView}
+        WHERE id = #{id}
+    </update>
+
+    <sql id="App_Base_Column_List">
+        hmc.id, content.title, content.subtitle, content.cover, content.`source`, content.author, content.is_top, content.publish_now,
+        content.page_view, content.hmc_view, content.is_draft, content.content, content.publish_time, content.doc_id,content.like_count,content.vedio_file_url,
+        content.speaker, content.content_type ,
+        hmc.line_id, hmc.module_id, hmc.category_id, category.category_name, hmc.category_rank, hmc.top_flag, hmc.update_time
+    </sql>
+
+    <select id="listAppContentPageBySql" resultMap="appContentResultMap">
+        select distinct <include refid="App_Base_Column_List"/>
+        from cms_content content, cms_hmc_content hmc, cms_category category
+        <if test="request.standardGoodsId != null and request.standardGoodsId != 0">
+            ,cms_content_goods goods
+        </if>
+        <where>
+            content.id = hmc.content_id
+            and hmc.category_id = category.id
+            and content.del_flag = 0
+            and hmc.del_flag = 0
+            and hmc.line_id = #{request.lineId}
+            and content.status = 2
+            and category.del_flag = 0
+            <if test="request.title != null and request.title != 0">
+                and content.title like concat('%',#{request.title},'%')
+            </if>
+            <if test="request.categoryId != null and request.categoryId != 0">
+                and hmc.category_id = #{request.categoryId}
+            </if>
+            <if test="request.doctorId != null and request.doctorId != 0">
+                and content.doc_id = #{request.doctorId}
+            </if>
+            <!-- 健康管理中心-视频-搜索标题、医生名称 -->
+            <if test="request.contentType != null and request.contentType == 2 ">
+                and (
+                content.title like concat('%',#{request.title},'%') or
+                content.doc_id in
+                <foreach collection="request.docIdList" item="docId" open="(" close=")" >
+                    #{item}
+                </foreach>
+                )
+            </if>
+            <if test="request.standardGoodsId != null and request.standardGoodsId != 0">
+                and goods.standard_goods_id = #{request.standardGoodsId}
+                and content.id = goods.content_id
+            </if>
+            order by hmc.top_flag DESC,hmc.category_rank asc, hmc.update_time DESC
+        </where>
+
+    </select>
+
+
+    <select id="listPage" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"/>
+        from cms_content content
+        <where>
+            content.is_draft = 0
+            and content.content_type = #{request.contentType}
+            <if test="request.title != null and request.title != '' ">
+                and content.title like concat('%',#{request.title},'%')
+            </if>
+            <if test="request.lineId != null and request.lineId == 1">
+                and exists (select 1 from cms_hmc_content hmc where content.id = hmc.content_id)
+            </if>
+            <if test="request.lineId != null and request.lineId == 2">
+                and exists (select 1 from cms_ih_doctor_content ihDoc where content.id = ihDoc.content_id)
+            </if>
+            <if test="request.lineId != null and request.lineId == 3">
+                and exists (select 1 from cms_ih_patient_content ihPatient where content.id = ihPatient.content_id)
+            </if>
+            <if test="request.lineId != null and request.lineId == 6">
+                and exists (select 1 from cms_sa_content sa where content.id = sa.content_id)
+            </if>
+            <if test="request.lineId != null and request.lineId == 7">
+                and exists (select 1 from cms_b2b_content b2b where content.id = b2b.content_id)
+            </if>
+             <if test="request.startTime != null">
+                and content.create_time > #{request.startTime}
+            </if>
+            <if test="request.endTime != null">
+                and #{request.endTime} > content.create_time
+            </if>
+            <if test="request.docId != null and request.docId != 0 ">
+                and content.doc_id = #{request.docId}
+            </if>
+            <if test="request.status != null and request.status != 0 ">
+                and content.status = #{request.status}
+            </if>
+            <if test="request.createUserIdList != null and request.createUserIdList.size()>0">
+                and content.create_user in
+                <foreach item="item" index="index" collection="request.createUserIdList" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="request.isTop != null and request.isTop != 0 ">
+                and content.is_top > #{request.isTop}
+            </if>
+            <if test="request.createSource != null and request.createSource != 0 ">
+                and content.create_source = #{request.createSource}
+            </if>
+            <if test="request.sourceContentType != null and request.sourceContentType != 0 ">
+                and content.source_content_type = #{request.sourceContentType}
+            </if>
+            order by content.create_time desc
+
+
+        </where>
+
+
+    </select>
+
+
+    <select id="listSaContentPage" resultType="com.yiling.cms.content.dto.AppContentDTO">
+        select
+        sa.id as id,
+        content.id as contentId,
+        content.title as title,
+        content.cover as cover,
+        content.page_view as pageView,
+        content.publish_time as publishTime,
+        content.update_time as updateTime,
+        content.vedio_file_url as vedioFileUrl,
+        content.speaker as speaker,
+        content.content_type as contentType,
+        content.create_time as createTime,
+        content.source_content_type as sourceContentType,
+        content.link_url as linkUrl,
+        sa.line_id as lineId,
+        sa.module_id as moduleId,
+        sa.category_id as categoryId
+        from cms_sa_content sa
+        left join cms_content content on sa.content_id = content.id
+        <where>
+            sa.del_flag = 0
+            and content.del_flag = 0
+            and content.status = 2
+            and sa.refer_status = 1
+            <if test="request.lineId != null and request.lineId != 0 ">
+                and sa.line_id = #{request.lineId}
+            </if>
+            <if test="request.moduleId != null and request.moduleId != 0 ">
+                and sa.module_id = #{request.moduleId}
+            </if>
+            <if test="request.categoryId != null and request.categoryId != 0 ">
+                and sa.category_id = #{request.categoryId}
+            </if>
+            <if test="request.contentType != null and request.contentType != 0 ">
+                and content.content_type = #{request.contentType}
+            </if>
+            <if test="request.isOpen != null">
+                and content.is_open = #{request.isOpen}
+            </if>
+            <if test="request.title != null and request.title != '' ">
+                and content.title like concat('%',#{request.title},'%')
+            </if>
+            order by sa.top_flag DESC, sa.category_rank DESC, content.create_time DESC
+        </where>
+    </select>
+
+    <select id="listB2bContentPage" resultType="com.yiling.cms.content.dto.AppContentDTO">
+        select
+        b2b.id as id,
+        content.id as contentId,
+        content.title as title,
+        content.cover as cover,
+        content.page_view as pageView,
+        content.publish_time as publishTime,
+        content.update_time as updateTime,
+        content.vedio_file_url as vedioFileUrl,
+        content.speaker as speaker,
+        content.content_type as contentType,
+        content.create_time as createTime,
+        content.source_content_type as sourceContentType,
+        content.link_url as linkUrl,
+        b2b.line_id as lineId,
+        b2b.module_id as moduleId,
+        b2b.category_id as categoryId
+        from cms_b2b_content b2b
+        left join cms_content content on b2b.content_id = content.id
+        <where>
+            b2b.del_flag = 0
+            and content.del_flag = 0
+            and content.status = 2
+            and b2b.refer_status = 1
+            <if test="request.lineId != null and request.lineId != 0 ">
+                and b2b.line_id = #{request.lineId}
+            </if>
+            <if test="request.moduleId != null and request.moduleId != 0 ">
+                and b2b.module_id = #{request.moduleId}
+            </if>
+            <if test="request.categoryId != null and request.categoryId != 0 ">
+                and b2b.category_id = #{request.categoryId}
+            </if>
+            <if test="request.contentType != null and request.contentType != 0 ">
+                and content.content_type = #{request.contentType}
+            </if>
+            <if test="request.isOpen != null">
+                and content.is_open = #{request.isOpen}
+            </if>
+            <if test="request.title != null and request.title != '' ">
+                and content.title like concat('%',#{request.title},'%')
+            </if>
+            order by b2b.top_flag DESC, b2b.category_rank DESC, content.create_time DESC
+        </where>
+    </select>
+</mapper>

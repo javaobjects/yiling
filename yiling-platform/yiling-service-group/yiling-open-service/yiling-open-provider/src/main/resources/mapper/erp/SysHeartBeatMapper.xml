@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.yiling.open.erp.dao.SysHeartBeatMapper">
+
+    <!-- 默认查询结果映射 -->
+    <resultMap id="sysHeartBeatResult" type="com.yiling.open.erp.entity.SysHeartBeatDO">
+        <result column="id" property="id"/>
+        <result column="suId" property="suId"/>
+        <result column="suName" property="suName"/>
+        <result column="suPrefix" property="suPrefix"/>
+        <result column="mac" property="mac"/>
+        <result column="ip" property="ip"/>
+        <result column="computerName" property="computerName"/>
+        <result column="processId" property="processId"/>
+        <result column="runTaskIds" property="runtaskIds"/>
+        <result column="versions" property="versions"/>
+        <result column="runPath" property="runPath"/>
+        <result column="create_time" property="createTime"/>
+    </resultMap>
+
+    <!-- select公共部分 -->
+    <sql id="BaseSql">
+		id, suId, suName, suPrefix, mac, ip, computerName, processId, runTaskIds, versions, runPath, create_time
+	</sql>
+
+    <insert id="insertSelective" parameterType="com.yiling.open.erp.entity.SysHeartBeatDO">
+        insert into sys_heart_beat
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="suId != null">
+                suId,
+            </if>
+            <if test="suName != null">
+                suName,
+            </if>
+            <if test="suPrefix != null">
+                suPrefix,
+            </if>
+            <if test="mac != null">
+                mac,
+            </if>
+            <if test="ip != null">
+                ip,
+            </if>
+            <if test="computerName != null">
+                computerName,
+            </if>
+            <if test="processId != null">
+                processId,
+            </if>
+            <if test="runtaskIds != null">
+                runTaskIds,
+            </if>
+            <if test="versions != null">
+                versions,
+            </if>
+            <if test="runPath != null">
+                runPath,
+            </if>
+            create_time
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="suId != null">
+                #{suId,jdbcType=INTEGER},
+            </if>
+            <if test="suName != null">
+                #{suName,jdbcType=VARCHAR},
+            </if>
+            <if test="suPrefix != null">
+                #{suPrefix,jdbcType=VARCHAR},
+            </if>
+            <if test="mac != null">
+                #{mac,jdbcType=VARCHAR},
+            </if>
+            <if test="ip != null">
+                #{ip,jdbcType=VARCHAR},
+            </if>
+            <if test="computerName != null">
+                #{computerName,jdbcType=VARCHAR},
+            </if>
+            <if test="processId != null">
+                #{processId,jdbcType=VARCHAR},
+            </if>
+            <if test="runtaskIds != null">
+                #{runtaskIds,jdbcType=VARCHAR},
+            </if>
+            <if test="versions != null">
+                #{versions,jdbcType=VARCHAR},
+            </if>
+            <if test="runPath != null">
+                #{runPath,jdbcType=VARCHAR},
+            </if>
+            now()
+        </trim>
+    </insert>
+
+    <select id="getDataBaseCurrentTime" resultType="java.util.Date">
+		select now() as
+		mph_current_date
+	</select>
+
+    <resultMap id="heartCountResult" type="com.yiling.open.erp.bo.ErpHeartBeatCountBO">
+        <result column="suId" property="suId"/>
+        <result column="heartCount" property="heartCount"/>
+    </resultMap>
+
+    <select id="getErpHeartCount" resultMap="heartCountResult">
+		select suId, count(1) AS heartCount
+        from sys_heart_beat
+		where suId in
+        <foreach item="item" index="index" collection="request.suIdList" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        <if test="request.startTime != null">
+            and create_time <![CDATA[ >= ]]> #{request.startTime}
+        </if>
+        <if test="request.endTime != null">
+            and create_time <![CDATA[ <= ]]> #{request.endTime}
+        </if>
+        group by suId
+	</select>
+
+    <!--<sql id="BackupNewColumnSql">-->
+		<!--id, suId, suName, suPrefix, mac, ip, computerName, processId, runTaskIds, versions, runPath, create_time-->
+	<!--</sql>-->
+
+    <!--<sql id="BackupOldColumnSql">-->
+		<!--old.id, old.suId, old.suName, old.suPrefix, old.mac, old.ip, old.computerName, old.processId, old.runTaskIds, old.versions, old.runPath, old.create_time-->
+	<!--</sql>-->
+
+    <update id="dropLastSecondMonthBackupTable">
+        DROP TABLE ${backupTableName}
+    </update>
+
+    <update id="createBackupTable">
+        CREATE TABLE ${backupTableName} LIKE ${tableName}
+    </update>
+
+    <insert id="insertBackupDataByCreateTime">
+        INSERT INTO ${backupTableName} (<include refid="BaseSql"/>)
+        SELECT <include refid="BaseSql"/> FROM ${tableName}
+        WHERE create_time <![CDATA[ >= ]]> #{createTimeStart} AND create_time <![CDATA[ <= ]]> #{createTimeEnd}
+    </insert>
+
+    <select id="getBackupTableCountByCreateTime" resultType="java.lang.Long">
+        SELECT COUNT(1)
+        FROM ${backupTableName}
+        WHERE create_time <![CDATA[ >= ]]> #{createTimeStart} AND create_time <![CDATA[ <= ]]> #{createTimeEnd}
+    </select>
+
+    <select id="getIdByMaxCreateTime" resultType="java.util.HashMap">
+        SELECT MAX(id) AS id, suId
+        FROM sys_heart_beat
+        WHERE create_time <![CDATA[ >= ]]> #{createTimeStart} AND create_time <![CDATA[ <= ]]> #{createTimeEnd}
+        GROUP BY suId
+    </select>
+
+    <delete id="deleteByIdAndCreateTime">
+        DELETE FROM sys_heart_beat
+        WHERE id NOT IN
+        <foreach item="item" index="index" collection="idList" open="("
+                 separator="," close=")">
+            #{item}
+        </foreach>
+        AND create_time <![CDATA[ <= ]]> #{createTimeEnd}
+    </delete>
+
+</mapper>

@@ -1,0 +1,205 @@
+@import "~@/common/styles/mixin.scss";
+
+.app-container {
+  padding-bottom: 80px;
+  .app-container-content{
+    height: calc(100vh - 140px);
+  }
+  .top-bar {
+    background: $white;
+    padding:16px;
+    border-radius: 4px;
+    margin-bottom: 16px;
+    .common-box {
+      padding: 0 16px 16px 16px;
+      .el-input {
+        width: 280px;
+      }
+      .search-box {
+        margin-top: 24px;
+        padding: 0 16px 0 0px;
+        position: relative;
+        &:nth-child(1){
+          margin-top: 0;
+        }
+        .title {
+          margin-right: 20px;
+          font-size: $font-size-large;
+          line-height: $font-size-large-lh;
+          color: $font-important-color;
+          margin-bottom: 8px;
+        }
+        .el-select {
+          width: 280px;
+        }
+        .bottom-btn {
+          position: absolute;
+          bottom: 0;
+          right: 0;
+        }
+      }
+    }
+    .content-box{
+      padding: 0 8px;
+      .content-box-bottom{
+        display: flex;
+        .product-img{
+          img{
+            width: 100px;
+            height: 100px;
+            background: #f8f8f8;
+            margin-right: 50px;
+            object-fit: contain;
+          }
+        }
+        .product-info{
+          width: calc(100%-150px);
+          margin-top: 25px;
+          .box{
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+            &:last-child{
+              margin: 0;
+            }
+          }
+        }
+      }
+      .regulation{
+        .demonstration{
+          margin: 0 10px 0 20px;
+          color: #666;
+        }
+        .width-200{
+          width: 200px;
+        }
+      }
+      .right-btn{
+        float: right;
+      }
+    }
+    .list-item{
+      width: 100%;
+      height: 91px;
+      padding: 12px;
+      border: 1px solid #EEEEEE;
+      box-sizing: border-box;
+      border-radius: 4px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      margin-bottom: 10px;
+      position: relative;
+      .item {
+          @include clamp(2);
+        }
+        .remove-btn{
+          position: absolute;
+          right: 40px;
+          top: 50%;
+          transform: translateY(-50%);
+        }
+    }
+    .purchase-table-view{
+      width: 100%;
+    }
+    .intro {
+      color: $font-important-color;
+      font-size: $font-size-base;
+      line-height: $font-size-base-lh;
+      span {
+        color: $font-title-color;
+      }
+    }
+    .remove-btn{
+      &.el-button--medium {
+        padding: 0 !important;
+      }
+    }
+    .check-box{
+      display: flex;
+      align-items: center;
+      .check-tip{
+        margin: 0 20px;
+        color: #FAAB0C;
+      }
+    }
+    .header-renative{
+      position: relative;
+      margin-bottom: 16px;
+      .edit-btn{
+        position: absolute;
+        right: 0;
+      }
+    }
+  }
+  .bottom-view {
+    position: fixed;
+    bottom: 0;
+    left: $sideBarWidth;
+    right: 0;
+    height: 64px;
+    background-color: $white;
+    padding: 16px;
+    box-shadow: 0px -2px 9px 0px rgba(182, 182, 182, 0.16);
+    z-index: 3;
+  }
+  // 商品添加弹框
+  .dialog-content-box-customer{
+    padding: 16px;
+    .search-title{
+      text-indent: 8px;
+      color: #999;
+    }
+    .down-box {
+      width: 100%;
+      margin-top: 8px;
+      .right-btn {
+        float: right;
+      }
+    }
+    .dialog-content-top {
+      .el-input {
+        width: 200px;
+      }
+      .title-view{
+        padding: 0 10px;
+        height: 40px;
+        line-height: 40px;
+        font-size: 16px;
+        align-items: center;
+        justify-content: flex-start;
+        display: flex;
+        color: $font-important-color;
+        font-weight: 600;
+        .sign {
+          height: 14px;
+          width: 2px;
+          margin-right: 4px;
+          background-color: $primary;
+        }
+      }
+      .search-box {
+        margin-bottom: 16px;
+        padding: 0 16px;
+        position: relative;
+        .box {
+          .title {
+            font-size: $font-size-large;
+            line-height: $font-size-large-lh;
+            color: $font-important-color;
+            margin-bottom: 8px;
+          }
+        }
+        .el-select {
+          width: 200px;
+        }
+
+      }
+    }
+    .multi-action {
+      display: flex;
+      justify-content: flex-end;
+    }
+  }
+}

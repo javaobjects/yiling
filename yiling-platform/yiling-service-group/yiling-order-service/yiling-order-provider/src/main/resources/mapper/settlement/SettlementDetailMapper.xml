@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.order.settlement.dao.SettlementDeatailMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.order.settlement.entity.SettlementDetailDO">
+        <result column="id" property="id"/>
+        <result column="settlement_id" property="settlementId"/>
+        <result column="seller_eid" property="sellerEid"/>
+        <result column="buyer_eid" property="buyerEid"/>
+        <result column="order_id" property="orderId"/>
+        <result column="order_detail_id" property="orderDetailId"/>
+        <result column="goods_id" property="goodsId"/>
+        <result column="back_amount" property="backAmount"/>
+        <result column="discounts_amount" property="discountsAmount"/>
+        <result column="del_flag" property="delFlag"/>
+        <result column="create_user" property="createUser"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_user" property="updateUser"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="remark" property="remark"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,
+        settlement_id, seller_eid,buyer_eid,order_id, order_detail_id, goods_id, back_amount, discounts_amount, del_flag, create_user, create_time, update_user, update_time, remark
+    </sql>
+
+    <select id="getSettlementDetailByEidAndTime" resultMap="BaseResultMap">
+        SELECT
+        tt.id,
+        tt.settlement_id,
+        tt.seller_eid,
+        tt.buyer_eid,
+        tt.order_id,
+        tt.order_detail_id,
+        tt.goods_id,
+        tt.back_amount,
+        tt.discounts_amount,
+        tt.del_flag,
+        tt.create_user,
+        tt.create_time,
+        tt.update_user,
+        tt.update_time,
+        tt.remark
+        FROM
+        settlement_detail tt,
+        settlement t,
+        `order` o
+        WHERE
+        tt.settlement_id=t.id
+        and t.order_id=o.id
+        <if test="request.buyerEids != null and request.buyerEids.size() > 0">
+            and o.buyer_eid in
+            <foreach item="item" index="index" collection="request.buyerEids"
+                     open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="request.distributorEid != null">
+            and o.distributor_eid=#{request.distributorEid}
+        </if>
+        <if test="request.startCreateTime != null">
+            AND t.back_time &gt;= #{request.startCreateTime}
+        </if>
+        <if test="request.endCreateTime != null">
+            AND t.back_time &lt;= #{request.endCreateTime}
+        </if>
+        and o.customer_erp_code=#{request.easAccount}
+        and t.del_flag=0
+        and tt.del_flag=0
+    </select>
+
+</mapper>

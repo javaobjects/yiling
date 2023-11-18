@@ -1,0 +1,42 @@
+{
+  "number_of_shards": 1,
+  "analysis": {
+    "analyzer": {
+      "pinyin_analyzer": {
+        "tokenizer": "my_pinyin"
+      },
+      "douhao_analyzer": {
+        "type": "pattern",
+        "pattern": ","
+      },
+      "ik_smart_synonym": {
+        "type": "custom",
+        "tokenizer": "ik_smart",
+        "filter": ["remote_synonym"]
+      },
+      "ik_max_synonym": {
+        "type": "custom",
+        "tokenizer": "ik_max_word",
+        "filter": ["remote_synonym"]
+      }
+    },
+    "filter": {
+      "remote_synonym": {
+        "type": "dynamic_synonym",
+        "synonyms_path": "https://yl-public.oss-cn-zhangjiakou.aliyuncs.com/dev/es/ik/synonym.dic",
+        "interval": 30
+      }
+    },
+    "tokenizer": {
+      "my_pinyin": {
+        "type": "pinyin",
+        "keep_first_letter ": true,
+        "keep_full_pinyin": true,
+        "keep_original": true,
+        "limit_first_letter_length": 16,
+        "lowercase": true,
+        "remove_duplicated_term": true
+      }
+    }
+  }
+}

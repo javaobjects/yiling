@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.goods.medicine.dao.RecommendGoodsGroupMapper">
+    <resultMap id="BaseResultMap" type="com.yiling.goods.medicine.entity.RecommendGoodsGroupDO">
+        <result column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="eid" property="eid"/>
+        <result column="quick_purchase_flag" property="quickPurchaseFlag"/>
+        <result column="del_flag" property="delFlag"/>
+        <result column="create_user" property="createUser"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_user" property="updateUser"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="remark" property="remark"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id,`name`,eid,quick_purchase_flag
+        , del_flag, create_user, create_time, update_user, update_time, remark
+    </sql>
+    <select id="queryGroupPage" resultType="com.yiling.goods.medicine.dto.RecommendGoodsGroupDTO">
+        SELECT
+        <include refid="Base_Column_List"/>
+        from
+        recommend_goods_group
+        <where>
+            del_flag = 0
+            <if test="request.name !=null and request.name != ''">
+                AND `name` like concat('%',#{request.name},'%')
+            </if>
+            <if test="request.eid != null">
+                AND eid = #{request.eid}
+            </if>
+            <if test="request.quickPurchaseFlag != null">
+                AND quick_purchase_flag = #{request.quickPurchaseFlag}
+            </if>
+        </where>
+    </select>
+</mapper>

@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.payment.pay.dao.PaymentRepeatOrderMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.payment.pay.entity.PaymentRepeatOrderDO">
+    <result column="id" property="id" />
+        <result column="refund_no" property="refundNo" />
+        <result column="pay_no" property="payNo" />
+        <result column="pay_id" property="payId" />
+        <result column="app_order_id" property="appOrderId" />
+        <result column="app_order_no" property="appOrderNo" />
+        <result column="third_trade_no" property="thirdTradeNo" />
+        <result column="third_fund_no" property="thirdFundNo" />
+        <result column="refund_amount" property="refundAmount" />
+        <result column="refund_state" property="refundState" />
+        <result column="reason" property="reason" />
+        <result column="error_message" property="errorMessage" />
+        <result column="create_user" property="createUser" />
+        <result column="create_time" property="createTime" />
+        <result column="update_user" property="updateUser" />
+        <result column="update_time" property="updateTime" />
+        <result column="refund_date" property="refundDate" />
+        <result column="operate_user" property="operateUser" />
+        <result column="operate_time" property="operateTime" />
+        <result column="method_type" property="methodType" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,refund_no, pay_no, pay_id, app_order_id,app_order_no,third_trade_no, third_fund_no, refund_amount, refund_state, reason, error_message, create_user, create_time, update_user, update_time,operate_user,operate_time,refund_date,method_type
+    </sql>
+
+
+    <select id="selectPageRepeatOrderList"  resultType="com.yiling.payment.pay.dto.RepeatPayOrderDTO">
+        SELECT
+            rp.id as id,
+            po.`pay_id` AS payId,
+            po.`pay_no` AS payNo,
+            po.`seller_eid` AS sellerEid,
+            po.`buyer_eid` AS buyerEid,
+            po.`user_id` AS userId,
+            po.`app_order_id` AS appOrderId,
+            po.`app_order_no` AS appOrderNo,
+            po.`app_order_status` AS appOrderStatus,
+            po.`limit_time` AS limitTime,
+            po.`pay_date` AS payDate,
+            po.`pay_way` AS payWay,
+            po.`pay_source` AS paySource,
+            po.`trade_type` AS tradeType,
+            po.`pay_amount` AS payAmount,
+            po.order_platform as orderPlatform,
+            rp.`refund_amount` AS refundAmount,
+            rp.`refund_state` AS refundState,
+            rp.`update_time` AS updateTime,
+            rp.`update_user` AS updateUserId,
+            rp.create_user as createUser,
+            rp.create_time as createTime,
+            rp.operate_user as operateUser,
+            rp.operate_time as operateTime,
+            rp.third_trade_no as thirdTradeNo,
+            rp.error_message as errorMsg
+        FROM
+            payment_repeat_order rp
+            INNER JOIN payment_merge_order po
+            ON rp.`pay_no` = po.`pay_no`
+            AND rp.`app_order_id` = po.`app_order_id`
+        WHERE 1 = 1
+        <if test="pageRequest.orderPlatform != null and pageRequest.orderPlatform != ''">
+            and  po.order_platform = #{pageRequest.orderPlatform}
+        </if>
+        <if test="pageRequest.appOrderNo != null and pageRequest.appOrderNo != ''">
+            and  rp.`app_order_no` = #{pageRequest.appOrderNo}
+        </if>
+        <if test="pageRequest.refundState != null and pageRequest.refundState != '' and pageRequest.refundState != 0">
+            and  rp.`refund_state` = #{pageRequest.refundState}
+        </if>
+        <if test="pageRequest.payWay != null and pageRequest.payWay != ''">
+            and  po.`pay_way` = #{pageRequest.payWay}
+        </if>
+        <if test="pageRequest.tradeType != null and pageRequest.tradeType != '' and pageRequest.tradeType != 0 ">
+            and  po.`trade_type` = #{pageRequest.tradeType}
+        </if>
+        <if test="pageRequest.startPayTime != null ">
+            and  po.`pay_date` <![CDATA[ >= ]]> #{pageRequest.startPayTime}
+        </if>
+        <if test="pageRequest.endPayTime != null ">
+            and  po.`pay_date`  <![CDATA[ <= ]]> #{pageRequest.endPayTime}
+        </if>
+        <if test="pageRequest.dealState != null and pageRequest.dealState == 1 ">
+            and  rp.`refund_state`  = 1
+        </if>
+        <if test="pageRequest.dealState != null and pageRequest.dealState == 2 ">
+            and  rp.`refund_state`  = 2
+        </if>
+        <if test="pageRequest.dealState != null and pageRequest.dealState == 3 ">
+            and  rp.`refund_state`  = 3
+        </if>
+        <if test="pageRequest.dealState != null and pageRequest.dealState == 4 ">
+            and  rp.`refund_state`  in (4,5)
+        </if>
+        order by rp.create_time desc
+    </select>
+
+</mapper>

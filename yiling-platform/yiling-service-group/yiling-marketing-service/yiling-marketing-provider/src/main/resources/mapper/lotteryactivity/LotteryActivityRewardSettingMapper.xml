@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.marketing.lotteryactivity.dao.LotteryActivityRewardSettingMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.marketing.lotteryactivity.entity.LotteryActivityRewardSettingDO">
+    <result column="id" property="id" />
+        <result column="lottery_activity_id" property="lotteryActivityId" />
+        <result column="level" property="level" />
+        <result column="reward_type" property="rewardType" />
+        <result column="reward_id" property="rewardId" />
+        <result column="reward_name" property="rewardName" />
+        <result column="show_name" property="showName" />
+        <result column="reward_img" property="rewardImg" />
+        <result column="empty_words" property="emptyWords" />
+        <result column="reward_number" property="rewardNumber" />
+        <result column="every_max_number" property="everyMaxNumber" />
+        <result column="hit_probability" property="hitProbability" />
+        <result column="del_flag" property="delFlag" />
+        <result column="create_user" property="createUser" />
+        <result column="create_time" property="createTime" />
+        <result column="update_user" property="updateUser" />
+        <result column="update_time" property="updateTime" />
+        <result column="remark" property="remark" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,
+        lottery_activity_id, level, reward_type, reward_id, reward_name, show_name, reward_img, empty_words, reward_number, every_max_number, hitProbability, del_flag, create_user, create_time, update_user, update_time, remark
+    </sql>
+
+</mapper>

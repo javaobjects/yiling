@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.user.system.dao.RoleMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.user.system.entity.RoleDO">
+        <result column="id" property="id" />
+        <result column="app_id" property="appId" />
+        <result column="eid" property="eid" />
+        <result column="code" property="code" />
+        <result column="name" property="name" />
+        <result column="type" property="type" />
+        <result column="del_flag" property="delFlag" />
+        <result column="create_user" property="createUser" />
+        <result column="update_user" property="updateUser" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+        <result column="remark" property="remark" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,
+        app_id, eid, code, name, type, del_flag, create_user, update_user, create_time, update_time, remark
+    </sql>
+
+    <select id="queryRolePageList" resultType="com.yiling.user.system.bo.RoleListItemBO" parameterType="com.yiling.user.system.dto.request.QueryRolePageListRequest">
+        SELECT
+        sr.`id`,
+        sr.`name`,
+        sr.remark,
+        sr.type,
+        sr.code,
+        sr.`status`,
+        sr.create_user,
+        sr.create_time,
+        COUNT( sur.id ) AS 'userCount'
+        FROM
+        sys_role sr
+        LEFT JOIN sys_user_role sur ON sr.id = sur.role_id
+        AND sur.del_flag = 0
+        WHERE
+        sr.eid = #{request.eid}
+        <if test="request.appEnum != null">
+            AND sr.app_id = #{request.appEnum.code}
+        </if>
+        <if test="request.name != null and request.name != ''">
+            AND name LIKE concat('%',#{request.name},'%')
+        </if>
+        <if test="request.status != null and request.status != ''">
+            AND sr.status =#{request.status}
+        </if>
+        AND sr.del_flag = 0
+        GROUP BY
+        sr.id
+    </select>
+
+    <select id="queryRoleManagePageList" resultType="com.yiling.user.system.bo.RoleListItemBO" parameterType="com.yiling.user.system.dto.request.QueryRolePageListRequest">
+        SELECT
+        sr.`id`,
+        sr.`name`,
+        sr.remark,
+        sr.type,
+        sr.code,
+        sr.`status`,
+        sr.create_user,
+        sr.create_time,
+        sr.update_time,
+        sr.update_user
+        FROM sys_role sr
+        LEFT JOIN sys_user_role sur ON sr.id = sur.role_id
+        AND sur.del_flag = 0
+        <where>
+            <if test="request.appEnum != null">
+                AND sr.app_id = #{request.appEnum.code}
+
+                <choose>
+                    <when test="request.appEnum.code == 1">
+                        AND sr.type in (1,2)
+                    </when>
+                    <otherwise>
+                        AND sr.type = 1
+                    </otherwise>
+                </choose>
+            </if>
+
+            <if test="request.name != null and request.name != ''">
+                AND sr.name LIKE concat('%',#{request.name},'%')
+            </if>
+            <if test="request.status != null and request.status != ''">
+                AND sr.status =#{request.status}
+            </if>
+            <if test="request.createTimeStart != null">
+                and sr.create_time <![CDATA[ >= ]]> #{request.createTimeStart}
+            </if>
+            <if test="request.createTimeEnd != null">
+                and sr.create_time <![CDATA[ <= ]]> #{request.createTimeEnd}
+            </if>
+            AND sr.del_flag = 0
+        </where>
+        GROUP BY sr.id
+        ORDER BY sr.create_time , sr.id
+    </select>
+
+</mapper>

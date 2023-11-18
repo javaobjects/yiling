@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.dataflow.wash.dao.UnlockCustomerClassRuleMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.dataflow.wash.entity.UnlockCustomerClassRuleDO">
+        <id column="id" property="id" />
+        <result column="rule_id" property="ruleId" />
+        <result column="order_no" property="orderNo" />
+        <result column="condition1" property="condition1" />
+        <result column="operator1" property="operator1" />
+        <result column="condition_value1" property="conditionValue1" />
+        <result column="condition2" property="condition2" />
+        <result column="operator2" property="operator2" />
+        <result column="condition_value2" property="conditionValue1" />
+        <result column="condition_relation" property="conditionRelation" />
+        <result column="customer_classification" property="customerClassification" />
+        <result column="last_op_time" property="lastOpTime"/>
+        <result column="last_op_user" property="lastOpUser"/>
+        <result column="status" property="status" />
+        <result column="del_flag" property="delFlag" />
+        <result column="create_time" property="createTime" />
+        <result column="create_user" property="createUser" />
+        <result column="update_time" property="updateTime" />
+        <result column="update_user" property="updateUser" />
+        <result column="remark" property="remark" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, rule_id, order_no, condition1, operator1, condition_value1, condition2, operator2, condition_value2, contition_relation, customer_classification, last_op_user, last_op_time, status, del_flag, create_time, create_user, update_time, update_user, remark
+    </sql>
+
+    <select id="getLastRuleId" resultType="java.lang.Long">
+        select rule_id from unlock_customer_class_rule
+        where rule_id like concat(#{todayStr}, '%')
+        order by rule_id desc
+    </select>
+
+</mapper>

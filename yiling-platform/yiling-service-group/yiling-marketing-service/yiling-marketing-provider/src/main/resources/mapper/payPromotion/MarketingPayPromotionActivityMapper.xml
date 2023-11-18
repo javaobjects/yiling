@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.marketing.payPromotion.dao.MarketingPayPromotionActivityMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.marketing.payPromotion.entity.MarketingPayPromotionActivityDO">
+    <result column="id" property="id" />
+        <result column="name" property="name" />
+        <result column="sponsor_type" property="sponsorType" />
+        <result column="begin_time" property="beginTime" />
+        <result column="end_time" property="endTime" />
+        <result column="status" property="status" />
+        <result column="operating_remark" property="operatingRemark" />
+        <result column="bear" property="bear" />
+        <result column="condition_seller_type" property="conditionSellerType" />
+        <result column="condition_goods_type" property="conditionGoodsType" />
+        <result column="condition_buyer_type" property="conditionBuyerType" />
+        <result column="condition_enterprise_type" property="conditionEnterpriseType" />
+        <result column="condition_enterprise_type_value" property="conditionEnterpriseTypeValue" />
+        <result column="condition_user_type" property="conditionUserType" />
+        <result column="condition_other" property="conditionOther" />
+        <result column="pay_type" property="payType" />
+        <result column="condition_effective" property="conditionEffective" />
+        <result column="budget_amount" property="budgetAmount" />
+        <result column="max_give_num" property="maxGiveNum" />
+        <result column="total_num" property="totalNum" />
+        <result column="del_flag" property="delFlag" />
+        <result column="create_user" property="createUser" />
+        <result column="create_time" property="createTime" />
+        <result column="update_user" property="updateUser" />
+        <result column="update_time" property="updateTime" />
+        <result column="operating_remark" property="operatingRemark" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id
+        ,
+        name, sponsor_type, begin_time, end_time, status, operating_remark, bear, condition_seller_type, condition_goods_type, condition_buyer_type, condition_enterprise_type, condition_enterprise_type_value, condition_user_type, condition_other, pay_type, condition_effective, budget_amount, max_give_num, del_flag, create_user, create_time, update_user, update_time, remark
+    </sql>
+    <select id="pageList" resultMap="BaseResultMap">
+        select
+        ppa.id,
+        ppa.name,
+        ppa.sponsor_type,
+        ppa.begin_time,
+        ppa.end_time,
+        ppa.status,
+        ppa.operating_remark,
+        ppa.bear,
+        ppa.condition_seller_type,
+        ppa.condition_goods_type,
+        ppa.condition_buyer_type,
+        ppa.condition_enterprise_type,
+        ppa.condition_enterprise_type_value,
+        ppa.condition_user_type,
+        ppa.condition_other,
+        ppa.pay_type,
+        ppa.condition_effective,
+        ppa.budget_amount,
+        ppa.max_give_num,
+        ppa.total_num ,
+        ppa.del_flag,
+        ppa.create_user,
+        ppa.create_time,
+        ppa.update_user,
+        ppa.update_time,
+        ppa.operating_remark
+        from marketing_pay_promotion_activity ppa
+        <where>
+            ppa.del_flag=0 and ppa.status!=4
+            <if test="request.sponsorType!=null and request.sponsorType!=0">
+                and  ppa.sponsor_type=#{request.sponsorType}
+            </if>
+            <if test="request.bear!=null and request.bear!=0">
+                and  ppa.bear=#{request.bear}
+            </if>
+            <if test="request.name !=null and request.name !='' ">
+                and ppa.name like concat('%',#{request.name},'%')
+            </if>
+            <if test="request.status !=null and request.status !=0">
+                and ppa.status=#{request.status}
+            </if>
+            <if test="request.progress !=null and request.progress ==1">
+                and ppa.begin_time>NOW() and ppa.status=1
+            </if>
+            <if test="request.progress !=null and request.progress ==2">
+                and ppa.begin_time <![CDATA[ <= ]]>NOW() AND ppa.end_time>=NOW() and ppa.status=1
+            </if>
+            <if test="request.progress !=null and request.progress ==3">
+                and ppa.end_time<![CDATA[ < ]]>NOW() or ppa.status in(2,3)
+            </if>
+            <if test="request.startTime!=null ">
+                and ppa.create_time between #{request.startTime} and #{request.stopTime}
+            </if>
+            <if test="request.sponsorType !=null and request.sponsorType !=0">
+                and ppa.sponsor_type=#{request.sponsorType}
+            </if>
+            <if test="request.createUserName !=null and request.createUserName !='' ">
+                and ppa.create_user_name like concat('%',#{request.createUserName},'%')
+            </if>
+            <if test="request.createTel !=null and request.createTel !='' ">
+                and ppa.create_tel like concat('%',#{request.createTel},'%')
+            </if>
+            <if test="request.operatingRemark !=null and request.operatingRemark !='' ">
+                and ppa.operating_remark like concat('%',#{request.operatingRemark},'%')
+            </if>
+           <if test="request.eid !=null and request.eid !='' ">
+                and id in(select marketing_pay_id from marketing_pay_promotion_seller_limit where eid =#{request.eid})
+            </if>
+        </where>
+        ORDER BY ppa.id DESC
+    </select>
+
+    <select id="listEffectiveActivity" resultType="com.yiling.marketing.payPromotion.entity.MarketingPayPromotionActivityDO">
+        select distinct
+        ppa.*
+        from marketing_pay_promotion_activity ppa
+        left join marketing_pay_promotion_seller_limit pps on ppa.id = pps.marketing_pay_id
+        <where>
+            ppa.del_flag = 0 and
+            ppa.status = 1
+            <if test="sponsorType!=null and sponsorType!=0">
+                and ppa.sponsor_type = #{sponsorType}
+            </if>
+            <if test="time != null">
+                and ppa.begin_time &lt; #{time}
+                and ppa.end_time &gt; #{time}
+            </if>
+            <if test="eidList != null and eidList.size() > 0">
+                and (ppa.condition_seller_type = 1 or pps.eid in
+                <foreach item="item" index="index" collection="eidList" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+                )
+            </if>
+        </where>
+    </select>
+
+    <update id="addRecordTimes">
+        update marketing_pay_promotion_activity
+        set total_num=#{times} + total_num,
+            update_user=#{opUserId},
+            update_time=#{opTime}
+        where id = #{activityId}
+    </update>
+</mapper>

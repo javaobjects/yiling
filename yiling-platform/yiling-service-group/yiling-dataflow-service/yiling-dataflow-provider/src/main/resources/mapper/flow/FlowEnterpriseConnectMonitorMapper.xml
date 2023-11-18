@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.dataflow.flow.dao.FlowEnterpriseConnectMonitorMapper">
+    <resultMap id="BaseResultMap" type="com.yiling.dataflow.flow.entity.FlowEnterpriseConnectMonitorDO">
+        <result column="id" property="id" />
+        <result column="erp_client_id" property="erpClientId" />
+        <result column="crm_enterprise_id" property="crmEnterpriseId" />
+        <result column="crm_enterprise_name" property="crmEnterpriseName" />
+        <result column="province_code" property="provinceCode" />
+        <result column="province_name" property="provinceName" />
+        <result column="supplier_level" property="supplierLevel" />
+        <result column="install_employee" property="installEmployee" />
+        <result column="flow_mode" property="flowMode" />
+        <result column="docking_time" property="dockingTime" />
+        <result column="flow_collection_time" property="flowCollectionTime" />
+        <result column="return_flow_day_count" property="returnFlowDayCount" />
+        <result column="connect_status" property="connectStatus" />
+        <result column="explanation" property="explanation" />
+        <result column="del_flag" property="delFlag" />
+        <result column="create_time" property="createTime" />
+        <result column="create_user" property="createUser" />
+        <result column="update_time" property="updateTime" />
+        <result column="update_user" property="updateUser" />
+        <result column="remark" property="remark" />
+    </resultMap>
+    <sql id="Base_Column_List">
+        id,erp_client_id,crm_enterprise_id,crm_enterprise_name,province_code,province_name,supplier_level,install_employee
+        ,flow_mode,docking_time,flow_collection_time.return_flow_day_count,connect_status,explanation
+        , del_flag, create_time, create_user, update_time, update_user, remark
+    </sql>
+    <select id="countConnectionStatusByProvince" resultType="com.yiling.dataflow.flow.bo.FlowEnterpriseConnectStatisticBO">
+        SELECT province_code as provinceCode,
+        max(province_name) as provinceName,
+        count(crm_enterprise_id) as enterpriseCount,
+        sum(connect_status=0) as invalidCount,
+        sum(connect_status=1) as validCount
+        FROM flow_enterprise_connect_monitor
+        where del_flag = 0
+        <if test="null != supplierLevel and supplierLevel > 0">
+            and supplier_level = #{supplierLevel}
+        </if>
+        GROUP BY province_code
+    </select>
+</mapper>

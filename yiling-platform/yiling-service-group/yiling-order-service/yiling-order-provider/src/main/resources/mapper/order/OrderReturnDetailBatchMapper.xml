@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.order.order.dao.OrderReturnDetailBatchMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.order.order.entity.OrderReturnDetailBatchDO">
+        <result column="id" property="id"/>
+        <result column="return_id" property="returnId"/>
+        <result column="detail_id" property="detailId"/>
+        <result column="batch_no" property="batchNo"/>
+        <result column="expiry_date" property="expiryDate"/>
+        <!--        <result column="receive_quantity" property="receiveQuantity"/>-->
+        <result column="return_quantity" property="returnQuantity"/>
+<!--        <result column="erp_delivery_no" property="erpDeliveryNo"/>-->
+        <result column="del_flag" property="delFlag"/>
+        <result column="create_user" property="createUser"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_user" property="updateUser"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="remark" property="remark"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id
+        , return_id, detail_id, batch_no, expiry_date, return_quantity, del_flag, create_user, create_time, update_user, update_time, remark
+    </sql>
+
+    <select id="queryByDetailIdAndBatchNoAndType" resultMap="BaseResultMap">
+        SELECT t.*
+        FROM order_return_detail_batch t
+        LEFT JOIN order_return d ON t.return_id = d.id
+        <where>
+            t.del_flag = 0 and d.return_status = 2
+            <if test="detailId != null">
+                and t.detail_id = #{detailId}
+            </if>
+
+            <if test="batchNo != null">
+                and t.batch_no = #{batchNo}
+            </if>
+            <if test="returnType != null">
+                and d.return_type = #{returnType}
+            </if>
+        </where>
+    </select>
+
+    <select id="queryByDetailId" resultType="com.yiling.order.order.dto.ReturnDetailBathDTO">
+        SELECT
+        d.id AS id,
+        d.return_type AS returnType,
+        t.detail_id AS detailId,
+        t.batch_no AS batchNo,
+        t.return_quantity AS returnQuantity
+        FROM order_return_detail_batch t
+        LEFT JOIN order_return d ON t.return_id = d.id
+        <where>
+            t.del_flag = 0 and d.return_status = 2
+            <if test="detailIdList != null and detailIdList.size() > 0">
+                and t.detail_id in
+                <foreach item="item" index="index" collection="detailIdList"
+                         open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+    </select>
+
+    <select id="queryExportByCondition" parameterType="com.yiling.order.order.dto.request.QueryOrderReturnInfoRequest"
+            resultType="com.yiling.order.order.dto.ReturnOrderExportDTO">
+        SELECT c.return_no AS returnNo,
+        c.order_no AS orderNo,
+        CASE c.return_type
+        WHEN 1 THEN "驳回退货单"
+        WHEN 2 THEN "退回退货单"
+        ELSE "采购退货单" END AS returnType,
+        CASE c.return_status
+        WHEN 1 THEN "待审核"
+        WHEN 2 THEN "审核通过"
+        ELSE "审核驳回" END AS returnStatus,
+        c.create_time AS createTime,
+        CASE e.payment_method
+        WHEN 1 THEN "线下支付"
+        WHEN 2 THEN "账期"
+        ELSE "预付款" END AS paymentMethod,
+        c.return_amount - c.cash_discount_amount - c.ticket_discount_amount AS totalReturnAmount,
+        b.goods_id AS goodsId,
+        d.goods_name AS goodsName,
+        d.goods_specification AS goodsSpecification,
+        b.return_quantity AS goodsReturnQuality,
+        d.goods_price AS goodsPrice,
+        b.return_amount AS goodsReturnAmount,
+        b.return_cash_discount_amount + b.return_ticket_discount_amount AS goodsDiscountAmount,
+        b.return_amount - b.return_cash_discount_amount - b.return_ticket_discount_amount AS returnAmounts,
+        a.batch_no AS batchNo,
+        a.expiry_date AS expiryDate,
+        a.return_quantity AS returnQuality
+        FROM order_return_detail_batch a
+        LEFT JOIN order_return_detail b ON a.return_id = b.return_id AND a.detail_id = b.detail_id
+        LEFT JOIN order_return c ON a.return_id = c.id
+        LEFT JOIN order_detail d ON b.detail_id = d.id AND c.order_id = d.order_id
+        LEFT JOIN `order` e ON e.id = d.order_id
+        <where>
+            a.del_flag = 0 and b.del_flag = 0 and c.del_flag = 0
+            <if test="request.orderNo != null">
+                and c.order_no = #{request.orderNo}
+            </if>
+            <if test="request.orderReturnNo != null">
+                and c.return_no = #{request.orderReturnNo}
+            </if>
+            <if test="request.startTime != null">
+                and c.create_time &gt;= #{request.startTime}
+            </if>
+            <if test="request.endTime != null">
+                and c.create_time &lt;= #{request.endTime}
+            </if>
+            <if test="request.returnType != null and request.returnType != 0">
+                and c.return_type = #{request.returnType}
+            </if>
+            <if test="request.returnStatus != null and request.returnStatus != 0">
+                and c.return_status = #{request.returnStatus}
+            </if>
+            <if test="request.sellerEname != null">
+                and c.seller_ename like "%"#{request.sellerEname}"%"
+            </if>
+            <if test="request.buyerEname != null">
+                and c.buyer_ename like "%"#{request.buyerEname}"%"
+            </if>
+            <if test="request.queryType == 1 and request.eid != null">
+                and c.buyer_eid = #{request.eid}
+            </if>
+            <if test="request.queryType == 2 and request.yiLingOrdinary == true">
+                and c.contacter_id = #{request.userId}
+            </if>
+            <if test="request.queryType == 2 and request.yiLingOrdinary == false and request.eidList != null and request.eidList.size() > 0">
+                and c.seller_eid in
+                <foreach item="item" index="index" collection="request.eidList"
+                         open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="request.queryType == 4 and request.eidList != null and request.eidList.size() > 0">
+                and c.seller_eid in
+                <foreach item="item" index="index" collection="request.eidList"
+                         open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+        ORDER BY a.create_time ASC
+    </select>
+</mapper>

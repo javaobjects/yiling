@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.hmc.settlement.dao.EnterpriseSettlementMapper">
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.hmc.settlement.entity.EnterpriseSettlementDO">
+        <result column="id" property="id"/>
+        <result column="eid" property="eid"/>
+        <result column="ename" property="ename"/>
+        <result column="order_id" property="orderId"/>
+        <result column="detail_id" property="detailId"/>
+        <result column="terminal_settle_status" property="terminalSettleStatus"/>
+        <result column="execution_time" property="executionTime"/>
+        <result column="settle_time" property="settleTime"/>
+        <result column="goods_amount" property="goodsAmount"/>
+        <result column="settle_amount" property="settleAmount"/>
+        <result column="del_flag" property="delFlag"/>
+        <result column="create_user" property="createUser"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_user" property="updateUser"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="remark" property="remark"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id
+        ,
+        eid, ename, order_id, detail_id, terminal_settle_status, execution_time, settle_time, goods_amount, settle_amount, del_flag, create_user, create_time, update_user, update_time, remark
+    </sql>
+
+    <select id="pageEnSettlement" parameterType="com.yiling.hmc.settlement.dto.request.SettlementEnterprisePageRequest"
+            resultType="com.yiling.hmc.settlement.bo.SettlementEnterprisePageBO">
+        SELECT
+        eid AS eid,
+        terminal_settle_status AS terminalSettleStatus,
+        COUNT(1) AS payCount,
+        SUM(settle_amount) AS payAmount
+        FROM
+        hmc_enterprise_settlement
+        <where>
+            del_flag = 0
+            <if test="request.eidList != null and request.eidList.size() > 0">
+                and eid in
+                <foreach item="item" index="index" collection="request.eidList"
+                         open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+        GROUP BY eid, terminal_settle_status
+    </select>
+    <select id="pageUnSettlement" parameterType="com.yiling.hmc.settlement.dto.request.SettlementEnterprisePageRequest"
+            resultType="com.yiling.hmc.settlement.bo.SettlementEnterprisePageBO">
+        SELECT
+        c.eid AS eid,
+        b.terminal_settle_status AS terminalSettleStatus,
+        COUNT(1) AS payCount,
+        SUM(a.terminal_settle_amount) AS payAmount
+        FROM
+        hmc_order_detail a
+        LEFT JOIN hmc_enterprise_settlement b ON a.id = b.detail_id
+        LEFT JOIN hmc_order c ON a.order_id = c.id
+        <where>
+            a.del_flag = 0
+            AND c.del_flag = 0
+            AND c.order_status = 7
+            AND b.terminal_settle_status IS NULL
+            <if test="request.eidList != null and request.eidList.size() > 0">
+                and c.eid in
+                <foreach item="item" index="index" collection="request.eidList"
+                         open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+        GROUP BY c.eid, b.terminal_settle_status;
+    </select>
+
+    <select id="countUnSettlementOrder" parameterType="com.yiling.hmc.settlement.dto.request.SettlementEnterprisePageRequest"
+            resultType="com.yiling.hmc.settlement.bo.SettlementEnterprisePageBO">
+        SELECT eid AS eid,
+        COUNT(1) AS payCount
+        FROM hmc_order
+        <where>
+            del_flag = 0 AND order_status = 7 AND terminal_settle_status in (0,1)
+            <if test="request.eidList != null and request.eidList.size() > 0">
+                and eid in
+                <foreach item="item" index="index" collection="request.eidList"
+                         open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+        GROUP BY eid
+    </select>
+
+    <select id="countEnSettlementOrder" parameterType="com.yiling.hmc.settlement.dto.request.SettlementEnterprisePageRequest"
+            resultType="com.yiling.hmc.settlement.bo.SettlementEnterprisePageBO">
+        select count(order_id) AS payCount, eid AS eid
+        from (
+        select distinct order_id, eid
+        from hmc_enterprise_settlement
+        <where>
+            del_flag = 0 AND terminal_settle_status = 2
+            <if test="request.eidList != null and request.eidList.size() > 0">
+                and eid in
+                <foreach item="item" index="index" collection="request.eidList"
+                         open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+        ) temp
+        group by eid;
+    </select>
+
+    <select id="pageList" parameterType="com.yiling.hmc.settlement.dto.request.EnterpriseSettlementPageRequest"
+            resultType="com.yiling.hmc.settlement.bo.EnterpriseSettlementPageBO">
+        SELECT
+        b.id AS id,
+        b.goods_id AS goodsId,
+        b.sell_specifications_id AS sellSpecificationsId,
+        b.goods_specifications AS goodsSpecifications,
+        b.goods_name AS goodsName,
+        b.goods_quantity AS goodsQuantity,
+        b.terminal_settle_price AS price,
+        b.order_id AS orderId,
+        c.order_no AS orderNo,
+        b.terminal_settle_amount AS goodsAmount,
+        c.create_time AS createTime,
+        c.finish_time AS finishTime,
+        c.insurance_settle_status AS insuranceSettlementStatus,
+        c.eid AS eid,
+        c.ename AS ename,
+        c.order_status AS orderStatus,
+        a.settle_amount AS settlementAmount,
+        a.execution_time AS executionTime,
+        a.settle_time AS settlementTime
+        FROM
+        hmc_order_detail b
+        LEFT JOIN hmc_order c ON b.order_id = c.id
+        LEFT JOIN hmc_enterprise_settlement a ON b.id = a.detail_id
+        <where>
+            b.del_flag = 0 and c.del_flag = 0
+            and c.order_status = 7
+            <if test="request.eid != null">
+                and c.eid = #{request.eid}
+            </if>
+            <if test="request.terminalSettleStatus != null and request.terminalSettleStatus == 2">
+                and a.terminal_settle_status = 2
+            </if>
+            <if test="request.terminalSettleStatus != null and request.terminalSettleStatus == 1">
+                and a.terminal_settle_status IS NULL
+            </if>
+            <if test="request.goodsName != null and request.goodsName !=''">
+                and b.goods_name like "%"#{request.goodsName}"%"
+            </if>
+            <if test="request.startTime != null">
+                and c.create_time &gt;= #{request.startTime}
+            </if>
+            <if test="request.stopTime != null">
+                and c.create_time &lt;= #{request.stopTime}
+            </if>
+            <if test="request.insuranceSettlementStatus != null and request.insuranceSettlementStatus != 0">
+                and c.insurance_settle_status = #{request.insuranceSettlementStatus}
+            </if>
+            <if test="request.payStartTime != null">
+                and a.settle_time &gt;= #{request.payStartTime}
+            </if>
+            <if test="request.payStopTime != null">
+                and a.settle_time &lt;= #{request.payStopTime}
+            </if>
+            <if test="request.idList != null and request.idList.size() > 0">
+                and b.id in
+                <foreach item="item" index="index" collection="request.idList"
+                         open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+        ORDER BY c.finish_time DESC
+    </select>
+
+    <select id="pageResult" parameterType="com.yiling.hmc.settlement.dto.request.EnterpriseSettlementPageRequest"
+            resultType="com.yiling.hmc.settlement.bo.EnterpriseSettlementPageResultBO">
+        SELECT
+        count(1) AS totalCount,
+        sum(b.terminal_settle_amount) AS totalAmount
+        FROM
+        hmc_order_detail b
+        LEFT JOIN hmc_order c ON b.order_id = c.id
+        LEFT JOIN hmc_enterprise_settlement a ON b.id = a.detail_id
+        <where>
+            b.del_flag = 0 and c.del_flag = 0
+            and c.order_status = 7
+            <if test="request.eid != null">
+                and c.eid = #{request.eid}
+            </if>
+            <if test="request.terminalSettleStatus != null and request.terminalSettleStatus == 2">
+                and a.terminal_settle_status = 2
+            </if>
+            <if test="request.terminalSettleStatus != null and request.terminalSettleStatus == 1">
+                and a.terminal_settle_status IS NULL
+            </if>
+            <if test="request.goodsName != null and request.goodsName !=''">
+                and b.goods_name like "%"#{request.goodsName}"%"
+            </if>
+            <if test="request.startTime != null">
+                and c.create_time &gt;= #{request.startTime}
+            </if>
+            <if test="request.stopTime != null">
+                and c.create_time &lt;= #{request.stopTime}
+            </if>
+            <if test="request.insuranceSettlementStatus != null and request.insuranceSettlementStatus != 0">
+                and c.insurance_settle_status = #{request.insuranceSettlementStatus}
+            </if>
+            <if test="request.payStartTime != null">
+                and a.settle_time &gt;= #{request.payStartTime}
+            </if>
+            <if test="request.payStopTime != null">
+                and a.settle_time &lt;= #{request.payStopTime}
+            </if>
+            <if test="request.idList != null and request.idList.size() > 0">
+                and b.id in
+                <foreach item="item" index="index" collection="request.idList"
+                         open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+    </select>
+</mapper>

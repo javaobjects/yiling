@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.basic.version.dao.AppVersionMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.basic.version.entity.AppVersionDO">
+        <result column="id" property="id"/>
+        <result column="app_id" property="appId"/>
+        <result column="channel_code" property="channelCode"/>
+        <result column="version" property="version"/>
+        <result column="name" property="name"/>
+        <result column="description" property="description"/>
+        <result column="package_url" property="packageUrl"/>
+        <result column="package_md5" property="packageMd5"/>
+        <result column="package_size" property="packageSize"/>
+        <result column="app_url" property="appUrl"/>
+        <result column="force_upgrade_flag" property="forceUpgradeFlag"/>
+        <result column="upgrade_tips" property="upgradeTips"/>
+        <result column="del_flag" property="delFlag"/>
+        <result column="create_user" property="createUser"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_user" property="updateUser"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="remark" property="remark"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id
+        ,
+        app_id, channel_code, version, name, description, package_url, package_md5, package_size, app_url, force_upgrade_flag, upgrade_tips, del_flag, create_user, create_time, update_user, update_time, remark
+    </sql>
+
+    <select id="pageByCondition" parameterType="com.yiling.basic.version.dto.request.VersionPageRequest"
+            resultType="com.yiling.basic.version.dto.AppVersionPageDTO">
+        SELECT
+        v.id AS id,
+        i.id AS appId,
+        v.channel_code AS channelCode,
+        v.`name` AS name,
+        v.description AS description,
+        v.package_url AS packageUrl,
+        v.package_md5 AS packageMd5,
+        v.package_size AS packageSize,
+        v.app_url AS appUrl,
+        v.force_upgrade_flag AS forceUpgradeFlag,
+        v.upgrade_tips AS upgradeTips,
+        i.`name` AS appName,
+        i.app_type AS appType,
+        v.version AS version,
+        v.create_time AS createTime
+        FROM
+        app_version v
+        LEFT JOIN app_info i ON v.app_id = i.id
+        <where>
+            v.del_flag = 0 and i.del_flag = 0
+            <if test="request.appType != null and request.appType != 0">
+                and i.app_type = #{request.appType}
+            </if>
+            <if test="request.channelCode != null and request.channelCode != ''">
+                and v.channel_code = #{request.channelCode}
+            </if>
+        </where>
+        ORDER BY v.create_time DESC
+    </select>
+    <update id="updateVersionInfo">
+        update app_version
+        <set>
+            <if test="appId != null">
+                app_id = #{appId},
+            </if>
+            <if test="channelCode != null">
+                channel_code = #{channelCode},
+            </if>
+            <if test="version != null">
+                `version` = #{version},
+            </if>
+            <if test="name != null">
+                name = #{name},
+            </if>
+            <if test="description != null">
+                description = #{description},
+            </if>
+            <if test="packageUrl != null">
+                package_url = #{packageUrl},
+            </if>
+            <if test="packageMd5 != null">
+                package_md5 = #{packageMd5},
+            </if>
+            <if test="packageSize != null">
+                package_size = #{packageSize},
+            </if>
+            <if test="appUrl != null">
+                app_url = #{appUrl},
+            </if>
+            <if test="forceUpgradeFlag != null">
+                force_upgrade_flag = #{forceUpgradeFlag},
+            </if>
+            <if test="upgradeTips != null">
+                upgrade_tips = #{upgradeTips},
+            </if>
+            <if test="updateUser != null">
+                update_user = #{updateUser},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime},
+            </if>
+            <if test="remark != null">
+                remark = #{remark}
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+</mapper>

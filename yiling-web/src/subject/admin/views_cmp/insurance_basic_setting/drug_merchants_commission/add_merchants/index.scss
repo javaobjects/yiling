@@ -1,0 +1,36 @@
+.app-container {
+  .common-box {
+    .header-bar {
+      height: 22px;
+      line-height: 22px;
+      .sign {
+        margin-right: 5px;
+      }
+
+    }
+    .process {
+      margin-bottom: 56px;
+    }
+    .form-wrap {
+      .el-form {
+        .el-form-item {
+          ::v-deep .el-form-item__label {
+            font-weight: 400;
+          }
+          ::v-deep .el-form-item__content {
+            .el-input {
+              max-width: 500px;
+            }
+            .el-select {
+              width: 500px;
+              max-width: 500px;
+            }
+          }
+          .remark {
+            width: 500px;
+          }
+        }
+      }
+    }
+  }
+}

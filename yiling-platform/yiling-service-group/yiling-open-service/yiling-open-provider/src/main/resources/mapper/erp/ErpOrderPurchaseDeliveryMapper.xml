@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.open.erp.dao.ErpOrderPurchaseDeliveryMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.open.erp.entity.ErpOrderPurchaseDeliveryDO">
+    <result column="id" property="id" />
+        <result column="su_id" property="suId" />
+        <result column="su_dept_no" property="suDeptNo" />
+        <result column="delivery_no" property="deliveryNo" />
+        <result column="delivery_quantity" property="deliveryQuantity" />
+        <result column="order_delivery_erp_id" property="orderDeliveryErpId" />
+        <result column="order_delivery_erp_detail_id" property="orderDeliveryErpDetailId" />
+        <result column="data_md5" property="dataMd5"/>
+        <result column="add_time" property="addTime"/>
+        <result column="edit_time" property="editTime"/>
+        <result column="oper_type" property="operType"/>
+        <result column="sync_status" property="syncStatus"/>
+        <result column="sync_time" property="syncTime"/>
+        <result column="sync_msg" property="syncMsg"/>
+        <result column="failed_count" property="failedCount"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,
+        su_id, su_dept_no, delivery_no, delivery_quantity, order_delivery_erp_id, order_delivery_erp_detail_id,data_md5, add_time, edit_time, oper_type, sync_status, sync_time, sync_msg, update_count, failed_count
+    </sql>
+
+    <sql id="T_Column_List">
+        t.id, t.su_id, t.su_dept_no, t.delivery_no, t.delivery_quantity, t.order_delivery_erp_id,t.order_delivery_erp_detail_id,
+        t.data_md5, t.add_time, t.edit_time, t.oper_type, t.sync_status, t.sync_time, t.sync_msg, t.update_count, t.failed_count
+    </sql>
+
+    <!-- 表名 -->
+    <sql id="Base_Table_Name">
+        `erp_order_purchase_delivery`
+    </sql>
+
+    <!-- 更改同步状态 -->
+    <update id="updateSyncStatusByStatusAndId">
+        update <include refid="Base_Table_Name"/>
+        set
+        `sync_status`=#{syncStatus},`sync_time`=Now(),`sync_msg`=#{syncMsg}
+        where `id` = #{id} AND `sync_status`=#{oldSyncStatus}
+    </update>
+
+    <!-- 更改同步失败理由 -->
+    <update id="updateSyncStatusAndMsg">
+		update <include refid="Base_Table_Name"/>
+		set
+		`sync_msg`=#{syncMsg},
+        `sync_status`=#{syncStatus},
+        `sync_time`=Now()
+		where `id` = #{id}
+	</update>
+
+    <!-- 批量新增 -->
+    <insert id="batchInsert" parameterType="com.yiling.open.erp.entity.ErpOrderPurchaseDeliveryDO" useGeneratedKeys="true"
+            keyProperty="id">
+        INSERT INTO `erp_order_purchase_delivery` (
+        id,
+        su_id,
+        su_dept_no,
+        delivery_no,
+        delivery_quantity,
+        order_delivery_erp_id,
+        order_delivery_erp_detail_id,
+        data_md5,
+        add_time,
+        oper_type,
+        sync_status,
+        sync_msg,
+        failed_count
+        ) VALUES
+        <foreach collection="list" item="item" index="index"
+                 separator=",">
+            (
+            #{item.id},
+            #{item.suId},
+            #{item.suDeptNo},
+            #{item.deliveryNo},
+            #{item.deliveryQuantity},
+            #{item.orderDeliveryErpId},
+            #{item.orderDeliveryErpDetailId},
+            #{item.dataMd5},
+            NOW(),
+            1,
+            1,
+            #{item.syncMsg},
+            #{item.failedCount}
+            )
+        </foreach>
+    </insert>
+    <!-- 修改同步状态 -->
+    <update id="updateSyncInfoByPrimaryKey" parameterType="com.yiling.open.erp.entity.ErpOrderPurchaseDeliveryDO">
+		UPDATE <include refid="Base_Table_Name"/>
+		SET
+		`sync_status` = #{syncStatus},
+		`sync_msg` = #{syncMsg}
+		WHERE `id` = #{id}
+	</update>
+    <!-- 修改同步信息 -->
+    <update id="updateByPrimaryKey" parameterType="com.yiling.open.erp.entity.ErpOrderPurchaseDeliveryDO">
+        UPDATE <include refid="Base_Table_Name"/>
+        SET
+        <if test="suId != null">
+            `su_id` = #{suId},
+        </if>
+        <if test="suDeptNo != null and suDeptNo != ''">
+            `su_dept_no` = #{suDeptNo},
+        </if>
+        <if test="deliveryNo != null and deliveryNo != ''">
+            `delivery_no` = #{deliveryNo},
+        </if>
+        <if test="deliveryQuantity != null">
+            `delivery_quantity` = #{deliveryQuantity},
+        </if>
+        <if test="orderDeliveryErpId != null">
+            `order_delivery_erp_id` = #{orderDeliveryErpId},
+        </if>
+        <if test="orderDeliveryErpDetailId != null">
+            `order_delivery_erp_detail_id` = #{orderDeliveryErpDetailId},
+        </if>
+        <if test="dataMd5 != null and dataMd5 != ''">
+            `data_md5` = #{dataMd5},
+        </if>
+        `edit_time` = NOW(),
+        `sync_status` = #{syncStatus},
+        <if test="syncMsg != null and syncMsg != ''">
+            `sync_msg` = #{syncMsg},
+        </if>
+        <if test="failedCount != null">
+            `failed_count` = #{failedCount},
+        </if>
+        `oper_type` = 2
+        WHERE id = #{id}
+    </update>
+
+    <update id="deleteByPrimaryKeys">
+        UPDATE <include refid="Base_Table_Name"/>
+        SET
+        `edit_time` = NOW(),
+        `oper_type` = 3,
+        `sync_status` = 1
+        WHERE id IN
+        <foreach item="item" index="index" collection="list" open="("
+                 separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+
+    <!-- 查询历史数据 -->
+    <select id="queryHistoryList" resultMap="BaseResultMap">
+        SELECT id,su_id,su_dept_no,delivery_no,oper_type
+        FROM <include refid="Base_Table_Name"/>
+        WHERE su_id = #{suId}
+        <if test="suDeptNoSet != null and suDeptNoSet.size() > 0">
+            AND su_dept_no IN
+            <foreach item="item" index="index" collection="suDeptNoSet"
+                     open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="erpPrimaryKeySet != null and erpPrimaryKeySet.size() > 0">
+            AND delivery_no IN
+            <foreach item="item" index="index" collection="erpPrimaryKeySet"
+                     open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+    </select>
+
+    <select id="findById" resultMap="BaseResultMap">
+         SELECT <include refid="Base_Column_List"/>
+        from <include refid="Base_Table_Name"/>
+        where id=#{id}
+    </select>
+
+    <select id="findMd5BySuId" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        from <include refid="Base_Table_Name"/>
+        where su_id=#{suId} and oper_type!=3 and sync_status=2
+    </select>
+
+    <select id="syncOrderPurchaseDelivery" resultMap="BaseResultMap">
+        SELECT <include refid="T_Column_List"/>
+        FROM <include refid="Base_Table_Name"/> t
+        WHERE t.sync_status = 0
+        AND (t.su_id, t.su_dept_no) IN (
+        SELECT
+        c.su_id,
+        c.su_dept_no
+        FROM
+        erp_client c
+        WHERE
+        c.client_status = 1
+        AND c.sync_status = 1) LIMIT 1000
+    </select>
+
+</mapper>

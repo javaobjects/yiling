@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.yiling</groupId>
+        <artifactId>yiling-parent</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+        <relativePath/>
+    </parent>
+
+    <groupId>com.yiling</groupId>
+    <artifactId>yiling-mall-portal</artifactId>
+    <packaging>pom</packaging>
+
+    <name>Yiling Mall Portal</name>
+    <description>Yiling Mall Portal</description>
+
+    <modules>
+        <module>yiling-mall-gateway</module>
+        <module>yiling-mall-common</module>
+        <module>yiling-user-web</module>
+        <module>yiling-payment-web</module>
+        <module>yiling-activity-web</module>
+        <!--f2b-->
+        <module>yiling-f2b-web</module>
+        <module>yiling-f2b-app-web</module>
+        <!--b2b-->
+        <module>yiling-b2b-web</module>
+        <module>yiling-b2b-app-web</module>
+        <!--商家后台-->
+        <module>yiling-data-center-admin-web</module>
+        <module>yiling-f2b-admin-web</module>
+        <module>yiling-b2b-admin-web</module>
+        <module>yiling-sales-assistant-admin-web</module>
+        <module>yiling-hmc-admin-web</module>
+    </modules>
+
+</project>

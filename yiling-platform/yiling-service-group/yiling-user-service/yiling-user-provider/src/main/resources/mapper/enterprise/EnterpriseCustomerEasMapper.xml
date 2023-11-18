@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.user.enterprise.dao.EnterpriseCustomerEasMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.user.enterprise.entity.EnterpriseCustomerEasDO">
+    <result column="id" property="id" />
+        <result column="eid" property="eid" />
+        <result column="customer_eid" property="customerEid" />
+        <result column="eas_name" property="easName" />
+        <result column="eas_code" property="easCode" />
+        <result column="del_flag" property="delFlag" />
+        <result column="create_user" property="createUser" />
+        <result column="create_time" property="createTime" />
+        <result column="update_user" property="updateUser" />
+        <result column="update_time" property="updateTime" />
+        <result column="remark" property="remark" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        a.id,
+        a.eid, a.customer_eid, a.eas_name, a.eas_code, a.del_flag, a.create_user, a.create_time, a.update_user, a.update_time, a.remark
+    </sql>
+
+    <select id="pageList" resultMap="BaseResultMap">
+        select
+          <include refid="Base_Column_List"/>
+        from enterprise_customer_eas a
+        inner join enterprise b on a.customer_eid = b.id
+        <where>
+          <if test="request.eid != null and request.eid != 0">
+              and a.eid = #{request.eid}
+          </if>
+          <if test="request.customerName != null and request.customerName != ''">
+              and b.name like concat('%',#{request.customerName},'%')
+          </if>
+         <if test="request.licenseNumber != null and request.licenseNumber != ''">
+             and b.license_number = #{request.licenseNumber}
+         </if>
+          <if test="request.easCode != null and request.easCode != ''">
+              and a.eas_code = #{request.easCode}
+          </if>
+          and a.del_flag = 0 and b.del_flag = 0
+        </where>
+    </select>
+
+    <select id="pageListByCurrent" resultMap="BaseResultMap">
+        select
+            <include refid="Base_Column_List"/>
+        from enterprise_customer_eas a left join enterprise b on a.customer_eid = b.id
+        <where>
+            a.customer_eid in ( select customer_eid from enterprise_customer_contact where contact_user_id = #{request.opUserId} and del_flag = 0 )
+            <if test="request.customerName != null and request.customerName != ''">
+                and b.name like concat('%',#{request.customerName},'%') or b.contactor like concat('%',#{request.customerName},'%')
+            </if>
+            and a.del_flag = 0 and b.del_flag = 0
+        </where>
+    </select>
+
+    <update id="updateAppliedAmount">
+        UPDATE enterprise_customer_eas
+        SET applied_amount = applied_amount + #{amount}
+        WHERE
+            customer_eid = #{eid}
+            AND
+            eas_code= #{easCode}
+    </update>
+</mapper>

@@ -1,0 +1,122 @@
+@import "~@/common/styles/mixin.scss";
+.app-container {
+    padding-bottom: 80px;
+    .top-view{
+      font-size: 18px;
+      font-weight: 600;
+      color: #333333;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+    .common-box {
+      .el-input {
+        width: 205px;
+      }
+      .search-box {
+        margin-top: 24px;
+        position: relative;
+        .box {
+          .title {
+            font-size: $font-size-large;
+            line-height: $font-size-large-lh;
+            color: $font-important-color;
+            margin-bottom: 8px;
+          }
+        }
+        .el-select {
+          width: 205px;
+        }
+
+        .bottom-btn {
+          position: absolute;
+          bottom: 0;
+          right: 0;
+        }
+      }
+    }
+    // 导出、导入按钮
+    .down-box {
+      width: 100%;
+      margin-top: 24px;
+      .btn {
+        float: right;
+      }
+    }
+    .bottom-view {
+      position: fixed;
+      bottom: 0;
+      left: $sideBarWidth;
+      right: 0;
+      height: 64px;
+      background-color: $white;
+      padding: 16px;
+      z-index: 10;
+      box-shadow: 0px -2px 9px 0px rgba(182, 182, 182, 0.16);
+    }
+
+    // 底部列表
+    .product-desc{
+      text-align: left;
+    }
+    .operate-view{
+      display: flex;
+      flex-direction: column;
+    }
+    .el-dialog__body{
+      padding: 0;
+    }
+    .move-dialog-content{
+      .icon-view{
+        margin-bottom: 22px;
+        display: flex;
+        align-items: center;
+        .icon{
+          font-size: 20px;
+          color: #FAAD14;
+          margin-right: 6px;
+        }
+      }
+      .el-select{
+        width: 264px;
+      }
+    }
+
+    // 配置客户弹框
+    .dialog-content-box-customer{
+      padding: 24px;
+      height: 515px;
+      overflow-y: auto;
+      .dialog-content-top {
+        .el-input {
+          width: 150px;
+        }
+        .search-box {
+          margin-bottom: 16px;
+          position: relative;
+          .box {
+            .title {
+              font-size: $font-size-large;
+              line-height: $font-size-large-lh;
+              color: $font-important-color;
+              margin-bottom: 8px;
+            }
+          }
+          .el-select {
+            width: 144px;
+          }
+
+        }
+      }
+      .query-view{
+        display: flex;
+        justify-content: flex-end;
+      }
+      .line-view{
+        height: 16px;
+      }
+    }
+
+  }
+

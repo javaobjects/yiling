@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.marketing.lotteryactivity.dao.LotteryActivityTimesChangeLogMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.marketing.lotteryactivity.entity.LotteryActivityTimesChangeLogDO">
+    <result column="id" property="id" />
+        <result column="lottery_activity_id" property="lotteryActivityId" />
+        <result column="platform_type" property="platformType" />
+        <result column="uid" property="uid" />
+        <result column="before_times" property="beforeTimes" />
+        <result column="change_times" property="changeTimes" />
+        <result column="after_times" property="afterTimes" />
+        <result column="change_type" property="changeType" />
+        <result column="del_flag" property="delFlag" />
+        <result column="create_time" property="createTime" />
+        <result column="create_user" property="createUser" />
+        <result column="update_time" property="updateTime" />
+        <result column="update_user" property="updateUser" />
+        <result column="remark" property="remark" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,
+        lottery_activity_id, platform_type, uid, before_times, change_times, after_times, change_type, del_flag, create_time, create_user, update_time, update_user, remark
+    </sql>
+
+</mapper>

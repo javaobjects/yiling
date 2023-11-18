@@ -1,0 +1,201 @@
+.app-container {
+  padding-top: 16px;
+  .search-bar {
+    background: $white;
+    padding: 16px;
+    border-radius: 4px;
+    .intro {
+      color: $font-important-color;
+      font-size: $font-size-base;
+      line-height: $font-size-base-lh;
+      margin-bottom: 8px;
+      padding: 0 10px;
+      span {
+        color: $font-title-color;
+      }
+    }
+  }
+}
+.home-top {
+  height: 359px;
+}
+.home-top-left {
+  // width: 848px;
+  flex: 1;
+  width: 100%;
+  .user-box {
+    display: flex;
+    align-items: center;
+    height: 153px;
+    border-radius: 4px;
+    background: #fff;
+
+    .user-head {
+      position: relative;
+      .user-tip {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        width: 19px;
+        height: 22px;
+      }
+    }
+    .user-img {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+    }
+    .user-name {
+      font-size: 16px;
+      color: #333;
+    }
+
+    .user-tips {
+      width: 81px;
+      height: 32px;
+      border-radius: 4px;
+      border: 1px solid #07c160;
+      text-align: center;
+      font-size: 16px;
+      font-weight: 500;
+      color: #07c160;
+      line-height: 32px;
+    }
+  }
+  // 快捷功能
+  .short-func {
+    margin-top: 16px;
+    background: #fff;
+    border-radius: 4px;
+  }
+  .func-box {
+    padding: 0 78px 29px 60px;
+    .func-item {
+      width: 100px;
+      text-align: center;
+      cursor: pointer;
+      img {
+        width: 64px;
+        height: 64px;
+      }
+      div {
+        margin-top: 16px;
+        font-size: 14px;
+        color: #333;
+      }
+    }
+  }
+}
+.home-top-right {
+  width: 369px;
+  height: 359px;
+  padding-left: 16px;
+  // background: #fff;
+  .search-bar {
+    // padding-top: 0;
+    padding-bottom: 0;
+  }
+  .calendar-top {
+    padding: 0 16px;
+    text-align: center;
+    height: 24px;
+    background: #fff;
+    .calendar-box {
+      position: relative;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 10px;
+      .calendar-date {
+        height: 24px;
+        font-size: 18px;
+        color: #34335b;
+      }
+      .calendar-box {
+        position: absolute;
+        top: 0;
+        right: 0;
+        .calendar-btn {
+          width: 30px;
+          height: 24px !important;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+        .calendar-btn-l {
+          background: #fff;
+          color: #1790ff;
+        }
+      }
+    }
+  }
+  // 去掉日历的顶部
+  ::v-deep .el-calendar__header {
+    display: none;
+  }
+  // 修改日历主体的大小
+  ::v-deep .el-calendar__body {
+    height: 299px;
+    padding: 10px 16px 16px 16px;
+  }
+  // 去掉日历边框
+  ::v-deep .el-calendar-table tr td {
+    border: none;
+  }
+  // 修改日历每一天的样式
+  ::v-deep .el-calendar-table .el-calendar-day {
+    // width: 40px !important;
+    height: 40px !important;
+    padding-top: 0;
+    padding-bottom: 0;
+    text-align: center;
+    line-height: 40px;
+    font-size: 16px;
+    // color: #34335b;
+  }
+  // 鼠标划入样式
+  ::v-deep .el-calendar-table .el-calendar-day:hover {
+    background: #1790ff;
+    color: #fff;
+  }
+  //
+  ::v-deep .el-calendar-table .current {
+    width: 40px !important;
+    height: 40px;
+  }
+  // 选中样式
+  ::v-deep .el-calendar-table td.is-selected {
+    background: #1790ff;
+    color: #fff;
+  }
+  .el-calendar-box {
+    border-radius: 0 0 4px 4px;
+  }
+}
+.home-list-box {
+  display: flex;
+  background: #fff;
+  border-radius: 0 0 4px 4px;
+  .list-item {
+    display: flex;
+    padding: 16px 0 50px 64px;
+    img {
+      width: 72px;
+      height: 72px;
+      cursor: pointer;
+    }
+    div {
+      width: 231px;
+      padding-left: 16px;
+      p {
+        padding: 0;
+        margin: 0;
+        color: #333;
+        font-size: 14px;
+        line-height: 20px;
+        &:nth-child(1) {
+          line-height: 45px;
+          font-size: 28px;
+        }
+      }
+    }
+  }
+}

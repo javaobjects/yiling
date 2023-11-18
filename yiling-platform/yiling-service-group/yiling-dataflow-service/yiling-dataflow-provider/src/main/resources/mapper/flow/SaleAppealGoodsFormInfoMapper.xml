@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.dataflow.flowcollect.dao.SaleAppealGoodsFormInfoMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.dataflow.flowcollect.entity.SaleAppealGoodsFormInfoDO">
+    <result column="id" property="id" />
+        <result column="form_id" property="formId" />
+        <result column="sale_appeal_form_id" property="saleAppealFormId" />
+        <result column="so_time" property="soTime" />
+        <result column="enterprise_name" property="enterpriseName" />
+        <result column="so_quantity" property="soQuantity" />
+        <result column="so_unit" property="soUnit" />
+        <result column="so_price" property="soPrice" />
+        <result column="so_totalAmount" property="soTotalAmount" />
+        <result column="representative_code" property="representativeCode" />
+        <result column="representative_name" property="representativeName" />
+        <result column="business_remark" property="businessRemark" />
+        <result column="del_flag" property="delFlag" />
+        <result column="create_user" property="createUser" />
+        <result column="create_time" property="createTime" />
+        <result column="update_user" property="updateUser" />
+        <result column="update_time" property="updateTime" />
+        <result column="remark" property="remark" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,
+        form_id, sale_appeal_form_id, so_time, enterprise_name, customer_name, flow_goods_name, flow_specification, so_quantity, so_unit, so_price, so_totalAmount, representative_code, representative_name, business_department, business_remark, del_flag, create_user, create_time, update_user, update_time, remark
+    </sql>
+
+</mapper>

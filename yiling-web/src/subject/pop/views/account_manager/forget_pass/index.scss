@@ -1,0 +1,47 @@
+@import "~@/common/styles/mixin.scss";
+.app-container-content {
+  .search-bar {
+    background: #fff;
+    margin-top: 10px;
+    border-radius: 4px;
+    padding: 16px;
+  }
+  .step {
+    margin-top: 45px;
+  }
+  .form {
+    display: flex;
+    justify-content: center;
+    // margin-left: 360px;
+    margin-top: 50px;
+    .inp {
+      width: 306px;
+    }
+  }
+  .old-text {
+    font-size: 16px;
+    color: #333;
+    margin-left: 200px;
+  }
+}
+.dialog-content {
+  //   width: 480px;
+  height: 170px;
+  .dia-message {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 120px;
+    font-size: 16px;
+    color: #000;
+    img {
+      width: 32px;
+      height: 32px;
+      margin-right: 16px;
+    }
+  }
+  .dia-btn {
+    margin-top: 40px;
+    width: 145px;
+  }
+}

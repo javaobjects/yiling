@@ -1,0 +1,39 @@
+@import "~@/common/styles/mixin.scss";
+
+.app-container {
+  .my-box{
+    height: 100%;
+    .pay-view{
+      margin-top: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      font-weight: 400;
+      color: #666666;
+      line-height: 22px;
+      .pay-img{
+        width: 181px;
+        height: 123px;
+        margin-right: 60px;
+      }
+      .success-text{
+        font-size: 24px;
+        font-weight: 600;
+        color: #7ABD53;
+        line-height: 33px;
+        margin-bottom: 10px;
+      }
+      .fail-text{
+        font-size: 24px;
+        font-weight: 600;
+        color: #D7000F;
+        line-height: 33px;
+        margin-bottom: 10px;
+      }
+      .remain-text{
+        margin-bottom: 15px;
+      }
+    }
+  }
+}

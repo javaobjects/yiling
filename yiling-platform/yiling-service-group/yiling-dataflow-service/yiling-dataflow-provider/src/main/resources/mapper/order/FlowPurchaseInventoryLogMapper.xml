@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.dataflow.order.dao.FlowPurchaseInventoryLogMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.dataflow.order.entity.FlowPurchaseInventoryLogDO">
+    <result column="id" property="id" />
+        <result column="business_type" property="businessType" />
+        <result column="flow_purchase_inventory_id" property="flowPurchaseInventoryId" />
+        <result column="po_source" property="poSource" />
+        <result column="eid" property="eid" />
+        <result column="goods_in_sn" property="goodsInSn" />
+        <result column="yl_goods_id" property="ylGoodsId" />
+        <result column="before_quantity" property="beforeQuantity" />
+        <result column="change_quantity" property="changeQuantity" />
+        <result column="after_quantity" property="afterQuantity" />
+        <result column="create_user" property="createUser" />
+        <result column="create_time" property="createTime" />
+        <result column="remark" property="remark" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,
+        business_type, flow_purchase_inventory_id, po_source, eid, goods_in_sn, yl_goods_id, before_quantity, change_quantity, after_quantity, create_user, create_time, remark
+    </sql>
+
+    <sql id="Base_Table_Name">
+        `flow_purchase_inventory_log`
+    </sql>
+
+    <select id="pageByInventoryId" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM <include refid="Base_Table_Name"/>
+        WHERE
+        flow_purchase_inventory_id = #{request.inventoryId}
+        AND business_type = #{request.businessType}
+    </select>
+
+    <select id="getSumAdjustmentQuantityByInventoryIdList" resultType="com.yiling.dataflow.order.bo.FlowPurchaseInventorySumAdjustmentQuantityBO">
+        SELECT
+        flow_purchase_inventory_id AS inventoryId, SUM(change_quantity) AS sumPoQuantity
+        FROM <include refid="Base_Table_Name"/>
+        WHERE
+        business_type = 4
+        AND flow_purchase_inventory_id in
+        <foreach collection="inventoryIdList" item="inventoryId" open="(" close=")" separator=",">
+            #{inventoryId}
+        </foreach>
+        GROUP BY flow_purchase_inventory_id
+    </select>
+
+    <select id="getSumDeductionsQuantityByInventoryIdList" resultType="com.yiling.dataflow.order.bo.FlowPurchaseInventorySumAdjustmentQuantityBO">
+        SELECT
+        flow_purchase_inventory_id AS inventoryId, SUM(change_quantity) AS sumPoQuantity
+        FROM <include refid="Base_Table_Name"/>
+        WHERE
+        business_type = 2
+        AND flow_purchase_inventory_id in
+        <foreach collection="inventoryIdList" item="inventoryId" open="(" close=")" separator=",">
+            #{inventoryId}
+        </foreach>
+        GROUP BY flow_purchase_inventory_id
+    </select>
+
+</mapper>

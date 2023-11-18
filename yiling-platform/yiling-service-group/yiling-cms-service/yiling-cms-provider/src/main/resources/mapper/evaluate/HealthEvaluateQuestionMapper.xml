@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.cms.evaluate.dao.HealthEvaluateQuestionMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.cms.evaluate.entity.HealthEvaluateQuestionDO">
+    <result column="id" property="id" />
+        <result column="health_evaluate_id" property="healthEvaluateId" />
+        <result column="question_type" property="questionType" />
+        <result column="question_topic" property="questionTopic" />
+        <result column="if_score" property="ifScore" />
+        <result column="if_blank" property="ifBlank" />
+        <result column="question_rank" property="questionRank" />
+        <result column="body_height" property="bodyHeight" />
+        <result column="body_weight" property="bodyWeight" />
+        <result column="del_flag" property="delFlag" />
+        <result column="create_user" property="createUser" />
+        <result column="create_time" property="createTime" />
+        <result column="update_user" property="updateUser" />
+        <result column="update_time" property="updateTime" />
+        <result column="remark" property="remark" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,
+        health_evaluate_id, question_type, question_topic, if_score, if_blank, question_rank, body_height, body_weight, del_flag, create_user, create_time, update_user, update_time, remark
+    </sql>
+
+</mapper>

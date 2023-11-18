@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.hmc.order.dao.MarketOrderMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.hmc.order.entity.MarketOrderDO">
+    <result column="id" property="id" />
+        <result column="order_no" property="orderNo" />
+        <result column="order_status" property="orderStatus" />
+        <result column="eid" property="eid" />
+        <result column="ename" property="ename" />
+        <result column="activity_id" property="activityId" />
+        <result column="doctor_id" property="doctorId" />
+        <result column="payment_method" property="paymentMethod" />
+        <result column="payment_status" property="paymentStatus" />
+        <result column="pay_time" property="payTime" />
+        <result column="deliver_time" property="deliverTime" />
+        <result column="receive_time" property="receiveTime" />
+        <result column="cancel_time" property="cancelTime" />
+        <result column="third_pay_no" property="thirdPayNo" />
+        <result column="third_pay_amount" property="thirdPayAmount" />
+        <result column="freight_amount" property="freightAmount" />
+        <result column="goods_total_amount" property="goodsTotalAmount" />
+        <result column="order_total_amount" property="orderTotalAmount" />
+        <result column="create_source" property="createSource" />
+        <result column="deliver_type" property="deliverType" />
+        <result column="deliver_no" property="deliverNo" />
+        <result column="deliver_company_name" property="deliverCompanyName" />
+        <result column="platform_remark" property="platformRemark" />
+        <result column="merchant_remark" property="merchantRemark" />
+        <result column="del_flag" property="delFlag" />
+        <result column="create_user" property="createUser" />
+        <result column="create_time" property="createTime" />
+        <result column="update_user" property="updateUser" />
+        <result column="update_time" property="updateTime"/>
+        <result column="remark" property="remark"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,
+        order_no, order_status, eid, ename, activity_id, doctor_id, payment_method, payment_status, pay_time, deliver_time, receive_time, cancel_time, third_pay_no, third_pay_amount, freight_amount, goods_total_amount, order_total_amount, create_source, deliver_type, deliver_no, deliver_company_name, platform_remark, merchant_remark, del_flag, create_user, create_time, update_user, update_time, remark
+    </sql>
+
+    <sql id="Query_AdminMarket_Order_Page_Column_List">
+        ord.id id,ord.order_no orderNo,ord.order_status orderStatus, ord.eid,ord.ename ename,ord.activity_id activityId,ord.doctor_id doctorId,
+        ord.payment_method paymentMethod,ord.payment_status paymentStatus,ord.pay_time payTime,ord.deliver_time deliverTime,ord.receive_time receiveTime,
+        ord.cancel_time cancelTime,ord.third_pay_no thirdPayNo,ord.third_pay_amount thirdPayAmount,ord.freight_amount freightAmount,ord.goods_total_amount goodsTotalAmount,
+        ord.order_total_amount orderTotalAmount,ord.create_source createSource,ord.deliver_type deliverType,ord.deliver_no deliverNo,ord.deliver_company_name deliverCompanyName,
+        ord.platform_remark platformRemark,ord.merchant_remark merchantRemark,ord.create_user createUser,ord.create_time createTime,ord.update_user updateUser,
+        ord.update_time updateTime, ord.remark remark,address.name name,address.mobile mobile,address.address address,ord.ih_prescription_no ihPrescriptionNo,
+        ord.prescription_type prescriptionType, ord.market_order_type marketOrderType, ord.prescription_id prescriptionId, ord.prescription_price prescriptionPrice
+    </sql>
+    <select id="queryAdminMarketOrderPage" resultType="com.yiling.hmc.order.dto.AdminMarketOrderDTO">
+        select
+        <include refid="Query_AdminMarket_Order_Page_Column_List"/>
+        FROM
+        hmc_market_order ord
+        left JOIN hmc_market_order_address address on ord.id = address.order_id
+        <where>
+            ord.del_flag = 0
+            <if test="request.orderNo !=null and request.orderNo !=''">
+                and ord.order_no like concat ('%',#{request.orderNo},'%')
+            </if>
+            <if test="request.eid !=null and request.eid > 0">
+                and ord.eid = #{request.eid}
+            </if>
+            <if test="request.name !=null and request.name !=''">
+                and address.name like concat ('%',#{request.name},'%')
+            </if>
+            <if test="request.mobile !=null and request.mobile !=''">
+                and address.mobile like concat ('%',#{request.mobile},'%')
+            </if>
+            <if test="request.orderStatus !=null and request.orderStatus > 0">
+                and ord.order_status = #{request.orderStatus}
+            </if>
+            <if test="request.beginTime != null">
+                and ord.create_time <![CDATA[ >= ]]> #{request.beginTime}
+            </if>
+            <if test="request.endTime != null">
+                and ord.create_time <![CDATA[ <= ]]> #{request.endTime}
+            </if>
+            <if test="request.goodsIdList!=null and request.goodsIdList.size() > 0">
+                and EXISTS (select 1 from hmc_market_order_detail det where det.order_id = ord.id and det.goods_id in
+                <foreach close=")" collection="request.goodsIdList" item="listItem" open="(" separator=",">
+                    #{listItem}
+                </foreach>
+                )
+            </if>
+            <if test="request.userList!=null and request.userList.size() > 0">
+                and ord.create_user in
+                <foreach close=")" collection="request.userList" item="listItem" open="(" separator=",">
+                    #{listItem}
+                </foreach>
+            </if>
+            <if test="request.ihPrescriptionNo !=null and request.ihPrescriptionNo !=''">
+                and ord.ih_prescription_no = #{request.ihPrescriptionNo}
+            </if>
+             <if test="request.paymentStatus !=null and request.paymentStatus > 0">
+                and ord.payment_status = #{request.paymentStatus}
+            </if>
+            <if test="request.prescriptionType !=null">
+                and ord.prescription_type = #{request.prescriptionType}
+            </if>
+        </where>
+        order by ord.create_time desc
+    </select>
+
+</mapper>

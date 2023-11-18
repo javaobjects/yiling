@@ -1,0 +1,385 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.open.erp.dao.ErpGoodsMapper">
+	<resultMap id="ErpGoodsResult" type="com.yiling.open.erp.entity.ErpGoodsDO">
+		<result property="id" column="id" />
+		<result property="suId" column="su_id" />
+		<result property="suDeptNo" column="su_dept_no" />
+		<result property="inSn" column="in_sn" />
+		<result property="sn" column="sn" />
+		<result property="name" column="name" />
+		<result property="commonName" column="common_name" />
+		<result property="aliasName" column="alias_name" />
+		<result property="licenseNo" column="license_no" />
+		<result property="specifications" column="specifications" />
+		<result property="unit" column="unit" />
+		<result property="middlePackage" column="middle_package" />
+		<result property="bigPackage" column="big_package" />
+		<result property="manufacturer" column="manufacturer" />
+		<result property="manufacturerCode" column="manufacturer_code" />
+		<result property="manufacturerAddress" column="manufacturer_address" />
+		<result property="price" column="price" />
+		<result property="canSplit" column="can_split" />
+        <result property="goodsStatus" column="goods_status" />
+		<result property="dataMd5" column="data_md5" />
+		<result property="addTime" column="add_time" />
+		<result property="editTime" column="edit_time" />
+		<result property="operType" column="oper_type" />
+		<result property="syncStatus" column="sync_status" />
+		<result property="syncMsg" column="sync_msg" />
+		<result property="failedCount" column="failed_count" />
+	</resultMap>
+
+	<!-- select公共部分 -->
+	<sql id="selectSql">
+		SELECT
+		t.id,
+		t.su_id,
+		t.su_dept_no,
+		t.in_sn,
+		t.sn,
+		t.name,
+		t.common_name,
+		t.alias_name,
+		t.license_no,
+		t.specifications,
+		t.unit,
+		t.middle_package,
+		t.big_package,
+		t.manufacturer,
+		t.manufacturer_code,
+		t.manufacturer_address,
+		t.price,
+		t.can_split,
+		t.goods_status,
+		t.data_md5,
+		t.add_time,
+		t.edit_time,
+		t.oper_type,
+		t.sync_status,
+		t.sync_msg,
+		t.failed_count
+	</sql>
+
+	<!-- WHERE公共部分 -->
+	<sql id="whereSql">
+		<where>
+			<if test="id != null ">AND t.id = #{id} </if>
+			<if test="suId != null ">AND t.su_id = #{suId} </if>
+			<if test="suDeptNo != null and suDeptNo != ''">AND t.su_dept_no = #{suDeptNo} </if>
+			<if test="inSn != null and inSn != ''">AND t.in_sn = #{inSn} </if>
+			<if test="sn != null and sn != ''">AND t.sn = #{sn} </if>
+			<if test="name != null and name != ''">AND t.name = #{name} </if>
+			<if test="aliasName != null and aliasName != ''">AND t.alias_name = #{aliasName} </if>
+			<if test="licenseNo != null and licenseNo != ''">AND t.license_no = #{licenseNo} </if>
+			<if test="specifications != null and specifications != ''">AND t.specifications = #{specifications} </if>
+			<if test="unit != null and unit != ''">AND t.unit = #{unit} </if>
+			<if test="middlePackage != null ">AND t.middle_package = #{middlePackage} </if>
+			<if test="bigPackage != null ">AND t.big_package = #{bigPackage} </if>
+			<if test="manufacturer != null and manufacturer != ''">AND t.manufacturer = #{manufacturer} </if>
+			<if test="manufacturerCode != null and manufacturerCode != ''">AND t.manufacturer_code = #{manufacturerCode} </if>
+			<if test="manufacturerAddress != null and manufacturerAddress != ''">AND t.manufacturer_address = #{manufacturerAddress} </if>
+			<if test="price != null ">AND t.price = #{price} </if>
+			<if test="canSplit != null ">AND t.can_split = #{canSplit} </if>
+            <if test="goodsStatus != null ">AND t.goods_status = #{goodsStatus} </if>
+			<if test="dataMd5 != null and dataMd5 != ''">AND t.data_md5 = #{dataMd5} </if>
+			<if test="addTime != null ">AND t.add_time = #{addTime} </if>
+			<if test="editTime != null ">AND t.edit_time = #{editTime} </if>
+			<if test="operType != null ">AND t.oper_type = #{operType} </if>
+			<if test="syncStatus != null ">AND t.sync_status = #{syncStatus} </if>
+			<if test="syncMsg != null and syncMsg != ''">AND t.sync_msg = #{syncMsg} </if>
+			<if test="failedCount != null ">AND t.failed_count = #{failedCount} </if>
+		</where>
+	</sql>
+
+	<update id="updateSyncStatusByStatusAndId">
+		update
+		`erp_goods` set
+		`sync_status`=#{syncStatus},`sync_time`=Now(),sync_msg=#{syncMsg}
+		where
+		`id` = #{id} and
+		`sync_status`=#{oldSyncStatus}
+	</update>
+
+	<select id="queryBySuIdAndSuDeptNo" resultMap="ErpGoodsResult">
+		SELECT id,su_id,su_dept_no,in_sn,data_md5,oper_type FROM erp_goods WHERE su_id = #{suId}
+		<if test="suDeptNo != null and suDeptNo != ''">
+			AND su_dept_no = #{suDeptNo}
+		</if>
+		LIMIT #{start},#{count}
+	</select>
+
+	<select id="queryHistoryList" resultMap="ErpGoodsResult">
+		SELECT id,su_id,su_dept_no,in_sn,oper_type,goods_status
+		FROM erp_goods
+		WHERE su_id = #{suId}
+		<if test="suDeptNoSet != null and suDeptNoSet.size() > 0">
+			AND su_dept_no IN
+			<foreach item="item" index="index" collection="suDeptNoSet"
+					 open="(" separator="," close=")">
+				#{item}
+			</foreach>
+		</if>
+		<if test="erpPrimaryKeySet != null and erpPrimaryKeySet.size() > 0">
+			AND in_sn IN
+			<foreach item="item" index="index" collection="erpPrimaryKeySet"
+					 open="(" separator="," close=")">
+				#{item}
+			</foreach>
+		</if>
+	</select>
+
+	<insert id="batchInsert" parameterType="com.yiling.open.erp.entity.ErpGoodsDO" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO erp_goods (
+		`id`,
+		`su_id`,
+		`su_dept_no`,
+		`in_sn`,
+		`sn`,
+		`name`,
+		`common_name`,
+		`alias_name`,
+		`license_no`,
+		`specifications`,
+		`unit`,
+		`middle_package`,
+		`big_package`,
+		`manufacturer`,
+		`manufacturer_code`,
+		`manufacturer_address`,
+		`price`,
+		`can_split`,
+        `goods_status`,
+		`data_md5`,
+		`add_time`,
+		`oper_type`,
+		`sync_status`,
+		`sync_msg`,
+		`failed_count`
+		)
+		VALUES
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(
+			#{item.id},
+			#{item.suId},
+			#{item.suDeptNo},
+			#{item.inSn},
+			#{item.sn},
+			#{item.name},
+			#{item.commonName},
+			#{item.aliasName},
+			#{item.licenseNo},
+			#{item.specifications},
+			#{item.unit},
+			#{item.middlePackage},
+			#{item.bigPackage},
+			#{item.manufacturer},
+			#{item.manufacturerCode},
+			#{item.manufacturerAddress},
+			#{item.price},
+			#{item.canSplit},
+            #{item.goodsStatus},
+			#{item.dataMd5},
+			NOW(),
+			1,
+			1,
+			#{item.syncMsg},
+			0
+			)
+		</foreach>
+	</insert>
+
+	<update id="updateByPrimaryKey" parameterType="com.yiling.open.erp.entity.ErpGoodsDO">
+		UPDATE erp_goods
+		SET
+		<if test="suId != null">
+			`su_id` = #{suId},
+		</if>
+		<if test="suDeptNo != null and suDeptNo != ''">
+			`su_dept_no` = #{suDeptNo},
+		</if>
+		<if test="inSn != null and inSn != ''">
+			`in_sn` = #{inSn},
+		</if>
+		<if test="sn != null and sn != ''">
+			`sn` = #{sn},
+		</if>
+		<if test="name != null and name != ''">
+			`name` = #{name},
+		</if>
+		<if test="commonName != null and commonName != ''">
+			`common_name` = #{commonName},
+		</if>
+		<if test="aliasName != null and aliasName != ''">
+			`alias_name` = #{aliasName},
+		</if>
+		<if test="licenseNo != null and licenseNo != ''">
+			`license_no` = #{licenseNo},
+		</if>
+		<if test="specifications != null and specifications != ''">
+			`specifications` = #{specifications},
+		</if>
+		<if test="unit != null and unit != ''">
+			`unit` = #{unit},
+		</if>
+		<if test="middlePackage != null">
+			`middle_package` = #{middlePackage},
+		</if>
+		<if test="bigPackage != null">
+			`big_package` = #{bigPackage},
+		</if>
+		<if test="manufacturer != null and manufacturer != ''">
+			`manufacturer` = #{manufacturer},
+		</if>
+		<if test="manufacturerCode != null and manufacturerCode != ''">
+			`manufacturer_code` = #{manufacturerCode},
+		</if>
+		<if test="manufacturerAddress != null and manufacturerAddress != ''">
+			`manufacturer_address` = #{manufacturerAddress},
+		</if>
+		<if test="price != null">
+			`price` = #{price},
+		</if>
+		<if test="canSplit != null">
+			`can_split` = #{canSplit},
+		</if>
+        <if test="goodsStatus != null">
+            `goods_status` = #{goodsStatus},
+        </if>
+		<if test="dataMd5 != null and dataMd5 != ''">
+			`data_md5` = #{dataMd5},
+		</if>
+		`edit_time` = NOW(),
+		`oper_type` = 2,
+		`sync_status` = #{syncStatus},
+		<if test="syncMsg != null and syncMsg != ''">
+			`sync_msg` = #{syncMsg},
+		</if>
+		`failed_count` = 0
+		WHERE id = #{id}
+	</update>
+
+	<update id="updateSyncInfoByPrimaryKey" parameterType="com.yiling.open.erp.entity.ErpGoodsDO">
+		UPDATE erp_goods
+		SET
+		`sync_status` = #{syncStatus},
+		`sync_msg` = #{syncMsg}
+		WHERE `id` = #{id}
+	</update>
+
+	<update id="deleteByPrimaryKey" parameterType="com.yiling.open.erp.entity.ErpGoodsDO">
+		UPDATE erp_goods
+		SET
+		 `edit_time` = NOW(),
+		 `oper_type` = 3,
+		 `sync_status` = #{syncStatus},
+		 `sync_msg` = #{syncMsg}
+		WHERE `id` = #{id}
+		AND oper_type &lt; 3
+	</update>
+
+	<update id="deleteByPrimaryKeys">
+		UPDATE erp_goods
+		SET
+		`edit_time` = NOW(),
+		`oper_type` = 3,
+		`sync_status` = 1
+		WHERE id IN
+		<foreach item="item" index="index" collection="list" open="("
+				 separator="," close=")">
+			#{item}
+		</foreach>
+	</update>
+
+	<!-- 更改同步状态,同步信息 -->
+	<update id="updateSyncStatusAndMsg">
+		update `erp_goods` set
+		`sync_status` = #{syncStatus},
+		`sync_msg`=#{syncMsg},
+		`sync_time`=Now()
+		where `id` = #{id}
+	</update>
+
+	<select id="findErpGoodsByIds" resultMap="ErpGoodsResult">
+		SELECT
+		t.id,
+		t.su_id,
+		t.su_dept_no,
+		t.in_sn,
+		t.sn,
+		t.name,
+		t.common_name,
+		t.alias_name,
+		t.license_no,
+		t.specifications,
+		t.unit,
+		t.middle_package,
+		t.big_package,
+		t.manufacturer,
+		t.manufacturer_code,
+		t.manufacturer_address,
+        t.price,
+		t.can_split,
+        t.goods_status,
+		t.data_md5,
+		t.add_time,
+		t.edit_time,
+		t.oper_type,
+		t.sync_status,
+		t.sync_msg,
+		t.failed_count from erp_goods t
+		WHERE id IN
+		<foreach item="item" index="index" collection="ids" open="("
+				 separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+
+	<select id="findMd5BySuId" resultMap="ErpGoodsResult">
+		<include refid="selectSql" />
+		from
+		erp_goods t
+		where   su_id=#{suId} and oper_type!=3 and sync_status=2
+	</select>
+
+	<select id="findBySyncStatusAndInSnList" resultMap="ErpGoodsResult">
+		<include refid="selectSql" />
+		from
+		erp_goods t
+		where   su_id=#{suId} and `sync_status`!=1
+		<if test="suDeptNo != null and suDeptNo != ''">
+			and su_dept_no=#{suDeptNo}
+		</if>
+		and  `in_sn` IN
+		<foreach collection="list" item="inSn" index="index" open="("
+				 close=")" separator=",">
+			#{inSn}
+		</foreach>
+	</select>
+
+	<select id="syncGoods" resultMap="ErpGoodsResult">
+		<include refid="selectSql"/>
+		FROM erp_goods t
+		WHERE  t.sync_status = 0
+		AND (t.su_id, t.su_dept_no) IN (
+		SELECT
+		c.su_id,
+		c.su_dept_no
+		FROM
+		erp_client c
+		WHERE
+		c.client_status = 1
+		AND c.sync_status = 1) LIMIT 1000
+	</select>
+
+    <update id="updateOperTypeGoodsBatchFlowBySuId">
+        update `erp_goods` set
+        `edit_time` = NOW(),
+        `sync_status` = 0,
+        `oper_type` = 3,
+         failed_count = 0
+        where `su_id` = #{suId}
+    </update>
+
+</mapper>

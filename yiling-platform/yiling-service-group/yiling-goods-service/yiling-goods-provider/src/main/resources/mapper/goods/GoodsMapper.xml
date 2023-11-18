@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.goods.medicine.dao.GoodsMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.goods.medicine.entity.GoodsDO">
+        <result column="id" property="id"/>
+        <result column="sell_specifications_id" property="sellSpecificationsId"/>
+        <result column="standard_id" property="standardId"/>
+        <result column="audit_status" property="auditStatus"/>
+        <result column="goods_type" property="goodsType"/>
+        <result column="enterprise_type" property="enterpriseType"/>
+        <result column="eid" property="eid"/>
+        <result column="ename" property="ename"/>
+        <result column="name" property="name"/>
+        <result column="common_name" property="commonName"/>
+        <result column="license_no" property="licenseNo"/>
+        <result column="manufacturer" property="manufacturer"/>
+        <result column="manufacturer_address" property="manufacturerAddress"/>
+        <result column="sell_specifications" property="sellSpecifications"/>
+        <result column="unit" property="unit"/>
+        <result column="price" property="price"/>
+        <result column="middle_package" property="middlePackage"/>
+        <result column="big_package" property="bigPackage"/>
+        <result column="can_split" property="canSplit"/>
+        <result column="category_id1" property="categoryId1"/>
+        <result column="category_id2" property="categoryId2"/>
+        <result column="alias_name" property="aliasName"/>
+        <result column="is_cn" property="isCn"/>
+        <result column="is_patent" property="isPatent"/>
+        <result column="gdf_name" property="gdfName"/>
+        <result column="gdf_specifications" property="gdfSpecifications"/>
+        <result column="otc_type" property="otcType"/>
+        <result column="is_yb" property="isYb"/>
+        <result column="control_type" property="controlType"/>
+        <result column="goods_code" property="goodsCode"/>
+        <result column="ingredient" property="ingredient"/>
+        <result column="special_composition" property="specialComposition"/>
+        <result column="quality_type" property="qualityType"/>
+        <result column="goods_source" property="goodsSource"/>
+        <result column="rough_weight" property="roughWeight"/>
+        <result column="goods_grade" property="goodsGrade"/>
+        <result column="executive_standard" property="executiveStandard"/>
+        <result column="product_classification" property="productClassification"/>
+        <result column="product_standard_code" property="productStandardCode"/>
+        <result column="business_scope" property="businessScope" />
+        <result column="registrant" property="registrant" />
+        <result column="registrant_address" property="registrantAddress" />
+        <result column="agent" property="agent" />
+        <result column="agent_address" property="agentAddress" />
+        <result column="changes" property="changes" />
+        <result column="source" property="source"/>
+        <result column="over_sold_type" property="overSoldType"/>
+        <result column="manufacturing_date" property="manufacturingDate"/>
+        <result column="expiry_date" property="expiryDate"/>
+        <result column="del_flag" property="delFlag"/>
+        <result column="create_user" property="createUser"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_user" property="updateUser"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="remark" property="remark"/>
+    </resultMap>
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="GoodsResultMap" type="com.yiling.goods.medicine.bo.GoodsListItemBO">
+        <result column="id" property="id"/>
+        <result column="eid" property="eid"/>
+        <result column="standard_id" property="standardId"/>
+        <result column="sell_specifications_id" property="sellSpecificationsId"/>
+        <result column="audit_status" property="auditStatus"/>
+        <result column="out_reason" property="outReason"/>
+        <result column="name" property="name"/>
+        <result column="ename" property="ename"/>
+        <result column="license_no" property="licenseNo"/>
+        <result column="manufacturer" property="manufacturer"/>
+        <result column="sell_specifications" property="sellSpecifications"/>
+        <result column="sell_unit" property="sellUnit"/>
+        <result column="specifications" property="specifications"/>
+        <result column="unit" property="unit"/>
+        <result column="price" property="price"/>
+        <result column="middle_package" property="middlePackage"/>
+        <result column="big_package" property="bigPackage"/>
+        <result column="can_split" property="canSplit"/>
+        <result column="manufacturer_address" property="manufacturerAddress"/>
+        <result column="is_patent" property="isPatent"/>
+        <result column="goods_type" property="goodsType"/>
+        <result column="over_sold_type" property="overSoldType"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,
+        sell_specifications_id, standard_id, audit_status, goods_type, enterprise_type, eid, ename, name, common_name, license_no, manufacturer, manufacturer_address, sell_specifications,sell_unit,specifications, unit, price, middle_package, big_package, can_split, alias_name, is_cn, gdf_name, gdf_specifications, otc_type, is_yb, control_type, goods_code, ingredient, special_composition, quality_type, goods_source, rough_weight, goods_grade, executive_standard, product_classification, product_standard_code, business_scope,registrant,registrant_address,agent,agent_address,changes,source,over_sold_type,manufacturing_date,expiry_date,
+         del_flag, create_user, create_time, update_user, update_time, remark
+    </sql>
+    <update id="updateShelfLife">
+        update goods
+        set
+        manufacturing_date = #{request.manufacturingDate},
+        expiry_date = #{request.expiryDate}
+        where id = #{request.goodsId}
+        and del_flag = 0
+    </update>
+
+    <select id="queryPageListGoods" resultMap="GoodsResultMap">
+        SELECT
+        g.id,
+        g.eid,
+        g.ename,
+        g.standard_id,
+        g.sell_specifications_id,
+        g.`name`,
+        g.audit_status,
+        g.license_no,
+        g.sell_specifications,
+        g.sell_unit,
+        g.specifications,
+        g.unit,
+        g.manufacturer,
+        g.manufacturer_address,
+        g.price,
+        g.can_split,
+        g.middle_package,
+        g.big_package,
+        g.is_patent,
+        g.goods_type,
+        g.over_sold_type
+        FROM
+        goods g
+        <where>
+            <if test="request.eidList != null and request.eidList.size() > 0">
+                and g.eid in
+                <foreach item="item" index="index" collection="request.eidList"
+                         open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="request.goodsId != null">
+                AND g.id = #{request.goodsId}
+            </if>
+            <if test="request.isPatent != null and request.isPatent != 0">
+                AND g.is_patent = #{request.isPatent}
+            </if>
+            <if test="request.standardId != null">
+                AND g.standard_id = #{request.standardId}
+            </if>
+            <if test="request.name != null and request.name != ''">
+                AND g.`name` like concat('%',#{request.name},'%')
+            </if>
+            <if test="request.licenseNo != null and request.licenseNo != ''">
+                AND g.license_no like concat(#{request.licenseNo},'%')
+            </if>
+            <if test="request.sellSpecifications != null and request.sellSpecifications != ''">
+                AND g.specifications like concat('%',#{request.sellSpecifications},'%')
+            </if>
+            <if test="request.manufacturer != null and request.manufacturer != ''">
+                AND g.manufacturer like concat('%',#{request.manufacturer},'%')
+            </if>
+            <if test="request.overSoldType != null">
+                AND g.over_sold_type = #{request.overSoldType}
+            </if>
+            <if test="request.standardCategoryId1 != null and request.standardCategoryId1 != 0">
+                AND EXISTS (select 1
+                FROM standard_goods st
+                WHERE st.id=g.standard_id and st.standard_category_id1=#{request.standardCategoryId1})
+            </if>
+            <if test="request.standardCategoryId2 != null and request.standardCategoryId2 != 0">
+                AND EXISTS (select 1
+                FROM standard_goods st
+                WHERE st.id=g.standard_id and st.standard_category_id2=#{request.standardCategoryId2})
+            </if>
+            <if test="request.goodsLine != null and request.goodsLine == 1">
+                AND EXISTS (select 1
+                FROM pop_goods pop
+                WHERE g.id=pop.goods_id and pop.status=1 and pop.del_flag=0
+                <if test="request.goodsStatus != null and request.goodsStatus != 0">
+                    AND pop.goods_status = #{request.goodsStatus}
+                </if>
+                )
+            </if>
+            <if test="request.goodsLine != null and request.goodsLine == 2">
+                AND EXISTS (select 1
+                FROM b2b_goods b2b
+                WHERE g.id=b2b.goods_id and b2b.del_flag=0 and b2b.status=1
+                <if test="request.goodsStatus != null and request.goodsStatus != 0">
+                    AND b2b.goods_status = #{request.goodsStatus}
+                </if>)
+            </if>
+            <if test="request.auditStatus != null and request.auditStatus!=0">
+                AND audit_status=#{request.auditStatus}
+            </if>
+            AND g.del_flag=0
+            and g.audit_status!=7
+            order by id desc
+        </where>
+    </select>
+
+    <select id="getCountByEid" resultType="com.yiling.goods.medicine.bo.QueryStatusCountBO">
+        SELECT
+        g.audit_status as goodsStatus,
+        COUNT( 1 ) AS 'count'
+        FROM
+        goods g
+        where g.del_flag=0
+        and g.audit_status!=7
+        and g.eid=#{eid}
+        GROUP BY g.audit_status
+    </select>
+
+
+</mapper>

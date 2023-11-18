@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.dataflow.report.dao.ReportFlowPopPurchaseMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.dataflow.report.entity.ReportFlowPopPurchaseDO">
+    <result column="id" property="id" />
+        <result column="eid" property="eid" />
+        <result column="ename" property="ename" />
+        <result column="po_time" property="poTime" />
+        <result column="erp_quantity" property="erpQuantity" />
+        <result column="erp_total_amount" property="erpTotalAmount" />
+        <result column="po_quantity" property="poQuantity" />
+        <result column="po_total_amount" property="poTotalAmount" />
+        <result column="del_flag" property="delFlag" />
+        <result column="create_user" property="createUser" />
+        <result column="create_time" property="createTime" />
+        <result column="update_user" property="updateUser" />
+        <result column="update_time" property="updateTime" />
+        <result column="remark" property="remark" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,
+        eid, ename, po_time, erp_quantity,erp_total_amount po_quantity, po_total_amount, del_flag, create_user, create_time, update_user, update_time, remark
+    </sql>
+
+    <delete id="deleteReportFlowPopPurchase">
+        delete from report_flow_pop_purchase where po_time>=#{time}
+    </delete>
+
+    <select id="statisticsPopPurchase" resultMap="BaseResultMap">
+        select po_time, sum(erp_quantity) as erp_quantity,sum(erp_total_amount) as erp_total_amount,sum(po_quantity) as po_quantity, sum(po_total_amount) as po_total_amount from report_flow_pop_purchase t
+        where t.del_flag=0
+        <if test="request.startTime != null">
+            AND po_time <![CDATA[ >= ]]> #{request.startTime}
+        </if>
+        <if test="request.endTime != null">
+            AND po_time <![CDATA[ <= ]]> #{request.endTime}
+        </if>
+        <if test="request.eids != null and request.eids.size() > 0">
+            AND eid in
+            <foreach item="item" index="index" collection="request.eids" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        GROUP BY t.po_time  order by po_time
+    </select>
+
+</mapper>

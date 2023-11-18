@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.dataflow.crm.dao.CrmEnterpriseRelationShipMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.dataflow.crm.entity.CrmEnterpriseRelationShipDO">
+        <result column="year" property="year" />
+        <result column="month" property="month" />
+        <result column="department" property="department" />
+        <result column="business_department" property="businessDepartment" />
+        <result column="provincial_area" property="provincialArea" />
+        <result column="business_province" property="businessProvince" />
+        <result column="business_area_code" property="businessAreaCode" />
+        <result column="business_area" property="businessArea" />
+        <result column="business_area_description" property="businessAreaDescription" />
+        <result column="superior_supervisor_code" property="superiorSupervisorCode" />
+        <result column="superior_supervisor_name" property="superiorSupervisorName" />
+        <result column="representative_code" property="representativeCode" />
+        <result column="representative_name" property="representativeName" />
+        <result column="customer_code" property="customerCode" />
+        <result column="customer_name" property="customerName" />
+        <result column="supply_chain_role" property="supplyChainRole" />
+        <result column="province" property="province" />
+        <result column="city_code" property="cityCode" />
+        <result column="city" property="city" />
+        <result column="district_county_code" property="districtCountyCode" />
+        <result column="district_county" property="districtCounty" />
+        <result column="hospital_pharmacy_type" property="hospitalPharmacyType" />
+        <result column="hospital_pharmacy_attribute" property="hospitalPharmacyAttribute" />
+        <result column="hospital_pharmacy_level" property="hospitalPharmacyLevel" />
+        <result column="product_group" property="productGroup" />
+        <result column="target_or_not" property="targetOrNot" />
+        <result column="contracting_type" property="contractingType" />
+        <result column="substitute_running" property="substituteRunning" />
+        <result column="agreement_or_not" property="agreementOrNot" />
+        <result column="agreement_type" property="agreementType" />
+        <result column="chain_drugstore_superior_code" property="chainDrugstoreSuperiorCode" />
+        <result column="chain_drugstore_superior_name" property="chainDrugstoreSuperiorName" />
+        <result column="protocol_concatenation_code" property="protocolConcatenationCode" />
+        <result column="protocol_concatenation_name" property="protocolConcatenationName" />
+        <result column="is_ka" property="isKa" />
+        <result column="is_medical_insurance" property="isMedicalInsurance" />
+        <result column="remark" property="remark" />
+        <result column="crm_enterprise_id" property="crmEnterpriseId" />
+        <result column="post_code" property="postCode" />
+        <result column="post_name" property="postName" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        year, month, department, business_department, provincial_area, business_province, business_area_code, business_area, business_area_description, superior_supervisor_code, superior_supervisor_name, representative_code, representative_name, customer_code, customer_name, supply_chain_role, province, city_code, city, district_county_code, district_county, hospital_pharmacy_type, hospital_pharmacy_attribute, hospital_pharmacy_level, product_group, target_or_not, contracting_type, substitute_running, agreement_or_not, agreement_type, chain_drugstore_superior_code, chain_drugstore_superior_name, protocol_concatenation_code, protocol_concatenation_name, is_ka, is_medical_insurance,remark,crm_enterprise_id,post_code,post_name
+    </sql>
+    <select id="getCrmEnterprisePostCode" resultType="java.lang.Long">
+        SELECT DISTINCT post_code FROM `crm_enterprise_relation_ship` where del_flag=0 and post_code!=0;
+    </select>
+
+    <select id="getExitGroupId" resultType="java.lang.Long">
+        SELECT DISTINCT product_group_id FROM `crm_enterprise_relation_ship` where product_group_id in
+        <foreach item="item" index="index" collection="ids"
+                 open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        and del_flag=0;
+    </select>
+    <select id="getByGroupIdS" resultType="java.lang.Long">
+        SELECT DISTINCT post_code FROM `crm_enterprise_relation_ship` where product_group_id =#{groupId}
+        and del_flag=0;
+    </select>
+
+    <update id="updateBackUpBatchByPostCode">
+        update ${tableName}
+        <set>
+            department=#{request.department},
+            business_department=#{request.businessDepartment},
+            provincial_area=#{request.provincialArea},
+            business_province=#{request.businessProvince},
+            business_area_code=#{request.businessAreaCode},
+            business_area=#{request.businessArea},
+            superior_supervisor_code=#{request.superiorSupervisorCode},
+            superior_supervisor_name=#{request.superiorSupervisorName},
+            representative_code=#{request.representativeCode},
+            representative_name=#{request.representativeName},
+            superior_job=#{request.superiorJob},
+            superior_job_name=#{request.superiorJobName},
+            post_name=#{request.postName},
+            provincial_manager_post_code=#{request.provincialManagerPostCode},
+            provincial_manager_post_name=#{request.provincialManagerPostName},
+            provincial_manager_code=#{request.provincialManagerCode},
+            provincial_manager_name=#{request.provincialManagerName},
+            duty_grede_id=#{request.dutyGredeId},
+        </set>
+        where post_code = #{request.postCode} and del_flag=0
+    </update>
+
+    <update id="updateBackUpBatchForHospital">
+        update ${tableName}
+        <set>
+            superior_supervisor_code=`year`,
+            superior_supervisor_name=`month`,
+        </set>
+        where supply_chain_role_type=2 and del_flag=0
+    </update>
+
+</mapper>

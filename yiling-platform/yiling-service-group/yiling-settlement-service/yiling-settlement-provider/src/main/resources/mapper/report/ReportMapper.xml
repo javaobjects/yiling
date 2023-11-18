@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.settlement.report.dao.ReportMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.settlement.report.entity.ReportDO">
+    <result column="id" property="id" />
+        <result column="eid" property="eid" />
+        <result column="type" property="type" />
+        <result column="member_amount" property="memberAmount" />
+        <result column="sales_amount" property="salesAmount" />
+        <result column="terminal_sales_amount" property="terminalSalesAmount" />
+        <result column="ladder_amount" property="ladderAmount" />
+        <result column="xsy_amount" property="xsyAmount" />
+        <result column="act_first_amount" property="actFirstAmount" />
+        <result column="act_second_amount" property="actSecondAmount" />
+        <result column="act_third_amount" property="actThirdAmount" />
+        <result column="act_fourth_amount" property="actFourthAmount" />
+        <result column="act_fifth_amount" property="actFifthAmount" />
+        <result column="amount" property="amount" />
+        <result column="adjust_amount" property="adjustAmount" />
+        <result column="adjust_reason" property="adjustReason" />
+        <result column="total_amount" property="totalAmount" />
+        <result column="reject_reason" property="rejectReason" />
+        <result column="status" property="status" />
+        <result column="start_time" property="startTime" />
+        <result column="end_time" property="endTime" />
+        <result column="rebate_status" property="rebateStatus" />
+        <result column="rebate_amount" property="rebateAmount" />
+        <result column="del_flag" property="delFlag" />
+        <result column="create_user" property="createUser" />
+        <result column="create_time" property="createTime" />
+        <result column="update_user" property="updateUser" />
+        <result column="update_time" property="updateTime" />
+        <result column="remark" property="remark" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,
+        eid, type, member_amount, sales_amount, terminal_sales_amount, ladder_amount, xsy_amount, act_first_amount, act_second_amount, act_third_amount, act_fourth_amount, act_fifth_amount, amount, adjust_amount, adjust_reason, total_amount, reject_reason, status, start_time, end_time, rebate_status, rebate_amount, del_flag, create_user, create_time, update_user, update_time, remark
+    </sql>
+
+    <select id="queryStockOccupyPage" parameterType="com.yiling.settlement.report.dto.request.QueryStockOccupyPageRequest" resultType="com.yiling.settlement.report.dto.ReportPurchaseStockOccupyDTO">
+        SELECT
+            report.`status`,
+            report.type,
+            temp.*
+        FROM
+            (
+        SELECT
+            b2b.id AS 'b2bDetailId',
+            b2b.report_id,
+            b2b.order_no,
+            flow.so_no,
+            b2b.seller_eid,
+            b2b.goods_erp_code,
+            flow.goods_in_sn,
+            b2b.goods_name,
+            b2b.specifications,
+            flow.so_specifications,
+            b2b.goods_id,
+            b2b.receive_quantity,
+            flow.yl_goods_id,
+            flow.yl_goods_name,
+            flow.yl_goods_specification,
+            flow.so_quantity,
+            flow.so_unit,
+            b2b.purchase_channel
+        FROM
+            report_detail_b2b b2b
+            LEFT JOIN report_detail_flow flow ON b2b.report_id = flow.report_id
+        WHERE
+           b2b.seller_eid = #{request.eid}
+           <if test="request.ylGoodsId != null and request.ylGoodsId != 0">
+                AND b2b.goods_id = #{request.ylGoodsId}
+           </if>
+           <if test="request.goodsInSn != null and request.goodsInSn != ''">
+                AND b2b.goods_erp_code = #{request.goodsInSn}
+           </if>
+           <if test="request.purchaseChannel != null and request.purchaseChannel != 0">
+                AND b2b.purchase_channel = #{request.purchaseChannel}
+           </if>
+           UNION
+        SELECT
+            flow.id AS 'flowDetailId',
+            flow.report_id,
+            b2b.order_no,
+            flow.so_no,
+            flow.seller_eid,
+            b2b.goods_erp_code,
+            flow.goods_in_sn,
+            flow.goods_name,
+            b2b.specifications,
+            flow.so_specifications,
+            b2b.goods_id,
+            b2b.receive_quantity,
+            flow.yl_goods_id,
+            flow.yl_goods_name,
+            flow.yl_goods_specification,
+            flow.so_quantity,
+            flow.so_unit,
+            flow.purchase_channel
+        FROM
+            report_detail_flow flow
+            LEFT JOIN report_detail_b2b b2b ON b2b.report_id = flow.report_id
+        WHERE
+            flow.seller_eid = #{request.eid}
+            <if test="request.ylGoodsId != null and request.ylGoodsId != 0">
+                AND flow.yl_goods_id = #{request.ylGoodsId}
+            </if>
+            <if test="request.goodsInSn != null and request.goodsInSn != ''">
+                AND flow.goods_in_sn = #{request.goodsInSn}
+            </if>
+            <if test="request.purchaseChannel != null and request.purchaseChannel != 0">
+                AND flow.purchase_channel = #{request.purchaseChannel}
+            </if>
+            ) AS temp
+            LEFT JOIN report ON temp.report_id = report.id
+        WHERE
+            report.del_flag = 0
+            AND report.`status` IN ( 1, 2, 3 )
+    </select>
+
+    <select id="queryExitReportByGoodsCount" resultType="java.lang.Integer">
+        SELECT
+            count(*)
+        FROM
+            (
+        SELECT
+            b2b.id AS 'b2bDetailId',
+            b2b.report_id,
+            b2b.order_no,
+            flow.so_no,
+            b2b.seller_eid,
+            b2b.goods_erp_code,
+            flow.goods_in_sn,
+            b2b.goods_name,
+            b2b.specifications,
+            flow.so_specifications,
+            b2b.goods_id,
+            b2b.receive_quantity,
+            flow.yl_goods_id,
+            flow.yl_goods_name,
+            flow.yl_goods_specification,
+            flow.so_quantity,
+            flow.so_unit,
+            b2b.purchase_channel
+        FROM
+            report_detail_b2b b2b
+            LEFT JOIN report_detail_flow flow ON b2b.report_id = flow.report_id
+        WHERE
+            b2b.seller_eid = #{request.eid}
+            AND b2b.goods_id = #{request.ylGoodsId}
+            AND b2b.goods_erp_code = #{request.goodsInSn}
+            AND b2b.purchase_channel != 3
+           UNION
+        SELECT
+            flow.id AS 'flowDetailId',
+            flow.report_id,
+            b2b.order_no,
+            flow.so_no,
+            flow.seller_eid,
+            b2b.goods_erp_code,
+            flow.goods_in_sn,
+            flow.goods_name,
+            b2b.specifications,
+            flow.so_specifications,
+            b2b.goods_id,
+            b2b.receive_quantity,
+            flow.yl_goods_id,
+            flow.yl_goods_name,
+            flow.yl_goods_specification,
+            flow.so_quantity,
+            flow.so_unit,
+            flow.purchase_channel
+        FROM
+            report_detail_flow flow
+            LEFT JOIN report_detail_b2b b2b ON b2b.report_id = flow.report_id
+        WHERE
+            flow.seller_eid = #{request.eid}
+            AND flow.yl_goods_id = #{request.ylGoodsId}
+            AND flow.goods_in_sn = #{request.goodsInSn}
+            AND flow.purchase_channel != 3
+            ) AS temp
+            LEFT JOIN report ON temp.report_id = report.id
+        WHERE
+            report.del_flag = 0
+            AND report.`status` IN ( 1, 2, 3 )
+    </select>
+</mapper>

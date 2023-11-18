@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.export.excel.dao.ExcelTaskConfigMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.export.excel.entity.ExcelTaskConfigDO">
+    <result column="id" property="id" />
+        <result column="excel_code" property="excelCode" />
+        <result column="class_name" property="className" />
+        <result column="verify_handler_bean_name" property="verifyHandlerBeanName" />
+        <result column="import_data_handler_bean_name" property="importDataHandlerBeanName" />
+        <result column="model_class" property="modelClass" />
+        <result column="title" property="title" />
+        <result column="menu_name" property="menuName" />
+        <result column="template_url" property="templateUrl" />
+        <result column="limit_type" property="limitType" />
+        <result column="limit_size" property="limitSize" />
+        <result column="limit_number" property="limitNumber" />
+        <result column="excel_describe" property="excelDescribe" />
+        <result column="source" property="source" />
+        <result column="del_flag" property="delFlag" />
+        <result column="create_user" property="createUser" />
+        <result column="create_time" property="createTime" />
+        <result column="update_user" property="updateUser" />
+        <result column="update_time" property="updateTime" />
+        <result column="remark" property="remark" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,
+        excel_code, class_name, verify_handler_bean_name, import_data_handler_bean_name, model_class, title, menu_name, template_url, limit_type, limit_size, limit_number, excel_describe, source,
+        del_flag, create_user, create_time, update_user, update_time, remark
+    </sql>
+
+</mapper>

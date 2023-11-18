@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.basic.location.dao.LocationMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.basic.location.entity.LocationDO">
+    <result column="id" property="id" />
+        <result column="code" property="code" />
+        <result column="name" property="name" />
+        <result column="parent_code" property="parentCode" />
+        <result column="priority" property="priority" />
+        <result column="status" property="status" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,
+        code, name, parent_code, priority, status
+    </sql>
+
+    <select id="getAllProvinceCityRegionList" resultType="com.yiling.basic.location.dto.RegionFullViewDTO">
+        SELECT
+        p.code AS provinceCode,
+        p.`name` AS provinceName,
+        c.code AS cityCode,
+        c.`name` AS cityName,
+        r.code AS regionCode,
+        r.`name` AS regionName
+        FROM
+        location r
+        LEFT JOIN location c ON r.parent_code = c.code
+        LEFT JOIN location p ON c.parent_code = p.code
+        where r.parent_code > 0 and p.code>0
+    </select>
+
+
+</mapper>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.user.agreementv2.dao.AgreementRebateBasicServiceRewardMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.user.agreementv2.entity.AgreementRebateBasicServiceRewardDO">
+    <result column="id" property="id" />
+        <result column="agreement_id" property="agreementId" />
+        <result column="segment_id" property="segmentId" />
+        <result column="increase_ratio" property="increaseRatio" />
+        <result column="increase_ratio_unit" property="increaseRatioUnit" />
+        <result column="rebate_num" property="rebateNum" />
+        <result column="rebate_num_unit" property="rebateNumUnit" />
+        <result column="sort" property="sort" />
+        <result column="del_flag" property="delFlag" />
+        <result column="create_time" property="createTime" />
+        <result column="create_user" property="createUser" />
+        <result column="update_time" property="updateTime" />
+        <result column="update_user" property="updateUser" />
+        <result column="remark" property="remark" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,
+        agreement_id, segment_id, increase_ratio, increase_ratio_unit, rebate_num, rebate_num_unit, sort, del_flag, create_time, create_user, update_time, update_user, remark
+    </sql>
+
+</mapper>

@@ -1,0 +1,84 @@
+
+//默认主色调：红
+$theme: #EE0A24;
+
+/* Element Chalk Variables */
+$primary: #1790FF;
+$success: #07C160;
+$warning: #FAAB0C;
+$danger: #EE0A24;
+//背景色
+$back-color: #F4F4F4;
+$back-color-1: #FAFAFA;
+//边框、线色
+$border-line: #D8D8D8;
+//提示、disable文字色
+$disable-color: #C8C9CC;
+//文字色
+//重要
+$font-important-color: #333333;
+//标题
+$font-title-color: #666666;
+//描述
+$font-light-color: #999999;
+//白色
+$white: #FFFFFF;
+
+/* 字号 */
+//提示文字、辅助文字、错误文字、注释内容等
+$font-size-small: 12px;
+$font-size-base: 14px;
+$font-size-large: 16px;
+$font-size-c-large: 20px;
+$font-size-s-large: 24px;
+// 字体行高
+$font-size-small-lh: 20px;
+$font-size-base-lh: 22px;
+$font-size-large-lh: 24px;
+$font-size-c-large-lh: 28px;
+$font-size-s-large-lh: 32px;
+//加粗
+$font-bold-400: 400;
+$font-bold-600: 600;
+
+//shadow
+$box-shadow: 0px 2px 12px 0px rgba(100, 101, 102, 0.12);
+
+//button
+$btn-hover: #0171C2;
+$btn-active: #004F8A;
+$btn-disable: #BDBDBD;
+
+// sidebar
+$menuText: #CCCCCC;
+$menuActiveText: #FFFFFF;
+$subMenuActiveText: #FFFFFF; //https://github.com/ElemeFE/element/issues/12951
+
+$menuBg: #333333;
+$menuHover: #263445;
+
+$subMenuBg: #444444;
+$subMenuHover: #001528;
+
+//左侧菜单栏宽度
+$sideBarWidth: 182px;
+//顶部Bar高度
+$topBarHeight: 64px;
+//面包屑高度
+$breadHeight: 52px;
+//tags高度
+$tagsHeight: 34px;
+
+:export {
+  menuText: $menuText;
+  menuActiveText: $menuActiveText;
+  subMenuActiveText: $subMenuActiveText;
+  menuBg: $menuBg;
+  menuHover: $menuHover;
+  subMenuBg: $subMenuBg;
+  subMenuHover: $subMenuHover;
+  sideBarWidth: $sideBarWidth;
+  topBarHeight: $topBarHeight;
+  breadHeight: $breadHeight;
+  tagsHeight: $tagsHeight;
+}

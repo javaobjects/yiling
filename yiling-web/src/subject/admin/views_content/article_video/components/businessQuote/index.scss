@@ -1,0 +1,36 @@
+.businessQuote {
+  font-size: 14px;
+  .item-business-title {
+    color: #1790FF;
+  }
+  .item-business-content{
+    margin-bottom: 10px;
+  }
+  .item-plate {
+    .item-plate-title {
+      display: inline-block;
+      margin: 0 10px 0 -20px !important;
+      color: #1790FF;
+    }
+  }
+  .businessQuote-type {
+    width: 100%;
+    .el-radio {
+      margin-bottom: 10px;
+      padding-top: 10px;
+    }
+  }
+  .businessQuote-span {
+    color: #1790FF;
+    cursor: pointer;
+    padding-left: 20px;
+  }
+  .cancel ::v-deep .el-radio__input {
+    display: none !important;
+  }
+  .cancel ::v-deep .el-radio__label {
+    color: #1790FF !important;
+  }
+  
+  
+}

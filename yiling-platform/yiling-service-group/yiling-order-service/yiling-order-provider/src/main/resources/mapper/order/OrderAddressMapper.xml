@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.order.order.dao.OrderAddressMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.order.order.entity.OrderAddressDO">
+    <result column="id" property="id" />
+        <result column="order_id" property="orderId" />
+        <result column="name" property="name" />
+        <result column="mobile" property="mobile" />
+        <result column="address_id" property="addressId" />
+        <result column="province_code" property="provinceCode" />
+        <result column="province_name" property="provinceName" />
+        <result column="city_code" property="cityCode" />
+        <result column="city_name" property="cityName" />
+        <result column="region_code" property="regionCode" />
+        <result column="region_name" property="regionName" />
+        <result column="address" property="address" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,
+        order_id, name, mobile, address_id, province_code, province_name, city_code, city_name, region_code, region_name, address
+    </sql>
+
+</mapper>

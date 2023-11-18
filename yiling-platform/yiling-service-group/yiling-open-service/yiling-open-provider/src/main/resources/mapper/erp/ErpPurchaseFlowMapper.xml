@@ -1,0 +1,402 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.open.erp.dao.ErpPurchaseFlowMapper">
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.open.erp.entity.ErpPurchaseFlowDO">
+        <result column="id" property="id"/>
+        <result column="po_id" property="poId"/>
+        <result column="po_no" property="poNo"/>
+        <result column="po_time" property="poTime"/>
+        <result column="order_time" property="orderTime"/>
+        <result column="enterprise_inner_code" property="enterpriseInnerCode"/>
+        <result column="enterprise_name" property="enterpriseName"/>
+        <result column="po_batch_no" property="poBatchNo"/>
+        <result column="po_quantity" property="poQuantity"/>
+        <result column="po_product_time" property="poProductTime"/>
+        <result column="po_effective_time" property="poEffectiveTime"/>
+        <result column="po_price" property="poPrice"/>
+        <result column="goods_in_sn" property="goodsInSn"/>
+        <result column="goods_name" property="goodsName"/>
+        <result column="po_license" property="poLicense"/>
+        <result column="po_specifications" property="poSpecifications"/>
+        <result column="po_unit" property="poUnit"/>
+        <result column="po_manufacturer" property="poManufacturer"/>
+        <result column="po_source" property="poSource"/>
+        <result column="cnt" property="cnt"/>
+        <result column="control_id" property="controlId" />
+        <result column="data_md5" property="dataMd5"/>
+        <result column="add_time" property="addTime"/>
+        <result column="edit_time" property="editTime"/>
+        <result column="oper_type" property="operType"/>
+        <result column="sync_status" property="syncStatus"/>
+        <result column="sync_time" property="syncTime"/>
+        <result column="sync_msg" property="syncMsg"/>
+        <result column="failed_count" property="failedCount"/>
+        <result column="data_tag" property="dataTag"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="BaseSql">
+        id, su_id, su_dept_no, po_id, po_no,po_time, order_time, enterprise_inner_code, enterprise_name, po_batch_no, po_quantity,
+        po_product_time, po_effective_time, po_price, goods_in_sn, goods_name, po_license, po_specifications, po_unit,
+        po_manufacturer, po_source, cnt, control_id, data_md5, add_time, edit_time, oper_type, sync_status, sync_time, sync_msg, failed_count,
+        data_tag
+    </sql>
+
+
+    <select id="queryBySuIdAndSuDeptNo" resultMap="BaseResultMap">
+        SELECT id,su_id,su_dept_no,po_id,data_md5,oper_type FROM erp_purchase_flow WHERE su_id = #{suId}
+        <if test="suDeptNo != null and suDeptNo != ''">
+            AND su_dept_no = #{suDeptNo}
+        </if>
+        LIMIT #{start},#{count}
+    </select>
+
+    <select id="queryHistoryList" resultMap="BaseResultMap">
+        SELECT id,su_id,su_dept_no,po_id,oper_type
+        FROM erp_purchase_flow
+        WHERE su_id = #{suId}
+        <if test="suDeptNoSet != null and suDeptNoSet.size() > 0">
+            AND su_dept_no IN
+            <foreach item="item" index="index" collection="suDeptNoSet"
+                     open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="erpPrimaryKeySet != null and erpPrimaryKeySet.size() > 0">
+            AND po_id IN
+            <foreach item="item" index="index" collection="erpPrimaryKeySet"
+                     open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+    </select>
+
+    <insert id="batchInsert" parameterType="com.yiling.open.erp.entity.ErpPurchaseFlowDO" useGeneratedKeys="true"
+            keyProperty="id">
+        INSERT INTO erp_purchase_flow (
+        `id`,
+        `su_id`,
+        `su_dept_no`,
+        `po_id`,
+        `po_no`,
+        `po_time`,
+        `order_time`,
+        `enterprise_inner_code`,
+        `enterprise_name`,
+        `po_batch_no`,
+        `po_quantity`,
+        `po_product_time`,
+        `po_effective_time`,
+        `po_price`,
+        `goods_in_sn`,
+        `goods_name`,
+        `po_license`,
+        `po_specifications`,
+        `po_unit`,
+        `po_manufacturer`,
+        `po_source`,
+        `cnt`,
+        `control_id`,
+        `data_md5`,
+        `add_time`,
+        `oper_type`,
+        `sync_status`,
+        `sync_msg`,
+        `failed_count`,
+        `data_tag`
+        )
+        VALUES
+        <foreach collection="list" item="item" index="index"
+                 separator=",">
+            (
+            #{item.id},
+            #{item.suId},
+            #{item.suDeptNo},
+            #{item.poId},
+            #{item.poNo},
+            #{item.poTime},
+            #{item.orderTime},
+            #{item.enterpriseInnerCode},
+            #{item.enterpriseName},
+            #{item.poBatchNo},
+            #{item.poQuantity},
+            #{item.poProductTime},
+            #{item.poEffectiveTime},
+            #{item.poPrice},
+            #{item.goodsInSn},
+            #{item.goodsName},
+            #{item.poLicense},
+            #{item.poSpecifications},
+            #{item.poUnit},
+            #{item.poManufacturer},
+            #{item.poSource},
+            #{item.cnt},
+            #{item.controlId},
+            #{item.dataMd5},
+            NOW(),
+            1,
+            1,
+            #{item.syncMsg},
+            #{item.failedCount},
+            <choose>
+                <when test="item.dataTag != null">#{item.dataTag}</when>
+                <otherwise>0</otherwise>
+            </choose>
+            )
+        </foreach>
+    </insert>
+
+    <update id="updateByPrimaryKey" parameterType="com.yiling.open.erp.entity.ErpPurchaseFlowDO">
+        UPDATE erp_purchase_flow
+        SET
+        <if test="suId != null">
+            `su_id` = #{suId},
+        </if>
+        <if test="suDeptNo != null and suDeptNo != ''">
+            `su_dept_no` = #{suDeptNo},
+        </if>
+        <if test="poId != null and poId != ''">
+            `po_id` = #{poId},
+        </if>
+        <if test="poNo != null and poNo != ''">
+            `po_no` = #{poNo},
+        </if>
+        <if test="poTime != null">
+            `po_time` = #{poTime},
+        </if>
+        <if test="orderTime != null">
+            `order_time` = #{orderTime},
+        </if>
+        <if test="enterpriseInnerCode != null and enterpriseInnerCode != ''">
+            `enterprise_inner_code` = #{enterpriseInnerCode},
+        </if>
+        <if test="enterpriseName != null and enterpriseName != ''">
+            `enterprise_name` = #{enterpriseName},
+        </if>
+        <if test="poBatchNo != null and poBatchNo !=''">
+            `po_batch_no` = #{poBatchNo},
+        </if>
+        <if test="poQuantity != null">
+            `po_quantity` = #{poQuantity},
+        </if>
+        <if test="poProductTime != null">
+            `po_product_time` = #{poProductTime},
+        </if>
+        <if test="poEffectiveTime != null">
+            `po_effective_time` = #{poEffectiveTime},
+        </if>
+        <if test="poPrice != null">
+            `po_price` = #{poPrice},
+        </if>
+        <if test="goodsInSn != null and goodsInSn !=''">
+            `goods_in_sn` = #{goodsInSn},
+        </if>
+        <if test="goodsName != null and goodsName !=''">
+            `goods_name` = #{goodsName},
+        </if>
+        <if test="poLicense != null and poLicense !=''">
+            `po_license` = #{poLicense},
+        </if>
+        <if test="poSpecifications != null and poSpecifications !=''">
+            `po_specifications` = #{poSpecifications},
+        </if>
+        <if test="poUnit != null and poUnit !=''">
+            `po_unit` = #{poUnit},
+        </if>
+        <if test="poManufacturer != null and poManufacturer !=''">
+            `po_manufacturer` = #{poManufacturer},
+        </if>
+        <if test="poSource != null and poSource !=''">
+            `po_source` = #{poSource},
+        </if>
+        <if test="cnt != null">
+            `cnt` = #{cnt},
+        </if>
+        <if test="controlId != null">
+            `control_id` = #{controlId},
+        </if>
+        <if test="dataMd5 != null and dataMd5 != ''">
+            `data_md5` = #{dataMd5},
+        </if>
+        <if test="syncMsg != null and syncMsg != ''">
+            `sync_msg` = #{syncMsg},
+        </if>
+        <if test="syncStatus != null">
+            `sync_status` = #{syncStatus},
+        </if>
+        <if test="failedCount != null">
+            `failed_count` = #{failedCount},
+        </if>
+        <if test="dataTag != null">
+            `data_tag` = #{dataTag},
+        </if>
+        `edit_time` = NOW(),
+        `update_count` = update_count + 1,
+        `oper_type` = 2
+        WHERE id = #{id}
+    </update>
+
+    <update id="updateSyncInfoByPrimaryKey" parameterType="com.yiling.open.erp.entity.ErpPurchaseFlowDO">
+        UPDATE erp_purchase_flow
+        SET
+        `sync_status` = #{syncStatus},
+        `sync_msg` = #{syncMsg}
+        WHERE id = #{id}
+    </update>
+
+    <update id="deleteByPrimaryKey" parameterType="com.yiling.open.erp.entity.ErpPurchaseFlowDO">
+        UPDATE erp_purchase_flow
+        SET
+        `edit_time` = NOW(),
+        `oper_type` = 3,
+        `data_tag` = 3,
+        `sync_status` = #{syncStatus},
+        `sync_msg` = #{syncMsg}
+        WHERE `id` = #{id}
+        AND oper_type &lt; 3
+    </update>
+
+    <update id="deleteByPrimaryKeys">
+        UPDATE erp_purchase_flow
+        SET
+        `edit_time` = NOW(),
+        `oper_type` = 3,
+        `data_tag` = 3,
+        `sync_status` = 1
+        WHERE id IN
+        <foreach item="item" index="index" collection="list" open="("
+                 separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+
+    <!--=================================================================================================-->
+    <update id="updateSyncStatusByStatusAndId">
+        update
+        `erp_purchase_flow` set
+        `sync_status`=#{syncStatus},`sync_time`=Now(),`sync_msg` = #{syncMsg}
+        where
+        `id` = #{id} and
+        `sync_status`=#{oldSyncStatus}
+    </update>
+
+    <!-- 更改同步状态,同步信息 -->
+    <update id="updateSyncStatusAndMsg">
+        update `erp_purchase_flow` set
+        `sync_status` = #{syncStatus},
+        `sync_msg`=#{syncMsg},
+        `sync_time`=Now()
+        where `id` = #{id}
+    </update>
+
+    <select id="findListBySuIdAndPoTime" resultMap="BaseResultMap">
+        SELECT <include refid="BaseSql"/>
+        FROM erp_purchase_flow t where
+        <![CDATA[ po_time>=#{startPoTime} and po_time<=#{endPoTime} ]]> and t.su_id=#{suId} and t.su_dept_no=#{suDeptNo} and t.oper_type in (1,2)
+    </select>
+
+    <!-- 根据ID删除记录 -->
+    <delete id="deleteFlowById" parameterType="java.lang.Long">
+        DELETE FROM
+        erp_purchase_flow WHERE id = #{id}
+    </delete>
+
+    <select id="syncPurchaseFlow" resultMap="BaseResultMap">
+        SELECT <include refid="BaseSql"/>
+        FROM erp_purchase_flow t
+        WHERE  t.sync_status = 0
+        AND (t.su_id, t.su_dept_no) IN (
+        SELECT
+        c.su_id,
+        c.su_dept_no
+        FROM
+        erp_client c
+        WHERE
+        c.client_status = 1
+        AND c.sync_status = 1) limit 1000
+    </select>
+
+    <select id="unLockSynPurchaseFlow" resultMap="BaseResultMap">
+        SELECT <include refid="BaseSql"/>
+        FROM erp_purchase_flow t
+        WHERE  t.sync_status = 2
+        AND t.oper_type in (1,2)
+        AND (t.po_time BETWEEN #{request.startMonth} AND #{request.endMonth})
+        AND (t.su_id, t.su_dept_no) IN (
+            SELECT c.su_id, c.su_dept_no
+            FROM erp_client c
+            WHERE
+            c.client_status = 1
+            AND c.sync_status = 1
+            AND c.rk_su_id = #{request.rkSuId}
+        )
+    </select>
+
+
+    <update id="createBackupTable">
+        CREATE TABLE ${backupTableName} LIKE ${tableName}
+    </update>
+
+    <insert id="initBackupData">
+        INSERT INTO ${backupTableName} (<include refid="BaseSql"/>)
+        SELECT <include refid="BaseSql"/> FROM ${tableName}
+        WHERE sync_status = 2 AND oper_type != 3 AND po_time <![CDATA[ <= ]]> #{poTimeEnd}
+    </insert>
+
+    <insert id="insertBackupDataByPoTime">
+        INSERT INTO ${backupTableName} (<include refid="BaseSql"/>)
+        SELECT <include refid="BaseSql"/> FROM ${tableName}
+        WHERE su_id = #{suId} AND sync_status = 2 AND oper_type != 3 AND po_time <![CDATA[ <= ]]> #{poTimeEnd}
+    </insert>
+
+    <select id="getBackupTableIdListByPoTime" resultType="java.lang.Long">
+        SELECT id
+        FROM ${backupTableName}
+        WHERE po_time <![CDATA[ >= ]]> #{poTimeStart} AND po_time <![CDATA[ <= ]]> #{poTimeEnd}
+    </select>
+
+    <delete id="deleteByPoTime">
+        DELETE FROM erp_purchase_flow
+        WHERE sync_status = 2 AND oper_type != 3 AND po_time <![CDATA[ >= ]]> #{poTimeStart} AND po_time <![CDATA[ <= ]]> #{poTimeEnd}
+    </delete>
+
+    <delete id="deleteByOperTypeAndSyncStatus">
+        DELETE FROM erp_purchase_flow
+        WHERE su_id = #{suId} AND oper_type = 3 AND sync_status = 2
+    </delete>
+
+    <delete id="deleteByPoTimeEnd">
+        DELETE FROM erp_purchase_flow
+        WHERE su_id = #{suId} AND sync_status = 2 AND oper_type != 3 AND po_time <![CDATA[ <= ]]> #{poTimeEnd}
+    </delete>
+
+    <select id="getMonthListBySuidAndPoTime" resultType="com.yiling.open.erp.bo.ErpPurchaseFlowMonthBO">
+        SELECT su_id AS suId, DATE_FORMAT(po_time,'%Y-%m') AS poMonth
+        FROM erp_purchase_flow
+        WHERE su_id = #{suId}
+        AND sync_status > 1
+        AND po_time is not null
+        AND po_time <![CDATA[ <= ]]> #{poTime}
+        GROUP BY DATE_FORMAT(po_time,'%Y-%m')
+        ORDER BY DATE_FORMAT(po_time,'%Y-%m')
+    </select>
+
+    <insert id="insertBackupDataByPoTimeStartEnd">
+        INSERT INTO ${backupTableName} (<include refid="BaseSql"/>)
+        SELECT <include refid="BaseSql"/> FROM ${tableName}
+        WHERE su_id = #{suId}
+        AND sync_status > 1
+        AND po_time <![CDATA[ >= ]]> #{poTimeStart}
+        AND po_time <![CDATA[ <= ]]> #{poTimeEnd}
+    </insert>
+
+    <delete id="deleteByPoTimeStartEnd">
+        DELETE FROM erp_purchase_flow
+        WHERE su_id = #{suId}
+        AND sync_status > 1
+        AND po_time <![CDATA[ >= ]]> #{poTimeStart}
+        AND po_time <![CDATA[ <= ]]> #{poTimeEnd}
+    </delete>
+
+</mapper>

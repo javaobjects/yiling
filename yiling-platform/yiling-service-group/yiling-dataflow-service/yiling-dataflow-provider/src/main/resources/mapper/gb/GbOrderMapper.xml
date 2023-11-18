@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.dataflow.gb.dao.GbOrderMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.dataflow.gb.entity.GbOrderDO">
+    <result column="id" property="id" />
+        <result column="form_id" property="formId" />
+        <result column="gb_no" property="gbNo" />
+        <result column="gb_process" property="gbProcess" />
+        <result column="gb_month" property="gbMonth" />
+        <result column="flow_month" property="flowMonth" />
+        <result column="seller_emp_id" property="sellerEmpId" />
+        <result column="seller_emp_name" property="sellerEmpName" />
+        <result column="seller_dept_id" property="sellerDeptId" />
+        <result column="seller_dept_name" property="sellerDeptName" />
+        <result column="customer_id" property="customerId" />
+        <result column="customer_name" property="customerName" />
+        <result column="crm_id" property="crmId" />
+        <result column="ename" property="ename" />
+        <result column="org_crm_id" property="orgCrmId" />
+        <result column="enterprise_name" property="enterpriseName" />
+        <result column="goods_code" property="goodsCode" />
+        <result column="goods_name" property="goodsName" />
+        <result column="gb_quantity" property="gbQuantity" />
+        <result column="gb_type" property="gbType" />
+        <result column="audit_status" property="auditStatus" />
+        <result column="check_status" property="checkStatus" />
+        <result column="gb_remark" property="gbRemark" />
+        <result column="create_name" property="createName" />
+        <result column="create_time" property="createTime" />
+        <result column="exec_status" property="execStatus" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,
+        form_id, gb_no, gb_process, gb_month, flow_month, seller_emp_id, seller_emp_name, seller_dept_id, seller_dept_name, customer_id, customer_name, crm_id, ename, org_crm_id, enterprise_name,
+        goods_code, goods_name, gb_quantity, gb_type, audit_status, check_status, gb_remark, create_name, create_time, exec_status
+    </sql>
+
+</mapper>

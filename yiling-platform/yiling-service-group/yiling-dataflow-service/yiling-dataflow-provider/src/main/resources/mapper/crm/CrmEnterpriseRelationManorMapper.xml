@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.dataflow.crm.dao.CrmEnterpriseRelationManorMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.dataflow.crm.entity.CrmEnterpriseRelationManorDO">
+        <result column="id" property="id"/>
+        <result column="crm_enterprise_id" property="crmEnterpriseId"/>
+        <result column="crm_enterprise_name" property="crmEnterpriseName"/>
+        <result column="category_id" property="categoryId"/>
+        <result column="category_name" property="categoryName"/>
+        <result column="del_flag" property="delFlag"/>
+        <result column="create_user" property="createUser"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_user" property="updateUser"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="remark" property="remark"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id
+        ,
+        crm_enterprise_id, crm_enterprise_name, category_id, category_name, del_flag, create_user, create_time, update_user, update_time, remark
+    </sql>
+    <select id="pageExportList" resultType="com.yiling.dataflow.crm.dto.CrmEnterpriseRelationManorDTO">
+        SELECT b.id                as id,
+               b.category_id       as categoryId,
+               b.crm_enterprise_id as crmEnterpriseId,
+               a.manor_no          as manor_no,
+               a.`name`            as manorName
+        FROM crm_manor a
+                 LEFT JOIN crm_enterprise_relation_manor b ON a.id = b.crm_manor_id
+        WHERE a.del_flag = 0
+        <if test="request.manorNo !=null and request.manorNo!=''">and a.manor_no=#{request.manorNo}</if>
+        <if test="request.name !=null and request.name!=''">and a.name like CONCAT('%',#{request.name},'%')</if>
+        <if test="request.beginTime !=null">and a.update_time>=#{request.beginTime}</if>
+        <if test="request.endTime !=null"><![CDATA[and a.update_time<=#{request.endTime}]]></if>
+    </select>
+</mapper>

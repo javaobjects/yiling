@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.dataflow.wash.dao.UnlockCustomerClassDetailMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.dataflow.wash.entity.UnlockCustomerClassDetailDO">
+        <id column="id" property="id" />
+        <result column="crm_enterprise_id" property="crmEnterpriseId" />
+        <result column="ename" property="ename" />
+        <result column="customer_name" property="customerName" />
+        <result column="class_flag" property="classFlag" />
+        <result column="customer_classification" property="customerClassification" />
+        <result column="class_ground" property="classGround" />
+        <result column="rule_id" property="ruleId"/>
+        <result column="last_op_time" property="lastOpTime"/>
+        <result column="last_op_user" property="lastOpUser"/>
+        <result column="del_flag" property="delFlag" />
+        <result column="create_time" property="createTime" />
+        <result column="create_user" property="createUser" />
+        <result column="update_time" property="updateTime" />
+        <result column="update_user" property="updateUser" />
+        <result column="remark" property="remark" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, crm_enterprise_id, ename, customer_name, class_flag, customer_classification, class_ground, ruleId, last_op_user, last_op_time, del_flag, create_time, create_user, update_time, update_user, remark
+    </sql>
+
+</mapper>

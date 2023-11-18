@@ -1,0 +1,139 @@
+@import "~@/common/styles/mixin.scss";
+
+.app-container {
+  .top-btn {
+    position: relative;
+    width: 100%;
+    font-size: $font-size-large;
+    line-height: $font-size-large-lh;
+    margin: 32px 0 16px 0;
+    color: $font-important-color;
+
+    .right-btn {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+    }
+  }
+  .top-bar {
+    background: $white;
+    padding: 16px;
+    border-radius: 4px;
+    margin-bottom: 16px;
+    .header-renative{
+      position: relative;
+      .edit-btn{
+        position: absolute;
+        right: 0;
+      }
+    }
+    .content-box{
+      background: #FFFFFF;
+      border-radius: 4px;
+      .box{
+        display: flex;
+        align-items: center;
+        margin-bottom: 8px;
+      }
+    }
+  }
+  .common-box {
+    .el-input {
+      width: 220px;
+    }
+    .search-box {
+      margin-top: 24px;
+      padding: 0 16px;
+      position: relative;
+
+      .box {
+        .title {
+          font-size: $font-size-large;
+          line-height: $font-size-large-lh;
+          color: $font-important-color;
+          margin-bottom: 8px;
+        }
+      }
+
+      .el-select {
+        width: 220px;
+      }
+
+      .bottom-btn {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+      }
+    }
+  }
+
+  // 导出、导入按钮
+  .down-box {
+    width: 100%;
+    margin-top: 24px;
+
+    .btn {
+      float: right;
+    }
+  }
+
+  // 底部列表
+  .order-table-view {
+    width: 100%;
+    position: relative;
+    .item {
+      padding-bottom: 16px;
+      margin-top: 16px;
+      .title {
+        height: 25px;
+        color: $font-important-color;
+        margin-bottom: 12px ; 
+      }
+      .detail-btn{
+        height: 20px;
+        margin-left: 25px;
+        padding: 0;
+      }
+      .pad-title {
+        margin-top: 37px;
+        padding-bottom: 30px;
+      }
+      &-text {
+        margin-bottom: 8px;
+        height: 20px;
+        color: $font-important-color;
+        span {
+          color: $font-light-color;
+        }
+      }
+    }
+  }
+  .order-audit-content{
+    padding: 20px;
+    .info-view{
+      margin-bottom: 20px;
+    }
+  }
+  // 查看渠道信息弹框
+  .dialog-content-box{
+    padding: 16px;
+    height: 515px;
+    overflow-y: auto;
+    .dialog-content-top {
+      border-radius: 4px;
+      border: 1px solid #EEEEEE;
+      padding: 16px;
+      
+    }
+    .line-view {
+      width: 2px;
+      height: 14px;
+      background: #1790FF;
+      margin-right: 4px;
+    }
+    .table-view{
+      
+    }
+  }
+}
+

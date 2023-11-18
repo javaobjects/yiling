@@ -1,0 +1,57 @@
+.depart-left-tree {
+    ::v-deep .el-tree {
+      .el-tree-node__content {
+        height: 30px;
+        margin-bottom: 8px;
+        .el-tree-node__expand-icon {
+          font-size: 14px;
+          padding: 6px 8px 6px 0;
+        }
+        .el-tree-node__label {
+          flex: 1;
+          color: $font-important-color;
+          height: 30px;
+          border-radius: 4px;
+          line-height: 30px;
+          padding-left: 8px;
+          border: 1px solid #D8D8D8;
+        }
+      }
+      .el-tree-node__expand-icon.expanded {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+      }
+      //有子节点 且未展开
+      .el-icon-caret-right:before {
+        background: url("../../../../../assets/role/department-expand-on.png") no-repeat center;
+        content: '';
+        display: block;
+        width: 18px;
+        height: 18px;
+        font-size: 16px;
+        background-size: 16px;
+      }
+
+      //有子节点 且已展开
+      .el-tree-node__expand-icon.expanded.el-icon-caret-right:before {
+        background: url("../../../../../assets/role/department-expand-off.png") no-repeat center;
+        content: '';
+        display: block;
+        width: 18px;
+        height: 18px;
+        font-size: 16px;
+        background-size: 16px;
+      }
+
+      //没有子节点
+      .el-tree-node__expand-icon.is-leaf::before {
+        background: transparent no-repeat center;
+        content: '';
+        display: block;
+        width: 16px;
+        height: 16px;
+        font-size: 16px;
+        background-size: 16px;
+      }
+    }
+  }

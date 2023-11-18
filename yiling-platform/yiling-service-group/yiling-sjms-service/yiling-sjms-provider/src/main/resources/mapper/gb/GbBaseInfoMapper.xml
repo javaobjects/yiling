@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.sjms.gb.dao.GbBaseInfoMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.sjms.gb.entity.GbBaseInfoDO">
+    <result column="id" property="id" />
+        <result column="gb_id" property="gbId" />
+        <result column="province_name" property="provinceName" />
+        <result column="org_id" property="orgId" />
+        <result column="org_name" property="orgName" />
+        <result column="seller_emp_id" property="sellerEmpId" />
+        <result column="seller_emp_name" property="sellerEmpName" />
+        <result column="seller_dept_id" property="sellerDeptId" />
+        <result column="seller_dept_name" property="sellerDeptName" />
+        <result column="seller_yx_dept_name" property="sellerYxDeptName" />
+        <result column="manager_emp_id" property="managerEmpId" />
+        <result column="manager_emp_name" property="managerEmpName" />
+        <result column="manager_yx_dept_name" property="managerYxDeptName" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,
+        gb_id, province_name, org_id, org_name, seller_emp_id, seller_emp_name, seller_dept_id, seller_dept_name, seller_yx_dept_name, manager_emp_id, manager_emp_name, manager_yx_dept_name
+    </sql>
+
+</mapper>

@@ -1,0 +1,100 @@
+.app-container {
+  .common-box {
+    .search-box {
+      .box {
+        margin-bottom: 16px;
+        .title {
+          font-size: $font-size-large;
+          line-height: 22px;
+          color: $font-important-color;
+          margin-bottom: 8px;
+        }
+        .el-select {
+          max-width: 260px;
+        }
+        .el-input {
+          max-width: 260px;
+        }
+        ::v-deep .desc {
+          display: none;
+        }
+        .el-date-editor {
+          width: 100%;
+          max-width: 350px;
+        }
+        .address-select-box {
+          .address-select {
+            width: 100px;
+            max-width: 168px;
+          }
+        }
+      }
+    }
+  }
+  .total-box {
+    .total-data-box {
+      display: flex;
+      .item-box {
+        box-sizing: border-box;
+        min-width: 226px;
+        height: 144px;
+        margin-right: 16px;
+        padding: 16px;
+        background: #f0f7fe;
+        border-radius: 4px;
+        .top-box {
+          .num {
+            height: 22px;
+            font-size: 16px;
+            font-weight: 600;
+            color: #333333;
+            line-height: 22px;
+          }
+          .title {
+            margin-top: 8px;
+            height: 17px;
+            font-size: 12px;
+            font-weight: 400;
+            color: #999999;
+            line-height: 17px;
+          }
+        }
+        .bottom-box {
+          margin-top: 16px;
+          display: flex;
+          .yoy,
+          .mom {
+            .num-box {
+              display: flex;
+              align-items: center;
+              .num {
+                height: 22px;
+                font-size: 16px;
+                font-weight: 600;
+                color: #333333;
+                line-height: 22px;
+              }
+              .svg-icon {
+                width: 16px;
+                height: 16px;
+                margin-left: 4px;
+              }
+            }
+            .title {
+              margin-top: 8px;
+              height: 17px;
+              font-size: 12px;
+              font-family: PingFangSC-Regular, PingFang SC;
+              font-weight: 400;
+              color: #999999;
+              line-height: 17px;
+            }
+          }
+          .mom {
+            margin-left: 50px;
+          }
+        }
+      }
+    }
+  }
+}

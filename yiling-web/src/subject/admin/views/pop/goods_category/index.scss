@@ -1,0 +1,62 @@
+.app-container {
+  .common-box {
+    .el-input {
+      width: 220px;
+    }
+    .search-box {
+      position: relative;
+      .box {
+        .title {
+          font-size: $font-size-large;
+          line-height: $font-size-large-lh;
+          color: $font-important-color;
+          margin-bottom: 8px;
+        }
+      }
+      .el-select {
+        width: 220px;
+      }
+      .bottom-btn {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+      }
+    }
+  }
+  .search-bar {
+    background: #fff;
+    border-radius: 4px;
+    padding: 0 15px 15px 15px;
+    .el-input {
+      width: 260px;
+      margin-right: 10px;
+    }
+  }
+  .table-view{
+    .session{
+      display: flex;
+      align-items: center;
+    }
+    .content{
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 8px;
+      .content-left{
+        display: flex;
+        align-items: center;
+        .img-view{
+          margin-right: 20px;
+          width: 300px;
+        }
+      }
+      .content-right{
+        width: 100px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+    }
+  }
+}

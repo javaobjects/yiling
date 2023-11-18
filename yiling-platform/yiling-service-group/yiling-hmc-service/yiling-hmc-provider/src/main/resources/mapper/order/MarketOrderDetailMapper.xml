@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.hmc.order.dao.MarketOrderDetailMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.hmc.order.entity.MarketOrderDetailDO">
+    <result column="id" property="id" />
+        <result column="order_id" property="orderId" />
+        <result column="order_no" property="orderNo" />
+        <result column="standard_id" property="standardId" />
+        <result column="sell_specifications_id" property="sellSpecificationsId" />
+        <result column="goods_id" property="goodsId" />
+        <result column="goods_name" property="goodsName" />
+        <result column="goods_specification" property="goodsSpecification" />
+        <result column="goods_price" property="goodsPrice" />
+        <result column="goods_quantity" property="goodsQuantity" />
+        <result column="goods_amount" property="goodsAmount" />
+        <result column="create_user" property="createUser" />
+        <result column="create_time" property="createTime" />
+        <result column="update_user" property="updateUser" />
+        <result column="update_time" property="updateTime" />
+        <result column="remark" property="remark" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,
+        order_id, order_no, standard_id, sell_specifications_id, goods_id, goods_name, goods_specification, goods_price, goods_quantity, goods_amount, create_user, create_time, update_user, update_time, remark
+    </sql>
+
+</mapper>

@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.user.system.dao.HmcUserMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.user.system.entity.HmcUserDO">
+    <result column="id" property="id" />
+        <result column="user_id" property="userId" />
+        <result column="union_id" property="unionId" />
+        <result column="register_source" property="registerSource" />
+        <result column="invite_user_id" property="inviteUserId" />
+        <result column="invite_eid" property="inviteEid" />
+        <result column="activity_id" property="activityId" />
+        <result column="activity_source" property="activitySource" />
+        <result column="login_count" property="loginCount" />
+        <result column="last_login_time" property="lastLoginTime" />
+        <result column="del_flag" property="delFlag" />
+        <result column="create_user" property="createUser" />
+        <result column="create_time" property="createTime" />
+        <result column="update_user" property="updateUser" />
+        <result column="update_time" property="updateTime" />
+        <result column="remark" property="remark" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        hu.user_id, hu.union_id, hu.register_source, hu.invite_user_id, hu.invite_eid, hu.activity_id, hu.activity_source, hu.login_count, hu.last_login_time,
+        hu.del_flag, hu.create_user, hu.create_time, hu.update_user, hu.update_time, hu.remark
+    </sql>
+
+    <select id="pageList" resultType="com.yiling.user.system.bo.HmcUser">
+        select
+            <include refid="com.yiling.user.system.dao.UserMapper.Base_Column_List"/>
+            ,
+            <include refid="Base_Column_List"/>
+            <if test="request.appId != null and request.appId != ''">
+                , hua.open_id mini_program_open_id, hua.app_id
+            </if>
+        from hmc_user hu
+        inner join user u on u.id = hu.user_id
+        <if test="request.appId != null and request.appId != ''">
+            inner join hmc_user_app hua on u.id = hua.user_id
+        </if>
+        <where>
+            <if test="request.name != null and request.name != ''">
+                and u.name like concat('%',#{request.name},'%')
+            </if>
+            <if test="request.registerSource != null and request.registerSource != 0 ">
+                and hu.register_source =  #{request.registerSource}
+            </if>
+            <if test="request.mobile != null and request.mobile != ''">
+                and u.mobile like concat('%',#{request.mobile},'%')
+            </if>
+            <if test="request.status != null and request.status != 0">
+                and u.status = #{request.status}
+            </if>
+            <if test="request.nickName != null and request.nickName != ''">
+                and u.nick_name like concat('%',#{request.nickName},'%')
+            </if>
+            <if test="request.registBeginTime != null">
+                and hu.create_time <![CDATA[ >= ]]> #{request.registBeginTime}
+            </if>
+            <if test="request.registEndTime != null">
+                and hu.create_time <![CDATA[ <= ]]> #{request.registEndTime}
+            </if>
+            <if test="request.appId != null and request.appId != ''">
+                and hua.app_id = #{request.appId}
+            </if>
+            <if test="request.activityIdList != null">
+                and hu.activity_id in
+                <foreach collection="request.activityIdList" item="activityId" index="index" open="(" close=")" separator=",">
+                    #{activityId}
+                </foreach>
+            </if>
+            <if test="request.doctorIdList != null">
+                and hu.invite_user_id in
+                <foreach collection="request.doctorIdList" item="doctorId" index="index" open="(" close=")" separator=",">
+                    #{doctorId}
+                </foreach>
+            </if>
+            <if test="request.appId != null and request.appId != ''">
+                and hua.del_flag = 0
+            </if>
+            and hu.del_flag = 0
+        </where>
+        order by hu.id desc
+    </select>
+
+    <select id="listByIds" resultType="com.yiling.user.system.bo.HmcUser">
+        select
+            <include refid="com.yiling.user.system.dao.UserMapper.Base_Column_List"/>
+            ,
+            <include refid="Base_Column_List"/>
+        from hmc_user hu
+        inner join user u on u.id = hu.user_id
+        where
+            u.id in
+            <foreach collection="ids" item="id" open="(" separator="," close=")">
+            #{id}
+            </foreach>
+            and hu.del_flag = 0
+    </select>
+
+    <select id="queryActivityDoctorInviteUserCount" resultType="java.util.Map">
+        select invite_user_id as 'doctorId', count(*) as 'userCount'
+        from hmc_user
+        where register_source = 4
+          and activity_source = #{request.activitySource}
+          and invite_user_id in
+            <foreach collection="request.doctorIdList" item="id" open="(" separator="," close=")">
+                #{id}
+            </foreach>
+        group by invite_user_id
+    </select>
+
+    <update id="updateLoginTime">
+        update hmc_user
+        set login_count = login_count + 1, last_login_time = now()
+        where user_id = #{userId}
+    </update>
+
+</mapper>

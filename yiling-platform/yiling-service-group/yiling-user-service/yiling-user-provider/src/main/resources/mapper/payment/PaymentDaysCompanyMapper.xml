@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.user.payment.dao.PaymentDaysCompanyMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.user.payment.entity.PaymentDaysCompanyDO">
+    <result column="id" property="id" />
+        <result column="total_amount" property="totalAmount" />
+        <result column="used_amount" property="usedAmount" />
+        <result column="repayment_amount" property="repaymentAmount" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,
+        total_amount, used_amount, repayment_amount
+    </sql>
+
+    <update id="use">
+        update payment_days_company
+        set used_amount = used_amount + #{useAmount}
+        where total_amount - used_amount + repayment_amount >= #{useAmount}
+    </update>
+
+    <update id="refund">
+        update payment_days_company
+        set used_amount = used_amount - #{refundAmount}
+    </update>
+
+    <update id="repayment">
+        update payment_days_company
+        set repayment_amount = repayment_amount + #{repaymentAmount}
+    </update>
+
+</mapper>

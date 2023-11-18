@@ -1,0 +1,235 @@
+@import "~@/common/styles/mixin.scss";
+
+.app-container {
+  padding-bottom: 80px;
+  height: calc(100vh - #{$topBarHeight} - #{$breadHeight} - #{$tagsHeight} - 50px);
+  .app-container-content{
+    height: calc(100vh - #{$topBarHeight} - #{$breadHeight} - #{$tagsHeight} - 50px);
+  }
+  .top-bar {
+    background: $white;
+    padding: 16px;
+    border-radius: 4px;
+    margin-bottom: 16px;
+    .header-renative{
+      position: relative;
+      margin-bottom: 16px;
+      .edit-btn{
+        position: absolute;
+        right: 0;
+      }
+    }
+    .my-form-box{
+      .el-textarea{
+        width: 600px;
+      }
+    }
+    .content-box{
+      padding: 0 8px;
+      .show-word-limit{
+        ::v-deep .el-input__inner{
+          padding-right: 46px;
+        }
+      }
+      .red-text{
+        color: #F52922;
+      }
+      .search-box {
+        margin-top: 14px;
+        .box {
+          .title {
+            font-size: $font-size-large;
+            line-height: $font-size-large-lh;
+            color: $font-important-color;
+            margin-bottom: 8px;
+            .red-text{
+              color: #F52922;
+            }
+          }
+          .el-form-item{
+            label{
+              font-weight: 400 !important;
+            }
+          }
+          .el-radio-group{
+            width: 100%;
+            .el-radio{
+              line-height: 36px;
+            }
+          }
+          .radio-group-view{
+            display: flex;
+            align-items: center;
+            .radio-item{
+              display: flex;
+              align-items: center;
+              height: 36px;
+              margin-bottom: 10px;
+              margin-right: 20px;
+              .input-box{
+                margin: 0 5px;
+              }
+              .el-radio{
+                line-height: 36px;
+              }
+              .assume-form-item{
+                width: 100%;
+                min-width: 270px;
+                display: flex;
+                align-items: center;
+                color: $font-title-color;
+                font-size: $font-size-base;
+                .el-input{
+                  width: 80px;
+                }
+              }
+            }
+          }
+          .time-form-view{
+            .radio-item{
+              display: flex;
+              align-items: center;
+              width: 100%;
+              height: 36px;
+              margin-bottom: 10px;
+              .input-box{
+                margin: 0 5px;
+              }
+              .el-radio{
+                line-height: 36px;
+              }
+              .assume-form-item{
+                width: 100%;
+                display: flex;
+                align-items: center;
+                color: $font-title-color;
+                font-size: $font-size-base;
+                .el-input{
+                  width: 100px;
+                }
+                .tip-text{
+                  margin-left: 20px;
+                  color: #2C2C2C;
+                  .red-text{
+                    color: #F52922;
+                  }
+                }
+              }
+            }
+          }
+        }
+        .el-input {
+          width: 220px;
+        }
+        .el-select {
+          width: 220px;
+        }
+      }
+      // 导出、导入按钮
+      .down-box {
+        width: 100%;
+        margin-top: 16px;
+        .left-btn{
+          float: left;
+        }
+        .btn {
+          float: right;
+        }
+      }
+      .my-buttom{
+        background-color: #FF7B17;
+        border-color: #FF7B17;
+      }
+      .btn-box {
+        display: flex;
+        justify-content: space-between;
+        .my-buttom{
+          background-color: #FF7B17;
+          border-color: #FF7B17;
+        }
+      }
+    }
+  }
+
+  // 商品添加弹框
+  .dialog-content-box-customer{
+    padding: 16px;
+    // height: 850px;
+    // 导出、导入按钮
+    .down-box {
+      width: 100%;
+      margin-top: 8px;
+      .btn {
+        float: right;
+      }
+    }
+    .dialog-content-top {
+      .el-input {
+        width: 200px;
+      }
+      .title-view{
+        padding: 0 10px;
+        height: 40px;
+        line-height: 40px;
+        font-size: 16px;
+        align-items: center;
+        justify-content: flex-start;
+        display: flex;
+        color: $font-important-color;
+        font-weight: 600;
+        .sign {
+          height: 14px;
+          width: 2px;
+          margin-right: 4px;
+          background-color: $primary;
+        }
+      }
+      .search-box {
+        margin-bottom: 16px;
+        padding: 0 16px;
+        position: relative;
+        .box {
+          .title {
+            font-size: $font-size-large;
+            line-height: $font-size-large-lh;
+            color: $font-important-color;
+            margin-bottom: 8px;
+          }
+        }
+        .el-select {
+          width: 200px;
+        }
+
+      }
+    }
+    .multi-action {
+      display: flex;
+      justify-content: flex-end;
+    }
+  }
+  .import-dialog-content{
+    height: 100%;
+    width: 100%;
+    padding: 100px 0;
+  }
+  .limit-dialog-content{
+    height: 100%;
+    width: 100%;
+    padding: 50px 0;
+    .limit-btn{
+      margin-top: 30px;
+    }
+  }
+
+  .bottom-view {
+    position: fixed;
+    bottom: 0;
+    left: $sideBarWidth;
+    right: 0;
+    height: 64px;
+    background-color: $white;
+    padding: 16px;
+    box-shadow: 0px -2px 9px 0px rgba(182, 182, 182, 0.16);
+    z-index: 10;
+  }
+}

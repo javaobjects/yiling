@@ -1,0 +1,54 @@
+@import "~@/common/styles/mixin.scss";
+
+// 商品添加弹框
+.dialog-content-box-customer{
+  padding: 16px;
+  height: 80vh;
+  // 导出、导入按钮
+  .down-box {
+    width: 100%;
+    margin-top: 8px;
+    .btn {
+      float: right;
+    }
+  }
+  .dialog-content-top {
+    .el-input {
+      width: 200px;
+    }
+    .title-view{
+      padding: 0 10px;
+      height: 40px;
+      line-height: 40px;
+      font-size: 16px;
+      align-items: center;
+      justify-content: flex-start;
+      display: flex;
+      color: $font-important-color;
+      font-weight: 600;
+      .sign {
+        height: 14px;
+        width: 2px;
+        margin-right: 4px;
+        background-color: $primary;
+      }
+    }
+    .search-box {
+      margin-bottom: 16px;
+      padding: 0 16px;
+      position: relative;
+      .box {
+        .title {
+          font-size: $font-size-large;
+          line-height: $font-size-large-lh;
+          color: $font-important-color;
+          margin-bottom: 8px;
+        }
+      }
+      .el-select {
+        width: 200px;
+      }
+
+    }
+  }
+}

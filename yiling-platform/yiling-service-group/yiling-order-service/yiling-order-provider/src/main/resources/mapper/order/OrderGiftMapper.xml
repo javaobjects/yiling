@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.order.order.dao.OrderGiftMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.order.order.entity.OrderGiftDO">
+    <result column="id" property="id" />
+        <result column="order_id" property="orderId" />
+        <result column="gift_name" property="giftName" />
+        <result column="price" property="price" />
+        <result column="promotion_activity_id" property="promotionActivityId" />
+        <result column="content" property="content" />
+        <result column="goods_gift_id" property="goodsGiftId" />
+        <result column="promotion_limit_id" property="promotionLimitId" />
+        <result column="create_user" property="createUser" />
+        <result column="create_time" property="createTime" />
+        <result column="update_user" property="updateUser" />
+        <result column="update_time" property="updateTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,
+        order_id,goods_gift_id,gift_name,price,promotion_limit_id,promotion_activity_id, content, create_user, create_time, update_user, update_time
+    </sql>
+
+</mapper>

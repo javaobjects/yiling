@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.user.agreement.dao.AgreementGoodsMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.user.agreement.entity.AgreementGoodsDO">
+        <result column="id" property="id"/>
+        <result column="agreement_id" property="agreementId"/>
+        <result column="goods_id" property="goodsId"/>
+        <result column="standard_id" property="standardId"/>
+        <result column="sell_specifications_id" property="sellSpecificationsId"/>
+        <result column="goods_name" property="goodsName"/>
+        <result column="standard_goods_name" property="standardGoodsName"/>
+        <result column="standard_license_no" property="standardLicenseNo"/>
+        <result column="sell_specifications" property="sellSpecifications"/>
+        <result column="license_no" property="licenseNo"/>
+        <result column="is_patent" property="isPatent"/>
+        <result column="del_flag" property="delFlag"/>
+        <result column="create_time" property="createTime"/>
+        <result column="create_user" property="createUser"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="update_user" property="updateUser"/>
+        <result column="remark" property="remark"/>
+    </resultMap>
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="TempAgreementGoodsMap" type="com.yiling.user.agreement.bo.TempAgreementGoodsBO">
+        <result column="agreement_ids" property="agreementIds"/>
+        <result column="goods_id" property="goodsId"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,
+        agreement_id, goods_id, standard_id, standard_goods_name,standard_license_no,sell_specifications_id, goods_name, sell_specifications, license_no, patent, del_flag, create_time, create_user, update_time, update_user, remark
+    </sql>
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="RelationResultMap" type="com.yiling.user.agreement.bo.AgreementGoodsPurchaseRelationBO">
+        <result column="goods_id" property="goodsId"/>
+        <result column="buyer_gather" property="buyerGather"/>
+    </resultMap>
+
+    <select id="getBuyerGatherByGoodsIds" parameterType="long" resultMap="RelationResultMap">
+        select
+        g.goods_id,GROUP_CONCAT(t.second_eid) as buyer_gather
+        FROM
+        agreement t
+        INNER JOIN agreement_goods g on t.id = g.agreement_id
+        INNER JOIN goods gd on g.goods_id = gd.id
+        where t.category=1
+        <![CDATA[ and t.start_time<NOW() ]]>
+        and t.end_time>NOW()
+        and t.`status`=1
+        and t.del_flag=0
+        and g.del_flag=0
+        and gd.del_flag=0
+        and gd.audit_status=4
+        <if test="goodsIds != null and goodsIds.size() > 0">
+            and g.goods_id in
+            <foreach item="item" index="index" collection="goodsIds"
+                     open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        GROUP BY g.goods_id;
+    </select>
+
+    <select id="getYearPurchaseGoodsPageList" resultMap="BaseResultMap">
+        select g.goods_id,g.goods_name,g.sell_specifications,g.license_no
+        FROM
+        agreement t
+        INNER JOIN agreement_goods g on t.id=g.agreement_id
+        INNER JOIN goods gd on g.goods_id = gd.id
+        where t.category=1
+        <![CDATA[ and t.start_time<NOW() ]]>
+        and t.end_time>NOW()
+        and t.`status`=1
+        and t.del_flag=0
+        and g.del_flag=0
+        and gd.del_flag=0
+        and gd.audit_status=4
+        and t.second_eid=#{request.purchaseEid}
+    </select>
+
+
+    <select id="getPurchaseGoodsListToSaleAssistant" resultMap="TempAgreementGoodsMap" parameterType="com.yiling.user.agreement.dto.request.SalePurchaseGoodsRequest">
+        select g.goods_id,GROUP_CONCAT(g.agreement_id) as agreement_ids
+        FROM
+        agreement t
+        INNER JOIN agreement_goods g on t.id=g.agreement_id
+        INNER JOIN pop_goods p on p.goods_id=g.goods_id
+        where
+        <![CDATA[  t.start_time<NOW() ]]>
+        and t.end_time>NOW()
+        and t.`status`=1
+        and t.del_flag=0
+        and g.del_flag=0
+        and p.del_flag=0
+        and p.goods_status=1
+        and t.second_eid =#{request.distributionEid}
+        and t.third_eid=#{request.purchaseEid}
+        and t.category=2
+        <if test="request.keyWord != null and request.keyWord != '' ">
+            and g.goods_name like concat('%',#{request.keyWord},'%')
+        </if>
+        <if test="request.rebateCycle!=null and request.rebateCycle != 0">
+            and t.rebate_cycle=#{request.rebateCycle}
+        </if>
+        <if test="request.rebateType!=null and request.rebateType != 0">
+            and t.rebate_Type=#{request.rebateType}
+        </if>
+        GROUP by g.goods_id
+    </select>
+
+    <select id="getTempPurchaseGoodsPageList" resultMap="TempAgreementGoodsMap">
+        select g.goods_id,GROUP_CONCAT(g.agreement_id) as agreement_ids
+        FROM
+        agreement t
+        INNER JOIN agreement_goods g on t.id=g.agreement_id
+        INNER JOIN pop_goods pg on g.sell_specifications_id = pg.sell_specifications_id and t.second_eid=pg.eid
+        where t.category=2
+        <![CDATA[ and t.start_time<NOW() ]]>
+        and t.end_time>NOW()
+        and t.rebate_type=2
+        and t.`status`=1
+        and t.del_flag=0
+        and g.del_flag=0
+        and pg.del_flag=0
+        and pg.status=1
+        and pg.goods_status=1
+        and t.third_eid=#{request.purchaseEid}
+        group by g.goods_id
+    </select>
+
+    <select id="getYearPurchaseGoodsList" resultMap="BaseResultMap">
+        select g.agreement_id, g.goods_id,g.goods_name,g.sell_specifications,g.license_no
+        FROM
+        agreement t
+        INNER JOIN agreement_goods g on t.id=g.agreement_id
+        INNER JOIN goods gd on g.goods_id = gd.id
+        where
+        <![CDATA[  t.start_time<NOW() ]]>
+        and t.end_time>NOW()
+        and t.`status`=1
+        and t.del_flag=0
+        and g.del_flag=0
+        and gd.del_flag=0
+        and gd.audit_status=4
+        and t.second_eid=#{request.purchaseEid}
+        and t.category=1
+        <if test="request.name!=null and request.name!=''">
+            and (g.`standard_goods_name` like concat('%',#{request.name},'%')  or g.`standard_license_no` like concat('%',#{request.name},'%') )
+        </if>
+        <if test="request.goodsId!=null and request.goodsId != 0">
+            and g.goods_id=#{request.goodsId}
+        </if>
+        <if test="request.goodsIds!=null and request.goodsIds.size() > 0">
+            and g.goods_id in
+            <foreach item="item" index="index" collection="request.goodsIds"
+                     open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+    </select>
+
+    <select id="getAgreementIdsByPurchaseGoodsList" resultType="long">
+        select g.agreement_id
+        FROM
+        agreement t
+        INNER JOIN agreement_goods g on t.id=g.agreement_id
+        INNER JOIN goods gd on g.goods_id = gd.id
+        where
+        <![CDATA[  t.start_time<NOW() ]]>
+        and t.`status`=1
+        and t.del_flag=0
+        and g.del_flag=0
+        and gd.del_flag=0
+        and gd.audit_status=4
+        and t.third_eid=#{buyerEid}
+        and t.category=2
+        <if test="goodsIds!=null and goodsIds.size() > 0">
+            and g.goods_id in
+            <foreach item="item" index="index" collection="goodsIds"
+                     open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+    </select>
+
+    <select id="getTempPurchaseGoodsList" resultMap="BaseResultMap">
+        select g.agreement_id, g.goods_id,g.goods_name,g.sell_specifications,g.license_no
+        FROM
+        agreement t
+        INNER JOIN agreement_goods g on t.id=g.agreement_id
+        INNER JOIN goods gd on g.goods_id = gd.id
+        where
+        <![CDATA[  t.start_time<NOW() ]]>
+        and t.end_time>NOW()
+        and t.`status`=1
+        and t.del_flag=0
+        and g.del_flag=0
+        and gd.del_flag=0
+        and gd.audit_status=4
+        and t.third_eid=#{request.purchaseEid}
+        and t.category=2
+        <if test="request.goodsId!=null and request.goodsId != 0">
+            and g.goods_id=#{request.goodsId}
+        </if>
+        <if test="request.rebateCycle!=null and request.rebateCycle != 0">
+            and t.rebate_cycle=#{request.rebateCycle}
+        </if>
+    </select>
+
+    <select id="getTempPurchaseGoodsByDistributionList" resultMap="BaseResultMap">
+        select g.agreement_id, g.goods_id,g.goods_name,g.sell_specifications,g.license_no
+        FROM
+        agreement t
+        INNER JOIN agreement_goods g on t.id=g.agreement_id
+        INNER JOIN goods gd on g.goods_id = gd.id
+        where
+        <![CDATA[  t.start_time<NOW() ]]>
+        and t.end_time>NOW()
+        and t.`status`=1
+        and t.del_flag=0
+        and g.del_flag=0
+        and gd.del_flag=0
+        and gd.audit_status=4
+        and t.second_eid=#{request.distributionEid}
+        and t.third_eid=#{request.purchaseEid}
+        and t.category=2
+        <if test="request.goodsId!=null and request.goodsId != 0">
+            and g.goods_id=#{request.goodsId}
+        </if>
+        <if test="request.rebateCycle!=null and request.rebateCycle != 0">
+            and t.rebate_cycle=#{request.rebateCycle}
+        </if>
+    </select>
+    <select id="getSupplementarySaleGoodPageList" resultType="com.yiling.user.agreement.bo.SupplementaryAgreementGoodsBO">
+        select g.goods_id as goodsId,GROUP_CONCAT(g.agreement_id) as agreementIds
+        FROM
+        agreement t
+        INNER JOIN agreement_goods g on t.id=g.agreement_id
+        INNER JOIN pop_goods pg on g.sell_specifications_id = pg.sell_specifications_id and t.second_eid=pg.eid
+        where
+        <![CDATA[  t.start_time<NOW() ]]>
+        and t.end_time>NOW()
+        and t.`status`=1
+        and t.category=2
+        and t.del_flag=0
+        and g.del_flag=0
+        and pg.del_flag=0
+        and pg.status=1
+        and pg.goods_status=1
+        and t.third_eid=#{request.purchaseEid}
+        group by g.goods_id
+        order by any_value(g.create_time) desc
+    </select>
+
+</mapper>

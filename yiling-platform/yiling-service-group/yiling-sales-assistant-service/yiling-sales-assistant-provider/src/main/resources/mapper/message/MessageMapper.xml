@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.news.news.dao.NewsMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.sales.assistant.message.entity.MessageDO">
+        <result column="id" property="id"/>
+        <result column="user_id" property="userId"/>
+        <result column="eid" property="eid"/>
+        <result column="source" property="source"/>
+        <result column="role" property="role"/>
+        <result column="node" property="node"/>
+        <result column="is_read" property="isRead"/>
+        <result column="code" property="code"/>
+        <result column="content" property="content"/>
+        <result column="create_time" property="createTime"/>
+        <result column="read_time" property="readTime"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id
+        ,
+        user_id, eid, soure, role, node, is_read, code, content, create_time, read_time
+    </sql>
+
+</mapper>

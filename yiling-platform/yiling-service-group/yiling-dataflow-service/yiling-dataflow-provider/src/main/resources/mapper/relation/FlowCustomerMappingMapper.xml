@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.dataflow.relation.dao.FlowCustomerMappingMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.dataflow.relation.entity.FlowCustomerMappingDO">
+    <result column="id" property="id" />
+        <result column="flow_customer_name" property="flowCustomerName" />
+        <result column="inner_code" property="innerCode" />
+        <result column="inner_name" property="innerName" />
+        <result column="business_code" property="businessCode" />
+        <result column="from_business" property="fromBusiness" />
+        <result column="business_type_name" property="businessTypeName" />
+        <result column="customer_type_name" property="customerTypeName" />
+        <result column="belong_department" property="belongDepartment" />
+        <result column="lock_type" property="lockType" />
+        <result column="create_time" property="createTime" />
+        <result column="update_user" property="updateUser" />
+        <result column="update_time" property="updateTime" />
+        <result column="remark" property="remark" />
+        <result column="del_flag" property="delFlag" />
+        <result column="create_user" property="createUser" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,
+        flow_customer_name, inner_code, inner_name, business_code, from_business, business_type_name, customer_type_name, belong_department, lock_type, create_time, update_user, update_time, remark, del_flag, create_user
+    </sql>
+
+    <select id="page" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM flow_customer_mapping
+        WHERE del_flag = 0
+    </select>
+
+</mapper>

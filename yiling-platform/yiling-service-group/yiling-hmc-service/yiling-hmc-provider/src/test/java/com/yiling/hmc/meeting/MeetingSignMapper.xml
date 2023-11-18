@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.hmc.meeting.dao.MeetingSignMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.hmc.meeting.entity.MeetingSignDO">
+    <result column="id" property="id" />
+        <result column="province_name" property="provinceName" />
+        <result column="customer_name" property="customerName" />
+        <result column="hospital_name" property="hospitalName" />
+        <result column="department_name" property="departmentName" />
+        <result column="sys_code" property="sysCode" />
+        <result column="job_title" property="jobTitle" />
+        <result column="mobile" property="mobile" />
+        <result column="sign_flag" property="signFlag" />
+        <result column="sign_time" property="signTime" />
+        <result column="check_code" property="checkCode" />
+        <result column="check_flag" property="checkFlag" />
+        <result column="check_time" property="checkTime" />
+        <result column="create_user" property="createUser" />
+        <result column="create_time" property="createTime" />
+        <result column="update_user" property="updateUser" />
+        <result column="update_time" property="updateTime" />
+        <result column="remark" property="remark" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,
+        province_name, customer_name, hospital_name, department_name, job_title, mobile, sign_flag, sign_time, code, create_user, create_time, update_user, update_time, remark
+    </sql>
+
+</mapper>

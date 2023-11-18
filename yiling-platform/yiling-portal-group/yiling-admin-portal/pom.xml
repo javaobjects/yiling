@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.yiling</groupId>
+        <artifactId>yiling-parent</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+        <relativePath/>
+    </parent>
+
+    <groupId>com.yiling</groupId>
+    <artifactId>yiling-admin-portal</artifactId>
+    <packaging>pom</packaging>
+
+    <name>Yiling Admin Portal</name>
+    <description>Yiling Admin Portal</description>
+
+    <modules>
+        <module>yiling-admin-gateway</module>
+        <module>yiling-admin-common</module>
+        <module>yiling-admin-system-web</module>
+        <module>yiling-admin-data-center-web</module>
+        <module>yiling-admin-pop-web</module>
+        <module>yiling-admin-b2b-web</module>
+        <module>yiling-admin-sales-assistant-web</module>
+        <module>yiling-admin-erp-web</module>
+        <module>yiling-admin-hmc-web</module>
+        <module>yiling-admin-cms-web</module>
+    </modules>
+
+</project>

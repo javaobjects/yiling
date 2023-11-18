@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.marketing.lotteryactivity.dao.LotteryActivityGiveScopeMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.marketing.lotteryactivity.entity.LotteryActivityGiveScopeDO">
+    <result column="id" property="id" />
+        <result column="lottery_activity_id" property="lotteryActivityId" />
+        <result column="give_times" property="giveTimes" />
+        <result column="loop_give" property="loopGive" />
+        <result column="give_scope" property="giveScope" />
+        <result column="give_enterprise_type" property="giveEnterpriseType" />
+        <result column="give_user_type" property="giveUserType" />
+        <result column="del_flag" property="delFlag" />
+        <result column="create_user" property="createUser" />
+        <result column="create_time" property="createTime" />
+        <result column="update_user" property="updateUser" />
+        <result column="update_time" property="updateTime" />
+        <result column="remark" property="remark" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,
+        lottery_activity_id, give_times, loop_give, give_scope, give_enterprise_type, give_user_type, del_flag, create_user, create_time, update_user, update_time, remark
+    </sql>
+
+</mapper>

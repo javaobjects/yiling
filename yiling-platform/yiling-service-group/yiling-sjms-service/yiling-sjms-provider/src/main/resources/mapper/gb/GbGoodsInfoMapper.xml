@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.sjms.gb.dao.GbGoodsInfoMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.sjms.gb.entity.GbGoodsInfoDO">
+    <result column="id" property="id" />
+        <result column="gb_id" property="gbId" />
+        <result column="company_id" property="companyId" />
+        <result column="code" property="code" />
+        <result column="name" property="name" />
+        <result column="specification" property="specification" />
+        <result column="small_package" property="smallPackage" />
+        <result column="quantity_box" property="quantityBox" />
+        <result column="quantity" property="quantity" />
+        <result column="final_price" property="finalPrice" />
+        <result column="final_amount" property="finalAmount" />
+        <result column="price" property="price" />
+        <result column="amount" property="amount" />
+        <result column="payment_time" property="paymentTime" />
+        <result column="flow_month" property="flowMonth" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,
+        gb_id,company_id, code, name, specification, small_package, quantity_box, quantity, final_price, final_amount, price, amount, payment_time,flow_month
+    </sql>
+
+</mapper>

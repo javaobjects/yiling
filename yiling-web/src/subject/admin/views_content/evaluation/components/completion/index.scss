@@ -1,0 +1,18 @@
+
+.completion {
+  .size-color {
+    color: #c8c9cc;
+  }
+  .size-border {
+    width: 100px;
+    height: 100px;
+    line-height: 100px;
+    text-align: center;
+    background-color: #fbfdff;
+    border: 1px dashed #c0ccda;
+    border-radius: 6px;
+    i {
+      font-size: 30px;
+    }
+  }
+}

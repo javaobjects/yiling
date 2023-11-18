@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <shutdownHook class="ch.qos.logback.core.hook.DelayingShutdownHook"/>
+
+    <!-- 日志路径统一放在/yl/logs/deploy/java/yiling-xxx-provider, 日志不用区分环境 -->
+    <property name="LOG_HOME" value="/yl/logs/deploy/java/yiling-sales-assistant-app-mr-web" />
+
+    <!-- 控制台输出 -->
+    <appender name="ConsoleAppender" class="ch.qos.logback.core.ConsoleAppender">
+        <withJansi>true</withJansi>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符-->
+            <pattern>%d{dd-MM-yyyy HH:mm:ss.SSS} %magenta([%thread][%X{traceId}]) %highlight(%-5level) %logger{36}.%M - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="FileAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!--日志输出位置 可相对、和绝对路径 -->
+            <fileNamePattern>${LOG_HOME}/sales-assistant-app-mr-web.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <maxHistory>30</maxHistory>
+            <maxFileSize>50MB</maxFileSize>
+            <totalSizeCap>20GB</totalSizeCap>
+        </rollingPolicy>
+
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符-->
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread][%X{traceId}] %-5level %logger{50} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <springProfile name="dev-connect">
+        <logger name="com.yiling" additivity="false" level="debug">
+            <appender-ref ref="ConsoleAppender"/>
+        </logger>
+    </springProfile>
+
+    <springProfile name="dev">
+        <logger name="com.yiling" additivity="false" level="debug">
+            <appender-ref ref="ConsoleAppender"/>
+            <appender-ref ref="FileAppender"/>
+        </logger>
+    </springProfile>
+
+    <logger name="com.alibaba.nacos.client" additivity="false" level="error">
+        <appender-ref ref="FileAppender"/>
+        <appender-ref ref="ConsoleAppender"/>
+    </logger>
+
+    <root level="info">
+        <appender-ref ref="FileAppender"/>
+        <appender-ref ref="ConsoleAppender" />
+    </root>
+</configuration>

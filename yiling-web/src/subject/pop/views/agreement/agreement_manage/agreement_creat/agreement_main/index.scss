@@ -1,0 +1,244 @@
+@import "~@/common/styles/mixin.scss";
+
+.agreement-main {
+  .top-bar {
+    background: $white;
+    padding: 16px;
+    border-radius: 4px;
+    margin-bottom: 16px;
+    .header-renative{
+      position: relative;
+      margin-bottom: 16px;
+      .edit-btn{
+        position: absolute;
+        right: 0;
+      }
+    }
+    // 导出、导入按钮
+    .down-box {
+      width: 100%;
+      margin-top: 24px;
+
+      .btn {
+        float: right;
+      }
+    }
+    .content-box{
+      padding: 0 8px;
+      .packing-img-box {
+        display: flex;
+        flex-wrap: wrap;
+        .packing-img {
+          position: relative;
+          width: 80px;
+          height: 80px;
+          margin-right: 10px;
+          .packing-image {
+            width: 80px;
+            height: 80px;
+          }
+          .packing-cover {
+            position: absolute;
+            left: 0px;
+            top: 0px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(0, 0, 0, 0.4);
+            width: 100%; /*宽度设置为100%，这样才能使隐藏背景层覆盖原页面*/
+            height: 100%;
+            box-sizing: border-box;
+            padding: 0 10px;
+            filter: alpha(opacity=60); /*设置透明度为60%*/
+            opacity: 0.6; /*非IE浏览器下设置透明度为60%*/
+            z-index: 999;
+            color: #fff;
+            font-size: 20px;
+            i {
+              cursor: pointer;
+            }
+          }
+        }
+      }
+      .box {
+        .svg-container {
+          font-size: 14px;
+        }
+        .title {
+          font-size: $font-size-large;
+          line-height: $font-size-large-lh;
+          color: $font-important-color;
+          margin-bottom: 8px;
+          .red-text{
+            color: #F52922;
+          }
+        }
+        .el-radio-group{
+          width: 100%;
+          .el-radio{
+            line-height: 36px;
+          }
+        }
+      }
+      .el-form-item{
+        label{
+          font-weight: 400 !important;
+        }
+        .el-input{
+          width: 256px;
+        }
+      }
+      .activity-form-item{
+        color: $font-title-color;
+        .input-box{
+          margin: 0 5px;
+        }
+        .el-input{
+          width: 100px;
+        }
+        .tip-text{
+          margin-left: 20px;
+          color: #2C2C2C;
+          .red-text{
+            color: #F52922;
+          }
+        }
+      }
+      // 金额
+      .money-form-item{
+        display: flex;
+        flex-direction: row;
+        .el-input{
+          width: 150px;
+        }
+      }
+      // 付款方式
+      .pay-form-item{
+        display: flex;
+        flex-direction: row;
+        .el-input{
+          width: 80px;
+        }
+      }
+      // 结算方式 线框
+      .line-box{
+        padding: 16px;
+        border-radius: 4px;
+        border: 1px dashed rgba(23, 144, 255, 0.5);
+        .el-form-item{
+          margin-bottom: 0;
+        }
+        .checkbox-width{
+          width: 130px;
+        }
+      }
+      // step4
+      // 是否底价供货 边框
+      .rule-box{
+        padding: 16px;
+        border-radius: 4px;
+        border: 1px solid #EEEEEE;
+        .el-form-item{
+          margin-bottom: 0;
+        }
+      }
+      // 返利兑付时段
+      .back-form-item{
+        display: flex;
+        flex-direction: row;
+        .label-height{
+          line-height: 36px;
+        }
+        .el-input{
+          width: 100px;
+        }
+        .el-select{
+          width: 60px;
+        }
+      }
+      // 非商品返利
+      .nichtware-form-item{
+        display: flex;
+        flex-direction: row;
+        .label-height{
+          line-height: 36px;
+        }
+        .el-input{
+          width: 100px;
+        }
+        .el-select{
+          width: 150px;
+        }
+      }
+      // 返利计算规则
+      .rule-form-item{
+        .el-select{
+          width: 80px;
+        }
+      }
+      // 供销协议条款约定的全品
+      .table-view{
+        width: 70%;
+      }
+      // 返利计算规则
+      .show-word-limit{
+        .el-input__inner{
+          padding-right: 46px;
+        }
+      }
+    }
+  }
+
+  // 商品添加弹框
+  .dialog-content-box-customer{
+    padding: 16px;
+    height: 80vh;
+    // 导出、导入按钮
+    .down-box {
+      width: 100%;
+      margin-top: 8px;
+      .btn {
+        float: right;
+      }
+    }
+    .dialog-content-top {
+      .el-input {
+        width: 200px;
+      }
+      .title-view{
+        padding: 0 10px;
+        height: 40px;
+        line-height: 40px;
+        font-size: 16px;
+        align-items: center;
+        justify-content: flex-start;
+        display: flex;
+        color: $font-important-color;
+        font-weight: 600;
+        .sign {
+          height: 14px;
+          width: 2px;
+          margin-right: 4px;
+          background-color: $primary;
+        }
+      }
+      .search-box {
+        margin-bottom: 16px;
+        padding: 0 16px;
+        position: relative;
+        .box {
+          .title {
+            font-size: $font-size-large;
+            line-height: $font-size-large-lh;
+            color: $font-important-color;
+            margin-bottom: 8px;
+          }
+        }
+        .el-select {
+          width: 200px;
+        }
+
+      }
+    }
+  }
+}

@@ -1,0 +1,163 @@
+package com.yiling.order.order.entity;
+
+import java.math.BigDecimal;
+import java.util.Date;
+
+import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableLogic;
+import com.baomidou.mybatisplus.annotation.TableName;
+import com.yiling.framework.common.base.BaseDO;
+
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.experimental.Accessors;
+
+/**
+ * <p>
+ * 订单开票明细
+ * </p>
+ *
+ * @author wei.wang
+ * @date 2021-08-03
+ */
+@Data
+@EqualsAndHashCode(callSuper = true)
+@Accessors(chain = true)
+@TableName("order_invoice_detail")
+public class  OrderInvoiceDetailDO extends BaseDO {
+
+    private static final long serialVersionUID = 1L;
+
+    /**
+     * 订单ID
+     */
+    private Long orderId;
+
+    /**
+     * 订单明细ID
+     */
+    private Long detailId;
+
+    /**
+     * 关联分组号
+     */
+    private String groupNo;
+
+    /**
+     * ERP出库单号
+     */
+    private String erpDeliveryNo;
+
+    /**
+     * 商品标准库ID
+     */
+    private Long standardId;
+
+    /**
+     * 批次号
+     */
+    private String batchNo;
+
+    /**
+     * ERP出库录入id
+     */
+    private String erpSendOrderId;
+
+    /**
+     * 商品id
+     */
+    private Long goodsId;
+
+    /**
+     * 商品ERP编码
+     */
+    private String goodsErpCode;
+
+    /**
+     * 商品单价
+     */
+    private BigDecimal goodsPrice;
+
+    /**
+     * 发货商品数量
+     */
+    private Integer goodsQuantity;
+
+    /**
+     * 发货商品小计
+     */
+    private BigDecimal goodsAmount;
+
+    /**
+     * 现折金额
+     */
+    private BigDecimal cashDiscountAmount;
+
+    /**
+     * 票折方式：1-按比率 2-按金额
+     */
+    private Integer ticketDiscountType;
+
+    /**
+     * 票折比率
+     */
+    private BigDecimal ticketDiscountRate;
+
+    /**
+     * 票折单价
+     */
+    private BigDecimal ticketDiscountPrice;
+
+    /**
+     * 票折小计
+     */
+    private BigDecimal ticketDiscountAmount;
+
+    /**
+     * 开票金额
+     */
+    private BigDecimal invoiceAmount;
+
+    /**
+     * 开票数量
+     */
+    private Integer invoiceQuantity;
+
+    /**
+     * 是否删除：0-否 1-是
+     */
+    @TableLogic
+    private Integer delFlag;
+
+    /**
+     * 创建人
+     */
+    @TableField(fill = FieldFill.INSERT)
+    private Long createUser;
+
+    /**
+     * 创建时间
+     */
+    @TableField(fill = FieldFill.INSERT)
+    private Date createTime;
+
+    /**
+     * 修改人
+     */
+    @TableField(fill = FieldFill.INSERT_UPDATE)
+    private Long updateUser;
+
+    /**
+     * 修改时间
+     */
+    @TableField(fill = FieldFill.INSERT_UPDATE)
+    private Date updateTime;
+
+    /**
+     * 备注
+     */
+    private String remark;
+
+
+}

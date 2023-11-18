@@ -1,0 +1,113 @@
+@mixin clearfix {
+  &:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+}
+
+//不换行
+@mixin no-wrap(){
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+//限制行数
+@mixin clamp($row){
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: $row;
+  white-space: normal;
+}
+
+@mixin scrollBar {
+  &::-webkit-scrollbar-track-piece {
+    background: #d3dce6;
+  }
+
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #99a9bf;
+    border-radius: 20px;
+  }
+}
+
+@mixin relative {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+$border-color: $border-line;
+
+@mixin setTopLine($color: $border-color, $width: 1px) {
+  content: " ";
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  height: $width;
+  border-top: $width solid $color;
+  color: $color;
+  transform-origin: 0 0;
+  transform: scaleY(0.5);
+}
+
+@mixin setBottomLine($color: $border-color, $width: 1px) {
+  content: " ";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  height: $width;
+  border-bottom: $width solid $color;
+  color: $color;
+  transform-origin: 0 100%;
+  transform: scaleY(0.5);
+}
+
+@mixin setLeftLine($color: $border-color, $width: 1px) {
+  content: " ";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: $width;
+  bottom: 0;
+  border-left: $width solid $color;
+  color: $color;
+  transform-origin: 0 0;
+  transform: scaleX(0.5);
+}
+
+@mixin setRightLine($color: $border-color, $width: 1px) {
+  content: " ";
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: $width;
+  bottom: 0;
+  border-right: $width solid $color;
+  color: $color;
+  transform-origin: 100% 0;
+  transform: scaleX(0.5);
+}
+
+@mixin setLine($color: $border-color, $width: 1px) {
+  content: " ";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 200%;
+  height: $width;
+  border: $width solid $color;
+  color: $color;
+  height: 200%;
+  transform-origin: left top;
+  transform: scale(0.5);
+}

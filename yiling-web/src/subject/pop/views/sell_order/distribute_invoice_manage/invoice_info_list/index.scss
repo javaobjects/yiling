@@ -1,0 +1,139 @@
+@import '~@/common/styles/mixin.scss';
+
+.app-container {
+  .buy-order-half {
+    margin-bottom: 16px;
+    .el-col {
+      margin-bottom: 8px;
+      min-height: 100%;
+    }
+  }
+  .header-box {
+    min-height: 180px;
+    height: 100%;
+    position: relative;
+    .ticket-more {
+      position: absolute;
+      right: 16px;
+      top: 8px;
+    }
+    .header-bar {
+      margin-bottom: 12px;
+    }
+    .box-text {
+      font-weight: 400;
+      margin-left: 8px;
+      font-size: 14px;
+      color: $font-important-color;
+      .item {
+        line-height: 20px;
+        .el-select {
+          width: 240px;
+        }
+        .el-input {
+          width: 240px;
+        }
+        .size18 {
+          font-size: 18px;
+        }
+      }
+      .mark-item {
+        width: 360px;
+        height: 81px;
+        border-radius: 4px;
+        border: 1px solid #d8d8d8;
+        padding: 6px;
+        overflow: auto;
+      }
+      .img-item {
+        width: 64px;
+        height: 64px;
+        border-radius: 4px;
+        overflow: hidden;
+        margin-top: 27px;
+      }
+    }
+    .top-view {
+      padding: 0 12px;
+      margin-left: 8px;
+      border-radius: 4px;
+      border: 1px solid #eeeeee;
+      margin-bottom: 10px;
+      // padding-bottom: 12px;
+      &:last-child {
+        padding-bottom: 0;
+      }
+      .my-form-item {
+        display: flex;
+        align-items: center;
+        height: 44px;
+        font-size: 14px;
+        font-weight: 400;
+        color: #666666;
+        .my-form-item-left {
+          width: 100px;
+          margin-right: 12px;
+          font-size: 14px;
+          font-weight: 400;
+          color: #666666;
+        }
+        .my-radio-group {
+          display: flex;
+          flex-direction: column;
+        }
+        .tip-box {
+          display: flex;
+          align-items: center;
+          padding: 8px 16px;
+          font-size: $font-size-base;
+          line-height: $font-size-base-lh;
+          color: $font-important-color;
+          background: #fffbe6;
+          border-radius: 4px;
+          display: inline-block;
+          border: 1px solid #ffe58f;
+          i {
+            width: 21px;
+            height: 100%;
+            color: #fa8c15 !important;
+          }
+        }
+        .my-list-item-right {
+          display: flex;
+          align-items: center;
+          .el-input {
+            width: 120px;
+          }
+          .separate {
+            margin-right: 8px;
+          }
+          .separate2 {
+            margin-left: 9px;
+          }
+        }
+        .item-view {
+          margin-right: 120px;
+        }
+        .btn-view {
+          margin-left: 49px;
+        }
+      }
+      .top-view-item {
+        display: flex;
+        align-items: center;
+        font-size: 14px;
+        font-weight: 400;
+        height: 40px;
+        background: #fafafa;
+        border-radius: 4px;
+        padding: 0 23px;
+        .item-view {
+          margin-right: 52px;
+        }
+        .scal-20-width {
+          width: 20%;
+        }
+      }
+    }
+  }
+}

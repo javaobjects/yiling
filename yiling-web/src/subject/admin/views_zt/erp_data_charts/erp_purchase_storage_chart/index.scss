@@ -1,0 +1,192 @@
+.chart-dialog {
+  width: 100%;
+  height: 100%;
+  ::v-deep .el-dialog {
+    margin-top: 0 !important;
+    width: 100%;
+    height: 100%;
+    background-color: #f2f3f4 !important;
+    .el-dialog__header {
+      display: none;
+      border-bottom: none !important;
+      .el-dialog__headerbtn {
+        display: none;
+      }
+    }
+    .el-dialog__body {
+      max-height: 100%;
+      height: 100%;
+      .container {
+        height: 100%;
+        .content {
+          height: 100%;
+          padding: 8px;
+          display: flex;
+          flex-direction: column;
+          .button-box {
+            text-align: right;
+            vertical-align: center;
+          }
+          .tool-box {
+            display: flex;
+            .el-row {
+              flex: 1;
+              display: flex;
+              .el-col {
+                .title {
+                  font-size: $font-size-large;
+                  line-height: $font-size-base-lh;
+                  color: $font-important-color;
+                  margin-bottom: 8px;
+                }
+                .el-date-editor {
+                  width: 260px;
+                }
+                .range-box {
+                  display: flex;
+                  align-items: center;
+                  .range-input {
+                    width: 140px;
+                    .el-input-group__append,
+                    .el-input-group__prepend {
+                      padding: 0 10px;
+                    }
+                  }
+                  .separator {
+                    margin: 0 5px;
+                  }
+                }
+                .el-select {
+                  width: 260px;
+                  &:hover {
+                    cursor: pointer;
+                  }
+                }
+                .el-checkbox {
+                  width: 260px;
+                }
+              }
+            }
+          }
+          .table-wrap {
+            flex: 1;
+            overflow: hidden;
+            .table-box {
+              height: 100%;
+              display: flex;
+              flex-direction: column;
+              .table-title {
+                font-size: 16px;
+                font-weight: 600;
+              }
+              .total-statistic {
+                height: 16px;
+                display: flex;
+                align-items: center;
+                font-size: $font-size-base;
+                .item {
+                  margin-right: 40px;
+                  .title {
+                    color: $font-title-color;
+                  }
+                  .value {
+                    color: $success;
+                  }
+                }
+              }
+              .table-data-box {
+                flex: 1;
+                overflow: hidden;
+                .yl-table-eh {
+                  height: 100%;
+                  .el-table {
+                    display: flex;
+                    flex-direction: column;
+                    .el-table__header-wrapper {
+                      .header-box {
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        .sort-icon {
+                          cursor: pointer;
+                          font-size: 14px;
+                        }
+                      }
+                    }
+                    .el-table__body-wrapper {
+                      order: 1;
+                      .pur-name {
+                        cursor: pointer;
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+          .echart-wrap {
+            flex: 1;
+            display: flex;
+            .echart-box {
+              flex: 1;
+              display: flex;
+              flex-direction: column;
+              .title {
+                font-size: 16px;
+                font-weight: 600;
+                text-align: center;
+              }
+              .statistic-box {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-end;
+                .item {
+                  width: 350px;
+                  display: flex;
+                  align-items: center;
+                  margin-bottom: 8px;
+                  .icon {
+                    width: 15px;
+                    height: 15px;
+                    border-radius: 5px;
+                    margin-right: 8px;
+                  }
+                  .title {
+                    font-size: 13px;
+                    font-weight: normal;
+                    margin-right: 8px;
+                  }
+                  .erp-total {
+                    background-color: #5470c6;
+                  }
+                  .erp-quntity {
+                    background-color: #91cc75;
+                  }
+                  .pop-amount {
+                    background-color: #fac858;
+                  }
+                  .pop-quantity {
+                    background-color: #ee6666;
+                  }
+                }
+              }
+              .echart-data-box {
+                flex: 1;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+.el-all-select {
+  height: 34px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  &:hover {
+    background-color: #f5f7fa;
+  }
+}

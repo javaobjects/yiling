@@ -1,0 +1,64 @@
+.calculationProblem {
+  .form-item-one {
+    position: relative;
+    .item-one-form {
+      display: inline-block;
+  
+    }
+    .select-width {
+      width: 120px;
+    }
+    .el_input {
+      width: 80px;
+      margin-right: 20px;
+    }
+    .form-div {
+      width: 180px;
+      display: inline-block;
+    }
+    .form-div1 { 
+      display: inline-block;
+    }
+    .form-div2 {
+      display: inline-block;
+      margin-top: -40px;
+      vertical-align: middle;
+    }
+    .item-details {
+      width: 30px;
+      text-align: right;
+      display: inline-block;
+      cursor: pointer;
+      .icon_style {
+        color: #1790ff;
+        font-size: 24px;
+      }
+    }
+    .item-detail1 {
+      position: absolute;
+      top: 34px;
+      right: 30px;
+    }
+    .item-detail2 {
+      position: absolute;
+      top: 4px;
+      right: 30px;
+    }
+    .display {
+      display: inline-block;
+    }
+  }
+  .add-button {
+    margin-left: 40px;
+  }
+  .item-one-input ::v-deep .el-form-item__content {
+    margin-left: 10px !important;
+  }
+  .item-two-input ::v-deep .el-form-item__label {
+    width: 80px !important;
+  }
+  .item-two-input ::v-deep .el-form-item__content {
+    margin-left: 80px !important;
+  }
+}
+

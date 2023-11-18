@@ -1,0 +1,350 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.dataflow.statistics.dao.FlowBalanceStatisticsMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.dataflow.statistics.entity.FlowBalanceStatisticsDO">
+        <result column="id" property="id"/>
+        <result column="eid" property="eid"/>
+        <result column="ename" property="ename"/>
+        <result column="install_employee" property="installEmployee"/>
+        <result column="date_time" property="dateTime"/>
+        <result column="po_quantity" property="poQuantity"/>
+        <result column="so_quantity" property="soQuantity"/>
+        <result column="gb_quantity" property="gbQuantity"/>
+        <result column="last_gb_quantity" property="lastGbQuantity"/>
+        <result column="differ_quantity" property="differQuantity"/>
+        <result column="flow_mode" property="flowMode"/>
+        <result column="del_flag" property="delFlag"/>
+        <result column="create_user" property="createUser"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_user" property="updateUser"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="remark" property="remark"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,
+        eid, ename, install_employee, date_time, po_quantity, so_quantity, gb_quantity, last_gb_quantity, differ_quantity, flow_mode, del_flag, create_user, create_time, update_user, update_time, remark
+    </sql>
+
+    <delete id="deleteFlowBalanceStatistics">
+        delete from flow_balance_statistics
+        where date_time <![CDATA[ >= ]]> #{startTime}
+        and date_time <![CDATA[ <= ]]> #{endTime}
+        <if test="eidList != null and eidList.size() != 0">
+            and eid in
+            <foreach collection="eidList" item="eid" open="(" close=")" separator=",">
+                #{eid}
+            </foreach>
+        </if>
+    </delete>
+
+    <select id="getEnterpriseList" resultMap="BaseResultMap">
+        select eid, ename from flow_balance_statistics group by eid, ename
+    </select>
+
+
+    <select id="getMonthPageList" resultType="com.yiling.dataflow.statistics.entity.FlowBalanceStatisticsDO">
+        select
+        f.eid,
+        f.ename,
+        f.installEmployee,
+        f.poQuantity,
+        f.soQuantity,
+        f.differQuantity,
+        t.gb_quantity gbQuantity
+        from
+        (select
+        eid,
+        ename,
+        max(install_employee) installEmployee,
+        SUM(po_quantity) poQuantity,
+        SUM(so_quantity) soQuantity,
+        SUM(differ_quantity) differQuantity
+        from
+        flow_balance_statistics
+        <where>
+            del_flag = 0
+            <if test="request.time != null and request.time != ''">
+                and DATE_FORMAT(date_time, '%Y-%m') = #{request.time}
+            </if>
+            <if test="request.eid != null">
+                and eid = #{request.eid}
+            </if>
+            <if test="request.installEmployee != null and request.installEmployee != ''">
+                and install_employee = #{request.installEmployee}
+            </if>
+        </where>
+        group by eid, ename) f
+        left join flow_balance_statistics t on f.eid = t.eid
+        <where>
+            and t.date_time = #{request.gbTime}
+            <if test="request.minQuantity != null or request.maxQuantity != null">
+                <if test="request.quantityType == '1'.toString() ">
+                    <if test="request.minQuantity != null">
+                        and <![CDATA[ f.poQuantity >= #{request.minQuantity} ]]>
+                    </if>
+                    <if test="request.maxQuantity != null">
+                        and <![CDATA[ f.poQuantity <= #{request.maxQuantity} ]]>
+                    </if>
+                </if>
+                <if test="request.quantityType == '2'.toString() ">
+                    <if test="request.minQuantity != null">
+                        and <![CDATA[ f.soQuantity >= #{request.minQuantity} ]]>
+                    </if>
+                    <if test="request.maxQuantity != null">
+                        and <![CDATA[ f.soQuantity <= #{request.maxQuantity} ]]>
+                    </if>
+                </if>
+                <if test="request.quantityType == '3'.toString() ">
+                    <if test="request.minQuantity != null">
+                        and <![CDATA[ t.gb_quantity >= #{request.minQuantity} ]]>
+                    </if>
+                    <if test="request.maxQuantity != null">
+                        and <![CDATA[ t.gb_quantity <= #{request.maxQuantity} ]]>
+                    </if>
+                </if>
+                <if test="request.quantityType == '4'.toString() ">
+                    <if test="request.minQuantity != null">
+                        and <![CDATA[ f.differQuantity >= #{request.minQuantity} ]]>
+                    </if>
+                    <if test="request.maxQuantity != null">
+                        and <![CDATA[ f.differQuantity <= #{request.maxQuantity} ]]>
+                    </if>
+                </if>
+            </if>
+        </where>
+    </select>
+
+
+    <select id="getEnterpriseBeginMonthList" resultType="com.yiling.dataflow.statistics.bo.EnterpriseMonthQuantityBO">
+        select eid, last_gb_quantity quantity from flow_balance_statistics
+        <where>
+            del_flag = 0
+            <if test="beginMonth != null and beginMonth != ''">
+                and DATE_FORMAT(date_time, '%Y-%m-%d') = #{beginMonth}
+            </if>
+            <if test="eidList != null">
+                and eid in
+                <foreach collection="eidList" item="eid" open="(" close=")" separator=",">
+                    #{eid}
+                </foreach>
+            </if>
+        </where>
+    </select>
+
+    <select id="getFlowBalanceStatisticsList"
+            resultType="com.yiling.dataflow.statistics.entity.FlowBalanceStatisticsDO">
+        select
+        eid,
+        max(ename) ename,
+        max(install_employee) installEmployee,
+        DATE_FORMAT(date_time, '%Y-%m-%d') dateTime,
+        SUM(po_quantity) poQuantity,
+        SUM(so_quantity) soQuantity,
+        SUM(gb_quantity) gbQuantity,
+        SUM(last_gb_quantity) lastGbQuantity,
+        SUM(differ_quantity) differQuantity
+        from flow_balance_statistics
+        <where>
+            del_flag = 0
+            <if test="request.monthTime != null and request.monthTime != ''">
+                and DATE_FORMAT(date_time, '%Y-%m') = #{request.monthTime}
+            </if>
+            <if test="request.eid != null">
+                and eid = #{request.eid}
+            </if>
+        </where>
+        group by eid, DATE_FORMAT(date_time, '%Y-%m-%d')
+    </select>
+
+    <select id="getGoodsSpecStatisticsListPage" resultType="com.yiling.dataflow.statistics.bo.GoodsSpecStatisticsBO">
+        SELECT
+        t.specification_id specificationId,
+        s.`name` goodsName,
+        s.sell_specifications spec,
+        IFNULL(poQuantity,0) poQuantity,
+        IFNULL(soQuantity,0) soQuantity
+        from
+        (SELECT specification_id from flow_purchase where del_flag = 0 and eid = #{request.eid} and po_month =
+        #{request.monthTime} group by specification_id
+        UNION
+        SELECT specification_id from flow_sale where del_flag = 0 and eid = #{request.eid} and so_month =
+        #{request.monthTime} group by specification_id
+        UNION
+        SELECT specification_id from flow_goods_batch_detail where del_flag = 0 and eid = #{request.eid} and
+        gb_detail_time in (#{request.beginMonthDateTime}, #{request.endMonthDateTime}) group by specification_id) t
+        LEFT join standard_goods_specification s on t.specification_id = s.id
+        LEFT join (SELECT specification_id, sum(po_quantity) poQuantity from flow_purchase where del_flag = 0 and eid =
+        #{request.eid} and po_month = #{request.monthTime} group by specification_id) t1 on t.specification_id =
+        t1.specification_id
+        LEFT join (SELECT specification_id, sum(so_quantity) soQuantity from flow_sale where del_flag = 0 and eid =
+        #{request.eid} and so_month = #{request.monthTime} group by specification_id) t2 on t.specification_id =
+        t2.specification_id
+        where t.specification_id is not null
+        <if test="request.specificationId != null">
+            and t.specification_id = #{request.specificationId}
+        </if>
+        order by t.specification_id
+    </select>
+
+    <select id="getGoodsSpecInfoList" resultType="com.yiling.dataflow.statistics.bo.GoodsSpecInfoBO">
+        SELECT
+            t.specification_id specificationId,
+            s.`name` goodsName,
+            s.sell_specifications spec
+        from
+        (SELECT specification_id from flow_purchase where del_flag = 0 and eid = #{eid} and po_month = #{monthTime} group by specification_id
+        UNION
+        SELECT specification_id from flow_sale where del_flag = 0 and eid = #{eid} and so_month = #{monthTime} group by specification_id
+        UNION
+        SELECT specification_id from flow_goods_batch where del_flag = 0 and eid = #{eid} group by specification_id) t
+            LEFT join standard_goods_specification s on t.specification_id = s.id
+            where specification_id != 0 and specification_id is not null and  s.name is not null and sell_specifications is not null
+    </select>
+
+    <select id="getEnterpriseCurrentMonthList" resultType="com.yiling.dataflow.statistics.bo.EnterpriseMonthQuantityBO">
+        SELECT t1.eid ,
+        IFNULL(t1.gb_quantity, 0) quantity
+        from flow_balance_statistics t1,
+        (select eid, max(date_time) date_time from flow_balance_statistics where DATE_FORMAT(date_time, '%Y-%m') =
+        #{time}
+        and eid in
+        <foreach collection="eidList" item="eid" open="(" close=")" separator=",">
+            #{eid}
+        </foreach>
+        group by eid) t2
+        where t1.eid = t2.eid and t1.date_time = t2.date_time
+
+    </select>
+
+    <select id="getEnterpriseMonthFlowList" resultMap="BaseResultMap">
+        select eid, sum(po_quantity) po_quantity, sum(so_quantity)so_quantity from flow_balance_statistics
+        <where>
+            and DATE_FORMAT(date_time, '%Y-%m') = #{monthTime}
+            <if test="eidList != null">
+                and eid in
+                <foreach collection="eidList" item="eid" open="(" close=")" separator=",">
+                    #{eid}
+                </foreach>
+            </if>
+        </where>
+        group by eid
+    </select>
+
+    <select id="goodsSpecNoMatchedList" resultType="com.yiling.dataflow.statistics.bo.GoodsSpecNoMatchedBO">
+        select
+        t.goodsName,
+        t.spec,
+        t.manufacturer,
+        f.recommend_specification_id recommendSpecificationId,
+        f.recommend_score recommendScore,
+        f.recommend_goods recommendGoods,
+        f.recommend_spec recommendSpec
+        from (
+        SELECT goods_name goodsName, po_specifications spec,po_manufacturer manufacturer from flow_purchase where
+        del_flag = 0 and specification_id = 0
+        <if test="request.eid != null">
+            and eid = #{request.eid}
+        </if>
+        <if test="request.monthTime != null and request.monthTime != ''">
+            and po_month = #{request.monthTime}
+        </if>
+        UNION
+        SELECT goods_name goodsName, so_specifications spec,so_manufacturer manufacturer from flow_sale where del_flag =
+        0 and specification_id = 0
+        <if test="request.eid != null">
+            and eid = #{request.eid}
+        </if>
+        <if test="request.monthTime != null and request.monthTime != ''">
+            and so_month = #{request.monthTime}
+        </if>
+        UNION
+        SELECT gb_name goodsName, gb_specifications spec,gb_manufacturer manufacturer from flow_goods_batch_detail where
+        del_flag = 0 and specification_id = 0
+        <if test="request.eid != null">
+            and eid = #{request.eid}
+        </if>
+        <if test="request.beginMonthDateTime != null and request.endMonthDateTime != null">
+            and gb_detail_time in (#{request.beginMonthDateTime}, #{request.endMonthDateTime})
+        </if>
+        ) t left join flow_goods_spec_mapping f on t.goodsName = f.goods_name and t.spec = f.spec
+
+
+    </select>
+
+
+    <select id="page" resultType="com.yiling.dataflow.statistics.bo.FlowDailyStatisticsBO">
+        SELECT
+        s.crm_enterprise_id as crmEnterpriseId,
+        s.eid,
+        s.ename,
+        s.date_time as dateTime,
+        s.po_row_number as poRowNumber,
+        s.so_row_number as soRowNumber,
+        s.gb_row_number as gbRowNumber,
+        s.flow_mode as flowMode,
+        s.collect_time as collectTime,
+        e.supplier_level as supplierLevel
+        FROM
+        flow_balance_statistics s
+        left join crm_supplier e on s.crm_enterprise_id=e.crm_enterprise_id
+        <where>
+            s.del_flag = 0
+            <if test="request.startDateTime != null">
+                AND s.date_time  <![CDATA[ >= ]]> #{request.startDateTime}
+            </if>
+            <if test="request.endDateTime != null">
+                AND s.date_time  <![CDATA[ <= ]]> #{request.endDateTime}
+            </if>
+            <if test="request.userDatascopeBO!=null and request.userDatascopeBO.orgDatascope==2">
+                and (
+                <choose>
+                    <when test="request.userDatascopeBO.orgPartDatascopeBO.crmEids != null and request.userDatascopeBO.orgPartDatascopeBO.crmEids.size()>0 and request.userDatascopeBO.orgPartDatascopeBO.provinceCodes != null and request.userDatascopeBO.orgPartDatascopeBO.provinceCodes.size()>0">
+                        s.crm_enterprise_id in
+                        <foreach collection="request.userDatascopeBO.orgPartDatascopeBO.crmEids" item="crmEnterpriseId"
+                                 open="(" close=")"
+                                 separator=",">
+                            #{crmEnterpriseId}
+                        </foreach>
+                        or s.province_code in
+                        <foreach collection="request.userDatascopeBO.orgPartDatascopeBO.provinceCodes"
+                                 item="provinceCode" open="(" close=")" separator=",">
+                            #{provinceCode}
+                        </foreach>
+                    </when>
+                    <when test="request.userDatascopeBO.orgPartDatascopeBO.crmEids != null and request.userDatascopeBO.orgPartDatascopeBO.crmEids.size()>0 ">
+                        s.crm_enterprise_id in
+                        <foreach collection="request.userDatascopeBO.orgPartDatascopeBO.crmEids" item="crmEnterpriseId"
+                                 open="(" close=")"
+                                 separator=",">
+                            #{crmEnterpriseId}
+                        </foreach>
+                    </when>
+                    <when test="request.userDatascopeBO.orgPartDatascopeBO.provinceCodes != null and request.userDatascopeBO.orgPartDatascopeBO.provinceCodes.size()>0">
+                        s.province_code in
+                        <foreach collection="request.userDatascopeBO.orgPartDatascopeBO.provinceCodes"
+                                 item="provinceCode" open="(" close=")" separator=",">
+                            #{provinceCode}
+                        </foreach>
+                    </when>
+                </choose>
+                )
+            </if>
+            <if test="request.crmEnterpriseId != null and request.crmEnterpriseId != 0">
+                and s.crm_enterprise_id = #{request.crmEnterpriseId}
+            </if>
+            <if test="request.flowMode != null and request.flowMode != 0">
+                and s.flow_mode = #{request.flowMode}
+            </if>
+            <if test="request.enameLevel != null and request.enameLevel != 0">
+                and e.supplier_level = #{request.enameLevel}
+            </if>
+        </where>
+        order by s.date_time desc
+    </select>
+
+
+</mapper>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.sjms.agency.dao.AgencyUnlockRelationShipMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.sjms.agency.entity.AgencyUnlockRelationShipDO">
+    <result column="id" property="id" />
+        <result column="agency_form_id" property="agencyFormId" />
+        <result column="crm_enterprise_id" property="crmEnterpriseId" />
+        <result column="post_code" property="postCode" />
+        <result column="post_name" property="postName" />
+        <result column="product_group" property="productGroup" />
+        <result column="representative_code" property="representativeCode" />
+        <result column="representative_name" property="representativeName" />
+        <result column="customer_code" property="customerCode" />
+        <result column="customer_name" property="customerName" />
+        <result column="supply_chain_role" property="supplyChainRole" />
+        <result column="department" property="department" />
+        <result column="business_department" property="businessDepartment" />
+        <result column="provincial_area" property="provincialArea" />
+        <result column="business_province" property="businessProvince" />
+        <result column="business_area_code" property="businessAreaCode" />
+        <result column="business_area" property="businessArea" />
+        <result column="superior_supervisor_code" property="superiorSupervisorCode" />
+        <result column="superior_supervisor_name" property="superiorSupervisorName" />
+        <result column="src_relation_ship_ip" property="srcRelationShipIp" />
+        <result column="del_flag" property="delFlag" />
+        <result column="create_user" property="createUser" />
+        <result column="create_time" property="createTime" />
+        <result column="update_user" property="updateUser" />
+        <result column="update_time" property="updateTime" />
+        <result column="remark" property="remark" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,
+        agency_form_id, crm_enterprise_id, post_code, post_name, product_group, representative_code, representative_name, customer_code, customer_name, supply_chain_role, department, business_department, provincial_area, business_province, business_area_code, business_area, superior_supervisor_code, superior_supervisor_name, src_relation_ship_ip, del_flag, create_user, create_time, update_user, update_time, remark
+    </sql>
+
+</mapper>

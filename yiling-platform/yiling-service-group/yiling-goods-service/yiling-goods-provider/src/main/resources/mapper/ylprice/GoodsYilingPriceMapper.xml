@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.goods.ylprice.dao.GoodsYilingPriceMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.goods.ylprice.entity.GoodsYilingPriceDO">
+        <result column="id" property="id"/>
+        <result column="goods_id" property="goodsId"/>
+        <result column="specification_id" property="specificationId"/>
+        <result column="price" property="price"/>
+        <result column="param_id" property="paramId"/>
+        <result column="start_time" property="startTime"/>
+        <result column="end_time" property="endTime"/>
+        <result column="goods_name" property="goodsName"/>
+        <result column="goods_specification" property="goodsSpecification"/>
+        <result column="del_flag" property="delFlag"/>
+        <result column="create_user" property="createUser"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_user" property="updateUser"/>
+        <result column="update_time" property="updateTime"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,
+        goods_id, specification_id, price, param_id, start_time, end_time, goods_name, goods_specification, del_flag, create_user, create_time, update_user, update_time
+    </sql>
+
+    <sql id="Base_Table">
+        `goods_yiling_price`
+    </sql>
+
+    <select id="listBySpecificationIdList" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        <include refid="Base_Table"/>
+        WHERE del_flag = 0
+        AND specification_id IN
+        <foreach item="item" index="index" collection="specificationIdList" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <select id="getPriceBySpecificationIdList" resultType="com.yiling.goods.ylprice.entity.GoodsYilingPriceDO">
+        select
+        <include refid="Base_Column_List" />
+        from goods_yiling_price
+        <where>
+            del_flag = 0
+            <if test="specificationIdList != null and specificationIdList.size gt 0">
+                and specification_id in
+                <foreach collection="specificationIdList" item="specificationId" separator="," open="(" close=")">
+                    #{specificationId}
+                </foreach>
+            </if>
+            <if test="paramId != null">
+                and param_id = #{paramId}
+            </if>
+            <if test="date != null">
+                and <![CDATA[ start_time <= #{date} and end_time > #{date} ]]>
+            </if>
+        </where>
+    </select>
+
+</mapper>

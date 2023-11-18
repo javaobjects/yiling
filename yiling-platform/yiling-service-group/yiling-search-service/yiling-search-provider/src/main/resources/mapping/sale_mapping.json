@@ -1,0 +1,119 @@
+{
+  "mapping": {
+    "properties": {
+      "city_code": {
+        "type": "long"
+      },
+      "crm_code": {
+        "type": "text"
+      },
+      "crm_goods_code": {
+        "type": "long"
+      },
+      "eid": {
+        "type": "long"
+      },
+      "ename": {
+        "type": "text",
+        "fields": {
+          "pinyin": {
+            "type": "text",
+            "boost": 10,
+            "term_vector": "with_offsets",
+            "analyzer": "pinyin_analyzer"
+          }
+        },
+        "analyzer": "ik_max_word",
+        "search_analyzer": "ik_smart"
+      },
+      "enterprise_crm_code": {
+        "type": "text"
+      },
+      "enterprise_name": {
+        "type": "text",
+        "fields": {
+          "pinyin": {
+            "type": "text",
+            "boost": 10,
+            "term_vector": "with_offsets",
+            "analyzer": "pinyin_analyzer"
+          }
+        },
+        "analyzer": "ik_max_word",
+        "search_analyzer": "ik_smart"
+      },
+      "goods_name": {
+        "type": "text",
+        "fields": {
+          "pinyin": {
+            "type": "text",
+            "boost": 10,
+            "term_vector": "with_offsets",
+            "analyzer": "pinyin_analyzer"
+          }
+        },
+        "analyzer": "ik_max_word",
+        "search_analyzer": "ik_smart"
+      },
+      "id": {
+        "type": "long"
+      },
+      "province_code": {
+        "type": "long"
+      },
+      "region_code": {
+        "type": "long"
+      },
+      "so_batch_no": {
+        "type": "text"
+      },
+      "so_license": {
+        "type": "text"
+      },
+      "so_manufacturer": {
+        "type": "text",
+        "fields": {
+          "pinyin": {
+            "type": "text",
+            "boost": 10,
+            "term_vector": "with_offsets",
+            "analyzer": "pinyin_analyzer"
+          }
+        },
+        "analyzer": "ik_max_word",
+        "search_analyzer": "ik_smart"
+      },
+      "so_no": {
+        "type": "text"
+      },
+      "so_price": {
+        "type": "float"
+      },
+      "so_quantity": {
+        "type": "long"
+      },
+      "so_specifications": {
+        "type": "text",
+        "fields": {
+          "pinyin": {
+            "type": "text",
+            "boost": 10,
+            "term_vector": "with_offsets",
+            "analyzer": "pinyin_analyzer"
+          }
+        },
+        "analyzer": "ik_max_word",
+        "search_analyzer": "ik_smart"
+      },
+      "so_time": {
+        "type": "date"
+      },
+      "so_unit": {
+        "type": "text"
+      },
+      "specification_id": {
+        "type": "long"
+      }
+    }
+  }
+}

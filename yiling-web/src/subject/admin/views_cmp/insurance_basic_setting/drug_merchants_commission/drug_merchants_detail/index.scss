@@ -1,0 +1,31 @@
+.app-container {
+  .common-box {
+    .header-bar {
+      height: 22px;
+      line-height: 22px;
+      .sign {
+        margin-right: 5px;
+      }
+    }
+  }
+  .table-box {
+    padding-left: 6px;
+    .table-bar {
+      .el-row {
+        margin-bottom: 8px;
+        .el-col {
+          .item {
+            margin-bottom: 8px;
+            .item-title {
+              font-size: $font-size-base;
+              color: #666;
+            }
+            .item-value {
+              color: #333;
+            }
+          }
+        }
+      }
+    }
+  }
+}

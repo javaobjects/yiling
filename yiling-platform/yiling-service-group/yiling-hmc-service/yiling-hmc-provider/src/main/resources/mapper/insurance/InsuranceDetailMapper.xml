@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.hmc.insurance.dao.InsuranceDetailMapper">
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.hmc.insurance.entity.InsuranceDetailDO">
+        <result column="id" property="id"/>
+        <result column="insurance_id" property="insuranceId"/>
+        <result column="control_id" property="controlId"/>
+        <result column="goods_name" property="goodsName"/>
+        <result column="settle_price" property="settlePrice"/>
+        <result column="month_count" property="monthCount"/>
+        <result column="insurance_goods_code" property="insuranceGoodsCode"/>
+        <result column="del_flag" property="delFlag"/>
+        <result column="create_user" property="createUser"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_user" property="updateUser"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="remark" property="remark"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id
+                ,
+        insurance_id, control_id, goods_name, settle_price, month_count, insurance_goods_code, del_flag, create_user, create_time, update_user, update_time, remark
+    </sql>
+
+    <select id="pageByInsuranceNameAndStatus"
+            parameterType="com.yiling.hmc.insurance.dto.request.InsuranceDetailListRequest" resultMap="BaseResultMap">
+        SELECT t.*
+        FROM hmc_insurance_detail t
+        LEFT JOIN `hmc_insurance` d ON t.insurance_id = d.id
+        <where>
+            t.del_flag=0
+            AND d.del_flag=0
+            AND d.status = 1
+            <if test="request.InsuranceName != null">
+                AND d.insurance_name = #{request.InsuranceName}
+            </if>
+        </where>
+        ORDER BY t.id ASC
+    </select>
+
+    <select id="listByControlIdAndCompanyAndInsuranceStatus" resultMap="BaseResultMap">
+        SELECT t.*
+        FROM hmc_insurance_detail t
+        LEFT JOIN `hmc_insurance` d ON t.insurance_id = d.id
+        <where>
+            t.del_flag=0
+            AND d.del_flag=0
+            <if test="controlIdList != null and controlIdList.size() > 0">
+                and t.control_id in
+                <foreach item="item" index="index" collection="controlIdList"
+                         open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="insuranceCompanyId != null">
+                AND d.insurance_company_id = #{insuranceCompanyId}
+            </if>
+            <if test="insuranceStatus != null">
+                AND d.status = #{insuranceStatus}
+            </if>
+        </where>
+        ORDER BY t.id ASC
+    </select>
+</mapper>

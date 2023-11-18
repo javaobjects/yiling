@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.hmc.order.dao.OrderDetailMapper">
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.hmc.order.entity.OrderDetailDO">
+        <result column="id" property="id"/>
+        <result column="order_id" property="orderId"/>
+        <result column="insurance_record_id" property="insuranceRecordId"/>
+        <result column="hmc_goods_id" property="hmcGoodsId"/>
+        <result column="goods_id" property="goodsId"/>
+        <result column="sell_specifications_id" property="sellSpecificationsId"/>
+        <result column="goods_name" property="goodsName"/>
+        <result column="insurance_price" property="insurancePrice"/>
+        <result column="settle_price" property="settlePrice"/>
+        <result column="settle_amount" property="settleAmount"/>
+        <result column="terminal_settle_price" property="terminalSettlePrice"/>
+        <result column="terminal_settle_amount" property="terminalSettleAmount"/>
+        <result column="goods_specifications" property="goodsSpecifications"/>
+        <result column="goods_quantity" property="goodsQuantity"/>
+        <result column="goods_amount" property="goodsAmount"/>
+        <result column="insurance_goods_code" property="insuranceGoodsCode"/>
+        <result column="del_flag" property="delFlag"/>
+        <result column="create_user" property="createUser"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_user" property="updateUser"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="remark" property="remark"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, order_id,insurance_record_id, hmc_goods_id, goods_id, sell_specifications_id, goods_name, insurance_price, settle_price, settle_amount,
+        terminal_settle_price, terminal_settle_amount, goods_specifications, goods_quantity, goods_amount,insurance_goods_code, del_flag, create_user, create_time, update_user, update_time, remark
+    </sql>
+</mapper>

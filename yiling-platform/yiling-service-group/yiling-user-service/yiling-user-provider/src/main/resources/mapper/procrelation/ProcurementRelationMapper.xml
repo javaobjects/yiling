@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.user.procrelation.dao.ProcurementRelationMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.user.procrelation.entity.ProcurementRelationDO">
+    <result column="id" property="id" />
+        <result column="version" property="version" />
+        <result column="version_id" property="versionId" />
+        <result column="proc_relation_number" property="procRelationNumber" />
+        <result column="factory_eid" property="factoryEid" />
+        <result column="factory_name" property="factoryName" />
+        <result column="delivery_eid" property="deliveryEid" />
+        <result column="delivery_name" property="deliveryName" />
+        <result column="channel_partner_eid" property="channelPartnerEid" />
+        <result column="channel_partner_name" property="channelPartnerName" />
+        <result column="start_time" property="startTime" />
+        <result column="end_time" property="endTime" />
+        <result column="enterprise_customer_id" property="enterpriseCustomerId" />
+        <result column="delivery_type" property="deliveryType" />
+        <result column="proc_relation_status" property="procRelationStatus" />
+        <result column="stop_time" property="stopTime" />
+        <result column="stop_user" property="stopUser" />
+        <result column="expire_time" property="expireTime" />
+        <result column="del_flag" property="delFlag" />
+        <result column="create_user" property="createUser" />
+        <result column="create_time" property="createTime" />
+        <result column="update_user" property="updateUser" />
+        <result column="update_time" property="updateTime" />
+        <result column="remark" property="remark" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,
+        version, version_id, proc_relation_number, factory_eid, factory_name, delivery_eid, delivery_name, channel_partner_eid, channel_partner_name, start_time, end_time, enterprise_customer_id, delivery_type, proc_relation_status, stop_time, stop_user, expire_time, del_flag, create_user, create_time, update_user, update_time, remark
+    </sql>
+
+    <update id="updateVersion" parameterType="com.yiling.user.procrelation.entity.ProcurementRelationDO">
+    UPDATE pop_procurement_relation
+    SET
+    <if test="request.opTime != null">
+    update_time = #{request.opTime},
+    </if>
+    <if test="request.opUserId != null and request.opUserId != 0">
+    update_user = #{request.opUserId},
+    </if>
+    version = version + 1,
+    version_id = #{request.versionId}
+    WHERE
+        id = #{request.id}
+	AND
+        version = #{request.originalVersion}
+    </update>
+
+    <update id="updateInfoByVersion" parameterType="com.yiling.user.procrelation.entity.ProcurementRelationDO">
+    UPDATE pop_procurement_relation
+    SET version = version + 1,
+    <if test="request.factoryEid != null and request.factoryEid != 0">
+        factory_eid = #{request.factoryEid},
+    </if>
+    <if test="request.factoryName != null and request.factoryName != ''">
+        factory_name = #{request.factoryName},
+    </if>
+    <if test="request.deliveryEid != null and request.deliveryEid != 0">
+        delivery_eid = #{request.deliveryEid},
+    </if>
+    <if test="request.deliveryName != null and request.deliveryName != ''">
+        delivery_name = #{request.deliveryName},
+    </if>
+    <if test="request.channelPartnerEid != null and request.channelPartnerEid != 0">
+        channel_partner_eid = #{request.channelPartnerEid},
+    </if>
+    <if test="request.channelPartnerName != null and request.channelPartnerName != ''">
+        channel_partner_name = #{request.channelPartnerName},
+    </if>
+    <if test="request.startTime != null">
+        start_time = #{request.startTime},
+    </if>
+    <if test="request.endTime != null">
+        end_time = #{request.endTime},
+    </if>
+    <if test="request.deliveryType != null and request.deliveryType != 0">
+        delivery_type = #{request.deliveryType},
+    </if>
+    version_id = #{request.versionId},
+    update_time = #{request.opTime},
+    update_user = #{request.opUserId}
+    WHERE
+        id = #{request.id}
+	AND
+        version = #{request.originalVersion}
+    </update>
+
+    <select id="queryAutoIncrement" parameterType="java.lang.String" resultType="java.lang.Long">
+    SELECT
+        auto_increment
+    FROM
+        information_schema.TABLES
+    WHERE
+        table_name = "pop_procurement_relation"
+        <if test="dbName != null and dbName != ''">
+            AND table_schema = #{dbName}
+        </if>
+    </select>
+
+</mapper>

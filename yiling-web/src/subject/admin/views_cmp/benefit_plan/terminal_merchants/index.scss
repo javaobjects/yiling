@@ -1,0 +1,22 @@
+.app-container {
+  .common-box {
+    .el-input {
+      width: 220px;
+    }
+    .search-box {
+      .box {
+        .title {
+          font-size: $font-size-large;
+          line-height: $font-size-large-lh;
+          color: $font-important-color;
+          margin-bottom: 8px;
+        }
+      }
+    }
+  }
+    // 导出、导入按钮
+  .down-box {
+    width: 100%;
+    margin-top: 24px;
+  }
+}

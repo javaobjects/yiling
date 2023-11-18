@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.cms.meeting.dao.MeetingMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.cms.meeting.entity.MeetingDO">
+    <result column="id" property="id" />
+        <result column="title" property="title" />
+        <result column="background_pic" property="backgroundPic" />
+        <result column="publish_flag" property="publishFlag" />
+        <result column="activity_start_time" property="activityStartTime" />
+        <result column="activity_end_time" property="activityEndTime" />
+        <result column="apply_end_time" property="applyEndTime" />
+        <result column="activity_modus" property="activityModus" />
+        <result column="credit_flag" property="creditFlag" />
+        <result column="credit_value" property="creditValue" />
+        <result column="activity_type" property="activityType" />
+        <result column="public_flag" property="publicFlag" />
+        <result column="main_speaker" property="mainSpeaker" />
+        <result column="status" property="status" />
+        <result column="read_num" property="readNum" />
+        <result column="del_flag" property="delFlag" />
+        <result column="create_time" property="createTime" />
+        <result column="create_user" property="createUser" />
+        <result column="update_time" property="updateTime" />
+        <result column="update_user" property="updateUser" />
+        <result column="remark" property="remark" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        m.id, m.title, m.background_pic, m.publish_flag, m.activity_start_time, m.activity_end_time, m.apply_end_time, m.activity_modus, m.credit_flag,
+        m.credit_value, m.activity_type, m.public_flag, m.main_speaker, m.status, m.read_num, m.del_flag, m.create_time, m.create_user, m.update_time, m.update_user, m.remark
+    </sql>
+
+    <select id="queryMeetingListPage" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from meeting m
+        <if test="request.useLineList != null and request.useLineList.size > 0">
+            left join meeting_business_line l on m.id = l.meeting_id and l.del_flag = 0
+        </if>
+        <where>
+            m.del_flag = 0
+            <if test="request.title != null and request.title != ''">
+                and m.title like concat('%',#{request.title},'%')
+            </if>
+            <if test="request.status != null and request.status != 0">
+                and m.status = #{request.status}
+            </if>
+            <if test="request.showStatus != null and request.showStatus != 0">
+                <if test="request.showStatus == 2">
+                    and m.status = 2 and m.activity_start_time <![CDATA[ < ]]> now() and m.activity_end_time  <![CDATA[ > ]]> now()
+                </if>
+                <if test="request.showStatus == 3">
+                    and m.status = 2 and m.activity_end_time  <![CDATA[ <= ]]> now()
+                </if>
+                <if test="request.showStatus == 4">
+                    and m.status = 2 and m.activity_start_time  <![CDATA[ > ]]> now()
+                </if>
+            </if>
+            <if test="request.publicFlag != null ">
+                and m.public_flag = #{request.publicFlag}
+            </if>
+            <if test="request.useLineList != null and request.useLineList.size > 0">
+                and l.use_line in (
+                <foreach collection="request.useLineList" item="userLine" separator=",">
+                    #{userLine}
+                </foreach>
+                )
+            </if>
+            <if test="request.startCreateTime != null">
+                AND m.create_time  <![CDATA[ >= ]]> #{request.startCreateTime}
+            </if>
+            <if test="request.endCreateTime != null">
+                AND m.create_time  <![CDATA[ <= ]]> #{request.endCreateTime}
+            </if>
+            <if test="request.activityStartTime != null">
+                AND m.activity_start_time  <![CDATA[ >= ]]> #{request.activityStartTime}
+            </if>
+            <if test="request.activityEndTime != null">
+                AND m.activity_end_time  <![CDATA[ <= ]]> #{request.activityEndTime}
+            </if>
+            <if test="request.revertActivityEndTime != null">
+                AND m.activity_end_time  <![CDATA[ >= ]]> #{request.revertActivityEndTime}
+            </if>
+            <choose>
+                <when test="request.activityStartTimeDesc != null">
+                    <if test="request.activityStartTimeDesc == true">
+                        order by m.activity_start_time desc
+                    </if>
+                    <if test="request.activityStartTimeDesc == false">
+                        order by m.activity_start_time asc
+                    </if>
+                </when>
+                <otherwise>
+                    order by m.create_time desc
+                </otherwise>
+            </choose>
+        </where>
+
+    </select>
+
+    <select id="queryMeetingList" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from meeting m
+        <if test="request.useLineList != null and request.useLineList.size > 0">
+            left join meeting_business_line l on m.id = l.meeting_id and l.del_flag = 0
+        </if>
+        <where>
+            m.del_flag = 0
+            <if test="request.title != null and request.title != ''">
+                and m.title like concat('%',#{request.title},'%')
+            </if>
+            <if test="request.status != null and request.status != 0">
+                and m.status = #{request.status}
+            </if>
+            <if test="request.useLineList != null and request.useLineList.size > 0">
+                and l.use_line in (
+                <foreach collection="request.useLineList" item="userLine" separator=",">
+                    #{userLine}
+                </foreach>
+                )
+            </if>
+        </where>
+
+    </select>
+
+    <update id="increaseRead" parameterType="java.lang.Long">
+        update meeting set read_num = read_num + 1 where id = #{id}
+    </update>
+
+</mapper>

@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.settlement.b2b.dao.SettlementMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.settlement.b2b.entity.SettlementDO">
+        <result column="id" property="id" />
+        <result column="eid" property="eid" />
+        <result column="code" property="code" />
+        <result column="amount" property="amount" />
+        <result column="goods_amount" property="goodsAmount" />
+        <result column="refund_goods_amount" property="refundGoodsAmount" />
+        <result column="discount_amount" property="discountAmount" />
+        <result column="refund_discount_amount" property="refundDiscountAmount" />
+        <result column="refund_amount" property="refundAmount" />
+        <result column="coupon_amount" property="couponAmount" />
+        <result column="refund_coupon_amount" property="refundCouponAmount" />
+        <result column="gift_amount" property="giftAmount" />
+        <result column="refund_gift_amount" property="refundGiftAmount" />
+        <result column="promotion_amount" property="promotionAmount" />
+        <result column="refund_promotion_amount" property="refundPromotionAmount" />
+        <result column="com_pac_amount" property="comPacAmount" />
+        <result column="refund_com_pac_amount" property="refundComPacAmount" />
+        <result column="presale_default_amount" property="presaleDefaultAmount" />
+        <result column="presale_discount_amount" property="presaleDiscountAmount" />
+        <result column="refund_pre_amount" property="refundPreAmount" />
+        <result column="pay_discount_amount" property="payDiscountAmount" />
+        <result column="refund_pay_amount" property="refundPayAmount" />
+        <result column="order_count" property="orderCount" />
+        <result column="bank_receipt_id" property="bankReceiptId" />
+        <result column="type" property="type" />
+        <result column="status" property="status" />
+        <result column="settlement_time" property="settlementTime" />
+        <result column="pay_source" property="paySource" />
+        <result column="third_pay_no" property="thirdPayNo" />
+        <result column="pay_no" property="payNo" />
+        <result column="err_msg" property="errMsg" />
+        <result column="del_flag" property="delFlag" />
+        <result column="create_time" property="createTime" />
+        <result column="create_user" property="createUser" />
+        <result column="update_time" property="updateTime" />
+        <result column="update_user" property="updateUser" />
+        <result column="remark" property="remark" />
+        <result column="settlement_remark" property="settlementRemark" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,
+        eid, code, amount, goods_amount, refund_goods_amount, discount_amount, refund_discount_amount, refund_amount, coupon_amount, refund_coupon_amount, gift_amount, refund_gift_amount, promotion_amount, refund_promotion_amount, com_pac_amount, refund_com_pac_amount, presale_default_amount, presale_discount_amount, refund_pre_amount, pay_discount_amount, refund_pay_amount order_count, bank_receipt_id, type, status, settlement_time, pay_source, third_pay_no, pay_no, err_msg, del_flag, create_time, create_user, update_time, update_user, remark, settlement_remark
+    </sql>
+
+    <select id="querySettlementAmountInfo" resultType="com.yiling.settlement.b2b.dto.SettlementAmountInfoDTO">
+        SELECT
+            *
+        FROM
+            ( SELECT
+                ifnull(sum( amount ),0) AS 'currentAmount'
+              FROM
+                b2b_settlement
+              WHERE
+                `status` = 3
+                AND
+                    settlement_time &gt;= #{today}
+                AND
+                    del_flag=0
+                <if test="eid != null and eid != 0">
+                    AND eid = #{eid}
+                </if>
+              ) currentAmount,
+            ( SELECT
+                ifnull(sum( amount ),0) AS 'yesterdayAmount'
+            FROM
+                b2b_settlement
+            WHERE
+                    `status` = 3
+                AND
+                    settlement_time &gt;= #{yesterday}
+                AND
+                    settlement_time &lt;= #{today}
+                AND
+                    del_flag=0
+                <if test="eid != null and eid != 0">
+                    AND eid = #{eid}
+                </if>
+            ) yesterdayAmount,
+            ( SELECT
+                ifnull(sum( amount ),0)  AS 'totalAmount'
+              FROM
+                b2b_settlement
+               WHERE
+                    `status` = 3
+                AND
+                    del_flag=0
+                <if test="eid != null and eid != 0">
+                    AND eid = #{eid}
+                </if>
+            ) totalAmount,
+            ( SELECT
+                ifnull(sum( amount ),0) AS 'platformTotal'
+            FROM
+                b2b_settlement
+            WHERE
+                del_flag=0
+            ) platformTotal
+    </select>
+
+</mapper>

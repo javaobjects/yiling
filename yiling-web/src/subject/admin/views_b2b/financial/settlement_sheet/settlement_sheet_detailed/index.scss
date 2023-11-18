@@ -1,0 +1,146 @@
+@import "~@/common/styles/mixin.scss";
+
+.app-container {
+  .top-box{
+    background: $white;
+    padding: 16px;
+    border-radius: 4px;
+    // padding: 16px;
+    // margin-bottom: 20px;
+    .enable {
+      color: $success;
+      font-weight: 500;
+    }
+    .disable {
+      color: $danger;
+      font-weight: 500;
+      
+    }
+    .item{
+      margin-bottom: 12px;
+      .line-view{
+        width: 2px;
+        height: 14px;
+        background: #1790FF;
+        margin-right: 4px;
+      }
+    }
+    .item-text{
+      margin-bottom: 8px;
+      margin-left: 5px;
+    }
+  }
+  // 底部列表
+  .order-table-view {
+    width: 100%;
+    position: relative;
+    margin-bottom: 30px;
+    .item {
+      padding-bottom: 10px;
+      margin-top: 14px;
+      .title {
+        height: 25px;
+        color: $font-important-color;
+        margin-bottom: 6px ;
+      }
+      .pad-title {
+        margin-top: 37px;
+        padding-bottom: 30px;
+      }
+      &-text {
+        height: 20px;
+        margin-bottom: 8px;
+        color: $font-important-color;
+        span {
+          color: $font-light-color;
+        }
+      }
+    }
+    .expand-item {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      width: 100%;
+      height: 40px;
+      padding: 4px 0px 5px 0px;
+      .expand {
+        width: 175px;
+        height: 22px;
+        background: #EEEEEE;
+        border-radius: 17px;
+        font-size: 14px;
+        color: #666666;
+        cursor: pointer;
+        text-align: center;
+        span {
+          padding-right: 6px;
+        }
+        .el-icon-arrow-down {
+          font-size: 16px;
+          transition: all .3s;
+        }
+        .show {
+          transform: rotate(180deg);
+        }
+      }
+    }
+    .expand-row {
+      margin: 0 16px;
+      padding: 7px 0 10px 0;
+      .expand-view {
+        width: 100%;
+        height: 146px;
+        background: #EDF7FF;
+        border-radius: 4px;
+        padding: 16px;
+        margin-bottom: 8px;
+        color: $font-important-color;
+        .title {
+          height: 22px;
+          font-size: 16px;
+          line-height: 22px;
+          margin-bottom: 7px;
+        }
+        .desc-box {
+          font-size: $font-size-base;
+          display: flex;
+          justify-content: flex-start;
+          align-items: flex-start;
+          .img {
+            width: 82px;
+            height: 70px;
+            margin-right: 14px;
+          }
+          .box1 {
+            width: 402px;
+          }
+          .box2 {
+            width: 240px;
+          }
+          .right-text {
+            .text-item {
+              height: 24px;
+              line-height: 24px;
+            }
+            .money {
+              font-size: 18px;
+              color: $font-important-color;
+            }
+          }
+        }
+      }
+    }
+  }
+  .bottom-view {
+    position: fixed;
+    bottom: 0;
+    left: $sideBarWidth;
+    right: 0;
+    height: 64px;
+    background-color: $white;
+    padding: 16px;
+    z-index: 10;
+    box-shadow: 0px -2px 9px 0px rgba(182, 182, 182, 0.16);
+  }
+}

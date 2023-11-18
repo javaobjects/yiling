@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.settlement.report.dao.MemberSyncMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.settlement.report.entity.MemberSyncDO">
+    <result column="id" property="id" />
+        <result column="eid" property="eid" />
+        <result column="promoter_id" property="promoterId" />
+        <result column="member_id" property="memberId" />
+        <result column="order_no" property="orderNo" />
+        <result column="source" property="source" />
+        <result column="pay_amount" property="payAmount" />
+        <result column="refund_amount" property="refundAmount" />
+        <result column="amount" property="amount" />
+        <result column="original_price" property="originalPrice" />
+        <result column="status" property="status" />
+        <result column="refund_status" property="refundStatus" />
+        <result column="order_create_time" property="orderCreateTime" />
+        <result column="refund_time" property="refundTime" />
+        <result column="report_sett_status" property="reportSettStatus" />
+        <result column="report_status" property="reportStatus" />
+        <result column="report_id" property="reportId" />
+        <result column="del_flag" property="delFlag" />
+        <result column="create_user" property="createUser" />
+        <result column="create_time" property="createTime" />
+        <result column="update_user" property="updateUser" />
+        <result column="update_time" property="updateTime" />
+        <result column="remark" property="remark" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,
+        eid, promoter_id, member_id, order_no, `source`, pay_amount, refund_amount, amount, original_price, status, refund_status, order_create_time, refund_time, report_sett_status, report_status, report_id, del_flag, create_user, create_time, update_user, update_time, remark
+    </sql>
+
+</mapper>

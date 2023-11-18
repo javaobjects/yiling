@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.dataflow.gb.dao.GbAppealFormMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.dataflow.gb.entity.GbAppealFormDO">
+    <result column="id" property="id" />
+        <result column="gb_order_id" property="gbOrderId" />
+        <result column="form_id" property="formId" />
+        <result column="gb_no" property="gbNo" />
+        <result column="gb_process" property="gbProcess" />
+        <result column="flow_month" property="flowMonth" />
+        <result column="match_month" property="matchMonth" />
+        <result column="gb_month" property="gbMonth" />
+        <result column="province_code" property="provinceCode" />
+        <result column="crm_id" property="crmId" />
+        <result column="ename" property="ename" />
+        <result column="enterprise_name" property="enterpriseName" />
+        <result column="org_crm_id" property="orgCrmId" />
+        <result column="goods_code" property="goodsCode" />
+        <result column="goods_name" property="goodsName" />
+        <result column="gb_quantity" property="gbQuantity" />
+        <result column="seller_emp_id" property="sellerEmpId" />
+        <result column="seller_emp_name" property="sellerEmpName" />
+        <result column="business_department" property="businessDepartment" />
+        <result column="business_province" property="businessProvince" />
+        <result column="district_county_code" property="districtCountyCode" />
+        <result column="district_county" property="districtCounty" />
+        <result column="gb_nature" property="gbNature" />
+        <result column="flow_match_number" property="flowMatchNumber" />
+        <result column="data_exec_status" property="dataExecStatus" />
+        <result column="exec_type" property="execType" />
+        <result column="gb_lock_type" property="gbLockType" />
+        <result column="gb_order_create_time" property="gbOrderCreateTime" />
+        <result column="last_update_user" property="lastUpdateUser" />
+        <result column="last_update_time" property="lastUpdateTime" />
+        <result column="del_flag" property="delFlag" />
+        <result column="create_user" property="createUser" />
+        <result column="create_time" property="createTime" />
+        <result column="update_user" property="updateUser" />
+        <result column="update_time" property="updateTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,
+        gb_order_id, form_id, gb_no, gb_process, flow_month, match_month, gb_month, province_code, crm_id, ename, org_crm_id, enterprise_name, goods_code, goods_name, gb_quantity, seller_emp_id, seller_emp_name, business_department, business_province, district_county_code, district_county, gb_nature, flow_match_number, data_exec_status, exec_type, gb_lock_type, gb_order_create_time, last_update_user, last_update_time, del_flag, create_user, create_time, update_user, update_time
+    </sql>
+
+    <select id="flowStatisticListPage" resultType="com.yiling.dataflow.gb.bo.GbAppealFormFlowStatisticBO">
+        select
+        related.appeal_form_id AS appealFormId, related.flow_wash_id AS flowWashId,
+        related.flow_key AS flowKey, related.match_quantity AS gbMatchQuantity,
+        statistic.so_quantity AS soQuantity, statistic.match_quantity AS matchQuantity, statistic.un_match_quantity AS unMatchQuantity
+        from gb_appeal_flow_related related
+        LEFT JOIN gb_appeal_flow_statistic AS statistic on related.flow_wash_id = statistic.flow_wash_id
+        <where>
+            <if test="request.appealFormId != null">
+                and related.appeal_form_id = #{request.appealFormId}
+            </if>
+        </where>
+        order by related.flow_wash_id desc
+    </select>
+
+    <select id="getTotalFlowMatchQuantityByAppealFormId" resultType="java.math.BigDecimal">
+        select
+        IFNULL(SUM(statistic.so_quantity), 0)
+        from gb_appeal_flow_related related
+        LEFT JOIN gb_appeal_flow_statistic AS statistic on related.flow_wash_id = statistic.flow_wash_id
+        where
+        related.appeal_form_id = #{appealFormId}
+    </select>
+
+    <update id="updateFlowMatchNumberById">
+        update gb_appeal_form
+        set
+            flow_match_number = flow_match_number + #{request.flowMatchNumber},
+            update_user = #{request.opUserId},
+            update_time = #{request.opTime},
+            last_update_user = #{request.opUserId},
+            last_update_time = #{request.opTime}
+        where id = #{request.id}
+    </update>
+
+
+    <select id="listPage" resultMap="BaseResultMap">
+        SELECT
+        f.id, f.gb_order_id, f.form_id, f.gb_no, f.gb_process, f.flow_month, f.match_month, f.gb_month, f.province_code, f.crm_id, f.ename, f.org_crm_id, f.enterprise_name,
+        f.goods_code, f.goods_name, f.gb_quantity, f.seller_emp_id, f.seller_emp_name, f.business_department, f.business_province, f.district_county_code, f.district_county,
+        f.gb_nature, f.flow_match_number, f.data_exec_status, f.exec_type, f.gb_lock_type, f.gb_order_create_time, f.last_update_user, f.last_update_time,
+        f.del_flag, f.create_user, f.create_time, f.update_user, f.update_time
+        FROM
+        gb_appeal_form f
+        LEFT JOIN gb_order o on f.gb_order_id = o.id
+        <where>
+            f.del_flag = 0
+            AND o.exec_status = 2
+            <if test="request.matchMonth != null and request.matchMonth != ''">
+                AND f.match_month = #{request.matchMonth}
+            </if>
+            <if test="request.gbMonth != null and request.gbMonth != ''">
+                AND f.gb_month = #{request.gbMonth}
+            </if>
+            <if test="request.gbNo != null and request.gbNo != ''">
+                AND f.gb_no = #{request.gbNo}
+            </if>
+            <if test="request.crmId != null and request.crmId != 0">
+                AND f.crm_id = #{request.crmId}
+            </if>
+            <if test="request.enterpriseName != null and request.enterpriseName != ''">
+                AND f.enterprise_name like CONCAT('%',#{request.enterpriseName},'%')
+            </if>
+            <if test="request.goodsCode != null and request.goodsCode != 0">
+                AND f.goods_code = #{request.goodsCode}
+            </if>
+            <if test="request.dataExecStatus != null and request.dataExecStatus != 0">
+                AND f.data_exec_status = #{request.dataExecStatus}
+            </if>
+            <if test="request.lastUpdateUser != null and request.lastUpdateUser != 0">
+                AND f.last_update_user = #{request.lastUpdateUser}
+            </if>
+            <if test="request.lastUpdateTimeStart != null">
+                AND f.last_update_time <![CDATA[ >= ]]> #{request.lastUpdateTimeStart}
+            </if>
+            <if test="request.lastUpdateTimeEnd != null">
+                AND f.last_update_time <![CDATA[ <= ]]> #{request.lastUpdateTimeEnd}
+            </if>
+            <if test="request.gbLockType != null and gbLockType != 0">
+                AND f.gb_lock_type = #{request.gbLockType}
+            </if>
+        </where>
+        order by f.match_month, f.gb_order_create_time desc
+    </select>
+
+</mapper>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:flowable="http://flowable.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="3" exporter="Flowable Open Source Modeler" exporterVersion="6.8.0">
+	<process id="holidayRequest" name="Holiday Request" isExecutable="true">
+		<startEvent id="startEvent" flowable:formKey="key_1630256303409471489" flowable:formFieldValidation="true" />
+		<sequenceFlow id="sequenceFlow-19ebd1fa-7627-483b-b3eb-054579ae5af4" sourceRef="startEvent" targetRef="approveTask" />
+		<userTask xmlns:flowable="http://flowable.org/bpmn" id="approveTask" name="发起流程" flowable:text="流程发起人" flowable:skipExpression="${skip}" flowable:formFieldValidation="true">
+			<extensionElements>
+				<modeler:activiti-idm-initiator xmlns:modeler="http://flowable.org/modeler">true</modeler:activiti-idm-initiator>
+			</extensionElements>
+			<outgoing>Flow_0u8ji8m</outgoing>
+		</userTask>
+		<userTask id="Activity_0gk9ega" name="审批" flowable:autoApprove="0">
+			<extensionElements>
+				<flowable:properties />
+			</extensionElements>
+			<incoming>Flow_0u8ji8m</incoming>
+			<outgoing>Flow_0a1tc68</outgoing>
+		</userTask>
+		<sequenceFlow id="Flow_0u8ji8m" sourceRef="approveTask" targetRef="Activity_0gk9ega" />
+		<endEvent id="Event_1w215ws">
+			<extensionElements>
+				<flowable:executionListener delegateExpression="${processEndListener}" event="end" />
+			</extensionElements>
+			<incoming>Flow_0a1tc68</incoming>
+		</endEvent>
+		<sequenceFlow id="Flow_0a1tc68" sourceRef="Activity_0gk9ega" targetRef="Event_1w215ws" />
+	</process>
+	<bpmndi:BPMNDiagram id="BPMNDiagram_holidayRequest">
+		<bpmndi:BPMNPlane id="BPMNPlane_holidayRequest" bpmnElement="holidayRequest">
+			<bpmndi:BPMNEdge id="Flow_0a1tc68_di" bpmnElement="Flow_0a1tc68">
+				<omgdi:waypoint x="330" y="110" />
+				<omgdi:waypoint x="382" y="110" />
+			</bpmndi:BPMNEdge>
+			<bpmndi:BPMNEdge id="Flow_0u8ji8m_di" bpmnElement="Flow_0u8ji8m">
+				<omgdi:waypoint x="180" y="110" />
+				<omgdi:waypoint x="230" y="110" />
+			</bpmndi:BPMNEdge>
+			<bpmndi:BPMNEdge id="BPMNEdge_sequenceFlow-19ebd1fa-7627-483b-b3eb-054579ae5af4" bpmnElement="sequenceFlow-19ebd1fa-7627-483b-b3eb-054579ae5af4" flowable:sourceDockerX="15.0" flowable:sourceDockerY="15.0" flowable:targetDockerX="50.0" flowable:targetDockerY="30.0">
+				<omgdi:waypoint x="29" y="110" />
+				<omgdi:waypoint x="80" y="110" />
+			</bpmndi:BPMNEdge>
+			<bpmndi:BPMNShape id="BPMNShape_startEvent" bpmnElement="startEvent">
+				<omgdc:Bounds x="0" y="95" width="30" height="30" />
+			</bpmndi:BPMNShape>
+			<bpmndi:BPMNShape id="BPMNShape_approveTask" bpmnElement="approveTask">
+				<omgdc:Bounds x="80" y="80" width="100" height="60" />
+			</bpmndi:BPMNShape>
+			<bpmndi:BPMNShape id="Activity_0gk9ega_di" bpmnElement="Activity_0gk9ega">
+				<omgdc:Bounds x="230" y="70" width="100" height="80" />
+			</bpmndi:BPMNShape>
+			<bpmndi:BPMNShape id="Event_1w215ws_di" bpmnElement="Event_1w215ws">
+				<omgdc:Bounds x="382" y="92" width="36" height="36" />
+			</bpmndi:BPMNShape>
+		</bpmndi:BPMNPlane>
+	</bpmndi:BPMNDiagram>
+</definitions>

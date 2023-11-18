@@ -1,0 +1,91 @@
+.app-container {
+  .top-btn {
+    position: relative;
+    width: 100%;
+    font-size: $font-size-large;
+    line-height: $font-size-large-lh;
+    margin: 40px 0 8px 0;
+    color: $font-important-color;
+
+    .right-btn {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+    }
+  }
+
+  .box-search {
+    position: relative;
+
+    &-no-pad {
+      padding: 0 !important;
+    }
+
+    .el-input {
+      width: 220px;
+    }
+
+    .search-box {
+      position: relative;
+
+      .box {
+        margin-bottom: 16px;
+
+        .title {
+          font-size: $font-size-large;
+          line-height: $font-size-base-lh;
+          color: $font-important-color;
+          margin-bottom: 8px;
+        }
+      }
+
+      .el-select {
+        width: 220px;
+      }
+
+      .bottom-btn {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+      }
+    }
+
+    .search-btn-box {
+      margin-top: 16px;
+    }
+  }
+  .down-box {
+    width: 100%;
+    margin-top: 24px;
+
+    .btn {
+      float: right;
+    }
+  }
+  .yl-dialog-hs {
+    .dialog-content {
+      padding: 16px;
+      .addForm {
+        .el-form-item {
+          ::v-deep .el-form-item__label {
+            font-weight: 400;
+          }
+          .el-select {
+            width: 100%;
+          }
+          .select-address {
+            ::v-deep .el-row {
+              display: flex;
+              margin-left: 0px !important;
+              margin-right: 0px;
+              .el-col {
+                padding-left: 0px !important;
+                padding-right: 8px;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

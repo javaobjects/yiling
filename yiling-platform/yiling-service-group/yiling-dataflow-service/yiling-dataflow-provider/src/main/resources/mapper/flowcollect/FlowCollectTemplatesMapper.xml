@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.dataflow.flowcollect.dao.FlowCollectTemplatesMapper">
+
+    <sql id="selectLab">
+        SELECT a.id                  as id,
+               a.crm_enterprise_id   as crmEnterpriseId,
+               a.ename               as ename,
+               a.flow_mode           as flowMode,
+               a.install_employee    as installEmployee,
+               a.depth_time          as depthTime,
+               b.supplier_level      as supplierLevel,
+               b.flow_job_number     as flowJobNumber,
+               b.commerce_job_number as commerceJobNumber
+    </sql>
+    <sql id="whereLab">
+        <where>
+            a.del_flag = 0
+
+            <if test="request.userDatascopeBO!=null and request.userDatascopeBO.orgDatascope==2">
+                and (
+                <choose>
+                    <when test="request.userDatascopeBO.orgPartDatascopeBO.crmEids != null and request.userDatascopeBO.orgPartDatascopeBO.crmEids.size()>0 and request.userDatascopeBO.orgPartDatascopeBO.provinceCodes != null and request.userDatascopeBO.orgPartDatascopeBO.provinceCodes.size()>0">
+                        a.crm_enterprise_id in
+                        <foreach collection="request.userDatascopeBO.orgPartDatascopeBO.crmEids" item="crmEnterpriseId"
+                                 open="(" close=")"
+                                 separator=",">
+                            #{crmEnterpriseId}
+                        </foreach>
+                        or a.province_code in
+                        <foreach collection="request.userDatascopeBO.orgPartDatascopeBO.provinceCodes"
+                                 item="provinceCode" open="(" close=")" separator=",">
+                            #{provinceCode}
+                        </foreach>
+                    </when>
+                    <when test="request.userDatascopeBO.orgPartDatascopeBO.crmEids != null and request.userDatascopeBO.orgPartDatascopeBO.crmEids.size()>0 ">
+                        a.crm_enterprise_id in
+                        <foreach collection="request.userDatascopeBO.orgPartDatascopeBO.crmEids" item="crmEnterpriseId"
+                                 open="(" close=")"
+                                 separator=",">
+                            #{crmEnterpriseId}
+                        </foreach>
+                    </when>
+                    <when test="request.userDatascopeBO.orgPartDatascopeBO.provinceCodes != null and request.userDatascopeBO.orgPartDatascopeBO.provinceCodes.size()>0">
+                        a.province_code in
+                        <foreach collection="request.userDatascopeBO.orgPartDatascopeBO.provinceCodes"
+                                 item="provinceCode" open="(" close=")" separator=",">
+                            #{provinceCode}
+                        </foreach>
+                    </when>
+                </choose>
+                )
+            </if>
+            <if test="request.crmEnterpriseId != null and request.crmEnterpriseId != 0">
+                and a.crm_enterprise_id = #{request.crmEnterpriseId}
+            </if>
+            <if test="request.flowMode != null and request.flowMode != 0">
+                and a.flow_mode = #{request.flowMode}
+            </if>
+            <if test="request.flowType != null and request.flowType != 0">
+                and a.flow_type = #{request.flowType}
+            </if>
+            <if test="request.supplierLevel != null and request.supplierLevel != 0">
+                and b.supplier_level = #{request.supplierLevel}
+            </if>
+            <if test="request.installEmployee != null and request.installEmployee != ''">
+                and a.install_employee LIKE CONCAT('%',#{request.installEmployee},'%')
+            </if>
+            <if test="request.uploadStatus !=null and request.uploadStatus ==1">
+                and a.near_three_status = 1
+            </if>
+            <if test="request.uploadStatus !=null and request.uploadStatus ==2">
+                and a.near_three_all_status = 1
+            </if>
+            <if test="request.uploadStatus !=null and request.uploadStatus ==3">
+                and a.near_five_status = 1
+            </if>
+            <if test="request.uploadStatus !=null and request.uploadStatus ==4">
+                and a.near_five_all_status = 1
+            </if>
+        </where>
+    </sql>
+
+</mapper>

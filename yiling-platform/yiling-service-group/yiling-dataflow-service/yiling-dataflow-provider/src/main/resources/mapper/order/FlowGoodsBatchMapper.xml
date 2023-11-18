@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.dataflow.order.dao.FlowGoodsBatchMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.dataflow.order.entity.FlowGoodsBatchDO">
+    <result column="id" property="id" />
+        <result column="eid" property="eid" />
+        <result column="ename" property="ename" />
+        <result column="crm_enterprise_id" property="crmEnterpriseId" />
+        <result column="supplier_level" property="supplierLevel" />
+        <result column="gb_id_no" property="gbIdNo" />
+        <result column="in_sn" property="inSn" />
+        <result column="gb_time" property="gbTime" />
+        <result column="gb_name" property="gbName" />
+        <result column="gb_specifications" property="gbSpecifications" />
+        <result column="specification_id" property="specificationId"/>
+        <result column="gb_batch_no" property="gbBatchNo" />
+        <result column="gb_number" property="gbNumber" />
+        <result column="total_number" property="totalNumber" />
+        <result column="gb_unit" property="gbUnit" />
+        <result column="gb_produce_time" property="gbProduceTime" />
+        <result column="gb_end_time" property="gbEndTime" />
+        <result column="gb_manufacturer" property="gbManufacturer" />
+        <result column="gb_license" property="gbLicense" />
+        <result column="gb_source" property="gbSource" />
+        <result column="province_code" property="provinceCode" />
+        <result column="province_name" property="provinceName" />
+        <result column="city_code" property="cityCode" />
+        <result column="city_name" property="cityName" />
+        <result column="region_code" property="regionCode" />
+        <result column="region_name" property="regionName" />
+        <result column="statistics_status" property="statisticsStatus" />
+        <result column="del_flag" property="delFlag" />
+        <result column="create_user" property="createUser" />
+        <result column="create_time" property="createTime" />
+        <result column="update_user" property="updateUser" />
+        <result column="update_time" property="updateTime" />
+        <result column="remark" property="remark" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,
+        eid, ename, crm_enterprise_id, supplier_level, gb_id_no, in_sn, gb_time, gb_name, gb_specifications, specification_id, gb_batch_no, gb_number,total_number, gb_unit,
+        gb_produce_time, gb_end_time, gb_manufacturer, gb_license, gb_source,
+        province_code, province_name, city_code, city_name, region_code, region_name, statistics_status,
+        del_flag, create_user, create_time, update_user, update_time, remark
+    </sql>
+
+    <sql id="Base_Table_Name">
+        `flow_goods_batch`
+    </sql>
+
+    <delete id="deleteFlowGoodsBatchByEids">
+        delete from flow_goods_batch where eid in
+        <foreach item="item" index="index" collection="eids" open="("
+                 separator="," close=")">
+            #{item}
+        </foreach>
+        <if test="createTime!=null ">
+            <![CDATA[  and create_time<#{createTime} ]]>
+        </if>
+    </delete>
+
+    <select id="page" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM <include refid="Base_Table_Name"/>
+        WHERE del_flag = 0
+        <if test="request.goodsName != null and request.goodsName != ''">
+            AND gb_name like concat('%',#{request.goodsName},'%')
+        </if>
+        <if test="request.specificationId != null and request.specificationId != 0">
+            AND specification_id = #{request.specificationId}
+        </if>
+        <if test="request.specificationIdFlag != null and request.specificationIdFlag == 0">
+            AND specification_id = 0
+        </if>
+        <if test="request.specificationIdFlag != null and request.specificationIdFlag == 1">
+            AND specification_id != 0
+        </if>
+        <if test="request.goodsCrmCodeFlag != null and request.goodsCrmCodeFlag == 0">
+            AND crm_goods_code = 0
+        </if>
+        <if test="request.goodsCrmCodeFlag != null and request.goodsCrmCodeFlag == 1">
+            AND crm_goods_code > 0
+        </if>
+        <if test="request.license != null and request.license != ''">
+            AND gb_license like concat('%',#{request.license},'%')
+        </if>
+        <if test="request.sourceList != null and request.sourceList.size() > 0">
+            AND gb_source in
+            <foreach item="item" index="index" collection="request.sourceList" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="request.eidList != null and request.eidList.size() > 0">
+            AND eid in
+            <foreach item="item" index="index" collection="request.eidList" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="request.statisticsStatus != null">
+            AND statistics_status = #{request.statisticsStatus}
+        </if>
+    </select>
+
+    <select id="getNotStatisticsTotalNumberEidList" resultType="java.lang.Long">
+        SELECT eid
+        FROM <include refid="Base_Table_Name"/>
+        WHERE del_flag = 0
+        AND statistics_status = 0
+        GROUP BY eid
+    </select>
+
+    <select id="getNotStatisticsList" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM <include refid="Base_Table_Name"/>
+        WHERE del_flag = 0
+        AND statistics_status = 0
+        limit 1000
+    </select>
+
+    <select id="getSpecificationIdCount" resultType="java.lang.Integer">
+        select count(0) from flow_goods_batch where  del_flag = 0 and specification_id = #{specificationId}
+    </select>
+
+    <delete id="deleteByDelFlagAndEid">
+        DELETE FROM <include refid="Base_Table_Name"/>
+        WHERE del_flag = 1 AND eid = #{eid}
+    </delete>
+
+    <select id="getMaxGbTimeByEid" resultType="java.util.Date">
+        SELECT MAX(update_time) AS update_time
+        FROM <include refid="Base_Table_Name"/>
+        WHERE del_flag = 0 AND eid = #{eid}
+    </select>
+
+</mapper>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.marketing.couponactivityautogive.dao.CouponActivityAutoGiveCouponMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.marketing.couponactivityautogive.entity.CouponActivityAutoGiveCouponDO">
+    <result column="id" property="id" />
+        <result column="coupon_activity_auto_give_id" property="couponActivityAutoGiveId" />
+        <result column="coupon_activity_id" property="couponActivityId" />
+        <result column="give_num" property="giveNum" />
+        <result column="del_flag" property="delFlag" />
+        <result column="create_user" property="createUser" />
+        <result column="create_time" property="createTime" />
+        <result column="update_user" property="updateUser" />
+        <result column="update_time" property="updateTime" />
+        <result column="remark" property="remark" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Table_Name">
+        `marketing_coupon_activity_auto_give_coupon`
+    </sql>
+
+    <sql id="Base_Column_List">
+        id,
+        coupon_activity_auto_give_id, coupon_activity_id, give_num, del_flag, create_user, create_time, update_user, update_time, remark
+    </sql>
+
+    <sql id="Auto_Give_Coupon_Column_List">
+        agc.id, agc.coupon_activity_auto_give_id, agc.coupon_activity_id, agc.give_num, agc.del_flag,
+        agc.create_user, agc.create_time, agc.update_user, agc.update_time, agc.remark
+    </sql>
+
+    <select id="getEffectiveAutoGiveCouponByByCouponActivityId" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Auto_Give_Coupon_Column_List"/>
+        FROM marketing_coupon_activity_auto_give_coupon agc
+        INNER JOIN marketing_coupon_activity_auto_give ag ON ag.id = agc.coupon_activity_auto_give_id
+        WHERE
+        agc.del_flag = 0
+        AND ag.del_flag = 0
+        AND agc.coupon_activity_id = #{couponActivityId}
+        AND ag.status = 1
+        AND ag.end_time > NOW()
+        LIMIT 1
+    </select>
+
+</mapper>

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.hmc.wechat.dao.InsuranceRecordPayMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.hmc.wechat.entity.InsuranceRecordPayDO">
+    <result column="id" property="id" />
+        <result column="insurance_record_id" property="insuranceRecordId" />
+        <result column="order_no" property="orderNo" />
+        <result column="policy_no" property="policyNo" />
+        <result column="pay_way_id" property="payWayId" />
+        <result column="bill_no" property="billNo" />
+        <result column="transaction_id" property="transactionId" />
+        <result column="active_pay_id" property="activePayId" />
+        <result column="amount" property="amount" />
+        <result column="sign_pk_sub_id" property="signPkSubId" />
+        <result column="pay_time" property="payTime" />
+        <result column="pay_status" property="payStatus" />
+        <result column="token" property="token" />
+        <result column="min_sequence" property="minSequence" />
+        <result column="max_sequence" property="maxSequence" />
+        <result column="premium_plan_list" property="premiumPlanList" />
+        <result column="start_time" property="startTime" />
+        <result column="end_time" property="endTime" />
+        <result column="del_flag" property="delFlag" />
+        <result column="create_user" property="createUser" />
+        <result column="create_time" property="createTime" />
+        <result column="update_user" property="updateUser" />
+        <result column="update_time" property="updateTime" />
+        <result column="remark" property="remark" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, insurance_record_id, order_no, policy_no, pay_way_id, bill_no, transaction_id, active_pay_id, amount, sign_pk_sub_id, pay_time, pay_status, token, min_sequence,
+        max_sequence, premium_plan_list, startTime, endTime, del_flag, create_user, create_time, update_user, update_time, remark
+    </sql>
+
+    <select id="queryPage" parameterType="com.yiling.hmc.insurance.dto.request.QueryInsuranceRecordPayPageRequest" resultType="com.yiling.hmc.insurance.bo.InsuranceRecordPayBO">
+        select pay.id,pay.order_no,pay.policy_no,i.eid,pay.pay_time,pay.amount as preAmount,pay.create_time,pay.update_time,i.seller_user_id,i.issue_name,i.issue_phone,i.holder_phone ,i.holder_name,i.insurance_company_id,
+        i.bill_type,i.insurance_id as insuranceId,i.id as insuranceRecordId,i.policy_status,i.proposal_time,i.expired_time,i.seller_eid
+        from hmc_insurance_record_pay pay inner join hmc_insurance_record i  on pay.insurance_record_id = i.id
+            <where>
+                <if test="p.policyNo!=null and p.policyNo!=''">and pay.policy_no=#{p.policyNo}</if>
+                <if test="p.transactionId!=null and p.transactionId!=''">and pay.transaction_id=#{p.transactionId}</if>
+                <if test="p.issueName!=null and p.issueName!=''">and i.issue_name=#{p.issueName}</if>
+                <if test="p.holderName!=null and p.holderName!=''">and i.holder_name=#{p.holderName}</if>
+
+                <if test="p.issuePhone!=null and p.issuePhone!=''">and (i.issue_phone=#{p.issuePhone} or i.holder_phone=#{p.issuePhone})</if>
+                <if test="p.insuranceCompanyId!=null">and i.insurance_company_id=#{p.insuranceCompanyId}</if>
+                <if test="p.startPayTime != null">
+                    and  pay.pay_time &gt;= #{p.startPayTime}
+                </if>
+                <if test="p.endPayTime != null">
+                    and  pay.pay_time &lt;= #{p.endPayTime}
+                </if>
+                <if test="p.policyStatus!=null">and i.policy_status=#{p.policyStatus}</if>
+                <if test="p.sourceType!=null and p.sourceType==0">and i.seller_user_id=0</if>
+                <if test="p.sourceType!=null and p.sourceType==1">and i.seller_user_id>0</if>
+
+                <if test="p.billType!=null">and i.bill_type=#{p.billType}</if>
+                <if test="p.eid!=null">and (i.eid=#{p.eid} or i.seller_eid=#{p.eid})</if>
+                <if test="p.sellerEid!=null">and i.seller_eid=#{p.sellerEid}</if>
+                <if test="p.sellerUserIds!=null">
+                <foreach collection="p.sellerUserIds" index="index" item="value" open="and i.seller_user_id in (" close=")" separator=","> #{value} </foreach>
+                </if>
+                <if test="p.eidList!=null">
+                <foreach collection="p.eidList" index="index" item="value" open="and i.eid in (" close=")" separator=","> #{value} </foreach>
+                </if>
+                <if test="p.sellerEidList!=null">
+                    <foreach collection="p.sellerEidList" index="index" item="value" open="and i.seller_eid in (" close=")" separator=","> #{value} </foreach>
+                </if>
+                <if test="p.insuranceIdList!=null">
+                <foreach collection="p.insuranceIdList" index="index" item="value" open="and i.insurance_id in (" close=")" separator=","> #{value} </foreach>
+                </if>
+            </where>
+            order by pay.id desc
+    </select>
+</mapper>

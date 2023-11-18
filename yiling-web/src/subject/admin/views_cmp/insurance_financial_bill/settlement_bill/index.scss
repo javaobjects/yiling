@@ -1,0 +1,134 @@
+.app-container {
+  .common-box {
+    .header-bar {
+      height: 22px;
+      line-height: 22px;
+      .sign {
+        margin-right: 5px;
+      }
+    }
+    .header-box {
+      .table-bar {
+        .el-row {
+          margin-bottom: 8px;
+          .el-col {
+            .item {
+              margin-bottom: 8px;
+              .item-title {
+                font-size: $font-size-base;
+                color: #666;
+              }
+              .item-value {
+                color: #333;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  .select-bar {
+    display: flex;
+    margin-bottom: 8px;
+    .item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-right: 16px;
+      cursor: pointer;
+      .item-title {
+        margin-bottom: 5px;
+        font-size: 16px;
+        font-weight: 600;
+        color: $font-light-color;
+        line-height: 22px;
+      }
+      .active {
+        color: $primary;
+      }
+      .item-line {
+        width: 26px;
+        height: 2px;
+        background-color: $primary;
+      }
+    }
+  }
+  .box-search {
+    .search-box {
+      position: relative;
+      .box {
+        margin-bottom: 16px;
+        .title {
+          font-size: $font-size-large;
+          line-height: 22px;
+          color: $font-important-color;
+          margin-bottom: 8px;
+        }
+        .el-input {
+          width: 260px;
+        }
+        .el-select {
+          width: 260px;
+        }
+      }
+    }
+    .search-btn-box {
+      margin-top: 16px;
+    }
+  }
+  .down-box {
+    width: 100%;
+    margin-top: 24px;
+    .btn {
+      float: right;
+    }
+  }
+  .total-box {
+    display: flex;
+    align-items: center;
+    font-size: $font-size-base;
+    .item {
+      margin-right: 40px;
+      .title {
+        color: $font-title-color;
+      }
+      .value {
+        color: $success;
+      }
+    }
+    .col-down {
+      color: #52C41A !important;
+    }
+    .col-up {
+      color: #E62412 !important;
+    }
+  }
+  .table-box {
+    .channel-status {
+      margin-right: 8px;
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 20px;
+    }
+    .col-down {
+      color: #52C41A !important;
+    }
+    .col-up {
+      color: #E62412 !important;
+    }
+    .total {
+      margin-top: 8px;
+      display: flex;
+      justify-content: flex-end;
+    }
+    .item {
+      margin-right: 40px;
+      .title {
+        color: $font-title-color;
+      }
+      .value {
+        color: $success;
+      }
+    }
+  }
+}

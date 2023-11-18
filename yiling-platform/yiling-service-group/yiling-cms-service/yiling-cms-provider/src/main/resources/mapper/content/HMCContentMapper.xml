@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.cms.content.dao.HmcContentMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.cms.content.entity.HmcContentDO">
+        <result column="id" property="id"/>
+        <result column="content_id" property="contentId"/>
+        <result column="line_id" property="lineId"/>
+        <result column="module_id" property="moduleId"/>
+        <result column="category_id" property="categoryId"/>
+        <result column="category_rank" property="categoryRank"/>
+        <result column="view" property="view"/>
+        <result column="top_flag" property="topFlag"/>
+        <result column="refer_status" property="referStatus"/>
+        <result column="del_flag" property="delFlag"/>
+        <result column="create_user" property="createUser"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_user" property="updateUser"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="remark" property="remark"/>
+    </resultMap>
+
+    <resultMap id="HMCBaseResultMap" type="com.yiling.cms.content.dto.HMCContentDTO">
+        <result column="id" property="id"/>
+        <result column="content_id" property="contentId"/>
+        <result column="title" property="title"/>
+        <result column="line_id" property="lineId"/>
+        <result column="module_id" property="moduleId"/>
+        <result column="category_id" property="categoryId"/>
+        <result column="category_name" property="categoryName"/>
+        <result column="category_rank" property="categoryRank"/>
+        <result column="view" property="view"/>
+        <result column="top_flag" property="topFlag"/>
+        <result column="refer_status" property="referStatus"/>
+        <result column="create_user" property="createUser"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_user" property="updateUser"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="remark" property="remark"/>
+        <result column="doc_id" property="docId"/>
+        <result column="content_type" property="contentType"/>
+        <result column="status" property="status"/>
+        <result column="create_source" property="createSource"/>
+    </resultMap>
+
+    <resultMap id="appContentResultMap" type="com.yiling.cms.content.dto.AppContentDTO">
+        <result column="id" property="id"/>
+        <result column="content_id" property="contentId"/>
+        <result column="title" property="title"/>
+        <result column="cover" property="cover"/>
+        <result column="page_view" property="pageView"/>
+        <result column="publish_time" property="publishTime"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="doc_id" property="docId"/>
+        <result column="vedio_file_url" property="vedioFileUrl"/>
+        <result column="speaker" property="speaker"/>
+        <result column="content_type" property="contentType"/>
+        <result column="line_id" property="lineId"/>
+        <result column="module_id" property="moduleId"/>
+        <result column="category_id" property="categoryId"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,content_id, line_id, module_id, category_id, category_rank, `view`, top_flag, del_flag, create_user, create_time, update_user, update_time, remark
+    </sql>
+
+    <sql id="Page_Base_Column_List">
+        hmc.id,hmc.content_id, hmc.line_id, hmc.module_id, hmc.category_id,category.category_name,
+        hmc.category_rank, hmc.`view`, hmc.top_flag, hmc.refer_status, hmc.del_flag, hmc.create_user, hmc.create_time, hmc.update_user,
+        hmc.update_time, hmc.remark, content.title, content.doc_id, content.content_type,content.status, content.create_source
+    </sql>
+
+    <select id="listPage" resultMap="HMCBaseResultMap">
+        select
+            <include refid="Page_Base_Column_List"/>
+        from cms_hmc_content hmc,cms_content content, cms_category category
+        <where>
+            hmc.content_id = content.id
+            and hmc.category_id = category.id
+            and hmc.line_id = 1
+            and hmc.del_flag = 0
+            and content.del_flag = 0
+            and category.del_flag = 0
+            <if test="request.title != null and request.title != '' ">
+                and content.title like concat('%',#{request.title},'%')
+            </if>
+            <if test="request.moduleId != null and request.moduleId != 0">
+                and hmc.module_id = #{request.moduleId}
+            </if>
+            <if test="request.categoryId != null and request.categoryId != 0">
+                and hmc.category_id = #{request.categoryId}
+            </if>
+            <if test="request.contentType != null and request.contentType != 0">
+                and content.content_type = #{request.contentType}
+            </if>
+            <if test="request.handRankFlag != null and request.handRankFlag == 1">
+                and hmc.category_rank != 0
+            </if>
+            <if test="request.handRankFlag != null and request.handRankFlag == 0">
+                and hmc.category_rank = 0
+            </if>
+            <if test="request.docId != null and request.docId != 0">
+                and content.doc_id = #{request.docId}
+            </if>
+            <if test="request.status != null and request.status != 0">
+                and content.status = #{request.status}
+            </if>
+            <if test="request.topFlag != null">
+                and hmc.top_flag = #{request.topFlag}
+            </if>
+            <if test="request.createSource != null and request.createSource != 0">
+                and content.create_source = #{request.createSource}
+            </if>
+            <if test="request.startTime != null ">
+                and hmc.create_time >= #{request.startTime}
+            </if>
+            <if test="request.endTime != null ">
+                and #{request.endTime} >= hmc.create_time
+            </if>
+            order by hmc.create_time desc
+        </where>
+    </select>
+
+
+    <sql id="App_Base_Column_List">
+        content.id as content_id, content.title, content.subtitle, content.cover, content.`source`, content.author, content.is_top, content.publish_now,
+        content.page_view, content.hmc_view, content.is_draft, content.content, content.publish_time, content.doc_id,content.like_count,content.vedio_file_url,
+        content.speaker, content.content_type ,content.update_time,content.create_time,
+        hmc.id, hmc.line_id, hmc.module_id, hmc.category_id, hmc.category_rank
+    </sql>
+
+    <select id="listAppContentPageBySql" resultMap="appContentResultMap">
+        select <include refid="App_Base_Column_List"/>
+        from cms_content content, cms_hmc_content hmc
+        <if test="request.standardGoodsId != null and request.standardGoodsId != 0">
+            ,cms_content_goods goods
+        </if>
+        <where>
+            content.id = hmc.content_id
+            and content.del_flag = 0
+            and hmc.del_flag = 0
+            and hmc.line_id = #{request.lineId}
+            and content.status = 2
+            and content.is_open = 1
+            and hmc.refer_status = 1
+<!--            <if test="request.title != null and request.title != '' ">-->
+<!--                and content.title like concat('%',#{request.title},'%')-->
+<!--            </if>-->
+            <if test="request.contentType != null and request.contentType != 0">
+                and content.content_type = #{request.contentType}
+            </if>
+            <if test="request.moduleId != null and request.moduleId != 0">
+                and hmc.module_id = #{request.moduleId}
+            </if>
+            <if test="request.categoryId != null and request.categoryId != 0">
+                and hmc.category_id = #{request.categoryId}
+            </if>
+            <if test="request.doctorId != null and request.doctorId != 0">
+                and content.doc_id = #{request.doctorId}
+            </if>
+            <if test="request.isMeetingVideo != null and request.isMeetingVideo == 1">
+                and content.meeting_id = 0
+            </if>
+            <!-- 健康管理中心-视频 -> 搜索标题、医生名称 -->
+            <if test="request.contentType != null and request.contentType == 2 and request.title != null and request.title != '' ">
+                and (
+                    content.title like concat('%',#{request.title},'%')
+                    <if test="request.docIdList != null ">
+                        or content.doc_id in
+                        <foreach collection="request.docIdList" item="item" open="(" close=")" separator=",">
+                            #{item}
+                        </foreach>
+                    </if>
+                )
+            </if>
+            <!-- 健康管理中心-文章 -> 搜索标题、医生名称 -->
+            <if test="request.contentType != null and request.contentType == 1 and request.title != null and request.title != '' ">
+                and (
+                    content.title like concat('%',#{request.title},'%')
+                    <if test="request.docIdList != null ">
+                        or content.doc_id in
+                        <foreach collection="request.docIdList" item="item" open="(" close=")" separator=",">
+                            #{item}
+                        </foreach>
+                    </if>
+                    or content.content like concat('%',#{request.title},'%')
+                )
+            </if>
+            <if test="request.standardGoodsId != null and request.standardGoodsId != 0">
+                and goods.standard_goods_id = #{request.standardGoodsId}
+                and content.id = goods.content_id
+            </if>
+            order by hmc.top_flag DESC,hmc.category_rank desc, content.create_time DESC
+        </where>
+
+    </select>
+
+
+</mapper>

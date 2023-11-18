@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.open.erp.dao.ErpSyncStatMapper">
+
+	<resultMap id="BaseResultMap" type="com.yiling.open.erp.entity.ErpSyncStatDO">
+		<result column="id" property="id"/>
+		<result column="task_no" property="taskNo"/>
+		<result column="su_id" property="suId"/>
+		<result column="su_dept_no" property="suDeptNo"/>
+		<result column="stat_date" property="statDate"/>
+		<result column="stat_hour" property="statHour"/>
+		<result column="add_num" property="addNum"/>
+		<result column="update_num" property="updateNum"/>
+		<result column="delete_num" property="deleteNum"/>
+		<result column="create_time" property="createTime"/>
+		<result column="modify_time" property="modifyTime"/>
+	</resultMap>
+
+    <sql id="erp_sync_stat">
+		`id`, `task_no`, `su_id`, `su_dept_no`, `stat_date`, `stat_hour`, `add_num`, `update_num`, `delete_num`, `create_time`, `modify_time`
+	</sql>
+
+    <sql id="insert_erp_sync_stat">
+		`task_no`, `su_id`, `su_dept_no`, `stat_date`, `stat_hour`, `add_num`, `update_num`, `delete_num`, `create_time`, `modify_time`
+	</sql>
+
+	<insert id="save" parameterType="com.yiling.open.erp.entity.ErpSyncStatDO">
+		INSERT INTO erp_sync_stat (
+			<include refid="insert_erp_sync_stat"/>
+		)
+		VALUES
+			(
+				#{taskNo},
+				#{suId},
+				#{suDeptNo},
+				#{statDate},
+				#{statHour},
+				#{addNum},
+				#{updateNum},
+				#{deleteNum},
+				NOW(),
+				NOW()
+			)
+		 ON DUPLICATE KEY UPDATE add_num = VALUES(add_num), update_num = VALUES(update_num), delete_num = VALUES(delete_num), modify_time = NOW()
+	</insert>
+
+	<select id="queryInvokeNums" resultType="integer">
+		SELECT
+			add_num + update_num + delete_num AS count
+		FROM
+			erp_sync_stat
+		WHERE
+			su_id = #{suId}
+		AND task_no = #{taskNo}
+		AND stat_date = #{statDate}
+		AND stat_hour = #{statHour}
+	</select>
+
+    <resultMap id="heartCountResult" type="com.yiling.open.erp.bo.ErpErpDataStatCountBO">
+        <result column="su_id" property="suId"/>
+        <result column="addNum" property="addCount"/>
+        <result column="updateNum" property="updateCount"/>
+        <result column="deleteNum" property="deleteCount"/>
+    </resultMap>
+
+    <select id="getErpDataStatCount" resultMap="heartCountResult">
+		SELECT
+            su_id,
+            ifnull(sum(add_num),0) AS addNum,
+            ifnull(sum(update_num),0) AS updateNum,
+            ifnull(sum(delete_num),0) AS deleteNum
+		FROM
+			erp_sync_stat
+		WHERE
+        su_id in
+        <foreach item="item" index="index" collection="request.suIdList" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        <if test="request.startTime != null">
+            and create_time <![CDATA[ >= ]]> #{request.startTime}
+        </if>
+        <if test="request.endTime != null">
+            and create_time <![CDATA[ <= ]]> #{request.endTime}
+        </if>
+        group by su_id
+	</select>
+
+	<select id="page" resultMap="BaseResultMap">
+		select
+		<include refid="erp_sync_stat"/>
+		from erp_sync_stat
+		where stat_date = #{request.statDate}
+	</select>
+
+	<select id="getOneBySuidAndSuDeptNoAndStatDate" resultMap="BaseResultMap">
+		select
+		<include refid="erp_sync_stat"/>
+		from erp_sync_stat
+		where su_id = #{suId} AND su_dept_no = #{suDeptNo} AND stat_date = #{statDate}
+		<if test="taskNoList != null and taskNoList.size() != 0">
+			and task_no in
+			<foreach collection="taskNoList" item="item" open="(" close=")" separator=",">
+				#{item}
+			</foreach>
+		</if>
+	</select>
+
+	<select id="listBySuidAndSuDeptNoAndStatDateAndTaskNoList" resultMap="BaseResultMap">
+		select
+		su_id, su_dept_no, stat_date
+		from erp_sync_stat
+		where su_id = #{suId} AND su_dept_no = #{suDeptNo}
+		AND stat_date <![CDATA[ >= ]]> #{statDateStart} AND stat_date <![CDATA[ <= ]]> #{statDateEnd}
+		<if test="taskNoList != null and taskNoList.size() > 0">
+			and task_no in
+			<foreach collection="taskNoList" item="item" open="(" close=")" separator=",">
+				#{item}
+			</foreach>
+		</if>
+		GROUP BY su_id, su_dept_no, stat_date
+	</select>
+
+	<select id="getMaxTaskTimeByEid" resultType="java.util.Date">
+		select
+		MAX(stat_date) AS task_time
+		from erp_sync_stat
+		where su_id = #{suId} AND su_dept_no = #{suDeptNo}
+		<if test="taskNoList != null and taskNoList.size() != 0">
+			and task_no in
+			<foreach collection="taskNoList" item="item" open="(" close=")" separator=",">
+				#{item}
+			</foreach>
+		</if>
+	</select>
+
+</mapper>

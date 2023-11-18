@@ -1,0 +1,1167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.marketing.couponactivity.dao.CouponActivityMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.marketing.couponactivity.entity.CouponActivityDO">
+        <result column="id" property="id"/>
+        <result column="eid" property="eid"/>
+        <result column="ename" property="ename"/>
+        <result column="type" property="type"/>
+        <result column="name" property="name"/>
+        <result column="description" property="description"/>
+        <result column="budget_code" property="budgetCode"/>
+        <result column="sponsor_type" property="sponsorType"/>
+        <result column="threshold" property="threshold"/>
+        <result column="threshold_value" property="thresholdValue"/>
+        <result column="discount_value" property="discountValue"/>
+        <result column="discount_max" property="discountMax"/>
+        <result column="bear" property="bear"/>
+        <result column="platform_ratio" property="platformRatio"/>
+        <result column="business_ratio" property="businessRatio"/>
+        <result column="use_date_type" property="useDateType"/>
+        <result column="begin_time" property="beginTime"/>
+        <result column="end_time" property="endTime"/>
+        <result column="expiry_days" property="expiryDays"/>
+        <result column="platform_limit" property="platformLimit"/>
+        <result column="platform_selected" property="platformSelected"/>
+        <result column="pay_method_limit" property="payMethodLimit"/>
+        <result column="pay_method_selected" property="payMethodSelected"/>
+        <result column="coexist_promotion" property="coexistPromotion"/>
+        <result column="total_count" property="totalCount"/>
+        <result column="give_count" property="giveCount"/>
+        <result column="use_count" property="useCount"/>
+        <result column="status" property="status"/>
+        <result column="member_type" property="memberType"/>
+        <result column="member_limit" property="memberLimit"/>
+        <result column="enterprise_limit" property="enterpriseLimit"/>
+        <result column="goods_limit" property="goodsLimit"/>
+        <result column="can_get" property="canGet"/>
+        <result column="del_flag" property="delFlag"/>
+        <result column="create_user" property="createUser"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_user" property="updateUser"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="remark" property="remark"/>
+    </resultMap>
+
+    <resultMap id="BaseCouponResultMap" type="com.yiling.marketing.couponactivity.bo.CouponBO">
+        <result column="id" property="id"/>
+        <result column="eid" property="eid"/>
+        <result column="ename" property="ename"/>
+        <result column="begin_time" property="beginTime"/>
+        <result column="end_time" property="endTime"/>
+        <result column="used_status" property="usedStatus"/>
+        <result column="user_id" property="userId"/>
+        <result column="user_name" property="userName"/>
+        <result column="activity_id" property="activityId"/>
+        <result column="activity_name" property="activityName"/>
+        <result column="activity_eid" property="activityEid"/>
+        <result column="activity_ename" property="activityEname"/>
+        <result column="type" property="type"/>
+        <result column="sponsor_type" property="sponsorType"/>
+        <result column="threshold" property="threshold"/>
+        <result column="threshold_value" property="thresholdValue"/>
+        <result column="discount_value" property="discountValue"/>
+        <result column="discount_max" property="discountMax"/>
+        <result column="platform_limit" property="platformLimit"/>
+        <result column="platform_selected" property="platformSelected"/>
+        <result column="pay_method_limit" property="payMethodLimit"/>
+        <result column="pay_method_selected" property="payMethodSelected"/>
+        <result column="coexist_promotion" property="coexistPromotion"/>
+        <result column="enterprise_limit" property="enterpriseLimit"/>
+        <result column="goods_limit" property="goodsLimit"/>
+        <result column="can_get" property="canGet"/>
+        <result column="use_date_type" property="useDateType"/>
+        <result column="expiry_days" property="expiryDays"/>
+        <result column="member_type" property="memberType"/>
+        <result column="member_Limit" property="memberLimit"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Table_Name">
+        `marketing_coupon_activity`
+    </sql>
+
+    <sql id="Base_Column_List">
+        id, eid, ename, type, name, description, budget_code, sponsor_type, threshold, threshold_value, discount_max,
+        discount_value, bear, platform_ratio, business_ratio, use_date_type, begin_time, end_time, expiry_days, platform_limit,
+        platform_selected, pay_method_limit, pay_method_selected, coexist_promotion, total_count, give_count, use_count,
+        status, enterprise_limit, del_flag, create_user, create_time, update_user, update_time, remark, can_get, goods_limit
+    </sql>
+
+    <sql id="Base_Coupon_Column_List">
+        c.id, c.eid, c.ename, c.begin_time, c.end_time, c.used_status, c.user_id, c.user_name,
+        ca.id as activity_id, ca.name as activity_name, ca.eid as activity_eid, ca.ename as activity_ename, ca.type, ca.sponsor_type, ca.threshold,
+        ca.threshold_value, ca.discount_max, ca.discount_value, ca.platform_limit, ca.platform_selected, ca.pay_method_limit, ca.pay_method_selected,
+        ca.coexist_promotion, ca.status, ca.enterprise_limit, ca.can_get, ca.goods_limit, ca.use_date_type, ca.expiry_days,ca.member_type,ca.member_limit
+    </sql>
+
+    <insert id="insertCouponActivity" parameterType="com.yiling.marketing.couponactivity.entity.CouponActivityDO"
+            useGeneratedKeys="true" keyProperty="id">
+        insert into
+        <include refid="Base_Table_Name"/>
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="eid != null">
+                eid,
+            </if>
+            <if test="ename != null and ename != ''">
+                ename,
+            </if>
+            <if test="type != null">
+                type,
+            </if>
+            <if test="memberType != null">
+                member_type,
+            </if>
+            <if test="memberLimit != null">
+                member_limit,
+            </if>
+            <if test="name != null and name != ''">
+                name,
+            </if>
+            <if test="description != null and description != ''">
+                description,
+            </if>
+            <if test="budgetCode != null and budgetCode != ''">
+                budget_code,
+            </if>
+            <if test="sponsorType != null">
+                sponsor_type,
+            </if>
+            <if test="threshold != null">
+                threshold,
+            </if>
+            <if test="thresholdValue != null">
+                threshold_value,
+            </if>
+            <if test="discountValue != null">
+                discount_value,
+            </if>
+            <if test="discountMax != null">
+                discount_max,
+            </if>
+            <if test="bear != null">
+                bear,
+            </if>
+            <if test="platformRatio != null">
+                platform_ratio,
+            </if>
+            <if test="businessRatio != null">
+                business_ratio,
+            </if>
+            <if test="useDateType != null">
+                use_date_type,
+            </if>
+            <if test="beginTime != null">
+                begin_time,
+            </if>
+            <if test="endTime != null">
+                end_time,
+            </if>
+            <if test="expiryDays != null">
+                expiry_days,
+            </if>
+            <if test="platformLimit != null">
+                platform_limit,
+            </if>
+            <if test="platformSelected != null and platformSelected != ''">
+                platform_selected,
+            </if>
+            <if test="payMethodLimit != null">
+                pay_method_limit,
+            </if>
+            <if test="payMethodSelected != null and payMethodSelected != ''">
+                pay_method_selected,
+            </if>
+            <if test="coexistPromotion != null and coexistPromotion != ''">
+                coexist_promotion,
+            </if>
+            <if test="enterpriseLimit != null">
+                enterprise_limit,
+            </if>
+            <if test="goodsLimit != null">
+                goods_limit,
+            </if>
+            <if test="canGet != null">
+                can_get,
+            </if>
+            <if test="totalCount != null">
+                total_count,
+            </if>
+            <if test="giveCount != null">
+                give_count,
+            </if>
+            <if test="useCount != null">
+                use_count,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="delFlag != null">
+                del_flag,
+            </if>
+            <if test="createUser != null">
+                create_user,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateUser != null">
+                update_user,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="remark != null and remark != ''">
+                remark,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="eid != null">
+                #{eid},
+            </if>
+            <if test="ename != null and ename != ''">
+                #{ename},
+            </if>
+            <if test="type != null">
+                #{type},
+            </if>
+            <if test="memberType != null">
+                #{memberType},
+            </if>
+            <if test="memberLimit != null">
+                #{memberLimit},
+            </if>
+            <if test="name != null and name != ''">
+                #{name},
+            </if>
+            <if test="description != null and description != ''">
+                #{description},
+            </if>
+            <if test="budgetCode != null and budgetCode != ''">
+                #{budgetCode},
+            </if>
+            <if test="sponsorType != null">
+                #{sponsorType},
+            </if>
+            <if test="threshold != null">
+                #{threshold},
+            </if>
+            <if test="thresholdValue != null">
+                #{thresholdValue},
+            </if>
+            <if test="discountValue != null">
+                #{discountValue},
+            </if>
+            <if test="discountMax != null">
+                #{discountMax},
+            </if>
+            <if test="bear != null">
+                #{bear},
+            </if>
+            <if test="platformRatio != null">
+                #{platformRatio},
+            </if>
+            <if test="businessRatio != null">
+                #{businessRatio},
+            </if>
+            <if test="useDateType != null">
+                #{useDateType},
+            </if>
+            <if test="beginTime != null">
+                #{beginTime},
+            </if>
+            <if test="endTime != null">
+                #{endTime},
+            </if>
+            <if test="expiryDays != null">
+                #{expiryDays},
+            </if>
+            <if test="platformLimit != null">
+                #{platformLimit},
+            </if>
+            <if test="platformSelected != null and platformSelected != ''">
+                #{platformSelected},
+            </if>
+            <if test="payMethodLimit != null">
+                #{payMethodLimit},
+            </if>
+            <if test="payMethodSelected != null and payMethodSelected != ''">
+                #{payMethodSelected},
+            </if>
+            <if test="coexistPromotion != null and coexistPromotion != ''">
+                #{coexistPromotion},
+            </if>
+            <if test="enterpriseLimit != null">
+                #{enterpriseLimit},
+            </if>
+            <if test="goodsLimit != null">
+                #{goodsLimit},
+            </if>
+            <if test="canGet != null">
+                #{canGet},
+            </if>
+            <if test="totalCount != null">
+                #{totalCount},
+            </if>
+            <if test="giveCount != null">
+                #{giveCount},
+            </if>
+            <if test="useCount != null">
+                #{useCount},
+            </if>
+            <if test="status != null">
+                #{status},
+            </if>
+            <if test="delFlag != null">
+                #{delFlag},
+            </if>
+            <if test="createUser != null">
+                #{createUser},
+            </if>
+            <if test="createTime != null">
+                #{createTime},
+            </if>
+            <if test="updateUser != null">
+                #{updateUser},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime},
+            </if>
+            <if test="remark != null and remark != ''">
+                #{remark},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateCouponActivityById" parameterType="com.yiling.marketing.couponactivity.entity.CouponActivityDO">
+        UPDATE
+        <include refid="Base_Table_Name"/>
+        SET
+        <!--<if test="eid != null">-->
+        <!--eid = #{eid},-->
+        <!--</if>-->
+        <!--<if test="ename != null and ename != ''">-->
+        <!--ename = #{ename},-->
+        <!--</if>-->
+        <if test="type != null">
+            type = #{type},
+        </if>
+        <if test="name != null and name != ''">
+            name = #{name},
+        </if>
+        <if test="description != null and description != ''">
+            description = #{description},
+        </if>
+        <if test="budgetCode != null and budgetCode != ''">
+            budget_code = #{budgetCode},
+        </if>
+        <if test="sponsorType != null">
+            sponsor_type = #{sponsorType},
+        </if>
+        <if test="threshold != null">
+            threshold = #{threshold},
+        </if>
+        <if test="thresholdValue != null">
+            threshold_value = #{thresholdValue},
+        </if>
+        <if test="discountValue != null">
+            discount_value = #{discountValue},
+        </if>
+        <if test="discountMax != null">
+            discount_max = #{discountMax},
+        </if>
+        <if test="bear != null">
+            bear = #{bear},
+        </if>
+        <if test="platformRatio != null">
+            platform_ratio = #{platformRatio},
+        </if>
+        <if test="businessRatio != null">
+            business_ratio = #{businessRatio},
+        </if>
+        <if test="useDateType != null">
+            use_date_type = #{useDateType},
+        </if>
+        <if test="beginTime != null">
+            begin_time = #{beginTime},
+        </if>
+        <if test="endTime != null">
+            end_time = #{endTime},
+        </if>
+        <if test="expiryDays != null">
+            expiry_days = #{expiryDays},
+        </if>
+        <if test="platformLimit != null">
+            platform_limit = #{platformLimit},
+        </if>
+        <if test="platformSelected != null and platformSelected != ''">
+            platform_selected = #{platformSelected},
+        </if>
+        <if test="payMethodLimit != null">
+            pay_method_limit = #{payMethodLimit},
+        </if>
+        <if test="payMethodSelected != null and payMethodSelected != ''">
+            pay_method_selected = #{payMethodSelected},
+        </if>
+        <if test="coexistPromotion != null and coexistPromotion != ''">
+            coexist_promotion = #{coexistPromotion},
+        </if>
+        <if test="enterpriseLimit != null">
+            enterprise_limit = #{enterpriseLimit},
+        </if>
+        <if test="goodsLimit != null">
+            goods_limit = #{goodsLimit},
+        </if>
+        <if test="canGet != null">
+            can_get = #{canGet},
+        </if>
+        <if test="totalCount != null">
+            total_count = #{totalCount},
+        </if>
+        <if test="giveCount != null">
+            give_count = #{giveCount},
+        </if>
+        <if test="useCount != null">
+            use_count = #{useCount},
+        </if>
+        <if test="memberLimit != null">
+            member_limit = #{memberLimit},
+        </if>
+        <if test="status != null">
+            status = #{status},
+        </if>
+        <if test="delFlag != null">
+            del_flag = #{delFlag},
+        </if>
+        <if test="createUser != null">
+            create_user = #{createUser},
+        </if>
+        <if test="createTime != null">
+            create_time = #{createTime},
+        </if>
+        <if test="updateUser != null">
+            update_user = #{updateUser},
+        </if>
+        <if test="remark != null and remark != ''">
+            remark = #{remark},
+        </if>
+        `update_time` = NOW()
+        WHERE id = #{id}
+    </update>
+
+    <update id="updateHasGiveNum">
+        UPDATE marketing_coupon_activity SET give_count = give_count + #{num} WHERE id = #{id};
+    </update>
+
+    <!--Integer getCountByEid(@Param("eid") Long eid);-->
+    <!--<select id="getCountByEid">-->
+    <!--SELECT COUNT(*)-->
+    <!--FROM include refid="Base_Table_Name"/>-->
+    <!--AND status in (1,2)-->
+    <!--AND (use_date_type = 1 AND end_time > NOW())-->
+    <!--OR (use_date_type = 2 AND expiry_days IS NOT NULL)-->
+    <!--</select>-->
+
+    <!--List<CouponActivityDO> getListFiveByGoodsId(Long goodsId);-->
+    <select id="getListFiveByGoodsId" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        <include refid="Base_Table_Name"/>
+        WHERE
+        AND status in (1,2)
+        AND (use_date_type = 1 AND end_time > NOW())
+        OR (use_date_type = 2 AND expiry_days IS NOT NULL)
+    </select>
+
+    <sql id="Ca_Base_Column_List">
+        ca.id, ca.eid, ca.ename, ca.type, ca.name, ca.description, ca.budget_code, ca.sponsor_type, ca.threshold, ca.threshold_value, ca.discount_max,
+        ca.discount_value, ca.bear, ca.platform_ratio, ca.business_ratio, ca.use_date_type, ca.begin_time, ca.end_time, ca.expiry_days, ca.platform_limit,
+        ca.platform_selected, ca.pay_method_limit, ca.pay_method_selected, ca.coexist_promotion, ca.total_count, ca.give_count, ca.use_count, ca.status,
+        ca.enterprise_limit, ca.del_flag, ca.create_user, ca.create_time, ca.update_user, ca.update_time, ca.remark, goods_limit, can_get,ca.member_limit
+    </sql>
+    <sql id="T_Base_Column_List">
+        t.id, t.eid, t.ename, t.type, t.name, t.description, t.budget_code, t.sponsor_type, t.threshold, t.threshold_value,
+        t.discount_max, t.discount_value, t.bear, t.platform_ratio, t.business_ratio, t.use_date_type, t.begin_time, t.end_time,
+        t.expiry_days, t.platform_limit, t.platform_selected, t.pay_method_limit, t.pay_method_selected, t.coexist_promotion, t.total_count,
+        t.give_count, t.use_count, t.status, t.enterprise_limit, t.del_flag, t.create_user, t.create_time, t.update_user, t.update_time, t.remark,
+        t.goods_limit, t.can_get,t.member_limit
+    </sql>
+
+    <!--只是返回商家商品下面有那些券，但是券不一定购买者能够领取或者使用-->
+    <sql id="Base_CanReceiveListByEidAndGoodsId">
+        SELECT
+        DISTINCT
+        <include refid="T_Base_Column_List"/>
+        FROM(
+        (
+        select
+        DISTINCT
+        <include refid="Ca_Base_Column_List"/>
+        from marketing_coupon_activity ca
+        inner join marketing_coupon_activity_enterprise_get_rules caegr on ca.id = caegr.coupon_activity_id and caegr.del_flag = 0
+        and caegr.give_num > 0 and caegr.begin_time <![CDATA[ <= ]]> NOW() and caegr.end_time <![CDATA[ > ]]> NOW()
+        left join marketing_coupon_activity_goods_limit cagl on ca.id = cagl.coupon_activity_id and cagl.del_flag = 0
+        where
+        ca.eid = #{request.eid}
+        and ca.del_flag = 0
+        and ca.status = 1
+        and ca.member_type=1
+        and ca.total_count > 0
+        and IF(ca.use_date_type = 2, true, ca.begin_time <![CDATA[ <= ]]> NOW() and ca.end_time > NOW())
+        <if test="request.platformType != null">
+            and (
+            ca.platform_limit = 1 or
+            (ca.platform_limit = 2 and ca.platform_selected like CONCAT('%',#{request.platformType},'%'))
+            )
+        </if>
+        and (
+        ca.goods_limit = 1
+        or (ca.goods_limit = 2 and cagl.goods_id = #{request.goodsId})
+        )
+        )
+        UNION ALL
+        (
+        select
+        <include refid="Ca_Base_Column_List"/>
+        from marketing_coupon_activity ca
+        inner join marketing_coupon_activity_auto_get_coupon cagc on ca.id = cagc.coupon_activity_id and cagc.del_flag = 0 and cagc.give_num > 0
+        inner join marketing_coupon_activity_auto_get cag on cag.id = cagc.coupon_activity_auto_get_id and cag.del_flag = 0 and cag.status = 1
+        and cag.begin_time <![CDATA[ <= ]]> NOW() and cag.end_time <![CDATA[ > ]]> NOW()
+        left join marketing_coupon_activity_goods_limit cagl on ca.id = cagl.coupon_activity_id
+        left join marketing_coupon_activity_enterprise_limit cael on ca.id = cael.coupon_activity_id
+        where
+        ca.del_flag = 0
+        and ca.eid = 0
+        and ca.member_type=1
+        and ca.status = 1
+        and ca.total_count > 0
+        and IF (cag.condition_enterprise_range=3,cag.condition_enterprise_type != 0 and cag.condition_user_type != 0,true)
+        and IF(ca.use_date_type = 2, true, ca.begin_time <![CDATA[ <= ]]> NOW() and ca.end_time > NOW())
+        <if test="request.platformType != null">
+            and (
+            ca.platform_limit = 1 or
+            (ca.platform_limit = 2 and ca.platform_selected like CONCAT('%',#{request.platformType},'%'))
+            )
+        </if>
+        and (
+        (ca.enterprise_limit = 1 and ca.goods_limit = 1)
+        or (ca.enterprise_limit = 2 and ca.goods_limit = 1 and cael.eid = #{request.eid})
+        or (ca.enterprise_limit = 1 and ca.goods_limit = 2 and cagl.goods_id = #{request.goodsId})
+        or (ca.enterprise_limit = 2 and ca.goods_limit = 2 and cael.eid = #{request.eid} and cagl.goods_id = #{request.goodsId})
+        )
+        )
+        ) t
+        ORDER BY t.sponsor_type,t.create_time DESC LIMIT #{request.limit}
+    </sql>
+
+    <!--根据企业id、商品id 查询优惠券活动列表-->
+    <select id="getCanReceiveListByEidAndGoodsId" resultMap="BaseResultMap">
+        <include refid="Base_CanReceiveListByEidAndGoodsId"/>
+    </select>
+
+    <!--根据企业id 查询可领取的优惠券活动列表-->
+    <sql id="Base_CanReceiveListByEid">
+        SELECT
+        DISTINCT
+        <include refid="T_Base_Column_List"/>
+        ,userType
+        FROM(
+        (
+        select
+        <include refid="Ca_Base_Column_List"/>
+        ,caegr.condition_user_type as userType
+        from marketing_coupon_activity ca
+        inner join marketing_coupon_activity_enterprise_get_rules caegr on ca.id = caegr.coupon_activity_id and caegr.del_flag = 0
+        and caegr.give_num > 0 and caegr.begin_time <![CDATA[ <= ]]> NOW() and caegr.end_time <![CDATA[ > ]]> NOW()
+        left join marketing_coupon_activity_enterprise_limit cael on cael.coupon_activity_id=ca.id
+       where
+        ca.eid = #{request.eid}
+        and ca.member_type=1
+        and (caegr.condition_enterprise_type=1 or (caegr.condition_enterprise_type = 2 and caegr.condition_enterprise_type_value like CONCAT('%',#{request.type},'%')))
+        <!--5表示部分用户，关联企业表查询满足条件的数据-->
+        and IF(caegr.condition_user_type = 5,#{request.currentEid},IFNULL(cael.eid,-1)) = IFNULL(cael.eid,-1)
+        and ca.del_flag = 0
+        and ca.status = 1
+        and ca.total_count > 0
+        and IF(ca.use_date_type = 2, true, ca.end_time <![CDATA[ > ]]> NOW())
+        <if test="request.platformType != null">
+            and (
+             ca.platform_limit = 1 or
+            (ca.platform_limit = 2 and ca.platform_selected like CONCAT('%',#{request.platformType},'%'))
+            )
+        </if>
+        )
+        UNION ALL
+        (
+        select
+        <include refid="Ca_Base_Column_List"/>
+        ,cag.condition_user_type as userType
+        from marketing_coupon_activity ca
+        inner join marketing_coupon_activity_auto_get_coupon cagc on ca.id = cagc.coupon_activity_id and cagc.del_flag = 0 and cagc.give_num > 0
+        inner join marketing_coupon_activity_auto_get cag on cag.id = cagc.coupon_activity_auto_get_id and cag.del_flag = 0 and cag.status = 1
+        and cag.begin_time <![CDATA[ <= ]]> NOW() and cag.end_time <![CDATA[ > ]]> NOW()
+        left join marketing_coupon_activity_enterprise_limit cael on ca.id = cael.coupon_activity_id and cael.del_flag = 0
+        LEFT JOIN marketing_coupon_activity_auto_get_enterprise_limit agel ON agel.coupon_activity_auto_get_id=cag.id AND agel.del_flag = 0
+        left join marketing_coupon_activity_auto_get_member_limit gml on gml.coupon_activity_auto_get_id=cag.id and gml.del_flag = 0
+        left join marketing_coupon_activity_auto_get_promotion_limit agpl on agpl.coupon_activity_auto_get_id=cag.id and agpl.del_flag = 0
+        where
+        ca.del_flag = 0
+        and ca.member_type=1
+        and IF (cag.condition_enterprise_range=3,cag.condition_enterprise_type != 0 and cag.condition_user_type != 0,true)
+        and IF(cag.condition_user_type = 4,#{request.currentEid},IFNULL(agel.eid,-1)) = IFNULL(agel.eid,-1)
+        and (cag.condition_enterprise_type=0 or cag.condition_enterprise_type=1 or (cag.condition_enterprise_type = 2 and cag.condition_enterprise_type_value like CONCAT('%',#{request.type},'%')))
+        and ca.eid = 0
+        and ca.status = 1
+        and ca.total_count > 0
+        and IF(ca.use_date_type = 2, true,ca.end_time <![CDATA[ > ]]> NOW())
+        AND IF(cag.condition_enterprise_range = 2,#{request.currentEid},IFNULL(agel.eid,-1)) = IFNULL(agel.eid,-1)
+        <!--指定用户类型（1-全部用户；2-仅普通用户；3-全部会员用户；4-部分指定会员；6新客 ；7指定方案会员；8指定推广方-->
+        AND IF(cag.condition_user_type = 7,gml.member_id IN
+        <foreach index="index" item="item" collection="request.memberIds" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        ,true)
+        AND IF(cag.condition_user_type = 8,agpl.eid IN
+        <foreach index="index" item="item" collection="request.promotionEids" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        ,true)
+        <if test="request.platformType != null">
+            and (
+            ca.platform_limit = 1 or
+            (ca.platform_limit = 2 and ca.platform_selected like CONCAT('%',#{request.platformType},'%'))
+            )
+        </if>
+        and
+         IF(ca.enterprise_limit = 2,cael.eid = #{request.eid},true)
+        )
+        ) t
+        ORDER BY t.sponsor_type DESC,t.create_time DESC
+    </sql>
+    <!--获取可以发放优惠券的商家-->
+    <select id="getShopIdCanGiveCoupon" resultType="com.yiling.marketing.couponactivity.dto.request.CouponActivityCanUseShopDTO">
+        SELECT
+        DISTINCT
+        id,eid,caelEid,goodsLimit,platform,userType,totalCount
+        from (
+        (
+        select
+        caegr.condition_user_type as userType,
+        ca.id,ca.total_count as totalCount,ca.eid,0  AS caelEid,ca.goods_limit AS goodsLimit,ca.sponsor_type,-1 as platform
+        from marketing_coupon_activity ca
+        inner join marketing_coupon_activity_enterprise_get_rules caegr on ca.id = caegr.coupon_activity_id and caegr.del_flag = 0
+        and caegr.give_num > 0 and caegr.begin_time  <![CDATA[ <= ]]> NOW() and caegr.end_time  >  NOW()
+        left join marketing_coupon_activity_enterprise_limit cael on cael.coupon_activity_id=ca.id
+        where
+        ca.del_flag = 0
+        and ca.member_type=1
+        and ca.status = 1
+        and ca.total_count > 0
+        and IF(ca.use_date_type = 2, true, ca.end_time <![CDATA[ > ]]> NOW())
+        and (
+        ca.platform_limit = 1 or
+        (ca.platform_limit = 2 and ca.platform_selected like CONCAT('%',1,'%'))
+        )
+        and (caegr.condition_enterprise_type=1 or (caegr.condition_enterprise_type = 2 and caegr.condition_enterprise_type_value like CONCAT('%',#{request.type},'%')))
+        <!--5表示部分用户，关联企业表查询满足条件的数据-->
+        and IF(caegr.condition_user_type = 5,#{request.eid},IFNULL(cael.eid,-1)) = IFNULL(cael.eid,-1)
+        )
+        UNION ALL
+        (
+        select
+        cag.condition_user_type as userType,
+        ca.id,ca.total_count as totalCount,ca.eid,cael.eid as caelEid,ca.goods_limit AS goodsLimit,ca.sponsor_type,1 as platform
+        from marketing_coupon_activity ca
+        inner join marketing_coupon_activity_auto_get_coupon cagc on ca.id = cagc.coupon_activity_id and cagc.del_flag = 0 and cagc.give_num > 0
+        inner join marketing_coupon_activity_auto_get cag on cag.id = cagc.coupon_activity_auto_get_id and cag.del_flag = 0 and cag.status = 1
+        and cag.begin_time  <![CDATA[ <= ]]>  NOW() and cag.end_time  >  NOW()
+        left join marketing_coupon_activity_enterprise_limit cael on ca.id = cael.coupon_activity_id and cael.del_flag = 0
+        left join marketing_coupon_activity_auto_get_enterprise_limit agel ON agel.coupon_activity_auto_get_id=cag.id AND agel.del_flag = 0
+        left join marketing_coupon_activity_auto_get_member_limit gml on gml.coupon_activity_auto_get_id=cag.id
+        left join marketing_coupon_activity_auto_get_promotion_limit agpl on agpl.coupon_activity_auto_get_id=cag.id
+        where
+        ca.del_flag = 0
+        and ca.member_type=1
+        <!--客户范围：3也可能是不填写的默认值，如果客户范围是部分客户可用，则用户类型，企业类型不能为0默认值-->
+        and IF (cag.condition_enterprise_range=3,cag.condition_enterprise_type != 0 and cag.condition_user_type != 0,true)
+        <!--客户范围：1-全部客户 2-指定客户 3指定范围客户-->
+        AND IF(cag.condition_enterprise_range = 2,#{request.eid},IFNULL(agel.eid,-1)) = IFNULL(agel.eid,-1)
+        <!--指定用户类型（1-全部用户；2-仅普通用户；3-全部会员用户；4-部分指定会员；6新客 ；7指定方案会员；8指定推广方-->
+        AND IF(cag.condition_user_type = 4,#{request.eid},IFNULL(agel.eid,-1)) = IFNULL(agel.eid,-1)
+        AND IF(cag.condition_user_type = 7,gml.member_id IN
+        <foreach index="index" item="item" collection="request.memberIds" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        ,true)
+        AND IF(cag.condition_user_type = 8,agpl.eid IN
+        <foreach index="index" item="item" collection="request.promotionEids" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        ,true)
+        and (cag.condition_enterprise_type=0 or cag.condition_enterprise_type=1 or (cag.condition_enterprise_type = 2 and
+        cag.condition_enterprise_type_value like CONCAT('%',#{request.type},'%')))
+        and ca.eid = 0
+        and ca.status = 1
+        and ca.total_count > 0
+        and IF(ca.use_date_type = 2, true, ca.end_time <![CDATA[ > ]]> NOW())
+        and (
+        ca.platform_limit = 1 or
+        (ca.platform_limit = 2 and ca.platform_selected like CONCAT('%',1,'%'))
+        )
+        )
+        ) t
+    </select>
+    <!--根据企业id 查询可领取优惠券活动列表-->
+    <select id="getCanReceiveListByEid" resultType="com.yiling.marketing.couponactivity.dto.CouponActivityDTO">
+        <include refid="Base_CanReceiveListByEid"/>
+    </select>
+
+    <!--根据企业id 查询店铺可领取优惠券列表-->
+    <select id="getCanReceiveListPageByEid" resultType="com.yiling.marketing.couponactivity.dto.CouponActivityDTO">
+        <include refid="Base_CanReceiveListByEid"/>
+    </select>
+
+    <select id="getCouponAndActivityListPageByEid" resultMap="BaseCouponResultMap">
+        SELECT
+        c.id, c.eid, c.ename, c.begin_time, c.end_time, c.used_status, c.user_id, c.user_name,c.coupon_activity_id as activity_id
+        FROM marketing_coupon c
+        WHERE
+        c.del_flag = 0
+        AND c.eid = #{request.eid}
+        AND c.status = 1
+        <if test="request.usedStatusType != null and request.usedStatusType == 1">
+            AND c.used_status = 1
+            AND c.end_time > NOW()
+        </if>
+        <if test="request.usedStatusType != null and request.usedStatusType == 2">
+            AND c.used_status = 2
+        </if>
+        <if test="request.usedStatusType != null and request.usedStatusType == 3">
+            AND c.end_time <![CDATA[ < ]]> NOW()
+        </if>
+        ORDER BY c.create_time DESC
+    </select>
+
+    <select id="getIdByName" resultType="java.lang.Long">
+        SELECT
+        id
+        FROM
+        <include refid="Base_Table_Name"/>
+        WHERE
+        eid = #{request.eid}
+        AND name = #{request.name}
+        AND status in (1,2)
+        AND del_flag = 0
+        LIMIT 1
+    </select>
+
+    <select id="getPageForGoodsGift" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        <include refid="Base_Table_Name"/>
+        WHERE
+        del_flag = 0
+        and status = 1
+        <!--赠品库不包含会员优惠券-->
+        and member_type = 1
+        and total_count > 0
+        and IF(use_date_type = 2, true, begin_time <![CDATA[ <= ]]> NOW() and end_time > NOW())
+        <if test="request.currentEid != null and request.currentEid == 0">
+            AND eid = 0
+        </if>
+        <if test="request.currentEid != null and request.currentEid != 0">
+            AND eid = #{request.currentEid}
+        </if>
+    </select>
+    <select id="getCanReceiveListPageByEids" resultType="com.yiling.marketing.couponactivity.dto.CouponActivityHasGetChangeDTO">
+        SELECT
+        DISTINCT
+        caEid, caelEid,caGoodsLimit,caPlatform,
+        <include refid="T_Base_Column_List"/>
+        FROM(
+        (
+        select
+        ca.eid as caEid,0  AS caelEid,ca.goods_limit AS caGoodsLimit,-1 as caPlatform,
+
+        <include refid="Ca_Base_Column_List"/>
+        from marketing_coupon_activity ca
+        inner join marketing_coupon_activity_enterprise_get_rules caegr on ca.id = caegr.coupon_activity_id and caegr.del_flag = 0
+        and caegr.give_num > 0 and caegr.begin_time <![CDATA[ <= ]]> NOW() and caegr.end_time <![CDATA[ > ]]> NOW()
+        left join marketing_coupon_activity_goods_limit cagl on ca.id = cagl.coupon_activity_id and cagl.del_flag = 0
+        left join marketing_coupon_activity_enterprise_limit cael on cael.coupon_activity_id=ca.id
+        where
+        ca.eid IN
+        <foreach index="index" item="item" collection="request.eids" open="(" separator="," close=")" >
+            #{item}
+        </foreach>
+        and (caegr.condition_enterprise_type=1 or (caegr.condition_enterprise_type = 2 and caegr.condition_enterprise_type_value like CONCAT('%',#{request.type},'%')))
+        <!--5表示部分用户，关联企业表查询满足条件的数据-->
+        and IF(caegr.condition_user_type = 5,#{request.currentEid},IFNULL(cael.eid,-1)) = IFNULL(cael.eid,-1)
+        and IF(ca.use_date_type = 2, true, ca.end_time <![CDATA[ > ]]> NOW())
+        and ca.del_flag = 0
+        and ca.member_type=1
+        and ca.status = 1
+        and ca.total_count > 0
+        and ca.member_type=1
+        <if test="request.platformType != null">
+            and (
+            ca.platform_limit = 1 or
+            (ca.platform_limit = 2 and ca.platform_selected like CONCAT('%',#{request.platformType},'%'))
+            )
+        </if>
+        and (
+        ca.goods_limit = 1
+        or (ca.goods_limit = 2 AND cagl.eid IN
+        <foreach index="index" item="item" collection="request.eids" open="(" close=")" separator=",">
+            #{item}
+        </foreach>)
+        )
+        )
+        UNION ALL
+        (
+        select
+        ca.eid as caEid,cael.eid as caelEid,ca.goods_limit AS caGoodsLimit,1 as caPlatform,
+        <include refid="Ca_Base_Column_List"/>
+        from marketing_coupon_activity ca
+        inner join marketing_coupon_activity_auto_get_coupon cagc on ca.id = cagc.coupon_activity_id and cagc.del_flag = 0 and cagc.give_num > 0
+        inner join marketing_coupon_activity_auto_get cag on cag.id = cagc.coupon_activity_auto_get_id and cag.del_flag = 0 and cag.status = 1
+        and cag.begin_time <![CDATA[ <= ]]> NOW() and cag.end_time <![CDATA[ > ]]> NOW()
+        left join marketing_coupon_activity_enterprise_limit cael on ca.id = cael.coupon_activity_id and cael.del_flag = 0
+        LEFT JOIN  marketing_coupon_activity_auto_get_enterprise_limit agel ON agel.coupon_activity_auto_get_id=cag.id AND agel.del_flag = 0
+        left join marketing_coupon_activity_auto_get_member_limit gml on gml.coupon_activity_auto_get_id=cag.id
+        left join marketing_coupon_activity_auto_get_promotion_limit agpl on agpl.coupon_activity_auto_get_id=cag.id
+        where
+        ca.del_flag = 0
+        and ca.member_type=1
+        and IF (cag.condition_enterprise_range=3,cag.condition_enterprise_type != 0 and cag.condition_user_type != 0,true)
+        and ca.eid = 0
+        and ca.status = 1
+        and ca.total_count > 0
+        and IF(ca.use_date_type = 2, true, ca.end_time <![CDATA[ > ]]> NOW())
+        AND IF(cag.condition_user_type = 4,#{request.currentEid},IFNULL(agel.eid,-1)) = IFNULL(agel.eid,-1)
+        AND IF(cag.condition_enterprise_range = 2,#{request.currentEid},IFNULL(agel.eid,-1)) = IFNULL(agel.eid,-1)
+        <!--指定用户类型（1-全部用户；2-仅普通用户；3-全部会员用户；4-部分指定会员；6新客 ；7指定方案会员；8指定推广方-->
+        AND IF(cag.condition_user_type = 7,gml.member_id IN
+        <foreach index="index" item="item" collection="request.memberIds" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        ,true)
+        AND IF(cag.condition_user_type = 8,agpl.eid IN
+        <foreach index="index" item="item" collection="request.promotionEids" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        ,true)
+        and (cag.condition_enterprise_type=0 or cag.condition_enterprise_type=1 or (cag.condition_enterprise_type = 2 and
+        cag.condition_enterprise_type_value like CONCAT('%',#{request.type},'%')))
+        <if test="request.platformType != null">
+            and (
+            ca.platform_limit = 1 or
+            (ca.platform_limit = 2 and ca.platform_selected like CONCAT('%',#{request.platformType},'%'))
+            )
+        </if>
+        and
+         (ca.enterprise_limit = 2 and cael.eid IN
+        <foreach index="index" item="item" collection="request.eids" open="(" close=")" separator=",">
+            #{item}
+        </foreach>)
+
+        )
+        ) t
+        where t.id not in (
+        select id from (
+        select mc.coupon_activity_id as id, count(1) as giveCount, mca.total_count as totalCount
+        from marketing_coupon mc
+        INNER JOIN marketing_coupon_activity mca on mc.coupon_activity_id = mca.id
+        where
+        mc.del_flag = 0
+        and (mca.eid in
+        <foreach index="index" item="item" collection="request.eids" open="(" close=")" separator=",">
+        #{item}
+        </foreach>
+        or mca.eid = 0)
+        and mc.status = 1
+        and mca.del_flag = 0
+        and mca.status = 1
+        and mca.total_count > 0
+        <if test="request.platformType != null">
+            and (
+            mca.platform_limit = 1 or
+            (mca.platform_limit = 2 and mca.platform_selected like CONCAT('%',1,'%'))
+            )
+        </if>
+        GROUP BY mc.coupon_activity_id
+        HAVING giveCount >= totalCount
+        ) t1
+        )
+        ORDER BY t.sponsor_type DESC,t.create_time DESC
+    </select>
+    <select id="queryListForMarketing" resultType="com.yiling.marketing.couponactivity.entity.CouponActivityDO">
+       SELECT
+        DISTINCT
+        ca.*
+        FROM  marketing_coupon_activity ca
+        left join marketing_coupon_activity_enterprise_limit mcel on mcel.coupon_activity_id=ca.id
+        <where>
+            ca.status!=4
+            and ca.member_type=#{request.memberType}
+            <if test="request.name!=null and request.name!='' ">
+               and ca.name like concat('%',#{request.name},'%')
+            </if>
+            <if test="request.id!=null">
+                and ca.id=#{request.id}
+            </if>
+            <if test="request.createBeginTime!=null ">
+                and ca.create_time between #{request.createBeginTime} and #{request.createEndTime}
+            </if>
+            <if test="request.sponsorType!=null and request.sponsorType!=0">
+                and  ca.sponsor_type=#{request.sponsorType}
+            </if>
+            <if test="request.status !=null and request.status !=0">
+                and ca.status=#{request.status}
+            </if>
+            <if test="request.activityStatus !=null and request.activityStatus ==2">
+                and IF(use_date_type=1, end_time>NOW(),TRUE) and total_count!=0
+            </if>
+            <if test="request.budgetCode !=null and request.budgetCode !='' ">
+                and  ca.budget_code like concat('%',#{request.budgetCode},'%')
+            </if>
+            <if test="request.creatUserIds != null">
+                and  ca.create_user in
+                <foreach collection="request.creatUserIds" item="id" index="index" open="(" close=")" separator=",">
+                    #{id}
+                </foreach>
+            </if>
+            <if test="request.createUser !=null ">
+                and  ca.create_user=#{request.createUser}
+            </if>
+            <if test="request.eid !=null">
+                and  ca.eid=#{request.eid}
+            </if>
+            <if test="request.availableEid !=null and request.availableEid !=0">
+               and IF(ca.eid=0,mcel.eid=#{request.availableEid},ca.eid=#{request.availableEid})
+            </if>
+            <if test="request.remark !=null and request.remark !=''">
+                and ca.remark like concat('%',#{request.remark},'%')
+            </if>
+        </where>
+        ORDER BY create_time DESC
+    </select>
+    <select id="getCanReceiveMemberCouponList" resultType="com.yiling.marketing.couponactivity.dto.CouponActivityHasGetChangeDTO">
+        SELECT
+        DISTINCT
+        caEid,caGoodsLimit,caPlatform,userType,
+        <include refid="T_Base_Column_List"/>
+        FROM(
+        select
+        ca.eid as caEid,ca.goods_limit AS caGoodsLimit,1 as caPlatform,
+        cag.condition_user_type AS userType,
+        <include refid="Ca_Base_Column_List"/>
+        from marketing_coupon_activity ca
+        inner join marketing_coupon_activity_auto_get_coupon cagc on ca.id = cagc.coupon_activity_id and cagc.del_flag = 0 and cagc.give_num > 0
+        inner join marketing_coupon_activity_auto_get cag on cag.id = cagc.coupon_activity_auto_get_id and cag.del_flag = 0 and cag.status = 1
+        and cag.begin_time <![CDATA[ <= ]]> NOW() and cag.end_time <![CDATA[ > ]]> NOW()
+        LEFT JOIN  marketing_coupon_activity_auto_get_enterprise_limit agel ON agel.coupon_activity_auto_get_id=cag.id AND agel.del_flag = 0
+        left join marketing_coupon_activity_auto_get_member_limit gml on gml.coupon_activity_auto_get_id=cag.id
+        left join marketing_coupon_activity_auto_get_promotion_limit agpl on agpl.coupon_activity_auto_get_id=cag.id
+        where
+        ca.del_flag = 0
+        and ca.member_type=2
+        and ca.eid = 0
+        and ca.status = 1
+        and ca.total_count > 0
+        and IF(ca.use_date_type = 2, true, ca.end_time <![CDATA[ > ]]> NOW())
+        and IF (cag.condition_enterprise_range=3,cag.condition_enterprise_type != 0 and cag.condition_user_type != 0,true)
+        AND IF(cag.condition_user_type = 4,#{request.currentEid},IFNULL(agel.eid,-1)) = IFNULL(agel.eid,-1)
+        AND IF(cag.condition_enterprise_range = 2,#{request.currentEid},IFNULL(agel.eid,-1)) = IFNULL(agel.eid,-1)
+        <!--condition_user_type指定用户类型（1-全部用户；2-仅普通用户；3-全部会员用户；4-部分指定会员；6新客 ；7指定方案会员；8指定推广方-->
+        AND IF(cag.condition_user_type = 7,gml.member_id IN
+        <foreach index="index" item="item" collection="request.memberIds" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        ,true)
+        AND IF(cag.condition_user_type = 8,agpl.eid IN
+        <foreach index="index" item="item" collection="request.promotionEids" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        ,true)
+        and (cag.condition_enterprise_type=0 or cag.condition_enterprise_type=1 or (cag.condition_enterprise_type = 2 and
+        cag.condition_enterprise_type_value like CONCAT('%',#{request.type},'%')))
+        ) t
+        where t.id not in (
+        select id from (
+        select mc.coupon_activity_id as id, count(1) as giveCount, mca.total_count as totalCount
+        from marketing_coupon mc
+        INNER JOIN marketing_coupon_activity mca on mc.coupon_activity_id = mca.id
+        where
+        mc.del_flag = 0
+        and mca.eid = 0
+        and mca.member_type=2
+        and mc.status = 1
+        and mca.del_flag = 0
+        and mca.status = 1
+        and mca.total_count > 0
+        GROUP BY mc.coupon_activity_id
+        HAVING giveCount >= totalCount
+        ) t1
+        )
+        ORDER BY t.sponsor_type DESC,t.create_time DESC
+    </select>
+    <select id="getAvailableActivity" resultType="com.yiling.marketing.couponactivity.entity.CouponActivityDO">
+        SELECT id,name from marketing_coupon_activity where status=1
+         and IF(use_date_type=1,end_time>NOW(),TRUE)
+         AND id IN
+        <foreach index="index" item="item" collection="request" open="(" separator="," close=")" >
+            #{item}
+        </foreach>
+    </select>
+    <select id="getGiveCountByActivityId" resultType="com.yiling.marketing.couponactivity.dto.request.CouponHasGetDTO">
+        select coupon_activity_id as id,count(1) as num from marketing_coupon where del_flag=0 and coupon_activity_id in
+        <foreach index="index" item="item" collection="ids" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        GROUP BY coupon_activity_id;
+    </select>
+    <select id="getCanUseIdByGoodsIdAndActivityIds" resultType="java.lang.Long">
+        select coupon_activity_id from marketing_coupon_activity_goods_limit where del_flag=0 AND goods_id=#{goodsId} AND coupon_activity_id IN
+        <foreach index="index" item="item" collection="ids" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+     ;
+    </select>
+    <select id="getBusinessPlatFormEffecvtiveActivity"
+            resultType="com.yiling.marketing.couponactivity.dto.request.CouponActivityCanUseShopDTO">
+        select
+        caegr.condition_user_type as userType,
+        ca.id,ca.eid,0  AS caelEid,ca.goods_limit AS goodsLimit,ca.sponsor_type,-1 as platform,ca.total_count as totalCount
+        from marketing_coupon_activity ca
+        inner join marketing_coupon_activity_enterprise_get_rules caegr on ca.id = caegr.coupon_activity_id and caegr.del_flag = 0
+        and caegr.give_num > 0 and caegr.begin_time  <![CDATA[ <= ]]> NOW() and caegr.end_time  >  NOW()
+        left join marketing_coupon_activity_enterprise_limit cael on cael.coupon_activity_id=ca.id and cael.del_flag = 0
+        where
+        ca.del_flag = 0
+        and ca.member_type=1
+        and ca.status = 1
+        and ca.can_get=1
+        and ca.total_count > 0
+        and IF(ca.use_date_type = 2, true, ca.end_time <![CDATA[ > ]]> NOW())
+        and (
+        ca.platform_limit = 1 or
+        (ca.platform_limit = 2 and ca.platform_selected like CONCAT('%',1,'%'))
+        )
+        and (caegr.condition_enterprise_type=1 or (caegr.condition_enterprise_type = 2 and caegr.condition_enterprise_type_value like CONCAT('%',#{request.type},'%')))
+        <!--5表示部分用户，关联企业表查询满足条件的数据-->
+        and IF(caegr.condition_user_type = 5,#{request.currentEid},IFNULL(cael.eid,-1)) = IFNULL(cael.eid,-1)
+        and ca.eid in
+        <foreach index="index" item="item" collection="request.eids" open="(" separator="," close=")" >
+            #{item}
+        </foreach>
+    </select>
+    <select id="getMarketingPlatFormEffecvtiveActivity"
+            resultType="com.yiling.marketing.couponactivity.dto.request.CouponActivityCanUseShopDTO">
+        select
+        cag.condition_user_type as userType,
+        ca.id,ca.eid,ca.sponsor_type,cag.condition_enterprise_range as enterpriseRang,ca.total_count as totalCount
+        from marketing_coupon_activity ca
+        inner join marketing_coupon_activity_auto_get_coupon cagc on ca.id = cagc.coupon_activity_id and cagc.del_flag = 0 and cagc.give_num > 0
+        inner join marketing_coupon_activity_auto_get cag on cag.id = cagc.coupon_activity_auto_get_id and cag.del_flag = 0 and cag.status = 1
+        and cag.begin_time  <![CDATA[ <= ]]>  NOW() and cag.end_time  >  NOW()
+        where
+        ca.del_flag = 0
+        and ca.member_type=1
+        and ca.eid = 0
+        and ca.status = 1
+        and ca.total_count > 0
+        and IF(ca.use_date_type = 2, true, ca.end_time <![CDATA[ > ]]> NOW())
+        and (
+        ca.platform_limit = 1 or
+        (ca.platform_limit = 2 and ca.platform_selected like CONCAT('%',1,'%'))
+        )
+        and cag.status = 1
+        <!--客户范围：3也可能是不填写的默认值，如果客户范围是部分客户可用，则用户类型，企业类型不能为0默认值-->
+        and IF (cag.condition_enterprise_range=3,cag.condition_enterprise_type != 0 and cag.condition_user_type != 0,true)
+        and (cag.condition_enterprise_type=0 or cag.condition_enterprise_type=1 or (cag.condition_enterprise_type = 2 and cag.condition_enterprise_type_value like CONCAT('%',#{request.type},'%')))
+
+    </select>
+    <select id="getActivityIdsByUserType" resultType="java.lang.Long">
+        select coupon_activity_id AS id from marketing_coupon_activity_enterprise_limit where del_flag=0 and eid=#{currentEid}
+        AND coupon_activity_id IN
+        <foreach index="index" item="item" collection="ids" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+    <select id="getActivityIdsByEids" resultType="com.yiling.marketing.couponactivity.dto.request.CouponActivityIdAndEidDTO">
+        select coupon_activity_id AS id,eid from marketing_coupon_activity_enterprise_limit where del_flag=0
+        AND coupon_activity_id IN
+        <foreach index="index" item="item" collection="ids" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        AND eid IN
+        <foreach index="index" item="item" collection="eids" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+    <select id="getAutogetActivityIdsByUserType" resultType="java.lang.Long">
+        select
+        ca.id
+        from marketing_coupon_activity ca
+        inner join marketing_coupon_activity_auto_get_coupon cagc on ca.id = cagc.coupon_activity_id and cagc.del_flag = 0 and cagc.give_num > 0
+        inner join marketing_coupon_activity_auto_get cag on cag.id = cagc.coupon_activity_auto_get_id and cag.del_flag = 0 and cag.status = 1
+        and cag.begin_time  <![CDATA[ <= ]]>  NOW() and cag.end_time > NOW()
+        left join marketing_coupon_activity_auto_get_enterprise_limit gml on gml.coupon_activity_auto_get_id=cag.id and gml.del_flag = 0
+        where
+        gml.eid=#{currentEid}
+        and ca.id in
+        <foreach index="index" item="item" collection="ids" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+    <select id="getActivityIdsByMemberLimit" resultType="java.lang.Long">
+        select
+        ca.id
+        from marketing_coupon_activity ca
+        inner join marketing_coupon_activity_auto_get_coupon cagc on ca.id = cagc.coupon_activity_id and cagc.del_flag = 0 and cagc.give_num > 0
+        inner join marketing_coupon_activity_auto_get cag on cag.id = cagc.coupon_activity_auto_get_id and cag.del_flag = 0 and cag.status = 1
+        and cag.begin_time  <![CDATA[ <= ]]>  NOW() and cag.end_time > NOW()
+        left join marketing_coupon_activity_auto_get_member_limit gml on gml.coupon_activity_auto_get_id=cag.id and gml.del_flag = 0
+        where ca.id in
+        <foreach index="index" item="item" collection="ids" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        and gml.member_id in
+        <foreach index="index" item="item" collection="memberId" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+    <select id="getActivityIdsByPromoterLimit" resultType="java.lang.Long">
+        select
+        ca.id
+        from marketing_coupon_activity ca
+        inner join marketing_coupon_activity_auto_get_coupon cagc on ca.id = cagc.coupon_activity_id and cagc.del_flag = 0 and cagc.give_num > 0
+        inner join marketing_coupon_activity_auto_get cag on cag.id = cagc.coupon_activity_auto_get_id and cag.del_flag = 0 and cag.status = 1
+        and cag.begin_time  <![CDATA[ <= ]]>  NOW() and cag.end_time > NOW()
+        left join marketing_coupon_activity_auto_get_promotion_limit gml on gml.coupon_activity_auto_get_id=cag.id  and gml.del_flag = 0
+        where ca.id in
+        <foreach index="index" item="item" collection="ids" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        and gml.eid in
+        <foreach index="index" item="item" collection="promotionEid" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+    <select id="getNumEnoughtActivity" resultType="java.lang.Long">
+
+    </select>
+    <select id="scrapAndReturnCoupon" resultType="java.lang.Long">
+        select id from marketing_coupon where coupon_activity_id=#{id} and del_flag=0;
+    </select>
+
+    <select id="getHasGetDailyNum" resultType="com.yiling.marketing.coupon.entity.CouponDO">
+        select id,get_time as getTime from marketing_coupon where coupon_activity_id=#{id} and eid=#{currentEid} and coupon_activity_auto_id=#{autoGetId};
+    </select>
+
+</mapper>

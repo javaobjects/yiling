@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.dataflow.flow.dao.FlowPurchaseSalesInventoryMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.dataflow.flow.entity.FlowPurchaseSalesInventoryDO">
+    <result column="id" property="id" />
+        <result column="year" property="year" />
+        <result column="month" property="month" />
+        <result column="ename" property="ename" />
+        <result column="breed" property="breed" />
+        <result column="crm_goods_Id" property="crmGoodsId" />
+        <result column="goods_name" property="goodsName" />
+        <result column="batch_no" property="batchNo" />
+        <result column="sx_price" property="sxPrice" />
+        <result column="last_number" property="lastNumber" />
+        <result column="purchase_number" property="purchaseNumber" />
+        <result column="sale_number" property="saleNumber" />
+        <result column="number" property="number" />
+        <result column="on_way_number" property="onWayNumber" />
+        <result column="total_number" property="totalNumber" />
+        <result column="calculation_number" property="calculationNumber" />
+        <result column="diff_number" property="diffNumber" />
+        <result column="last_number_amount" property="lastNumberAmount" />
+        <result column="purchase_number_amount" property="purchaseNumberAmount" />
+        <result column="sale_number_amount" property="saleNumberAmount" />
+        <result column="number_amount" property="numberAmount" />
+        <result column="on_way_number_amount" property="onWayNumberAmount" />
+        <result column="total_number_amount" property="totalNumberAmount" />
+        <result column="calculation_number_amount" property="calculationNumberAmount" />
+        <result column="diff_number_amount" property="diffNumberAmount" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,
+        year, month, ename, breed, crm_goods_Id, goods_name, batch_no, sx_price, last_number, purchase_number, sale_number, number, on_way_number, total_number, calculation_number, diff_number, last_number_amount, purchase_number_amount, sale_number_amount, number_amount, on_way_number_amount, total_number_amount, calculation_number_amount, diff_number_amount
+    </sql>
+
+    <delete id="deleteFlowPurchaseSalesInventoryByEidAndYearAndMonth">
+        delete from flow_purchase_sales_inventory where year =#{year} and month =#{month}
+        AND eid in
+        <foreach item="item" index="index" collection="eids" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+</mapper>

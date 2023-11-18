@@ -1,0 +1,73 @@
+.app-container {
+  .common-box {
+    .el-input {
+      width: 350px;
+    }
+    .width-100{
+      width: 100%;
+    }
+    .search-box {
+      position: relative;
+      .box {
+        .title {
+          font-size: $font-size-large;
+          line-height: $font-size-large-lh;
+          color: $font-important-color;
+          margin-bottom: 8px;
+        }
+      }
+      .el-select {
+        width: 260px;
+      }
+      .bottom-btn {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+      }
+    }
+  }
+  // 导出、导入按钮
+  .down-box {
+    width: 100%;
+    margin-top: 24px;
+    .btn {
+      float: right;
+    }
+  }
+  // 停用
+  .stop-content{
+    padding: 16px;
+    font-size: 16px;
+    font-weight: 400;
+    color: #333333;
+    line-height: 22px;
+    .left-view{
+      padding: 16px 0;
+    }
+  }
+  .return-content {
+    .el-input {
+      width: 180px;
+    }
+    .el-select {
+      width: 260px;
+    }
+    .el-textarea {
+      padding-right: 40px;
+    }
+    .el-icon-question {
+      font-size: 18px;
+    }
+  }
+  .dialogTc {
+    padding: 20px 16px;
+    div {
+      margin-bottom: 10px;
+    }
+    .dialogTc-col {
+      text-align: center;
+      font-weight: bold;
+      color: #ee0a24;
+    }
+  }
+}

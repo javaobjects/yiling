@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.dataflow.agency.dao.CrmDepartmentAreaRelationMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.dataflow.agency.entity.CrmDepartmentAreaRelationDO">
+        <result column="id" property="id"/>
+        <result column="department" property="department"/>
+        <result column="department_business" property="departmentBusiness"/>
+        <result column="provincial_area" property="provincialArea"/>
+        <result column="provincial_area_business" property="provincialAreaBusiness"/>
+        <result column="del_flag" property="delFlag"/>
+        <result column="create_user" property="createUser"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_user" property="updateUser"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="remark" property="remark"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id
+        ,
+        department, department_business, provincial_area, provincial_area_business, del_flag, create_user, create_time, update_user, update_time, remark
+    </sql>
+
+    <select id="getAvailableProductGroupIds" resultType="java.lang.Long">
+        select id from  crm_goods_group where id in
+        <foreach item="item" index="index" collection="ids"
+                 open="(" separator="," close=")">
+            #{item}
+        </foreach>
+       and `status`=0;
+    </select>
+
+</mapper>

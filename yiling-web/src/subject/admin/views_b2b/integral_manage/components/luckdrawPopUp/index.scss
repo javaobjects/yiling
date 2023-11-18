@@ -1,0 +1,24 @@
+.pop-up{
+  padding: 20px 16px;
+  // 底部列表
+  .el-input {
+    width: 220px;
+  }
+  .table-conter {
+    width: 100%;
+  }
+  .search-box {
+    position: relative;
+    .box {
+      .title {
+        font-size: $font-size-large;
+        line-height: $font-size-large-lh;
+        color: $font-important-color;
+        margin-bottom: 8px;
+      }
+    }
+    .el-select {
+      width: 220px;
+    }
+  }
+}

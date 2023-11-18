@@ -1,0 +1,85 @@
+.app-container {
+  .select-bar {
+    display: flex;
+    margin-bottom: 8px;
+    .item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-right: 16px;
+      cursor: pointer;
+      .item-title {
+        margin-bottom: 5px;
+        font-size: 16px;
+        font-weight: 600;
+        color: $font-light-color;
+        line-height: 22px;
+      }
+      .active {
+        color: $primary;
+      }
+      .item-line {
+        width: 26px;
+        height: 2px;
+        background-color: $primary;
+      }
+    }
+    .hidden {
+      display: none;
+    }
+  }
+  .common-box {
+    .insurance-detail-info {
+      .insurance-detail-item {
+        &:not(:last-child) {
+          margin-bottom: 32px;
+        }
+        .header-bar {
+          height: 22px;
+          line-height: 22px;
+          .sign {
+            margin-right: 5px;
+          }
+          .insurance-order {
+            margin-left: 32px;
+            color: $primary;
+            cursor: pointer;
+          }
+        }
+        .item-info {
+          .el-row {
+            margin-bottom: 8px;
+            .el-col {
+              .item {
+                margin-bottom: 8px;
+                .item-title {
+                  font-size: $font-size-base;
+                  color: #666;
+                }
+                .item-value {
+                  color: #333;
+                }
+              }
+            }
+          }
+          .table-box {
+            margin-bottom: 16px;
+            .status-box {
+              display: flex;
+              font-size: 14px;
+              .item-status {
+                margin-right: 32px;
+                .fail {
+                  color: #FA8C15 !important;
+                }
+                .success {
+                  color: #52C41A !important;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

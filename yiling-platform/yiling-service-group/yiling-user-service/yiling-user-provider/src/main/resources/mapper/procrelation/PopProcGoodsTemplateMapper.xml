@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.user.procrelation.dao.PopProcGoodsTemplateMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.user.procrelation.entity.PopProcGoodsTemplateDO">
+    <result column="id" property="id" />
+        <result column="template_id" property="templateId" />
+        <result column="factory_eid" property="factoryEid" />
+        <result column="goods_id" property="goodsId" />
+        <result column="standard_id" property="standardId" />
+        <result column="sell_specifications_id" property="sellSpecificationsId" />
+        <result column="goods_name" property="goodsName" />
+        <result column="standard_goods_name" property="standardGoodsName" />
+        <result column="standard_license_no" property="standardLicenseNo" />
+        <result column="sell_specifications" property="sellSpecifications" />
+        <result column="license_no" property="licenseNo" />
+        <result column="is_patent" property="isPatent" />
+        <result column="requirements" property="requirements" />
+        <result column="rebate" property="rebate" />
+        <result column="del_flag" property="delFlag" />
+        <result column="create_time" property="createTime" />
+        <result column="create_user" property="createUser" />
+        <result column="update_time" property="updateTime" />
+        <result column="update_user" property="updateUser" />
+        <result column="remark" property="remark" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,
+        template_id, factory_eid, goods_id, standard_id, sell_specifications_id, goods_name, standard_goods_name, standard_license_no, sell_specifications, license_no, is_patent, requirements, rebate, del_flag, create_time, create_user, update_time, update_user, remark
+    </sql>
+
+</mapper>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.open.ftp.dao.FlowFtpCacheMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.open.ftp.entity.FlowFtpCacheDO">
+    <result column="id" property="id" />
+        <result column="su_id" property="suId" />
+        <result column="erp_key" property="erpKey" />
+        <result column="md5" property="md5" />
+        <result column="type" property="type" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,
+        su_id, erp_key, md5, type
+    </sql>
+
+    <delete id="deleteCache">
+        delete from flow_ftp_cache where erp_key in
+        <foreach item="item" index="index" collection="keys"
+                 open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        and su_id=#{suId}
+        and type=#{taskNo,jdbcType=VARCHAR}
+    </delete>
+
+</mapper>

@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.user.system.dao.StaffMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.user.system.entity.StaffDO">
+    <result column="id" property="id" />
+        <result column="user_id" property="userId" />
+        <result column="del_flag" property="delFlag" />
+        <result column="create_user" property="createUser" />
+        <result column="create_time" property="createTime" />
+        <result column="update_user" property="updateUser" />
+        <result column="update_time" property="updateTime" />
+        <result column="remark" property="remark" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        s.user_id,
+        s.del_flag, s.create_user, s.create_time, s.update_user, s.update_time, s.remark
+    </sql>
+
+    <select id="pageList" resultType="com.yiling.user.system.bo.Staff">
+        select
+            <if test="(request.ename != null and request.ename != '') or (request.etype != null and request.etype != 0)">
+                distinct
+            </if>
+            <include refid="com.yiling.user.system.dao.UserMapper.Base_Column_List"/>
+            ,
+            <include refid="Base_Column_List"/>
+        from staff s
+        inner join user u on u.id = s.user_id
+        <if test="(request.ename != null and request.ename != '') or (request.etype != null and request.etype != 0)">
+            inner join enterprise_employee ee on ee.user_id = s.user_id
+            inner join enterprise e on e.id = ee.eid
+        </if>
+        <where>
+            <if test="request.ename != null and request.ename != ''">
+                and e.name like concat('%',#{request.ename},'%')
+            </if>
+            <if test="request.etype != null and request.etype != 0">
+                and e.type = #{request.etype}
+            </if>
+            <if test="request.name != null and request.name != ''">
+                and u.name like concat('%',#{request.name},'%')
+            </if>
+            <if test="request.mobile != null and request.mobile != ''">
+                and u.mobile like concat('%',#{request.mobile},'%')
+            </if>
+            <if test="request.status != null and request.status != 0">
+                and u.status = #{request.status}
+            </if>
+            <if test="(request.ename != null and request.ename != '') or (request.etype != null and request.etype != 0)">
+                and ee.del_flag = 0 and e.del_flag = 0
+            </if>
+            and s.del_flag = 0
+        </where>
+        order by u.id
+    </select>
+
+
+    <select id="list" resultType="com.yiling.user.system.bo.Staff">
+        select
+            <include refid="com.yiling.user.system.dao.UserMapper.Base_Column_List"/>
+            ,
+            <include refid="Base_Column_List"/>
+        from staff s
+        inner join user u on u.id = s.user_id
+        <where>
+            <if test="request.nameEq != null and request.nameEq != ''">
+                and u.name = #{request.nameEq}
+            </if>
+            <if test="request.nameLike != null and request.nameLike != ''">
+                and u.name like concat('%',#{request.nameLike},'%')
+            </if>
+            <if test="request.statusEq != null and request.statusEq != 0">
+                and u.status = #{request.statusEq}
+            </if>
+            <if test="request.statusNe != null and request.statusNe != 0">
+                and u.status <![CDATA[ <> ]]> #{request.statusNe}
+            </if>
+            and s.del_flag = 0
+        </where>
+    </select>
+
+    <select id="getByUsername" resultType="com.yiling.user.system.bo.Staff">
+        select
+            <include refid="com.yiling.user.system.dao.UserMapper.Base_Column_List"/>
+            ,
+            <include refid="Base_Column_List"/>
+        from staff s
+        inner join user u on u.id = s.user_id
+        where u.username = #{username} and u.status <![CDATA[ <> ]]> 9 and s.del_flag = 0
+        limit 1
+    </select>
+
+    <select id="getByMobile" resultType="com.yiling.user.system.bo.Staff">
+        select
+            <include refid="com.yiling.user.system.dao.UserMapper.Base_Column_List"/>
+            ,
+            <include refid="Base_Column_List"/>
+        from staff s
+        inner join user u on u.id = s.user_id
+        where u.mobile = #{mobile} and u.status <![CDATA[ <> ]]> 9 and s.del_flag = 0
+        limit 1
+    </select>
+
+</mapper>

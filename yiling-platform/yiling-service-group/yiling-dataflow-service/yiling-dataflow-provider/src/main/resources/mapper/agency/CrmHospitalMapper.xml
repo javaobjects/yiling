@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.dataflow.agency.dao.CrmHospitalMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.dataflow.agency.entity.CrmHospitalDO">
+        <result column="id" property="id"/>
+        <result column="crm_enterprise_id" property="crmEnterpriseId"/>
+        <result column="medical_nature" property="medicalNature"/>
+        <result column="medical_type" property="medicalType"/>
+        <result column="yl_level" property="ylLevel"/>
+        <result column="national_grade" property="nationalGrade"/>
+        <result column="base_medicine_flag" property="baseMedicineFlag"/>
+        <result column="total_bed_number" property="totalBedNumber"/>
+        <result column="contract_flag" property="contractFlag"/>
+        <result column="mnemonic_code" property="mnemonicCode"/>
+        <result column="additional_info_two" property="additionalInfoTwo"/>
+        <result column="additional_info_three" property="additionalInfoThree"/>
+        <result column="additional_info_four" property="additionalInfoFour"/>
+        <result column="additional_info_five" property="additionalInfoFive"/>
+        <result column="county_customer_code" property="countyCustomerCode"/>
+        <result column="county_customer_name" property="countyCustomerName"/>
+        <result column="del_flag" property="delFlag"/>
+        <result column="create_user" property="createUser"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_user" property="updateUser"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="remark" property="remark"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id
+        ,
+        crm_enterprise_id, medical_nature, medical_type, yl_level, national_grade, base_medicine_flag, total_bed_number, contract_flag, mnemonic_code, additional_info_two, additional_info_three, additional_info_four, additional_info_five, county_customer_code, county_customer_name
+        , del_flag, create_user, create_time, update_user, update_time, remark
+    </sql>
+
+</mapper>

@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.user.shop.dao.ShopMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.user.shop.entity.ShopDO">
+        <result column="id" property="id" />
+        <result column="shop_eid" property="shopEid" />
+        <result column="shop_name" property="shopName" />
+        <result column="shop_logo" property="shopLogo" />
+        <result column="shop_desc" property="shopDesc" />
+        <result column="start_amount" property="startAmount" />
+        <result column="del_flag" property="delFlag" />
+        <result column="create_user" property="createUser" />
+        <result column="create_time" property="createTime" />
+        <result column="update_user" property="updateUser" />
+        <result column="update_time" property="updateTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,
+        shop_eid,shop_name, shop_logo, shop_desc, start_amount, del_flag, create_user, create_time, update_user, update_time
+    </sql>
+
+    <sql id="Shop_Column_List">
+        s.id,
+        s.shop_eid, s.shop_name,s.shop_logo, s.shop_desc, s.start_amount, s.del_flag, s.create_user, s.create_time, s.update_user, s.update_time
+    </sql>
+
+    <select id="queryPurchaseShopListPage" resultType="com.yiling.user.shop.entity.ShopDO">
+        SELECT
+        <include refid="Shop_Column_List"/>
+        FROM b2b_shop s
+        <if test="request.customerEid != null and request.customerEid != 0">
+            LEFT JOIN enterprise_customer ec on s.shop_eid = ec.eid and ec.del_flag = 0 and ec.customer_eid = #{request.customerEid}
+         </if>
+            LEFT JOIN enterprise e on e.id= s.shop_eid and e.del_flag= 0
+            LEFT JOIN (  SELECT
+                seller_eid ,
+                count(*) AS num
+                FROM
+                `order`
+                WHERE
+                order_status >= 20
+                AND order_type = 2
+                AND customer_confirm_status =- 40
+                AND create_time >= #{request.startRecentTime}
+                AND create_time <![CDATA[ <= ]]> #{request.endRecentTime}
+                AND seller_eid IN
+                    <foreach item="item" index="index" collection="request.shopEidList" open="("
+                             separator="," close=")">
+                        #{item}
+                    </foreach>
+                GROUP BY
+                seller_eid) o ON s.shop_eid = o.seller_eid
+            LEFT JOIN (
+                SELECT
+                seller_eid,
+                sum( receive_amount ) AS receive_amount
+                FROM
+                (
+                SELECT
+                id,
+                seller_eid
+                FROM
+                `order`
+                WHERE
+                order_status = 40
+                AND order_type = 2
+                AND customer_confirm_status =- 40
+                AND seller_eid in
+                    <foreach item="item" index="index" collection="request.shopEidList" open="("
+                             separator="," close=")">
+                        #{item}
+                    </foreach>
+                AND create_time >= #{request.startRecentTime}
+                AND create_time <![CDATA[ <= ]]> #{request.endRecentTime}
+                ) o
+                INNER JOIN ( SELECT order_id, sum( receive_amount ) AS receive_amount FROM order_detail_change GROUP BY order_id ) c ON c.order_id = o.id
+                GROUP BY
+                o.seller_eid
+                ) m ON m.seller_eid = s.shop_eid
+
+        <where>
+            <if test="request.shopEidList != null and request.shopEidList.size()>0">
+                and s.shop_eid in
+                <foreach item="item" index="index" collection="request.shopEidList" open="("
+                         separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="request.shopName != null and request.shopName != ''">
+                AND s.shop_name like concat('%',#{request.shopName},'%')
+            </if>
+        </where>
+        ORDER BY
+            -- 一级排序：已建采 > 未建采
+            <if test="request.purchaseEidList !=null and request.purchaseEidList.size()>0">
+                s.shop_eid in
+                <foreach item="item" index="index" collection="request.purchaseEidList"
+                         open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+                desc,
+            </if>
+            -- 二级排序：省区内 > 省区外
+            e.province_code = #{request.provinceCode} desc,
+            -- 三级排序：订单量高 > 订单量低
+            <if test="request.purchaseEidList !=null and request.purchaseEidList.size()>0">
+                o.num desc,
+            </if>
+            -- 四级排序：优质商家 > 非优质商家
+            <if test="request.highQualityEidList != null and request.highQualityEidList.size()>0">
+                s.shop_eid in
+                <foreach item="item" index="index" collection="request.highQualityEidList" open="("
+                         separator="," close=")">
+                    #{item}
+                </foreach>
+                desc,
+            </if>
+            -- 五级排序：销售额高 > 销售额低
+            m.receive_amount desc
+    </select>
+
+</mapper>

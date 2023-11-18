@@ -1,0 +1,58 @@
+@import "~@/common/styles/mixin.scss";
+
+.app-container {
+  padding-bottom: 80px;
+  .common-box{
+    margin-bottom: 10px;
+  }
+  .examine-row-conter{
+    color: #666;
+    font-size: 14px;
+  }
+  // .examine-row ul li{
+  //   width: 250px;
+  //   height: 300px;
+  //   border: 1px solid ;
+  // }
+  .qualification-box ul li{
+    list-style: none;
+    width: 280px;
+    height: 220px;
+    border: 1px solid #d8dce5;
+    display: inline-block;
+    margin:0 20px 20px 0; 
+  }
+  .qualification-box ul li .qualification-box-img{
+    width: 260px;
+    height: 160px;
+    display: block;
+    margin: 10px auto 0;
+  }
+  .qualification-box ul li p{
+    margin: 0;
+    padding: 0;
+    font-size: 14px;
+  }
+  .qualification-box-conter{
+    width: 100%;
+    height: 50px;
+    padding: 4px 10px 0;
+    padding-top: 4px;
+    line-height: 20px;
+    color: #666;
+  }
+  .qualification-box-conter :nth-child(1){
+    font-weight: bold;
+  }
+  .examine-img span{
+    width: 100px;
+    display: inline-block;
+    vertical-align: top;
+    color: #666;
+    font-size: 14px;
+  }
+  .elImage{
+    max-width: 200px;
+    height: auto;
+  }
+}

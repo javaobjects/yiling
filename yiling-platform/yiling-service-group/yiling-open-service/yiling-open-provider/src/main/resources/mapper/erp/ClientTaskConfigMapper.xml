@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.open.erp.dao.ClientTaskConfigMapper">
+    <resultMap id="BaseResultMap" type="com.yiling.open.erp.entity.ClientTaskConfigDO">
+        <!--@mbg.generated-->
+        <!--@Table client_task_config-->
+        <result column="id" jdbcType="INTEGER" property="id"/>
+        <result column="su_id" jdbcType="INTEGER" property="suId"/>
+        <result column="task_no" jdbcType="VARCHAR" property="taskNo"/>
+        <result column="task_name" jdbcType="VARCHAR" property="taskName"/>
+        <result column="task_interval" jdbcType="VARCHAR" property="taskInterval"/>
+        <result column="task_sql" jdbcType="VARCHAR" property="taskSql"/>
+        <result column="task_status" jdbcType="VARCHAR" property="taskStatus"/>
+        <result column="task_key" jdbcType="VARCHAR" property="taskKey"/>
+        <result column="spring_id" jdbcType="VARCHAR" property="springId"/>
+        <result column="method_name" jdbcType="VARCHAR" property="methodName"/>
+        <result column="update_time" jdbcType="VARCHAR" property="updateTime"/>
+        <result column="create_time" jdbcType="VARCHAR" property="createTime"/>
+        <result column="sync_time" property="syncTime"/>
+        <result column="sync_status" jdbcType="VARCHAR" property="syncStatus" />
+        <result column="flow_date_count" jdbcType="VARCHAR" property="flowDateCount" />
+        <result column="del_flag" jdbcType="VARCHAR" property="delFlag" />
+    </resultMap>
+    <sql id="Base_Column_List">
+        <!--@mbg.generated-->
+        id, su_id, task_no, task_name, task_interval, task_sql, task_status, task_key, spring_id,
+        method_name, update_time, create_time,sync_time, sync_status, flow_date_count, del_flag
+    </sql>
+    <insert id="save" parameterType="com.yiling.open.erp.entity.ClientTaskConfigDO">
+        <!--@mbg.generated-->
+        insert into client_task_config (su_id, task_no,
+        task_name, task_interval, task_sql,
+        task_status, task_key, spring_id,
+        method_name, update_time, create_time,sync_time,
+        sync_status, flow_date_count
+        )
+        values (#{suId,jdbcType=INTEGER}, #{taskNo,jdbcType=VARCHAR},
+        #{taskName,jdbcType=VARCHAR}, #{taskInterval,jdbcType=VARCHAR}, #{taskSql,jdbcType=VARCHAR},
+        #{taskStatus,jdbcType=VARCHAR}, #{taskKey,jdbcType=VARCHAR}, #{springId,jdbcType=VARCHAR},
+        #{methodName,jdbcType=VARCHAR}, #{updateTime,jdbcType=VARCHAR}, #{createTime,jdbcType=VARCHAR},
+        now(), #{syncStatus,jdbcType=VARCHAR}, #{flowDateCount,jdbcType=VARCHAR}
+        )
+    </insert>
+
+    <update id="deteleBySuIdAndTaskNo">
+        UPDATE client_task_config
+        SET del_flag = 1
+        where su_id = #{suId}
+        and task_no=#{taskNo}
+    </update>
+
+    <select id="getListBySuid" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM client_task_config
+        WHERE del_flag = 0
+        AND su_id = #{suId}
+    </select>
+
+    <select id="getByTaskNoAndSuId">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM client_task_config
+        WHERE del_flag = 0
+        AND su_id = #{suId}
+        AND task_no=#{taskNo}
+    </select>
+
+</mapper>

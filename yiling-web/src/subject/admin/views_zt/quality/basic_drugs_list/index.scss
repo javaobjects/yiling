@@ -1,0 +1,77 @@
+.app-container {
+  .common-box {
+    .search-box {
+      position: relative;
+      .box {
+        .title {
+          font-size: $font-size-large;
+          line-height: $font-size-large-lh;
+          color: $font-important-color;
+          margin-bottom: 8px;
+        }
+      }
+      .el-select {
+        width: 220px;
+      }
+      .el-input {
+        width: 220px;
+      }
+      .bottom-btn {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+      }
+    }
+  }
+  .down-box {
+    width: 100%;
+    // height: 30px;
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .normls-title {
+    height: 50px;
+    line-height: 50px;
+    background: #eee;
+    padding-left: 20px;
+    color: #333;
+    span {
+      margin-right: 8px;
+      &:nth-child(2) {
+        margin-right: 100px;
+      }
+    }
+  }
+  .company-checkbox-group {
+    &::v-deep .el-checkbox__input {
+      display: none;
+    }
+    &::v-deep .el-checkbox-group {
+      margin-top: 6px;
+    }
+    &::v-deep .el-checkbox {
+      margin-right: 10px;
+      margin-bottom: 10px;
+      box-sizing: border-box;
+      padding: 6px 10px 3px;
+    }
+    &::v-deep .el-checkbox {
+      margin-right: 10px;
+      margin-bottom: 10px;
+    }
+    &::v-deep .el-checkbox.is-bordered + .el-checkbox.is-bordered {
+      margin-left: 0;
+    }
+    &::v-deep .el-checkbox__label {
+      padding: 0;
+    }
+  }
+  .period-form {
+    width: 100%;
+    max-height: 500px;
+    overflow-y: auto;
+    padding: 16px;
+  }
+}

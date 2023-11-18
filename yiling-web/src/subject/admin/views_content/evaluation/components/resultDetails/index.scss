@@ -1,0 +1,17 @@
+
+.form-item-one {
+  .item-one-form {
+    display: inline-block;
+
+  }
+  .select-width {
+    width: 120px;
+  }
+  .el_input {
+    width: 100px;
+    margin-right: 20px;
+  }
+}
+.item-one-input ::v-deep .el-form-item__content {
+  margin-left: 20px !important;
+}

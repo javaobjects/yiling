@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.user.system.dao.AppLoginInfoMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.user.system.entity.AppLoginInfoDO">
+    <result column="id" property="id" />
+        <result column="app_id" property="appId" />
+        <result column="user_id" property="userId" />
+        <result column="grant_type" property="grantType" />
+        <result column="terminal_type" property="terminalType" />
+        <result column="manufacturer" property="manufacturer" />
+        <result column="brand" property="brand" />
+        <result column="model" property="model" />
+        <result column="os_version" property="osVersion" />
+        <result column="sdk_version" property="sdkVersion" />
+        <result column="screen_size" property="screenSize" />
+        <result column="resolution" property="resolution" />
+        <result column="udid" property="udid" />
+        <result column="app_version" property="appVersion" />
+        <result column="channel_code" property="channelCode" />
+        <result column="login_time" property="loginTime" />
+        <result column="del_flag" property="delFlag" />
+        <result column="create_user" property="createUser" />
+        <result column="create_time" property="createTime" />
+        <result column="update_user" property="updateUser" />
+        <result column="update_time" property="updateTime" />
+        <result column="remark" property="remark" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,
+        app_id, user_id, grant_type, terminal_type, manufacturer, brand, model, os_version, sdk_version, screen_size, resolution, udid, app_version, channel_code, login_time, del_flag, create_user, create_time, update_user, update_time, remark
+    </sql>
+
+</mapper>

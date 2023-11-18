@@ -1,0 +1,733 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.dataflow.order.dao.FlowPurchaseMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.dataflow.order.entity.FlowPurchaseDO">
+        <result column="id" property="id"/>
+        <result column="eid" property="eid"/>
+        <result column="ename" property="ename"/>
+        <result column="crm_enterprise_id" property="crmEnterpriseId"/>
+        <result column="supplier_level" property="supplierLevel"/>
+        <result column="po_id" property="poId"/>
+        <result column="po_no" property="poNo"/>
+        <result column="enterprise_inner_code" property="enterpriseInnerCode"/>
+        <result column="enterprise_name" property="enterpriseName"/>
+        <result column="supplier_id" property="supplierId"/>
+        <result column="po_time" property="poTime"/>
+        <result column="order_time" property="orderTime"/>
+        <result column="po_month" property="poMonth"/>
+        <result column="goods_in_sn" property="goodsInSn"/>
+        <result column="goods_name" property="goodsName"/>
+        <result column="po_specifications" property="poSpecifications"/>
+        <result column="specification_id" property="specificationId"/>
+        <result column="po_batch_no" property="poBatchNo"/>
+        <result column="po_product_time" property="poProductTime"/>
+        <result column="po_effective_time" property="poEffectiveTime"/>
+        <result column="po_quantity" property="poQuantity"/>
+        <result column="po_unit" property="poUnit"/>
+        <result column="po_price" property="poPrice"/>
+        <result column="po_total_amount" property="poTotalAmount"/>
+        <result column="po_manufacturer" property="poManufacturer"/>
+        <result column="po_license" property="poLicense"/>
+        <result column="po_source" property="poSource"/>
+        <result column="province_code" property="provinceCode"/>
+        <result column="province_name" property="provinceName"/>
+        <result column="city_code" property="cityCode"/>
+        <result column="city_name" property="cityName"/>
+        <result column="region_code" property="regionCode"/>
+        <result column="region_name" property="regionName"/>
+        <result column="crm_code" property="crmCode"/>
+        <result column="crm_goods_code" property="crmGoodsCode"/>
+        <result column="goods_possible_error" property="goodsPossibleError"/>
+        <result column="data_tag" property="dataTag"/>
+        <result column="del_flag" property="delFlag"/>
+        <result column="create_user" property="createUser"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_user" property="updateUser"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="remark" property="remark"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,
+        eid, ename, crm_enterprise_id, supplier_level, po_id, po_no, enterprise_inner_code, enterprise_name, supplier_id, po_time, order_time, po_month, goods_in_sn,
+        goods_name, po_specifications, specification_id, po_batch_no, po_product_time, po_effective_time, po_quantity,
+        po_unit, po_price, po_total_amount, po_manufacturer, po_license, po_source,
+        province_code, province_name, city_code, city_name, region_code, region_name,
+        crm_code, crm_goods_code, goods_possible_error,data_tag,
+        del_flag, create_user, create_time, update_user, update_time, remark
+    </sql>
+
+    <sql id="Base_Table_Name">
+        `flow_purchase`
+    </sql>
+
+    <select id="getByEidAndGoodsInSn" resultType="string">
+        SELECT
+        po_source
+        from
+        <include refid="Base_Table_Name"/>
+        where
+        del_flag = 0
+        and eid = #{request.eid}
+        and goods_in_sn = #{request.goodsInSn}
+    </select>
+
+    <update id="deleteFlowPurchaseBydEidAndPoTime">
+        UPDATE flow_purchase
+        SET del_flag = 1, update_time = NOW(), remark = '采购流向解封删除，再重新同步此月份'
+        WHERE  del_flag = 0
+        AND eid = #{request.eid}
+        AND (po_time BETWEEN #{request.startMonth} AND #{request.endMonth})
+    </update>
+
+    <select id="page" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        <choose>
+            <when test="request.timeType == 0">
+                `flow_purchase`
+            </when>
+            <when test="request.timeType == 1">
+                `flow_purchase_${request.selectYear}`
+            </when>
+            <otherwise>
+                `flow_purchase`
+            </otherwise>
+        </choose>
+        <where>
+            <if test="request.deleteFlag == null or request.deleteFlag == 0">
+                AND del_flag = 0
+            </if>
+            <if test="request.deleteFlag != null and request.deleteFlag == 1">
+                AND del_flag = 1
+            </if>
+            <if test="request.eid != null">
+                AND eid =#{request.eid,jdbcType=BIGINT}
+            </if>
+            <if test="request.eidList != null and request.eidList.size() > 0">
+                AND eid in
+                <foreach item="item" index="index" collection="request.eidList" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="request.goodsInSnList != null and request.goodsInSnList.size() > 0">
+                AND TRIM(goods_in_sn) in
+                <foreach item="item" index="index" collection="request.goodsInSnList" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="request.supplierIdList != null and request.supplierIdList.size() > 0">
+                AND supplier_id in
+                <foreach item="item" index="index" collection="request.supplierIdList" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="request.enterpriseName != null and request.enterpriseName != ''">
+                AND enterprise_name like concat('%',#{request.enterpriseName},'%')
+            </if>
+            <if test="request.goodsName != null and request.goodsName != ''">
+                AND goods_name like concat('%',#{request.goodsName},'%')
+            </if>
+            <if test="request.specifications != null and request.specifications != ''">
+                AND po_specifications like concat('%',#{request.specifications},'%')
+            </if>
+            <if test="request.specificationId != null and request.specificationId != 0">
+                AND specification_id = #{request.specificationId}
+            </if>
+            <if test="request.specificationIdFlag != null and request.specificationIdFlag == 0">
+                AND specification_id = 0
+            </if>
+            <if test="request.specificationIdFlag != null and request.specificationIdFlag == 1">
+                AND specification_id != 0
+            </if>
+            <if test="request.supplierIdFlag != null and request.supplierIdFlag == 0">
+                AND supplier_id = 0
+            </if>
+            <if test="request.supplierIdFlag != null and request.supplierIdFlag == 1">
+                AND supplier_id != 0
+            </if>
+            <if test="request.goodsCrmCodeFlag != null and request.goodsCrmCodeFlag == 0">
+                AND crm_goods_code = 0
+            </if>
+            <if test="request.goodsCrmCodeFlag != null and request.goodsCrmCodeFlag == 1">
+                AND crm_goods_code > 0
+            </if>
+            <if test="request.crmGoodsCode != null">
+                AND crm_goods_code = #{request.crmGoodsCode}
+            </if>
+            <if test="request.license != null and request.license != ''">
+                AND po_license like concat('%',#{request.license},'%')
+            </if>
+            <if test="request.startTime != null">
+                AND po_time <![CDATA[ >= ]]> #{request.startTime}
+            </if>
+            <if test="request.endTime != null">
+                AND po_time <![CDATA[ <= ]]> #{request.endTime}
+            </if>
+            <if test="request.orderTime != null">
+                AND order_time <![CDATA[ = ]]> #{request.orderTime}
+            </if>
+            <if test="request.month != null and request.month != ''">
+                AND po_month <![CDATA[ = ]]> #{request.month}
+            </if>
+            <if test="request.sourceList != null and request.sourceList.size() > 0">
+                AND po_source in
+                <foreach item="item" index="index" collection="request.sourceList" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="request.enterpriseNameList != null and request.enterpriseNameList.size() > 0">
+                AND enterprise_name in
+                <foreach item="item" index="index" collection="request.enterpriseNameList" open="(" separator=","
+                         close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+    </select>
+
+    <select id="getPageByPoMonth" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM `flow_purchase`
+        <where>
+            <if test="request.enterpriseName != null and request.enterpriseName != ''">
+                AND enterprise_name=#{request.enterpriseName}
+            </if>
+            <if test="request.goodsName != null and request.goodsName != ''">
+                AND goods_name like concat('%',#{request.goodsName},'%')
+            </if>
+            <if test="request.poSpecifications != null and request.poSpecifications != ''">
+                AND po_specifications like concat('%',#{request.poSpecifications},'%')
+            </if>
+            <if test="request.crmGoodsCode != null">
+                AND crm_goods_code = #{request.crmGoodsCode}
+            </if>
+            <if test="request.poMonth != null and request.poMonth != ''">
+                AND po_month <![CDATA[ = ]]> #{request.poMonth}
+            </if>
+            AND del_flag = 0
+        </where>
+    </select>
+
+    <select id="getFlowPurchaseEnterpriseList" resultMap="BaseResultMap">
+        select t.eid, e.name as ename from (select fp.eid from flow_purchase fp group by fp.eid) as t LEFT join
+        enterprise e on t.eid = e.id
+        <where>
+            <if test="channelId != null">
+                and e.channel_id = #{channelId}
+            </if>
+            and t.eid != 0 and t.eid is not null
+        </where>
+        order by t.eid
+    </select>
+
+    <select id="getFlowPurchaseSupplierList" resultMap="BaseResultMap">
+        select t.supplier_id, e.name as enterprise_name from (select fp.supplier_id from flow_purchase fp group by
+        fp.supplier_id) as t LEFT join enterprise e on t.supplier_id = e.id
+        <where>
+            <if test="channelId != null">
+                and e.channel_id = #{channelId}
+            </if>
+            and t.supplier_id != 0 and t.supplier_id is not null
+        </where>
+        order by t.supplier_id
+    </select>
+
+    <select id="getFlowPurchaseMonthList" resultType="java.util.LinkedHashMap">
+        select eid,
+        e1.name pName,
+        e1.channel_id pChannelId,
+        supplier_id supplierId,
+        e2.name sName,
+        e2.channel_id sChannelId,
+        sum(po_quantity) as poQuantity,
+        SUM(po_price * po_quantity) as poMoney
+        from flow_purchase fp
+        left join enterprise e1 on fp.eid = e1.id
+        left join enterprise e2 on fp.supplier_id = e2.id
+        <where>
+            <if test="request.purchaseChannelId != null ">
+                and e1.channel_id = #{request.purchaseChannelId}
+            </if>
+            <if test="request.supplierChannelId != null ">
+                and e2.channel_id = #{request.supplierChannelId}
+            </if>
+            <if test="request.purchaseEnterpriseIds != null and request.purchaseEnterpriseIds.size gt 0">
+                and fp.eid in
+                <foreach collection="request.purchaseEnterpriseIds" item="purchaseEnterpriseId" open="(" close=")"
+                         separator=",">
+                    #{purchaseEnterpriseId}
+                </foreach>
+            </if>
+            <if test="request.supplierEnterpriseIds != null and request.supplierEnterpriseIds.size gt 0">
+                and fp.supplier_id in
+                <foreach collection="request.supplierEnterpriseIds" item="supplierEnterpriseId" open="(" close=")"
+                         separator=",">
+                    #{supplierEnterpriseId}
+                </foreach>
+            </if>
+            <if test="request.time != null and request.time != null">
+                and po_month = #{request.time}
+            </if>
+            <if test="request.purchaseChannelId != null">
+                and e1.channel_id = #{request.purchaseChannelId}
+            </if>
+            <if test="request.supplierChannelId != null">
+                and e2.channel_id = #{request.supplierChannelId}
+            </if>
+        </where>
+        group by fp.eid, fp.supplier_id
+        order by fp.eid
+    </select>
+
+    <select id="getFlowPurchaseAllMonthList" resultType="java.util.LinkedHashMap">
+        select
+        t.eid,
+        e1.name pName,
+        e1.channel_id pChannelId,
+        t.supplier_id supplierId,
+        e2.name sName,
+        e2.channel_id sChannelId,
+        t.poQuantity,
+        t.poMoney
+        <if test="request.poMonthList != null and request.poMonthList.size gt 0">
+            <foreach collection="request.poMonthList" item="poMonth">
+                ,`poQuantity_${poMonth}`, `poMoney_${poMonth}`
+            </foreach>
+        </if>
+        from
+        (select eid,
+        supplier_id,
+        sum(po_quantity) as poQuantity,
+        SUM(po_price*po_quantity) as poMoney
+        from flow_purchase
+        <where>
+            <if test="request.purchaseEnterpriseIds != null and request.purchaseEnterpriseIds.size gt 0">
+                and eid in
+                <foreach collection="request.purchaseEnterpriseIds" item="purchaseEnterpriseId" open="(" close=")"
+                         separator=",">
+                    #{purchaseEnterpriseId}
+                </foreach>
+            </if>
+            <if test="request.supplierEnterpriseIds != null and request.supplierEnterpriseIds.size gt 0">
+                and supplier_id in
+                <foreach collection="request.supplierEnterpriseIds" item="supplierEnterpriseId" open="(" close=")"
+                         separator=",">
+                    #{supplierEnterpriseId}
+                </foreach>
+            </if>
+            <if test="request.poMonthList != null and request.poMonthList.size gt 0">
+                and po_month in
+                <foreach collection="request.poMonthList" item="poMonth" open="(" close=")" separator=",">
+                    #{poMonth}
+                </foreach>
+            </if>
+            group by eid, supplier_id
+        </where>
+        ) t
+        left join enterprise e1 on t.eid = e1.id
+        left join enterprise e2 on t.supplier_id = e2.id
+        <foreach collection="request.poMonthList" item="poMonth" separator=" ">
+            left join (
+            select eid,
+            supplier_id,
+            sum(po_quantity) as `poQuantity_${poMonth}`,
+            SUM(po_price*po_quantity) as `poMoney_${poMonth}`
+            from flow_purchase
+            <where>
+                <if test="request.purchaseEnterpriseIds != null and request.purchaseEnterpriseIds.size gt 0">
+                    and eid in
+                    <foreach collection="request.purchaseEnterpriseIds" item="purchaseEnterpriseId" open="(" close=")"
+                             separator=",">
+                        #{purchaseEnterpriseId}
+                    </foreach>
+                </if>
+                <if test="request.supplierEnterpriseIds != null and request.supplierEnterpriseIds.size gt 0">
+                    and supplier_id in
+                    <foreach collection="request.supplierEnterpriseIds" item="supplierEnterpriseId" open="(" close=")"
+                             separator=",">
+                        #{supplierEnterpriseId}
+                    </foreach>
+                </if>
+                <if test="poMonth != null">
+                    and po_month = #{poMonth}
+                </if>
+            </where>
+            group by eid, supplier_id
+            ) `t_${poMonth}`
+            on `t_${poMonth}`.eid = t.eid and `t_${poMonth}`.supplier_id = t.supplier_id
+        </foreach>
+        <where>
+            <if test="request.purchaseChannelId != null">
+                and e1.channel_id = #{request.purchaseChannelId}
+            </if>
+            <if test="request.supplierChannelId != null">
+                and e2.channel_id = #{request.supplierChannelId}
+            </if>
+        </where>
+        order by t.eid
+    </select>
+
+    <select id="getFlowPurchaseDetail" resultType="com.yiling.dataflow.order.entity.FlowPurchaseDetailDO">
+        select
+        eid, DATE_FORMAT(po_time, '%Y-%m-%d') poDay, SUM(po_quantity) poQuantity, SUM(po_quantity * po_price) poMoney
+        from flow_purchase
+        where eid = #{eid}
+        <if test="supplierId != null">
+            and supplier_id = #{supplierId}
+        </if>
+        <if test="time != null and time != ''">
+            and po_month = #{time}
+        </if>
+        group by DATE_FORMAT(po_time, '%Y-%m-%d')
+        order by poDay
+    </select>
+
+    <select id="getFlowPurchaseGoodsMonthList" resultType="java.util.LinkedHashMap">
+        select
+        t.specification_id specificationId,
+        s.sell_specifications spec,
+        s.name goodsName
+        <if test="request.poMonthList != null and request.poMonthList.size gt 0">
+            <foreach collection="request.poMonthList" item="poMonth">
+                ,`poQuantity_${poMonth}`
+            </foreach>
+        </if>
+        from
+        (select specification_id from flow_purchase
+        <where>
+            <if test="request.purchaseEnterpriseIds != null and request.purchaseEnterpriseIds.size gt 0">
+                eid in
+                <foreach collection="request.purchaseEnterpriseIds" item="eid" open="(" close=")" separator=",">
+                    #{eid}
+                </foreach>
+            </if>
+            <if test="request.provinceCode != null and request.provinceCode != ''">
+                and province_code = #{request.provinceCode}
+            </if>
+            <if test="request.cityCode != null and request.cityCode != ''">
+                and city_code = #{request.cityCode}
+            </if>
+            <if test="request.regionCode != null and request.regionCode != ''">
+                and region_code = #{request.regionCode}
+            </if>
+            <if test="request.poMonthList != null and request.poMonthList.size gt 0">
+                and po_month in
+                <foreach collection="request.poMonthList" item="poMonth" open="(" close=")" separator=",">
+                    #{poMonth}
+                </foreach>
+            </if>
+        </where>
+        group by specification_id
+        ) t
+        LEFT join standard_goods_specification s on t.specification_id = s.id
+        <foreach collection="request.poMonthList" item="poMonth">
+            left join (
+            select specification_id,
+            sum(po_quantity) as `poQuantity_${poMonth}`
+            from flow_purchase
+            <where>
+                <if test="request.purchaseEnterpriseIds != null and request.purchaseEnterpriseIds.size gt 0">
+                    and eid in
+                    <foreach collection="request.purchaseEnterpriseIds" item="purchaseEnterpriseId" open="(" close=")"
+                             separator=",">
+                        #{purchaseEnterpriseId}
+                    </foreach>
+                </if>
+                <if test="request.provinceCode != null and request.provinceCode != ''">
+                    and province_code = #{request.provinceCode}
+                </if>
+                <if test="request.cityCode != null and request.cityCode != ''">
+                    and city_code = #{request.cityCode}
+                </if>
+                <if test="request.regionCode != null and request.regionCode != ''">
+                    and region_code = #{request.regionCode}
+                </if>
+                <if test="poMonth != null">
+                    and po_month = #{poMonth}
+                </if>
+            </where>
+            group by specification_id
+            <if test="request.minQuantity != null and request.maxQuantity != null">
+                <![CDATA[ having `poQuantity_${poMonth}` >= #{request.minQuantity} and `poQuantity_${poMonth}` < #{request.maxQuantity}]]>
+            </if>
+            order by `poQuantity_${poMonth}` desc
+            ) `t_${poMonth}`
+            on `t_${poMonth}`.specification_id = t.specification_id
+        </foreach>
+        <where>
+            <if test="request.goodsNameList != null and request.goodsNameList.size gt 0">
+                and s.name in
+                <foreach collection="request.goodsNameList" item="goodsName" open="(" close=")" separator=",">
+                    #{goodsName}
+                </foreach>
+            </if>
+            and t.specification_id is not null and t.specification_id != 0 and s.sell_specifications is not null and
+            s.name is not null
+        </where>
+    </select>
+
+    <select id="getPurchaseGoodsNameList" resultType="string">
+        select s.name from
+        (select specification_id from flow_purchase  group by specification_id) t
+        LEFT JOIN standard_goods_specification s on t.specification_id = s.id
+        where t.specification_id is not null and  s.name is not null order by s.name
+    </select>
+
+    <select id="getSpecificationIdTotalQuantityByPoTime"
+            resultType="com.yiling.dataflow.check.bo.FlowPurchaseSpecificationIdTotalQuantityBO">
+        SELECT
+        eid, specification_id AS specificationId,  DATE(po_time) AS poTime, SUM(po_quantity) AS totalPoQuantity
+        FROM flow_purchase
+        WHERE del_flag = 0
+        AND po_time <![CDATA[ >= ]]> #{request.startPoTime}
+        AND po_time <![CDATA[ <= ]]> #{request.endPoTime}
+        GROUP BY eid, specification_id, DATE(po_time)
+    </select>
+
+    <select id="getTotalQuantityForPurchaseInventory"
+            resultType="com.yiling.dataflow.order.bo.FlowPurchaseInventoryTotalQuantityBO">
+        SELECT
+        eid, goods_in_sn AS goodsInSn,
+        ( CASE enterprise_name
+        WHEN '河北大运河医药物流有限公司' THEN 1
+        WHEN '泰州市京东医药有限责任公司' THEN 2
+        END
+        ) AS poSource,
+        SUM(po_quantity) AS totalPoQuantity,
+        MAX(ename) AS ename,
+        MAX(goods_name) AS goodsName,
+        MAX(po_specifications) AS goodsSpecifications
+        FROM flow_purchase
+        WHERE del_flag = 0 AND yl_goods_id > 0 AND enterprise_name in ('河北大运河医药物流有限公司', '泰州市京东医药有限责任公司')
+        AND po_time >= '2022-01-01 00:00:00'
+        GROUP BY eid, goods_in_sn, enterprise_name
+    </select>
+
+
+    <update id="createBackupTable">
+        CREATE TABLE ${backupTableName} LIKE ${tableName}
+    </update>
+
+    <update id="addColumn">
+        ALTER TABLE ${backupTableName} ADD COLUMN `backup_time` datetime(0) NOT NULL DEFAULT '1970-01-01 00:00:00' COMMENT '备份时间' AFTER `remark`
+    </update>
+
+    <insert id="initBackupData">
+        INSERT INTO ${backupTableName} (<include refid="Base_Column_List"/>)
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM ${tableName}
+        WHERE del_flag = 0 AND po_time <![CDATA[ <= ]]> #{poTimeEnd}
+    </insert>
+
+    <insert id="insertBackupDataByPoTime">
+        INSERT INTO ${backupTableName} (<include refid="Base_Column_List"/>)
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM ${tableName}
+        WHERE del_flag = 0 AND po_time <![CDATA[ >= ]]> #{poTimeStart} AND po_time <![CDATA[ <= ]]> #{poTimeEnd}
+    </insert>
+
+    <select id="getBackupTableIdListByPoTime" resultType="java.lang.Long">
+        SELECT id
+        FROM ${backupTableName}
+        WHERE po_time <![CDATA[ >= ]]> #{poTimeStart} AND po_time <![CDATA[ <= ]]> #{poTimeEnd}
+    </select>
+
+    <select id="getCantMatchGoodsQuantityList" resultMap="BaseResultMap">
+        select eid, sum(po_quantity) po_quantity from flow_purchase
+        <where>
+            and specification_id = 0
+            and po_month = #{monthTime}
+            and eid in
+            <foreach collection="eidList" item="eid" open="(" close=")" separator=",">
+                #{eid}
+            </foreach>
+        </where>
+        group by eid
+    </select>
+
+    <select id="getSpecificationIdCount" resultType="java.lang.Integer">
+        select count(0) from flow_purchase where  del_flag = 0 and specification_id = #{specificationId}
+    </select>
+
+    <delete id="deleteByPoTime">
+        DELETE FROM flow_purchase
+        WHERE po_time <![CDATA[ >= ]]> #{poTimeStart} AND po_time <![CDATA[ <= ]]> #{poTimeEnd}
+    </delete>
+
+    <delete id="deleteByDelFlagAndEid">
+--         DELETE FROM flow_purchase
+--         WHERE del_flag = 1 AND eid = #{eid} AND po_month <![CDATA[ <= ]]> #{poMonth}
+    </delete>
+
+    <delete id="deleteByPoTimeEnd">
+        DELETE FROM flow_purchase
+        WHERE po_time <![CDATA[ <= ]]> #{poTimeEnd}
+    </delete>
+
+    <select id="getOneByEidAndPoMonth" resultType="java.lang.Long">
+        SELECT COUNT(1) AS count
+        FROM ${backupTableName}
+        WHERE del_flag = 0 AND eid = #{eid} AND po_month <![CDATA[ = ]]> #{poMonth}
+        LIMIT 1
+    </select>
+
+    <delete id="deleteByEidAndPoMonth">
+        DELETE FROM ${backupTableName}
+        WHERE eid = #{eid} AND po_month <![CDATA[ = ]]> #{poMonth}
+    </delete>
+
+    <insert id="insertBackupDataByEidAndPoMonth">
+        INSERT INTO ${backupTableName} (<include refid="Base_Column_List"/>, backup_time)
+        (SELECT
+        <include refid="Base_Column_List"/>
+        FROM ${tableName}
+        WHERE del_flag = 0 AND eid = #{eid} AND po_month <![CDATA[ = ]]> #{poMonth})
+    </insert>
+
+    <select id="getMonthListByEidAndPoMonth" resultType="com.yiling.dataflow.order.bo.FlowPurchaseMonthBO">
+        SELECT eid, po_month AS poMonth
+        FROM flow_purchase
+        WHERE eid = #{eid} AND (po_month is not null AND po_month != '')
+        AND po_month <![CDATA[ <= ]]> #{poMonth}
+        GROUP BY eid, po_month
+        ORDER BY po_month DESC
+    </select>
+
+    <delete id="deleteById">
+        DELETE FROM ${backupTableName}
+        WHERE id IN
+        <foreach item="item" index="index" collection="idList" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+    <select id="pageBackup" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM ${request.tableName}
+        <where>
+            del_flag = 0
+            <if test="request.eid != null">
+                AND eid =#{request.eid,jdbcType=BIGINT}
+            </if>
+            <if test="request.eidList != null and request.eidList.size() > 0">
+                AND eid in
+                <foreach item="item" index="index" collection="request.eidList" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="request.month != null and request.month != ''">
+                AND po_month <![CDATA[ = ]]> #{request.month}
+            </if>
+
+        </where>
+    </select>
+
+    <insert id="saveBatchBackup" parameterType="java.util.List">
+        INSERT INTO
+        ${backupTableName}
+        (<include refid="Base_Column_List"/>, backup_time)
+        VALUES
+        <foreach collection="list" item="entity" index="index" separator=",">
+            (
+            #{entity.id},
+            #{entity.eid},
+            #{entity.ename},
+            #{entity.crmEnterpriseId},
+            #{entity.poId},
+            #{entity.poNo},
+            #{entity.enterpriseInnerCode},
+            #{entity.enterpriseName},
+            #{entity.supplierId},
+            #{entity.poTime},
+            #{entity.orderTime},
+            #{entity.poMonth},
+            #{entity.goodsInSn},
+            #{entity.goodsName},
+            #{entity.poSpecifications},
+            #{entity.specificationId},
+            #{entity.poBatchNo},
+            #{entity.poProductTime},
+            #{entity.poEffectiveTime},
+            #{entity.poQuantity},
+            #{entity.poUnit},
+            #{entity.poPrice},
+            #{entity.poTotalAmount},
+            #{entity.poManufacturer},
+            #{entity.poLicense},
+            #{entity.poSource},
+            #{entity.provinceCode},
+            #{entity.provinceName},
+            #{entity.cityCode},
+            #{entity.cityName},
+            #{entity.regionCode},
+            #{entity.regionName},
+            #{entity.crmCode},
+            #{entity.crmGoodsCode},
+            #{entity.goodsPossibleError},
+            #{entity.delFlag},
+            #{entity.createUser},
+            #{entity.createTime},
+            #{entity.updateUser},
+            #{entity.updateTime},
+            #{entity.remark},
+            NOW()
+            )
+        </foreach>
+    </insert>
+
+    <select id="getMaxPoTimeByEid" resultType="java.util.Date">
+        SELECT MAX(po_time) AS po_time
+        FROM flow_purchase
+        WHERE del_flag = 0 AND eid = #{eid}
+    </select>
+
+    <select id="selectFlowPurchaseCount" resultType="int">
+        SELECT COUNT(1)
+        FROM
+        <include refid="Base_Table_Name"/>
+        where
+        eid = #{request.eid}
+        AND update_time <![CDATA[ >= ]]> #{request.startUpdateTime}
+        AND update_time <![CDATA[ <= ]]> #{request.endUpdateTime}
+    </select>
+
+    <select id="selectFlowPurchasePage" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        <include refid="Base_Table_Name"/>
+        where
+        eid = #{request.eid}
+        AND update_time <![CDATA[ >= ]]> #{request.startUpdateTime}
+        AND update_time <![CDATA[ <= ]]> #{request.endUpdateTime}
+    </select>
+
+    <select id="getFlowPurchaseStatistics" resultType="com.yiling.dataflow.order.bo.FlowStatisticsBO">
+        SELECT
+        s.crm_enterprise_id as crmEnterpriseId,
+        DATE_FORMAT(s.po_time, '%Y-%m-%d') as dateTime
+        FROM
+        flow_purchase s
+        WHERE
+        s.del_flag = 0
+        AND po_time <![CDATA[  >= ]]> date_add(DATE_FORMAT(now(), '%Y-%m-%d'), interval -30 day)
+        and po_time  <![CDATA[ < ]]> date_add(DATE_FORMAT(now(), '%Y-%m-%d'), interval 0 day)
+        and crm_enterprise_id IN
+        <foreach item="item" index="index" collection="request.crmEnterpriseIds" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        GROUP BY
+        crm_enterprise_id,
+        DATE_FORMAT(s.po_time, '%Y-%m-%d')
+    </select>
+
+</mapper>

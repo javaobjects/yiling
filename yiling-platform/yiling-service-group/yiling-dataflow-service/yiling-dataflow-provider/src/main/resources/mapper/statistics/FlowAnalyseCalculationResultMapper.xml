@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.dataflow.statistics.dao.FlowAnalyseCalculationResultMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.dataflow.statistics.entity.FlowAnalyseCalculationResultDO">
+    <result column="id" property="id" />
+        <result column="eid" property="eid" />
+        <result column="specification_id" property="specificationId" />
+        <result column="day" property="day" />
+        <result column="sale_avg" property="saleAvg" />
+        <result column="support_day" property="supportDay" />
+        <result column="supplement_quantity" property="supplementQuantity" />
+        <result column="stock_quantity" property="stockQuantity" />
+        <result column="del_flag" property="delFlag" />
+        <result column="create_user" property="createUser" />
+        <result column="create_time" property="createTime" />
+        <result column="update_user" property="updateUser" />
+        <result column="update_time" property="updateTime" />
+        <result column="remark" property="remark" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,
+        eid, specification_id, day, sale_avg, support_day, supplement_quantity, stock_quantity, del_flag, create_user, create_time, update_user, update_time, remark
+    </sql>
+    <select id="getSaleDaysIconWarn"  resultType="com.yiling.dataflow.statistics.dto.StockWarnIconDTO">
+        SELECT DISTINCT
+        a.crm_enterprise_id as crmEnterpriseId,
+        a.specification_id as specificationId,
+        a.sale_avg as saleAvg,
+        a.support_day as supportDay,
+        a.stock_quantity as  stockQuantity
+        FROM
+        flow_analyse_calculation_result a
+        <where>
+            a.crm_enterprise_id>0
+            <if test="request.specificationId !=null and request.specificationId>0">
+                and a.specification_id =#{request.specificationId}
+            </if>
+            <if test="request.crmIdList !=null and request.crmIdList.size>0">
+                and a.crm_enterprise_id in
+                <foreach item="crmId" collection="request.crmIdList" separator="," open="(" close=")" index="">
+                    #{crmId}
+                </foreach>
+            </if>
+            <if test="request.iconTab !=null and request.iconTab==1"> and a.`day` = 3 </if>
+            <if test="request.iconTab !=null and request.iconTab==2"> and a.`day` = 3 </if>
+            <if test="request.iconTab !=null and request.iconTab==3"> and a.`day` = 30 </if>
+            <if test="request.iconTab !=null and request.iconTab==4"> and a.`day` = 3 </if>
+        </where>
+        order by
+        <if test="request.iconTab !=null and request.iconTab==1 ">a.support_day</if>
+        <if test="request.iconTab !=null and request.iconTab==2">a.sale_avg</if>
+        <if test="request.iconTab !=null and request.iconTab==3">a.sale_avg</if>
+        <if test="request.iconTab !=null and request.iconTab==4">a.stock_quantity</if>
+        <if test="request.iconTab == null">a.stock_quantity</if>
+        <if test="request.sort !=null and request.sort !=''">${request.sort}</if>
+
+    </select>
+    <select id="getStockWarnPage" resultType="com.yiling.dataflow.statistics.dto.StockWarnDTO">
+        SELECT
+        DISTINCT  a.crm_enterprise_id as crmEnterpriseId,
+        a.specification_id as specificationId,
+        a.support_day as supportDay,
+        a.sale_avg as saleAvg,
+        a.stock_quantity as stockQuantity,
+        a.supplement_quantity as supplementQuantity
+        FROM
+        flow_analyse_calculation_result a
+        <where>
+             a.crm_enterprise_id>0
+            <if test="request.specificationId !=null and request.specificationId>0">
+            and a.specification_id =#{request.specificationId}
+            </if>
+            <if test="request.crmIdList !=null and request.crmIdList.size>0">
+                and a.crm_enterprise_id in
+                <foreach item="crmId" collection="request.crmIdList" separator="," open="(" close=")" index="">
+                    #{crmId}
+                </foreach>
+            </if>
+            <if test="request.iconTab == null">and a.`day` = 3</if>
+            <if test="request.iconTab !=null and request.iconTab==1"> and a.`day` = 3 </if>
+            <if test="request.iconTab !=null and request.iconTab==2"> and a.`day` = 3 </if>
+            <if test="request.iconTab !=null and request.iconTab==3"> and a.`day` = 30 </if>
+            <if test="request.iconTab !=null and request.iconTab==4"> and a.`day` = 3 </if>
+        </where>
+        order by a.crm_enterprise_id asc,a.specification_id asc
+
+    </select>
+
+    <select id="getSaleDaysIconWarnList"  resultType="com.yiling.dataflow.statistics.dto.StockWarnDTO">
+        SELECT DISTINCT
+        a.crm_enterprise_id as crmEnterpriseId,
+        a.day as day,
+        a.specification_id as specificationId,
+        a.sale_avg as saleAvg,
+        a.support_day as supportDay,
+        a.stock_quantity as  stockQuantity,
+        a.supplement_quantity as supplementQuantity
+        FROM
+        flow_analyse_calculation_result a
+        <where>
+            <if test="specificationIds !=null and specificationIds.size>0">
+                and a.specification_id  in
+                <foreach item="specificationId" collection="specificationIds" separator="," open="(" close=")" index="">
+                    #{specificationId}
+                </foreach>
+            </if>
+            <if test="request.crmIdList !=null and request.crmIdList.size>0">
+                and a.crm_enterprise_id in
+                <foreach item="crmId" collection="request.crmIdList" separator="," open="(" close=")" index="">
+                    #{crmId}
+                </foreach>
+            </if>
+        </where>
+        order by a.crm_enterprise_id asc,a.specification_id asc
+    </select>
+    <delete id="deleteFlowAnalyseCalculationResult">
+        delete from flow_analyse_calculation_result
+    </delete>
+</mapper>

@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.marketing.strategy.dao.StrategyActivityMapper">
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.marketing.strategy.entity.StrategyActivityDO">
+        <result column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="type" property="type"/>
+        <result column="sponsor_type" property="sponsorType"/>
+        <result column="begin_time" property="beginTime"/>
+        <result column="end_time" property="endTime"/>
+        <result column="strategy_type" property="strategyType"/>
+        <result column="operating_remark" property="operatingRemark"/>
+        <result column="bear" property="bear"/>
+        <result column="platform_selected" property="platformSelected"/>
+        <result column="condition_seller_type" property="conditionSellerType"/>
+        <result column="condition_goods_type" property="conditionGoodsType"/>
+        <result column="condition_buyer_type" property="conditionBuyerType"/>
+        <result column="condition_enterprise_type" property="conditionEnterpriseType"/>
+        <result column="condition_enterprise_type_value" property="conditionEnterpriseTypeValue"/>
+        <result column="condition_user_type" property="conditionUserType"/>
+        <result column="condition_user_member_type" property="conditionUserMemberType"/>
+        <result column="condition_other" property="conditionOther"/>
+        <result column="order_amount_status_type" property="orderAmountStatusType"/>
+        <result column="order_amount_status" property="orderAmountStatus"/>
+        <result column="order_amount_pay_type" property="orderAmountPayType"/>
+        <result column="order_amount_payment_type" property="orderAmountPaymentType"/>
+        <result column="order_amount_ladder_type" property="orderAmountLadderType"/>
+        <result column="cycle_rate" property="cycleRate"/>
+        <result column="member_repeat" property="memberRepeat"/>
+        <result column="member_repeat_day" property="memberRepeatDay"/>
+        <result column="member_times" property="memberTimes"/>
+        <result column="del_flag" property="delFlag"/>
+        <result column="create_user" property="createUser"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_user" property="updateUser"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="remark" property="remark"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id
+        ,
+        name, type, sponsor_type, begin_time, end_time, strategy_type, operating_remark, bear, platform_selected, condition_seller_type, condition_goods_type, condition_buyer_type, condition_enterprise_type, condition_enterprise_type_value, condition_user_type, condition_user_member_type, condition_other, order_amount_status_type, order_amount_status, order_amount_pay_type, order_amount_payment_type, order_amount_ladder_type, cycle_rate, member_repeat, member_repeat_day, member_times, del_flag, create_user, create_time, update_user, update_time, remark
+    </sql>
+
+    <select id="pageList"
+            parameterType="com.yiling.marketing.strategy.dto.request.QueryStrategyActivityPageRequest"
+            resultType="com.yiling.marketing.strategy.entity.StrategyActivityDO">
+        SELECT
+        sa.*
+        FROM marketing_strategy_activity sa
+        LEFT JOIN `user` u ON sa.create_user = u.id
+        <if test="request.eid != null and request.eid != ''">
+            LEFT JOIN marketing_strategy_seller_limit ssl ON sa.id = ssl.marketing_strategy_id
+        </if>
+        <where>
+            sa.del_flag = 0
+            and sa.status!=4
+            <if test="request.type != null and request.type != 0">
+                AND sa.type = #{request.type}
+            </if>
+            <if test="request.strategyActivityName != null and request.strategyActivityName != ''">
+                AND sa.name LIKE CONCAT('%',#{request.strategyActivityName},'%')
+            </if>
+            <if test="request.status != null and request.status != 0">
+                AND sa.status = #{request.status}
+            </if>
+            <if test="request.progress != null and request.progress == 1">
+                AND sa.begin_time &gt; (SELECT NOW())
+                AND sa.status = 1
+            </if>
+            <if test="request.progress != null and request.progress == 2">
+                AND sa.begin_time &lt;= (SELECT NOW())
+                AND sa.end_time &gt;= (SELECT NOW())
+                AND sa.status = 1
+            </if>
+            <if test="request.progress != null and request.progress == 3">
+                AND (sa.end_time &lt;= (SELECT NOW()) OR sa.status != 1)
+            </if>
+            <if test="request.eid != null and request.eid != ''">
+                AND (sa.condition_seller_type = 1 OR ssl.eid = #{request.eid})
+            </if>
+            <if test="request.createUserName != null and request.createUserName != ''">
+                AND u.name LIKE CONCAT('%',#{request.createUserName},'%')
+            </if>
+            <if test="request.createTel != null and request.createTel != ''">
+                AND u.mobile LIKE CONCAT('%',#{request.createTel},'%')
+            </if>
+            <if test="request.startTime != null">
+                AND sa.create_time &gt;= #{request.startTime}
+            </if>
+            <if test="request.stopTime != null">
+                AND sa.create_time &lt;= #{request.stopTime}
+            </if>
+            <if test="request.strategyType != null and request.strategyType != 0">
+                AND sa.strategy_type = #{request.strategyType}
+            </if>
+            <if test="request.operatingRemark != null and request.operatingRemark != ''">
+                AND sa.operating_remark LIKE CONCAT('%',#{request.operatingRemark},'%')
+            </if>
+        </where>
+        ORDER BY sa.create_time DESC
+    </select>
+
+    <select id="listByStageMemberId" resultType="com.yiling.marketing.strategy.entity.StrategyActivityDO">
+        SELECT
+        sa.*
+        FROM marketing_strategy_activity sa
+        LEFT JOIN marketing_strategy_stage_member_effect ssme ON ssme.marketing_strategy_id = sa.id
+        <where>
+            sa.del_flag = 0 AND ssme.del_flag = 0 AND sa.type = 1 AND sa.strategy_type = 4 AND sa.status = 1
+            AND sa.begin_time &lt;= (SELECT NOW()) AND sa.end_time &gt;= (SELECT NOW())
+            <if test="stageMemberId != null">
+                AND ssme.member_id = #{stageMemberId}
+            </if>
+            <if test="platformSelected != null and platformSelected != ''">
+                AND sa.platform_selected LIKE CONCAT('%',#{platformSelected},'%')
+            </if>
+        </where>
+        ORDER BY sa.create_time ASC
+    </select>
+
+    <select id="listStrategyByGiftId"
+            parameterType="com.yiling.marketing.strategy.dto.request.QueryLotteryStrategyRequest"
+            resultType="com.yiling.marketing.strategy.entity.StrategyActivityDO">
+        SELECT DISTINCT
+        sa.*
+        FROM marketing_strategy_gift sg
+        LEFT JOIN marketing_strategy_activity sa ON sg.marketing_strategy_id = sa.id
+        <where>
+            sa.del_flag = 0 AND sg.del_flag = 0 AND sa.type = 1 AND sa.status = 1
+            AND sa.begin_time &lt;= (SELECT NOW()) AND sa.end_time &gt;= (SELECT NOW())
+            <if test="request.lotteryActivityId != null and request.lotteryActivityId != 0">
+                AND sg.type = 3 AND sg.gift_id = #{request.lotteryActivityId}
+            </if>
+        </where>
+        ORDER BY sa.create_time DESC
+    </select>
+
+    <select id="pageLotteryStrategy"
+            parameterType="com.yiling.marketing.strategy.dto.request.QueryLotteryStrategyPageRequest"
+            resultType="com.yiling.marketing.strategy.entity.StrategyActivityDO">
+        SELECT DISTINCT
+        sa.*
+        FROM marketing_strategy_gift sg
+        LEFT JOIN marketing_strategy_activity sa ON sg.marketing_strategy_id = sa.id
+        <where>
+            sa.del_flag = 0 AND sg.del_flag = 0 AND sa.type = 1 AND sa.status = 1
+            AND sa.begin_time &lt;= (SELECT NOW())
+            <if test="request.lotteryActivityId != null and request.lotteryActivityId != 0">
+                AND sg.type = 3 AND sg.gift_id = #{request.lotteryActivityId}
+            </if>
+        </where>
+        ORDER BY sa.create_time DESC
+    </select>
+
+    <select id="countStrategyByGiftId" resultType="java.lang.Integer">
+        SELECT count(1) FROM (SELECT DISTINCT
+        sa.*, sg.gift_id AS giftId
+        FROM marketing_strategy_gift sg
+        LEFT JOIN marketing_strategy_activity sa ON sg.marketing_strategy_id = sa.id
+        <where>
+            sa.del_flag = 0 AND sg.del_flag = 0 AND sa.type = 1 AND sa.status = 1
+            AND sa.begin_time &lt;= (SELECT NOW())
+            <if test="lotteryActivityId != null and lotteryActivityId != 0">
+                AND sg.type = 3 AND sg.gift_id = #{lotteryActivityId}
+            </if>
+            <!--            <if test="lotteryActivityIdList != null and lotteryActivityIdList.size() > 0">-->
+            <!--                AND sg.type = 3 AND sg.gift_id in-->
+            <!--                <foreach item="item" index="index" collection="lotteryActivityIdList"-->
+            <!--                         open="(" separator="," close=")">-->
+            <!--                    #{item}-->
+            <!--                </foreach>-->
+            <!--            </if>-->
+        </where>
+        ) c GROUP BY c.giftId
+    </select>
+</mapper>

@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.user.enterprise.dao.EnterprisePurchaseApplyMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.user.enterprise.bo.EnterprisePurchaseApplyBO">
+    <result column="id" property="id" />
+        <result column="customer_eid" property="customerEid"/>
+        <result column="eid" property="eid"/>
+        <result column="auth_status" property="authStatus" />
+        <result column="auth_user" property="authUser" />
+        <result column="auth_time" property="authTime" />
+        <result column="auth_reject_reason" property="authRejectReason"/>
+        <result column="name" property="name" />
+        <result column="contactor" property="contactor" />
+        <result column="contactor_phone" property="contactorPhone" />
+        <result column="license_number" property="licenseNumber" />
+        <result column="province_code" property="provinceCode" />
+        <result column="province_name" property="provinceName" />
+        <result column="city_code" property="cityCode" />
+        <result column="city_name" property="cityName" />
+        <result column="region_code" property="regionCode" />
+        <result column="region_name" property="regionName" />
+        <result column="address" property="address" />
+        <result column="type" property="type" />
+        <result column="create_user" property="createUser" />
+        <result column="create_time" property="createTime" />
+        <result column="update_user" property="updateUser" />
+        <result column="update_time" property="updateTime" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        pa.id , pa.customer_eid , pa.eid , pa.auth_status , pa.auth_user , pa.auth_time , pa.auth_reject_reason,
+        e.name,e.contactor , e.contactor_phone , e.license_number,
+        e.province_code, e.province_name, e.city_code, e.city_name, e.region_code, e.region_name, e.address,
+        e.type , pa.create_user , pa.create_time , pa.update_user , pa.update_time
+    </sql>
+
+    <select id="pageList" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from enterprise_purchase_apply pa
+        inner join enterprise e
+        <if test="request.dataType != null and request.dataType == 1">
+            on pa.customer_eid = e.id
+        </if>
+        <if test="request.dataType != null and request.dataType == 2">
+            on pa.eid = e.id
+        </if>
+            and pa.del_flag = 0 and e.del_flag = 0
+        <where>
+            <if test="request.eid != null and request.eid != 0">
+                and pa.eid = #{request.eid}
+            </if>
+            <if test="request.customerEid != null and request.customerEid != 0">
+                and pa.customer_eid = #{request.customerEid}
+            </if>
+            <if test="request.name != null and request.name != ''">
+                and e.name like concat('%',#{request.name},'%')
+            </if>
+            <if test="request.licenseNumber != null and request.licenseNumber != ''">
+                and e.license_number = #{request.licenseNumber}
+            </if>
+            <if test="request.provinceCode != null and request.provinceCode != ''">
+                and e.province_code = #{request.provinceCode}
+            </if>
+            <if test="request.cityCode != null and request.cityCode != ''">
+                and e.city_code = #{request.cityCode}
+            </if>
+            <if test="request.regionCode != null and request.regionCode != ''">
+                and e.region_code = #{request.regionCode}
+            </if>
+            <if test="request.type != null and request.type != 0">
+                and e.type = #{request.type}
+            </if>
+            <if test="request.authStatus != null and request.authStatus != 0">
+                and pa.auth_status = #{request.authStatus}
+            </if>
+        </where>
+    </select>
+
+    <select id="getByCustomerEid" resultType="com.yiling.user.enterprise.bo.EnterprisePurchaseApplyBO">
+        select
+        <include refid="Base_Column_List"/>
+        from enterprise_purchase_apply pa
+        inner join enterprise e on pa.customer_eid = e.id and pa.del_flag = 0 and e.del_flag = 0
+        where pa.customer_eid = #{customerEid} and pa.eid = #{eid}
+    </select>
+
+    <select id="getByEid" resultType="com.yiling.user.enterprise.bo.EnterprisePurchaseApplyBO">
+        select
+        <include refid="Base_Column_List"/>
+        from enterprise_purchase_apply pa
+        inner join enterprise e on pa.eid = e.id and pa.del_flag = 0 and e.del_flag = 0
+        where pa.customer_eid = #{customerEid} and pa.eid = #{eid}
+    </select>
+
+
+</mapper>

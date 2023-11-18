@@ -1,0 +1,309 @@
+@import "~@/common/styles/mixin.scss";
+
+.app-container {
+  .buy-order-half {
+    margin-bottom: 16px;
+    .el-col {
+      margin-bottom: 8px;
+      min-height: 100%;
+    }
+  }
+  .header-box {
+    min-height: 180px;
+    height: 100%;
+    position: relative;
+    .ticket-more {
+      position: absolute;
+      right: 16px;
+      top: 8px;
+    }
+    .header-bar {
+      margin-bottom: 12px;
+    }
+    .box-text {
+      font-weight: 400;
+      margin-left: 8px;
+      font-size: 14px;
+      color: $font-important-color;
+      .item {
+        line-height: 20px;
+        .el-select{
+          width: 240px;
+        }
+        .el-input{
+          width: 240px;
+        }
+        .size18 {
+          font-size: 18px;
+        }
+      }
+      .mark-item {
+        width: 360px;
+        height: 81px;
+        border-radius: 4px;
+        border: 1px solid #D8D8D8;
+        padding: 6px;
+        overflow: auto;
+      }
+      .img-item {
+        width: 64px;
+        height: 64px;
+        border-radius: 4px;
+        overflow: hidden;
+        margin-top: 27px;
+      }
+    }
+    // 开票形式
+    .invoice-top-view{
+      .invoice-form-item{
+        display: flex;
+        align-items: center;
+        height: 44px;
+        font-size: 14px;
+        .invoice-form-item-right{
+          flex: 1;
+        }
+      }
+      .invoice-text{
+        align-items: flex-start;
+      }
+    }
+    .top-view{
+      padding: 0 12px;
+      margin-left: 8px;
+      border-radius: 4px;
+      border: 1px solid #EEEEEE;
+      margin-bottom: 10px;
+      // padding-bottom: 12px;
+      &:last-child{
+        padding-bottom: 0;
+      }
+      .my-form-item{
+        display: flex;
+        align-items: center;
+        height: 44px;
+        font-size: 14px;
+        font-weight: 400;
+        color: #666666;
+        .my-form-item-left{
+          width: 100px;
+          margin-right: 12px;
+          font-size: 14px;
+          font-weight: 400;
+          color: #666666;
+        }
+        .my-radio-group{
+          display: flex;
+          flex-direction: column;
+        }
+        .tip-box{
+          display: flex;
+          align-items: center;
+          padding: 8px 16px;
+          font-size: $font-size-base;
+          line-height: $font-size-base-lh;
+          color: $font-important-color;
+          background: #FFFBE6;
+          border-radius: 4px;
+          display: inline-block;
+          border: 1px solid #FFE58F;
+          i {
+            width: 21px;
+            height: 100%;
+            color: #FA8C15 !important;
+          }
+        }
+        .my-list-item-right{
+          display: flex;
+          align-items: center;
+          .el-input{
+            width: 120px;
+          }
+          .separate{
+            margin-right: 8px;
+          }
+          .separate2{
+            margin-left: 9px;
+          }
+        }
+        .item-view{
+          margin-right: 120px;
+        }
+        .btn-view{
+          margin-left: 49px;
+        }
+
+      }
+      .top-view-item{
+        display: flex;
+        align-items: center;
+        font-size: 14px;
+        font-weight: 400;
+        height: 40px;
+        background: #FAFAFA;
+        border-radius: 4px;
+        padding: 0 23px;
+        .item-view{
+          margin-right: 52px;
+        }
+        .scal-20-width{
+          width: 20%;
+        }
+      }
+    }
+  }
+  .buy-order-table {
+    .expand-row {
+      .expand-view {
+        width: 100%;
+        background: #FAFAFA;
+        border-radius: 4px;
+        padding: 16px;
+        padding-top: 0;
+        margin-bottom: 16px;
+        color: $font-important-color;
+        &:last-child{
+          margin-bottom: 0;
+        }
+        .top-delivery-view{
+          padding-bottom: 16px;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          .delivery-view-left{
+            display: flex;
+            align-items: center;
+            padding-top: 16px;
+          }
+        }
+        .title {
+          height: 22px;
+          font-size: 16px;
+          line-height: 22px;
+          margin-bottom: 7px;
+        }
+        .desc-box {
+          font-size: $font-size-base;
+          display: flex;
+          .img {
+            width: 82px;
+            height: 70px;
+            margin-right: 14px;
+          }
+          .box1 {
+            width: 300px;
+          }
+          .box2 {
+            width: 200px;
+          }
+          .box3 {
+            width: 280px;
+          }
+          .right-text {
+            .text-item {
+              height: 24px;
+              line-height: 24px;
+            }
+            .money {
+              font-size: 18px;
+              color: $font-important-color;
+            }
+          }
+          .form-view{
+            display: flex;
+            align-items: center;
+            .el-select{
+              width: 135px;
+              height: 32px;
+            }
+            .form{
+              .el-form-item{
+                width: 107px;
+                margin: 0;
+                margin-left: 8px;
+                height: 32px;
+              }
+            }
+          }
+        }
+        .nums-box {
+          margin-top: 16px;
+          .content {
+            background: #F0F0F0;
+            border-radius: 4px;
+            padding: 12px;
+            font-size: $font-size-base;
+            .content-item {
+              min-width: 280px;
+              line-height: 20px;
+              height: 20px;
+              display: inline-block;
+            }
+          }
+        }
+        .batch-item{
+          height: 47px;
+          line-height: 47px;
+          background: #F0F0F0;
+          border-radius: 4px;
+          margin-bottom: 8px;
+          font-size: $font-size-base;
+          color: #666666;
+          &:first-child{
+            margin-top: 8px;
+          }
+          .batch-item-input{
+            .el-input{
+              width: 100px;
+            }
+          }
+        }
+        .invoice-form-item{
+          display: flex;
+          align-items: center;
+          height: 44px;
+          font-size: 14px;
+          font-weight: 400;
+          color: #666666;
+          .invoice-form-item-right{
+            flex: 1;
+          }
+        }
+        .invoice-text{
+          align-items: flex-start;
+        }
+      }
+    }
+  }
+  .order-ticket-check {
+    padding: 15px 27px 30px 15px;
+    .order-content {
+      padding-left: 5px;
+    }
+  }
+  .line-num-view{
+    padding: 30px 20px;
+    text-align: center;
+  }
+  .relevance-ticket-check{
+    padding: 15px 27px 30px 15px;
+    .item-view{
+      display: flex;
+      height: 40px;
+      line-height: 40px;
+      background: #FAFAFA;
+      .select-view{
+        width: 80px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        .icon{
+          width: 18px;
+          height: 18px;
+          cursor: pointer;
+        }
+      }
+    }
+  }
+}

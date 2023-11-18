@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.yiling</groupId>
+        <artifactId>yiling-sales-assistant-app-portal</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>yiling-sales-assistant-app-web</artifactId>
+    <name>Yiling Sales Assistant App Web</name>
+    <description>Yiling Sales Assistant App Web</description>
+
+    <properties>
+        <maven.deploy.skip>true</maven.deploy.skip>
+        <kaptcha.version>2.3.2</kaptcha.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.yiling</groupId>
+            <artifactId>yiling-sales-assistant-common</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.yiling</groupId>
+            <artifactId>yiling-oss-client</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.yiling</groupId>
+            <artifactId>yiling-export-api</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <fork>true</fork>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

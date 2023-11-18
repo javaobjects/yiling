@@ -1,0 +1,26 @@
+.app-container {
+  .common-box {
+    .header-bar {
+      height: 22px;
+      line-height: 22px;
+      .sign {
+        margin-right: 5px;
+      }
+    }
+  }
+  .table-box {
+    padding-left: 6px;
+    .table-bar {
+      display: flex;
+      align-items: center;
+      margin-bottom: 16px;
+      .title {
+        margin-right: 16px;
+        font-size: 14px;
+        font-weight: 400;
+        color: #666666;
+        line-height: 20px;
+      }
+    }
+  }
+}

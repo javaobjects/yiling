@@ -1,0 +1,17 @@
+.app-container {
+  .common-box {
+    padding-bottom: 0;
+    .el-textarea,
+    .el-input {
+      max-width: 420px;
+    }
+  }
+  .new-role {
+    ::v-deep .el-form-item__label {
+      padding-bottom: 0;
+      color: $font-important-color;
+      line-height: 22px;
+      margin-bottom: 8px;
+    }
+  }
+}

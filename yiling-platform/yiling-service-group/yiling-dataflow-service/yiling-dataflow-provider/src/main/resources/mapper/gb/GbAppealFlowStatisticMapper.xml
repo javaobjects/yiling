@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.dataflow.gb.dao.GbAppealFlowStatisticMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.dataflow.gb.entity.GbAppealFlowStatisticDO">
+    <result column="id" property="id" />
+        <result column="flow_wash_id" property="flowWashId" />
+        <result column="so_quantity" property="soQuantity" />
+        <result column="match_quantity" property="matchQuantity" />
+        <result column="un_match_quantity" property="unMatchQuantity" />
+        <result column="flow_version" property="flowVersion" />
+        <result column="create_user" property="createUser" />
+        <result column="create_time" property="createTime" />
+        <result column="update_user" property="updateUser" />
+        <result column="update_time" property="updateTime" />
+        <result column="flow_key" property="flowKey" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,
+        appeal_form_id, flow_wash_id, so_quantity, match_quantity, un_match_quantity, flow_version, create_user, create_time, update_user, update_time,
+        flow_key
+    </sql>
+
+    <update id="substract">
+        update gb_appeal_flow_statistic
+        set
+        un_match_quantity = un_match_quantity - #{request.substractQuantity},
+        match_quantity = match_quantity + #{request.substractQuantity},
+        update_user = #{request.opUserId},
+        update_time = #{request.opTime}
+        where id = #{request.id} and un_match_quantity - #{request.substractQuantity} >= 0
+    </update>
+
+    <select id="getFlowCountByGbAppealFormId" resultType="com.yiling.dataflow.gb.bo.GbAppealFormFlowCountBO">
+        select
+        related.appeal_form_id AS appealFormId,
+        IFNULL(SUM(statistic.so_quantity), 0) AS totalQuantity,
+        IFNULL(SUM(statistic.match_quantity), 0) AS totalMatchQuantity,
+        IFNULL(SUM(statistic.un_match_quantity), 0) AS totalUnMatchQuantity
+        from gb_appeal_flow_related related
+        LEFT JOIN gb_appeal_flow_statistic statistic on related.flow_wash_id = statistic.flow_wash_id
+        where
+        related.appeal_form_id = #{gbAppealFormId}
+        GROUP BY related.appeal_form_id
+    </select>
+
+</mapper>

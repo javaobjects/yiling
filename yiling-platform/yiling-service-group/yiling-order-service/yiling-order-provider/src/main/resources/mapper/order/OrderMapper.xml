@@ -1,0 +1,1262 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.order.order.dao.OrderMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.order.order.entity.OrderDO">
+        <result column="id" property="id"/>
+        <result column="order_no" property="orderNo"/>
+        <result column="batch_no" property="batchNo"/>
+        <result column="buyer_eid" property="buyerEid"/>
+        <result column="buyer_ename" property="buyerEname"/>
+        <result column="buyer_province_code" property="buyerProvinceCode"/>
+        <result column="buyer_city_code" property="buyerCityCode"/>
+        <result column="buyer_region_code" property="buyerRegionCode"/>
+        <result column="seller_eid" property="sellerEid"/>
+        <result column="seller_ename" property="sellerEname"/>
+        <result column="seller_erp_code" property="sellerErpCode"/>
+        <result column="distributor_eid" property="distributorEid"/>
+        <result column="distributor_ename" property="distributorEname"/>
+        <result column="customer_erp_code" property="customerErpCode"/>
+        <result column="total_amount" property="totalAmount"/>
+        <result column="cash_discount_amount" property="cashDiscountAmount"/>
+        <result column="ticket_discount_no" property="ticketDiscountNo"/>
+        <result column="ticket_discount_amount" property="ticketDiscountAmount"/>
+        <result column="platform_coupon_discount_amount" property="platformCouponDiscountAmount"/>
+        <result column="coupon_discount_amount" property="couponDiscountAmount"/>
+        <result column="presale_discount_amount" property="presaleDiscountAmount"/>
+        <result column="shop_payment_discount_amount" property="shopPaymentDiscountAmount"/>
+        <result column="platform_payment_discount_amount" property="platformPaymentDiscountAmount"/>
+        <result column="freight_amount" property="freightAmount"/>
+        <result column="return_amount" property="returnAmount"/>
+        <result column="return_cash_dicount_amount" property="returnCashDicountAmount"/>
+        <result column="return_ticket_discount_amount" property="returnTicketDiscountAmount"/>
+        <result column="return_platform_coupon_discount_amount" property="returnPlatformCouponDiscountAmount"/>
+        <result column="return_coupon_discount_amount" property="returnCouponDiscountAmount"/>
+        <result column="return_presale_discount_amount" property="returnPresaleDiscountAmount"/>
+        <result column="return_platform_payment_discount_amount" property="returnPlatformPaymentDiscountAmount"/>
+        <result column="return_shop_payment_discount_amount" property="returnShopPaymentDiscountAmount"/>
+        <result column="payment_amount" property="paymentAmount"/>
+        <result column="payment_type" property="paymentType"/>
+        <result column="payment_method" property="paymentMethod"/>
+        <result column="pay_channel" property="payChannel"/>
+        <result column="pay_source" property="paySource"/>
+        <result column="payment_status" property="paymentStatus"/>
+        <result column="payment_time" property="paymentTime"/>
+        <result column="order_type" property="orderType"/>
+        <result column="order_category" property="orderCategory"/>
+        <result column="order_status" property="orderStatus"/>
+        <result column="order_source" property="orderSource"/>
+        <result column="order_note" property="orderNote"/>
+        <result column="delivery_type" property="deliveryType"/>
+        <result column="delivery_company" property="deliveryCompany"/>
+        <result column="delivery_no" property="deliveryNo"/>
+        <result column="contacter_id" property="contacterId"/>
+        <result column="contacter_name" property="contacterName"/>
+        <result column="department_id" property="departmentId"/>
+        <result column="province_manager_id" property="provinceManagerId"/>
+        <result column="province_manager_code" property="provinceManagerCode"/>
+        <result column="create_user" property="createUser"/>
+        <result column="create_time" property="createTime"/>
+        <result column="audit_status" property="auditStatus"/>
+        <result column="audit_user" property="auditUser"/>
+        <result column="audit_time" property="auditTime"/>
+        <result column="audit_reject_reason" property="auditRejectReason"/>
+        <result column="erp_push_status" property="erpPushStatus"/>
+        <result column="erp_push_time" property="erpPushTime"/>
+        <result column="erp_push_remark" property="erpPushRemark"/>
+        <result column="erp_order_no" property="erpOrderNo"/>
+        <result column="erp_receivable_status" property="erpReceivableStatus"/>
+        <result column="delivery_user" property="deliveryUser"/>
+        <result column="delivery_time" property="deliveryTime"/>
+        <result column="receive_user" property="receiveUser"/>
+        <result column="receive_time" property="receiveTime"/>
+        <result column="finish_time" property="finishTime"/>
+        <result column="invoice_time" property="invoiceTime"/>
+        <result column="invoice_status" property="invoiceStatus"/>
+        <result column="invoice_amount" property="invoiceAmount"/>
+        <result column="audit_modify_flag" property="auditModifyFlag"/>
+        <result column="audit_modify_time" property="auditModifyTime"/>
+        <result column="erp_delivery_status" property="erpDeliveryStatus"/>
+        <result column="erp_delivery_time" property="erpDeliveryTime"/>
+        <result column="erp_delivery_remark" property="erpDeliveryRemark"/>
+        <result column="erp_purchase_status" property="erpPurchaseStatus"/>
+        <result column="erp_purchase_time" property="erpPurchaseTime"/>
+        <result column="erp_purchase_remark" property="erpPurchaseRemark"/>
+        <result column="customer_confirm_status" property="customerConfirmStatus"/>
+        <result column="customer_confirm_time" property="customerConfirmTime"/>
+        <result column="contract_number" property="contractNumber"/>
+        <result column="hide_flag" property="hideFlag"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,
+        order_no, batch_no, buyer_eid, buyer_ename,buyer_province_code,buyer_city_code,buyer_region_code,seller_eid, seller_ename, seller_erp_code,distributor_eid, distributor_ename,customer_erp_code,
+        total_amount, cash_discount_amount, ticket_discount_no, ticket_discount_amount,platform_coupon_discount_amount,coupon_discount_amount,shop_payment_discount_amount,platform_payment_discount_amount,freight_amount, return_amount, return_cash_dicount_amount, return_ticket_discount_amount, payment_amount,
+        payment_type, payment_method,pay_channel,pay_source,payment_status, payment_time, order_type, order_status, order_source, order_note, delivery_type, delivery_company, delivery_no, contacter_id, contacter_name,department_id, province_manager_id, province_manager_code,
+        create_user, create_time, audit_status, audit_user, audit_time, audit_reject_reason, erp_push_status, erp_push_time, erp_push_remark, erp_order_no, erp_receivable_status, delivery_user, delivery_time, receive_user, receive_time,
+        finish_time, invoice_time, invoice_status, invoice_amount,audit_modify_flag,audit_modify_time, return_amount, return_cash_dicount_amount, return_ticket_discount_amount,erp_delivery_status,erp_delivery_time,erp_delivery_remark,erp_purchase_status,erp_purchase_time, customer_confirm_status,customer_confirm_time,
+        erp_purchase_remark,return_platform_coupon_discount_amount, return_coupon_discount_amount,contract_number,return_platform_payment_discount_amount,return_shop_payment_discount_amount,
+        return_presale_discount_amount,presale_discount_amount,order_category,hide_flag
+    </sql>
+
+    <select id="orderExpectExport" resultType="com.yiling.order.order.dto.OrderExpectExportDTO">
+
+        SELECT
+        m.orderNo,
+        m.buyerEid,
+        m.buyerEname,
+        m.contractNumber,
+        m.createTime,
+        m.auditStatus,
+        m.auditTime,
+        m.paymentMethod,
+        ROUND(m.totalAmount,2) as totalAmount,
+        ROUND(m.discountAmount,2) as discountAmount,
+        ROUND(m.payAmount,2) as payAmount,
+        m.contacterId,
+        m.contacterName,
+        m.sellerEid,
+        m.sellerEname,
+        m.auditUser,
+        u.NAME as auditName,
+        d.goods_id as goodsId,
+        d.goods_name as goodsName,
+        d.goods_specification as goodsSpecification,
+        d.goods_license_no as goodsLicenseNo,
+        d.goods_quantity as goodsQuantity,
+        d.goods_price as goodsPrice,
+        ROUND(c.goods_amount,2) as goodsAmount ,
+        ROUND(( c.cash_discount_amount + c.ticket_discount_amount ) / d.goods_amount, 4 ) * 100 AS goodsDiscountRate,
+        ROUND(c.cash_discount_amount + c.ticket_discount_amount,2) AS goodsDiscountAmount,
+        ROUND(c.goods_amount - c.cash_discount_amount - c.ticket_discount_amount,2) AS goodsPayAmount,
+        s.mobile,
+        s.NAME as receiveName,
+        s.address
+        FROM
+        (
+        SELECT
+        o.id,
+        o.order_no AS orderNo,
+        o.buyer_eid AS buyerEid,
+        o.buyer_ename AS buyerEname,
+        o.contract_number AS contractNumber,
+        o.create_time AS createTime,
+        o.audit_user AS auditUser,
+        o.audit_status AS auditStatus,
+        o.audit_time AS auditTime,
+        o.payment_method AS paymentMethod,
+        o.total_amount AS totalAmount,
+        o.ticket_discount_amount + o.cash_discount_amount AS discountAmount,
+        o.total_amount - o.ticket_discount_amount - o.cash_discount_amount AS payAmount,
+        o.contacter_id AS contacterId,
+        o.contacter_name AS contacterName,
+        o.seller_eid AS sellerEid,
+        o.seller_ename AS sellerEname
+        FROM
+        `order` o
+        <where>
+            1=1
+            <if test="request.contacterIdList != null and request.contacterIdList.size() > 0">
+                and o.contacter_id in
+                <foreach item="item" index="index" collection="request.contacterIdList"
+                         open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="request.sellerEidList != null and request.sellerEidList.size() > 0">
+                and o.seller_eid in
+                <foreach item="item" index="index" collection="request.sellerEidList"
+                         open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="request.buyerEid != null and request.buyerEid != 0">
+                and o.buyer_eid = #{request.buyerEid}
+            </if>
+
+            <if test="request.id != null and request.id != 0">
+                and o.id = #{request.id}
+            </if>
+            and o.order_status != - 10 and o.customer_confirm_status = -40
+        </where>
+        ) m
+        INNER JOIN order_address s ON m.id = s.order_id
+        INNER JOIN order_detail_change c ON m.id = c.order_id
+        INNER JOIN order_detail d ON c.order_id = d.order_id
+        AND c.goods_id = d.goods_id
+        LEFT JOIN `user` u ON u.id = m.auditUser
+        <where>
+            1=1
+            <if test="request.distributorEname != null and request.distributorEname != ''">
+                and m.sellerEname like concat('%',#{request.distributorEname},'%')
+            </if>
+            <if test="request.orderNo != null and request.orderNo != ''">
+                and m.orderNo like concat('%',#{request.orderNo},'%')
+            </if>
+            <if test="request.auditStatus != null and request.auditStatus != 0">
+                and m.auditStatus = #{request.auditStatus}
+            </if>
+            <if test="request.startCreatTime != null ">
+                and m.createTime &gt;= #{request.startCreatTime}
+            </if>
+            <if test="request.endCreatTime != null">
+                and m.createTime &lt;= #{request.endCreatTime}
+            </if>
+        </where>
+
+    </select>
+
+    <select id="selectReceiveOrderByDistributorGoodId" resultMap="BaseResultMap">
+        SELECT
+                so.id,
+                so.order_no,
+                so.batch_no,
+                so.buyer_eid,
+                so.buyer_ename,
+                so.seller_eid,
+                so.seller_ename,
+                so.seller_erp_code,
+                so.distributor_eid,
+                so.distributor_ename,
+                so.customer_erp_code,
+                so.total_amount,
+                so.cash_discount_amount,
+                so.ticket_discount_no,
+                so.ticket_discount_amount,
+                so.freight_amount,
+                so.return_amount,
+                so.return_cash_dicount_amount,
+                so.return_ticket_discount_amount,
+                so.payment_amount,
+                so.payment_type,
+                so.payment_method,
+                so.payment_status,
+                so.payment_time,
+                so.order_type,
+                so.order_status,
+                so.order_source,
+                so.order_note,
+                so.delivery_type,
+                so.delivery_company,
+                so.delivery_no,
+                so.contacter_id,
+                so.contacter_name,
+                so.province_manager_id,
+                so.province_manager_code,
+                so.create_user,
+                so.create_time,
+                so.audit_status,
+                so.audit_user,
+                so.audit_time,
+                so.audit_reject_reason,
+                so.erp_push_status,
+                so.erp_push_time,
+                so.erp_push_remark,
+                so.erp_order_no,
+                so.erp_delivery_no,
+                so.erp_receivable_no,
+                so.erp_receivable_status,
+                so.delivery_user,
+                so.delivery_time,
+                so.receive_user,
+                so.receive_time,
+                so.finish_time,
+                so.invoice_time,
+                so.invoice_status,
+                so.invoice_amount,
+                so.audit_modify_flag,
+                so.audit_modify_time,
+                so.return_amount,
+                so.return_cash_dicount_amount,
+                so.return_ticket_discount_amount,
+                so.customer_confirm_status,
+                so.customer_confirm_time
+        FROM
+                `order` so
+        WHERE EXISTS
+            (SELECT
+                     1
+             FROM
+                     order_detail od
+             WHERE od.order_id = so.id
+               AND od.distributor_goods_id = #{distributorGoodsId}
+            )
+          AND so.order_status IN (40, 100)
+
+    </select>
+
+    <select id="pageReceiveOrderByGoodId" resultMap="BaseResultMap">
+        SELECT
+        so.id,
+        so.order_no,
+        so.batch_no,
+        so.buyer_eid,
+        so.buyer_ename,
+        so.seller_eid,
+        so.seller_ename,
+        so.seller_erp_code,
+        so.distributor_eid,
+        so.distributor_ename,
+        so.customer_erp_code,
+        so.total_amount,
+        so.cash_discount_amount,
+        so.ticket_discount_no,
+        so.ticket_discount_amount,
+        so.freight_amount,
+        so.return_amount,
+        so.return_cash_dicount_amount,
+        so.return_ticket_discount_amount,
+        so.payment_amount,
+        so.payment_type,
+        so.payment_method,
+        so.payment_status,
+        so.payment_time,
+        so.order_type,
+        so.order_status,
+        so.order_source,
+        so.order_note,
+        so.delivery_type,
+        so.delivery_company,
+        so.delivery_no,
+        so.contacter_id,
+        so.contacter_name,
+        so.province_manager_id,
+        so.province_manager_code,
+        so.create_user,
+        so.create_time,
+        so.audit_status,
+        so.audit_user,
+        so.audit_time,
+        so.audit_reject_reason,
+        so.erp_push_status,
+        so.erp_push_time,
+        so.erp_push_remark,
+        so.erp_order_no,
+        so.erp_delivery_no,
+        so.erp_receivable_no,
+        so.erp_receivable_status,
+        so.delivery_user,
+        so.delivery_time,
+        so.receive_user,
+        so.receive_time,
+        so.finish_time,
+        so.invoice_time,
+        so.invoice_status,
+        so.invoice_amount,
+        so.audit_modify_flag,
+        so.audit_modify_time,
+        so.return_amount,
+        so.return_cash_dicount_amount,
+        so.return_ticket_discount_amount,
+        so.customer_confirm_status,
+        so.customer_confirm_time
+        FROM
+        `order` so
+        WHERE EXISTS
+        (SELECT
+        1
+        FROM
+        order_detail od
+        WHERE od.order_id = so.id
+        <if test="pageRequest.type != null and pageRequest.type == 1">
+            AND od.goods_id = #{pageRequest.goodId}
+        </if>
+        <if test="pageRequest.type != null and pageRequest.type == 2">
+            AND od.distributor_goods_id = #{pageRequest.goodId}
+        </if>
+        )
+        AND so.order_status IN (40, 100)
+        <if test="pageRequest.buyerEidList != null and pageRequest.buyerEidList.size() > 0">
+            and so.buyer_eid in
+            <foreach item="item" index="index" collection="pageRequest.buyerEidList"
+                     open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+
+    </select>
+
+    <select id="selectReceiveOrderByGoodId" resultMap="BaseResultMap">
+        SELECT
+        so.id,
+        so.order_no,
+        so.batch_no,
+        so.buyer_eid,
+        so.buyer_ename,
+        so.seller_eid,
+        so.seller_ename,
+        so.seller_erp_code,
+        so.distributor_eid,
+        so.distributor_ename,
+        so.customer_erp_code,
+        so.total_amount,
+        so.cash_discount_amount,
+        so.ticket_discount_no,
+        so.ticket_discount_amount,
+        so.freight_amount,
+        so.return_amount,
+        so.return_cash_dicount_amount,
+        so.return_ticket_discount_amount,
+        so.payment_amount,
+        so.payment_type,
+        so.payment_method,
+        so.payment_status,
+        so.payment_time,
+        so.order_type,
+        so.order_status,
+        so.order_source,
+        so.order_note,
+        so.delivery_type,
+        so.delivery_company,
+        so.delivery_no,
+        so.contacter_id,
+        so.contacter_name,
+        so.province_manager_id,
+        so.province_manager_code,
+        so.create_user,
+        so.create_time,
+        so.audit_status,
+        so.audit_user,
+        so.audit_time,
+        so.audit_reject_reason,
+        so.erp_push_status,
+        so.erp_push_time,
+        so.erp_push_remark,
+        so.erp_order_no,
+        so.erp_delivery_no,
+        so.erp_receivable_no,
+        so.erp_receivable_status,
+        so.delivery_user,
+        so.delivery_time,
+        so.receive_user,
+        so.receive_time,
+        so.finish_time,
+        so.invoice_time,
+        so.invoice_status,
+        so.invoice_amount,
+        so.audit_modify_flag,
+        so.audit_modify_time,
+        so.return_amount,
+        so.return_cash_dicount_amount,
+        so.return_ticket_discount_amount,
+        so.customer_confirm_status,
+        so.customer_confirm_time
+        FROM
+        `order` so
+        WHERE EXISTS
+        (SELECT
+        1
+        FROM
+        order_detail od
+        WHERE od.order_id = so.id
+        AND od.goods_id = #{goodId}
+        )
+        AND so.order_status IN (40, 100)
+        <if test="buyerEidList != null and buyerEidList.size() > 0">
+            and so.buyer_eid in
+            <foreach item="item" index="index" collection="buyerEidList"
+                     open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+
+    </select>
+
+    <select id="getOrderB2BPaymentList" resultType="com.yiling.order.order.dto.OrderB2BPaymentDTO">
+        SELECT
+        o.order_no,
+        o.payment_status as repaymentStatus,
+        o.seller_ename,
+        o.seller_eid,
+        o.buyer_ename,
+        o.buyer_eid,
+        o.create_time,
+        o.payment_amount as payAmount ,
+        ( p.used_amount - p.return_amount ) AS stayPaymentAmount,
+        o.id,
+        p.id AS paymentId,
+        p.repayment_time as repaymentTime
+        FROM
+        payment_days_order p
+        INNER JOIN `order` o ON o.id = p.order_id
+        <where>
+            ( p.used_amount - p.return_amount ) > 0
+            AND o.order_type = 2
+            AND o.order_status = 40
+            AND o.payment_method = 2
+            <if test="request.buyerEid != null ">
+                AND o.buyer_eid = #{request.buyerEid}
+            </if>
+
+            <if test="request.condition != null and request.condition != '' ">
+                AND ( o.order_no LIKE concat('%',#{request.condition},'%') OR o.seller_ename LIKE concat('%',#{request.condition},'%') )
+            </if>
+
+            <if test="request.statusList != null and request.statusList.size() > 0">
+                AND o.payment_status in
+                <foreach item="item" index="index" collection="request.statusList"
+                         open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+
+            <if test="request.sellerEid != null and request.status != 0">
+                AND p.eid = #{request.sellerEid}
+            </if>
+
+            <choose>
+                <when test="request.status != null and request.status == 1">
+                    order by o.create_time DESC
+                </when>
+                <when test="request.status != null and request.status == 2">
+                    order by p.repayment_time DESC
+                </when>
+                <otherwise>
+                    order by o.create_time DESC
+                </otherwise>
+            </choose>
+
+        </where>
+
+    </select>
+
+    <select id="getTotalAmountByBuyerEid" resultType="java.math.BigDecimal">
+        SELECT
+        IFNULL(SUM(payment_amount - return_amount + return_platform_coupon_discount_amount + return_coupon_discount_amount),0)
+        FROM
+        `order`
+        WHERE
+        buyer_eid = #{buyerEid}
+        AND order_status <![CDATA[ >= ]]> 30
+    </select>
+
+    <select id="getTotalAmount" resultType="com.yiling.order.order.dto.OrderNumberDTO">
+        SELECT
+        sum( c.goods_amount - c.seller_return_amount ) AS totalAmount,
+        sum(
+        c.cash_discount_amount + c.ticket_discount_amount + c.coupon_discount_amount + c.platform_coupon_discount_amount -
+        c.seller_return_cash_discount_amount - c.seller_return_ticket_discount_amount - c.seller_platform_coupon_discount_amount -
+        c.seller_coupon_discount_amount
+        ) AS discountAmount
+        FROM
+
+        <choose>
+            <when test="request.startDeliveryTime != null and request.endDeliveryTime != null ">
+                (SELECT
+                od.id,
+                od.order_status,
+                od.payment_status,
+                od.audit_status,
+                od.customer_confirm_status,
+                od.buyer_eid,
+                od.order_source,
+                od.order_type,
+                od.buyer_province_code,
+                od.buyer_city_code,
+                od.buyer_region_code,
+                od.create_time
+                FROM
+                `order` od
+                INNER JOIN order_delivery d ON d.order_id = od.id
+                AND d.del_flag = 0
+                AND d.create_time <![CDATA[ <= ]]> #{request.endDeliveryTime} AND d.create_time <![CDATA[ >= ]]> #{request.startDeliveryTime}
+                group by od.id
+                ) o
+            </when>
+            <otherwise>
+                `order` o
+            </otherwise>
+        </choose>
+
+        INNER JOIN order_detail_change c ON o.id = c.order_id
+        AND o.order_status != - 10
+        AND o.payment_status = 2
+        AND o.audit_status = 3
+        AND o.customer_confirm_status = -40
+
+        <if test="request.orderSource != null and request.orderSource != 0 ">
+            AND o.order_source = #{request.orderSource}
+        </if>
+
+        <if test="request.orderType != null and request.orderType != 0 ">
+            AND o.order_type = #{request.orderType}
+        </if>
+
+        <if test="request.provinceCode != null and request.provinceCode != '' ">
+            AND o.buyer_province_code = #{request.provinceCode}
+        </if>
+
+        <if test="request.cityCode != null and request.cityCode != ''  ">
+            AND o.buyer_city_code = #{request.cityCode}
+        </if>
+
+        <if test="request.regionCode != null and request.regionCode != ''  ">
+            AND o.buyer_region_code = #{request.regionCode}
+        </if>
+
+        <if test="request.startCreateTime != null ">
+            AND o.create_time <![CDATA[ >= ]]> #{request.startCreateTime}
+        </if>
+
+        <if test="request.endCreateTime != null ">
+            AND o.create_time <![CDATA[ <= ]]> #{request.endCreateTime}
+        </if>
+
+    </select>
+
+    <select id="getOrderPaymentReport" resultType="com.yiling.order.order.dto.OrderExportReportDetailDTO">
+
+        SELECT
+        e.province_name,
+        sum( m.paymentAmount ) AS paymentAmount
+        FROM
+        (
+        SELECT
+        o.id,
+        o.buyer_eid,
+        o.seller_eid,
+        a.paymentAmount
+        FROM
+        `order` o
+        INNER JOIN (
+        SELECT
+        order_id,
+        sum( goods_amount - cash_discount_amount - platform_coupon_discount_amount - coupon_discount_amount - ticket_discount_amount -
+        seller_return_amount + seller_return_cash_discount_amount +seller_return_ticket_discount_amount + seller_platform_coupon_discount_amount
+        +seller_coupon_discount_amount ) AS paymentAmount
+        FROM
+        order_detail_change
+        WHERE
+        detail_id IN (
+        SELECT DISTINCT
+        id
+        FROM
+        order_detail
+        WHERE
+        goods_id IN (
+        SELECT
+        goods_id
+        FROM
+        report_goods_category_relation rg
+        WHERE
+        rg.category_id IN ( SELECT id FROM report_goods_category r
+        <where>
+            <if test="request.categoryList != null and request.categoryList.size() > 0">
+                r.category in
+                <foreach item="item" index="index" collection="request.categoryList"
+                         open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+        )
+        AND rg.start_time <![CDATA[ <= ]]> now( ) AND rg.end_time <![CDATA[ >= ]]> now( )
+        AND rg.del_flag = 0
+        )
+        )
+        GROUP BY
+        order_id
+        ) a ON o.id = a.order_id
+        <if test="request.startCreatTime != null">
+            AND o.create_time  <![CDATA[ >= ]]> #{request.startCreatTime}
+        </if>
+
+        <if test="request.endCreatTime != null">
+            AND o.create_time  <![CDATA[ <= ]]> #{request.endCreatTime}
+        </if>
+
+        <if test="request.orderType != null">
+            AND o.order_type = #{request.orderType}
+        </if>
+
+        <if test="request.paymentMethodList != null and request.paymentMethodList.size() > 0">
+            and o.payment_method in
+            <foreach item="item" index="index" collection="request.paymentMethodList"
+                     open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+
+        <if test="request.eidList != null and request.eidList.size() > 0">
+            and o.seller_eid in
+            <foreach item="item" index="index" collection="request.eidList"
+                     open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+
+        AND o.order_status <![CDATA[ >= ]]> 25
+        ) m
+        INNER JOIN enterprise e ON
+        <choose>
+            <when test="request.type =1">
+                m.buyer_eid = e.id
+            </when>
+            <otherwise>
+                m.seller_eid = e.id
+            </otherwise>
+        </choose>
+        AND e.del_flag = 0
+        GROUP BY
+        e.province_name
+
+    </select>
+
+    <select id="getOrderQuantityReport" resultType="com.yiling.order.order.dto.OrderExportReportDetailDTO">
+        SELECT
+        e.province_name,
+        sum( m.quantity ) AS quantity ,
+        m.goods_id as goodsId
+        FROM
+        (
+        SELECT
+        o.id,
+        o.buyer_eid,
+        o.seller_eid,
+        a.quantity ,
+        a.goods_id
+        FROM
+        `order` o
+        INNER JOIN (
+        SELECT order_id, goods_id,
+        sum(delivery_quantity - return_quantity) AS quantity
+        FROM
+        order_detail_change
+        WHERE
+        detail_id IN (
+        SELECT DISTINCT
+        id
+        FROM
+        order_detail
+        WHERE
+        goods_id IN (
+        SELECT
+        goods_id
+        FROM
+        report_goods_category_relation rg
+        WHERE
+        rg.category_id IN ( SELECT id FROM report_goods_category r
+        <where>
+            <if test="request.categoryList != null and request.categoryList.size() > 0">
+                r.category in
+                <foreach item="item" index="index" collection="request.categoryList"
+                         open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+        )
+        AND rg.start_time <![CDATA[ <= ]]> now( ) AND rg.end_time  <![CDATA[ >= ]]>  now( )
+        AND rg.del_flag = 0
+        )
+        )
+        GROUP BY goods_id ,order_id
+        ) a ON o.id = a.order_id
+        <if test="request.startCreatTime != null">
+            AND o.create_time  <![CDATA[ >= ]]> #{request.startCreatTime}
+        </if>
+
+        <if test="request.endCreatTime != null">
+            AND o.create_time  <![CDATA[ <= ]]> #{request.endCreatTime}
+        </if>
+
+        <if test="request.orderType != null">
+            AND o.order_type = #{request.orderType}
+        </if>
+
+        <if test="request.paymentMethodList != null and request.paymentMethodList.size() > 0">
+            and o.payment_method in
+            <foreach item="item" index="index" collection="request.paymentMethodList"
+                     open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+
+        <if test="request.eidList != null and request.eidList.size() > 0">
+            and o.seller_eid in
+            <foreach item="item" index="index" collection="request.eidList"
+                     open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+
+        AND o.order_status <![CDATA[ >= ]]> 25
+        ) m
+        INNER JOIN enterprise e ON
+        <choose>
+            <when test="request.type =1">
+                m.buyer_eid = e.id
+            </when>
+            <otherwise>
+                m.seller_eid = e.id
+            </otherwise>
+        </choose>
+        AND e.del_flag = 0
+        GROUP BY
+        e.province_name , m.goods_id
+
+    </select>
+
+    <select id="getOrderDeliveryReportCount" resultType="com.yiling.order.order.dto.OrderDeliveryReportCountDTO">
+        SELECT
+        DATE_FORMAT( f.create_time, '%Y-%m-%d' ) AS createTime,
+        f.buyer_eid AS buyerEid,
+        sum( f.delivery_quantity ) AS deliveryQuantity,
+        sum( f.delivery_quantity * t.goods_price ) AS deliveryAmount
+        FROM
+        (
+        SELECT
+        d.detail_id,
+        d.delivery_quantity,
+        d.create_time,
+        o.buyer_eid,
+        o.seller_ename
+        FROM
+        `order` o
+        INNER JOIN order_delivery d ON d.order_id = o.id
+
+        <if test="request.startDeliverTime != null">
+            AND d.create_time  <![CDATA[ >= ]]> #{request.startDeliverTime}
+        </if>
+
+        <if test="request.endDeliverTime != null">
+            AND d.create_time  <![CDATA[ <= ]]> #{request.endDeliverTime}
+        </if>
+
+        <if test="request.eidList != null and request.eidList.size() > 0">
+            and o.buyer_eid in
+            <foreach item="item" index="index" collection="request.eidList"
+                     open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        AND d.del_flag = 0 AND o.order_type = 1
+        ) f
+        INNER JOIN order_detail t ON t.id = f.detail_id
+        GROUP BY
+        createTime,
+        f.buyer_eid
+
+    </select>
+
+    <select id="verificationReceiveB2BOrder" resultType="java.lang.Long">
+        SELECT
+        o.id
+        FROM
+        `order` o, order_detail d ,order_detail_change c
+        WHERE o.id = d.order_id
+        AND c.detail_id = d.id
+        AND d.goods_type = 1
+        AND o.order_source = 3
+        AND o.order_status = 40
+        <if test="request.buyerEid != null and  request.buyerEid != 0 ">
+            AND o.buyer_eid = #{request.buyerEid}
+        </if>
+        <if test="request.createUser != null and  request.createUser != 0 ">
+            AND o.create_user = #{request.createUser}
+        </if>
+        AND (c.goods_quantity -c.seller_return_quantity-c.return_quantity) >0
+        GROUP BY
+        o.id
+    </select>
+
+    <select id="getAssistantReceiveFirstOrder" resultType="com.yiling.order.order.entity.OrderDO">
+        SELECT
+        o.id,
+        o.order_no,
+        o.batch_no,
+        o.buyer_eid,
+        o.buyer_ename,
+        o.seller_eid,
+        o.seller_ename,
+        o.seller_erp_code,
+        o.distributor_eid,
+        o.distributor_ename,
+        o.customer_erp_code,
+        o.total_amount,
+        o.cash_discount_amount,
+        o.ticket_discount_no,
+        o.ticket_discount_amount,
+        o.freight_amount,
+        o.return_amount,
+        o.return_cash_dicount_amount,
+        o.return_ticket_discount_amount,
+        o.payment_amount,
+        o.payment_type,
+        o.payment_method,
+        o.payment_status,
+        o.payment_time,
+        o.order_type,
+        o.order_status,
+        o.order_source,
+        o.order_note,
+        o.delivery_type,
+        o.delivery_company,
+        o.delivery_no,
+        o.contacter_id,
+        o.contacter_name,
+        o.province_manager_id,
+        o.province_manager_code,
+        o.create_user,
+        o.create_time,
+        o.audit_status,
+        o.audit_user,
+        o.audit_time,
+        o.audit_reject_reason,
+        o.erp_push_status,
+        o.erp_push_time,
+        o.erp_push_remark,
+        o.erp_order_no,
+        o.erp_delivery_no,
+        o.erp_receivable_no,
+        o.erp_receivable_status,
+        o.delivery_user,
+        o.delivery_time,
+        o.receive_user,
+        o.receive_time,
+        o.finish_time,
+        o.invoice_time,
+        o.invoice_status,
+        o.invoice_amount,
+        o.audit_modify_flag,
+        o.audit_modify_time,
+        o.return_amount,
+        o.return_cash_dicount_amount,
+        o.return_ticket_discount_amount,
+        o.customer_confirm_status,
+        o.customer_confirm_time
+        FROM
+        `order` o, order_detail d ,order_detail_change c
+        WHERE o.id = d.order_id
+        AND c.detail_id = d.id
+        AND d.goods_type = 1
+        AND o.order_source = 4
+        AND o.order_status = 40
+        <if test="request.buyerEid != null and  request.buyerEid != 0 ">
+            AND o.buyer_eid = #{request.buyerEid}
+        </if>
+        <if test="request.createUser != null and  request.createUser != 0 ">
+            AND o.create_user = #{request.createUser}
+        </if>
+        AND (c.goods_quantity -c.seller_return_quantity-c.return_quantity) >0
+        ORDER BY o.id asc limit 1
+    </select>
+
+    <select id="getMemberOrderAllDiscountAmount" resultType="java.math.BigDecimal">
+        SELECT
+        sum( c.platform_coupon_discount_amount + c.coupon_discount_amount - c.seller_platform_coupon_discount_amount - c.seller_coupon_discount_amount
+        )
+        FROM
+        order_detail_change c
+        WHERE
+        c.order_id IN ( SELECT o.id FROM `order` o ,
+        order_extend e
+        WHERE e.order_id = o.id AND o.order_status IN ( 30, 40 ) AND order_type = 2 AND e.vip_flag = 2
+        <if test="request.startTime != null">
+            AND o.create_time  <![CDATA[ >= ]]> #{request.startTime}
+        </if>
+
+        <if test="request.endTime != null">
+            AND o.create_time  <![CDATA[ <= ]]> #{request.endTime}
+        </if>
+
+        <if test="request.buyerEid != null and request.buyerEid > 0">
+            AND o.buyer_eid = #{request.buyerEid}
+        </if>
+        )
+
+    </select>
+
+    <select id="getMemberOrderDiscountInfo" resultType="com.yiling.order.order.dto.OrderMemberDiscountDTO">
+        SELECT
+        o.id,
+        o.create_time,
+        o.seller_eid ,
+        o.seller_ename,
+        sum( c.coupon_discount_amount + c.platform_coupon_discount_amount - c.seller_platform_coupon_discount_amount - c.seller_coupon_discount_amount
+        ) AS discountAmount,
+        sum( c.goods_quantity - c.seller_return_quantity ) AS goodsQuantity
+        FROM
+        order_detail_change c ,`order` o , order_extend e
+        WHERE o.id = c.order_id AND o.order_status IN ( 30, 40 ) AND order_type = 2 AND o.id = e.order_id AND e.vip_flag = 2
+        <if test="request.startTime != null">
+            AND o.create_time  <![CDATA[ >= ]]> #{request.startTime}
+        </if>
+
+        <if test="request.endTime != null">
+            AND o.create_time  <![CDATA[ <= ]]> #{request.endTime}
+        </if>
+
+        <if test="request.buyerEid != null and request.buyerEid > 0">
+            AND o.buyer_eid = #{request.buyerEid}
+        </if>
+        GROUP BY
+        o.id,
+        o.create_time,
+        o.seller_eid,
+        o.seller_ename
+        HAVING
+        discountAmount > 0
+        ORDER BY
+        o.create_time DESC
+
+    </select>
+
+    <select id="getDeliveryFiveDayTips" resultType="java.lang.Long">
+        SELECT
+        t.id
+        FROM
+        order_delivery d,
+        order_detail t,
+        `order` o
+        WHERE
+        t.id = d.detail_id
+        AND o.id = t.order_id
+        AND d.del_flag = 0
+        AND o.order_type = 1
+        AND d.update_time >= date_format( DATE_SUB(now(),INTERVAL 5 DAY), '%Y-%m-%d' )
+        <if test="goodsIdList != null and goodsIdList.size() > 0">
+            and t.distributor_goods_id IN
+            <foreach item="item" index="index" collection="goodsIdList"
+                     open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+    </select>
+
+    <select id="countReceiveOrder" resultType="java.lang.Long">
+        SELECT
+        o.id
+        FROM
+        `order` o
+        WHERE
+        o.order_status =40
+        <choose>
+            <when test="date != null and date != '' ">
+                AND o.create_time  <![CDATA[ >= ]]> #{date}
+            </when>
+            <otherwise>
+                AND o.create_time <![CDATA[ <= ]]> now()
+            </otherwise>
+        </choose>
+        <if test="orderTypeList != null and orderTypeList.size() > 0">
+            and o.order_type IN
+            <foreach item="item" index="index" collection="orderTypeList"
+                     open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+    </select>
+
+    <select id="getOrderEnterprisePage" resultType="com.yiling.order.order.dto.OrderEnterpriseDTO">
+        SELECT
+        o.id,
+        o.order_no,
+        o.payment_method,
+        o.create_time,
+        o.payment_status,
+        o.order_status,
+        o.order_source,
+        o.buyer_eid,
+        o.buyer_ename,
+        e.buyer_city_name,
+        e.buyer_province_name,
+        e.buyer_region_name,
+        o.seller_eid,
+        o.seller_ename,
+        e.seller_province_name,
+        e.seller_city_name,
+        e.seller_region_name
+        FROM
+        `order` o
+        INNER JOIN order_extend e ON e.order_id = o.id
+        AND o.audit_status = 3 AND o.customer_confirm_status = -40
+        <if test="request.orderNo != null and request.orderNo != '' ">
+            AND o.order_no = #{request.orderNo}
+        </if>
+
+        <if test="request.orderStatus != null and request.orderStatus != 0 ">
+            AND o.order_status = #{request.orderStatus}
+        </if>
+        <if test="request.paymentStatus != null and request.paymentStatus != 0  ">
+            AND o.payment_status = #{request.paymentStatus}
+        </if>
+        <if test="request.startCreateTime != null">
+            AND o.create_time  <![CDATA[ >= ]]> #{request.startCreateTime}
+        </if>
+
+        <if test="request.endCreateTime != null">
+            AND o.create_time  <![CDATA[ <= ]]> #{request.endCreateTime}
+        </if>
+        <if test="request.paymentMethod != null and request.paymentMethod != 0  ">
+            AND o.payment_method = #{request.paymentMethod}
+        </if>
+        <if test="request.orderType != null and request.orderType != 0  ">
+            AND o.order_type = #{request.orderType}
+        </if>
+        <if test="request.orderSource != null and request.orderSource != 0  ">
+            AND o.order_source = #{request.orderSource}
+        </if>
+
+        <if test="request.contacterIdList != null and request.contacterIdList.size() > 0">
+            AND o.contacter_id IN
+            <foreach item="item" index="index" collection="request.contacterIdList"
+                     open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <choose>
+            <when test="request.type != null and request.type == 1  ">
+
+                <if test="request.name != null and request.name != ''  ">
+                    AND o.seller_ename like concat('%',#{request.name},'%')
+                </if>
+
+                <if test="request.provinceCode != null and request.provinceCode != ''  ">
+                    AND e.seller_province_code = #{request.provinceCode}
+                </if>
+
+                <if test="request.cityCode != null and request.cityCode != ''  ">
+                    AND e.seller_city_code = #{request.cityCode}
+                </if>
+
+                <if test="request.regionCode != null and request.regionCode != ''  ">
+                    AND e.seller_region_code = #{request.regionCode}
+                </if>
+
+                <if test="request.eidList != null and request.eidList.size() > 0">
+                    AND o.seller_eid IN
+                    <foreach item="item" index="index" collection="request.eidList"
+                             open="(" separator="," close=")">
+                        #{item}
+                    </foreach>
+                </if>
+            </when>
+
+            <otherwise>
+                <if test="request.name != null and request.name != ''  ">
+                    AND o.buyer_ename like concat('%',#{request.name},'%')
+                </if>
+
+                <if test="request.provinceCode != null and request.provinceCode != ''  ">
+                    AND e.buyer_province_code = #{request.provinceCode}
+                </if>
+
+                <if test="request.cityCode != null and request.cityCode != ''  ">
+                    AND e.buyer_city_code = #{request.cityCode}
+                </if>
+
+                <if test="request.regionCode != null and request.regionCode != ''  ">
+                    AND e.buyer_region_code = #{request.regionCode}
+                </if>
+
+                <if test="request.eidList != null and request.eidList.size() > 0">
+                    AND o.buyer_eid IN
+                    <foreach item="item" index="index" collection="request.eidList"
+                             open="(" separator="," close=")">
+                        #{item}
+                    </foreach>
+                </if>
+            </otherwise>
+        </choose>
+
+    </select>
+
+    <select id="getB2BAdminNumber" resultType="java.lang.Long">
+        SELECT
+        count( * )
+        FROM
+        `order`
+        WHERE
+        order_type = 2
+        AND customer_confirm_status = - 40
+        AND audit_status = 3
+        <if test="request.eidList != null and request.eidList.size() > 0">
+            AND seller_eid  IN
+            <foreach item="item" index="index" collection="request.eidList"
+                     open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+
+        <if test="request.orderNo != null and request.orderNo != '' ">
+            AND order_no = #{request.orderNo}
+        </if>
+
+        <if test="request.paymentStatus != null and request.paymentStatus != 0  ">
+            AND payment_status = #{request.paymentStatus}
+        </if>
+        <if test="request.startCreateTime != null">
+            AND create_time  <![CDATA[ >= ]]> #{request.startCreateTime}
+        </if>
+
+        <if test="request.endCreateTime != null">
+            AND create_time  <![CDATA[ <= ]]> #{request.endCreateTime}
+        </if>
+        <if test="request.paymentMethod != null and request.paymentMethod != 0  ">
+            AND payment_method = #{request.paymentMethod}
+        </if>
+        <if test="request.name != null and request.name != ''  ">
+            AND buyer_ename like concat('%',#{request.name},'%')
+        </if>
+
+        <if test="request.provinceCode != null and request.provinceCode != ''  ">
+            AND buyer_province_code = #{request.provinceCode}
+        </if>
+
+        <if test="request.cityCode != null and request.cityCode != ''  ">
+            AND buyer_city_code = #{request.cityCode}
+        </if>
+
+        <if test="request.regionCode != null and request.regionCode != ''  ">
+            AND buyer_region_code = #{request.regionCode}
+        </if>
+        <choose>
+            <when test="request.stateType != null and request.stateType == 1  ">
+                AND order_status in (20,25)
+            </when>
+            <when test="request.stateType != null and request.stateType == 2  ">
+                AND order_status = 30
+            </when>
+            <when test="request.stateType != null and request.stateType == 4  ">
+                AND order_status in (40,100)
+            </when>
+            <when test="request.stateType != null and request.stateType == 5  ">
+                AND order_status = -10
+            </when>
+            <when test="request.stateType != null and request.stateType == 3  ">
+                AND order_status != -10
+                AND payment_status = 1
+                AND payment_method = 2
+            </when>
+        </choose>
+    </select>
+
+    <select id="getCountOrderTypeQuantity" resultType="com.yiling.order.order.dto.OrderTypeGoodsQuantityDTO">
+        SELECT
+	        sum( d.goods_quantity ) as goodsQuantity ,
+	        d.distributor_goods_id,
+	        o.order_type
+        FROM
+	        `order` o
+	        INNER JOIN order_detail d ON o.id = d.order_id
+	        AND o.audit_status = 3
+	        AND o.customer_confirm_status =- 40
+	        AND o.order_status !=- 10
+            <if test="request.startCreateTime != null">
+                AND o.create_time  <![CDATA[ >= ]]> #{request.startCreateTime}
+            </if>
+
+            <if test="request.endCreateTime != null">
+                AND o.create_time  <![CDATA[ <= ]]> #{request.endCreateTime}
+            </if>
+        GROUP BY
+	        d.distributor_goods_id,
+	        o.order_type
+
+    </select>
+
+
+</mapper>

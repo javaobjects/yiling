@@ -1,0 +1,24 @@
+@import "~@/common/styles/mixin.scss";
+
+.app-container {
+  position: relative;
+  .down-box {
+    width: 100%;
+    .btn {
+      float: left;
+    }
+  }
+  .button-display{
+    display: inline-block;
+    margin-left: 15px;
+  }
+  .pop-up{
+    margin: 20px;
+    .el-radio-group {
+      line-height: 30px;
+    }
+  }
+  .dialogTc{
+    padding-top: 20px;
+  }
+}

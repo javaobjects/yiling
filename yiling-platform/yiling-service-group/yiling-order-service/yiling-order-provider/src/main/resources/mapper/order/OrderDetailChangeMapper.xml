@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.order.order.dao.OrderDetailChangeMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.order.order.entity.OrderDetailChangeDO">
+        <result column="id" property="id"/>
+        <result column="order_id" property="orderId"/>
+        <result column="detail_id" property="detailId"/>
+        <result column="standard_id" property="standardId"/>
+        <result column="goods_sku_id" property="goodsSkuId"/>
+        <result column="goods_id" property="goodsId"/>
+        <result column="goods_erp_code" property="goodsErpCode"/>
+        <result column="goods_name" property="goodsName"/>
+        <result column="goods_price" property="goodsPrice"/>
+        <result column="goods_quantity" property="goodsQuantity"/>
+        <result column="goods_amount" property="goodsAmount"/>
+        <result column="cash_discount_amount" property="cashDiscountAmount"/>
+        <result column="ticket_discount_amount" property="ticketDiscountAmount"/>
+        <result column="platform_coupon_discount_amount" property="platformCouponDiscountAmount"/>
+        <result column="coupon_discount_amount" property="couponDiscountAmount"/>
+        <result column="presale_discount_amount" property="presaleDiscountAmount"/>
+        <result column="platform_payment_discount_amount" property="platformPaymentDiscountAmount"/>
+        <result column="shop_payment_discount_amount" property="shopPaymentDiscountAmount"/>
+        <result column="delivery_quantity" property="deliveryQuantity"/>
+        <result column="delivery_amount" property="deliveryAmount"/>
+        <result column="delivery_cash_discount_amount" property="deliveryCashDiscountAmount"/>
+        <result column="delivery_ticket_discount_amount" property="deliveryTicketDiscountAmount"/>
+        <result column="delivery_platform_coupon_discount_amount" property="deliveryPlatformCouponDiscountAmount"/>
+        <result column="delivery_coupon_discount_amount" property="deliveryCouponDiscountAmount"/>
+        <result column="delivery_presale_discount_amount" property="deliveryPresaleDiscountAmount"/>
+        <result column="delivery_platform_payment_discount_amount" property="deliveryPlatformPaymentDiscountAmount"/>
+        <result column="delivery_shop_payment_discount_amount" property="deliveryShopPaymentDiscountAmount"/>
+        <result column="seller_return_quantity" property="sellerReturnQuantity"/>
+        <result column="seller_return_amount" property="sellerReturnAmount"/>
+        <result column="seller_return_cash_discount_amount" property="sellerReturnCashDiscountAmount"/>
+        <result column="seller_return_ticket_discount_amount" property="sellerReturnTicketDiscountAmount"/>
+        <result column="seller_platform_coupon_discount_amount" property="sellerPlatformCouponDiscountAmount"/>
+        <result column="seller_coupon_discount_amount" property="sellerCouponDiscountAmount"/>
+        <result column="seller_presale_discount_amount" property="sellerPresaleDiscountAmount"/>
+        <result column="seller_platform_payment_discount_amount" property="sellerPlatformPaymentDiscountAmount"/>
+        <result column="seller_shop_payment_discount_amount" property="sellerShopPaymentDiscountAmount"/>
+        <result column="receive_quantity" property="receiveQuantity"/>
+        <result column="receive_amount" property="receiveAmount"/>
+        <result column="receive_cash_discount_amount" property="receiveCashDiscountAmount"/>
+        <result column="receive_ticket_discount_amount" property="receiveTicketDiscountAmount"/>
+        <result column="receive_coupon_discount_amount" property="receiveCouponDiscountAmount"/>
+        <result column="receive_platform_coupon_discount_amount" property="receivePlatformCouponDiscountAmount"/>
+        <result column="receive_presale_discount_amount" property="receivePresaleDiscountAmount"/>
+        <result column="receive_platform_payment_discount_amount" property="receivePlatformPaymentDiscountAmount"/>
+        <result column="receive_shop_payment_discount_amount" property="receiveShopPaymentDiscountAmount"/>
+        <result column="return_quantity" property="returnQuantity"/>
+        <result column="return_amount" property="returnAmount"/>
+        <result column="return_cash_discount_amount" property="returnCashDiscountAmount"/>
+        <result column="return_ticket_discount_amount" property="returnTicketDiscountAmount"/>
+        <result column="return_platform_coupon_discount_amount" property="returnPlatformCouponDiscountAmount"/>
+        <result column="return_coupon_discount_amount" property="returnCouponDiscountAmount"/>
+        <result column="return_presale_discount_amount" property="returnPresaleDiscountAmount"/>
+        <result column="return_platform_payment_discount_amount" property="returnPlatformPaymentDiscountAmount"/>
+        <result column="return_shop_payment_discount_amount" property="returnShopPaymentDiscountAmount"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,
+        order_id, detail_id, standard_id, goods_sku_id,goods_id, goods_erp_code, goods_name, goods_price, goods_quantity, goods_amount, cash_discount_amount, ticket_discount_amount,
+        platform_coupon_discount_amount,coupon_discount_amount,presale_discount_amount,delivery_quantity, delivery_amount, delivery_cash_discount_amount, delivery_ticket_discount_amount,
+        delivery_platform_coupon_discount_amount,delivery_coupon_discount_amount,delivery_presale_discount_amount,seller_return_quantity, seller_return_amount, seller_return_cash_discount_amount, seller_return_ticket_discount_amount,
+        seller_platform_coupon_discount_amount,seller_coupon_discount_amount,seller_presale_discount_amount,receive_quantity, receive_amount, receive_cash_discount_amount, receive_ticket_discount_amount,
+        receive_coupon_discount_amount,receive_platform_coupon_discount_amount,receive_presale_discount_amount,return_quantity, return_amount, return_cash_discount_amount, return_ticket_discount_amount,
+        return_platform_coupon_discount_amount,return_coupon_discount_amount,return_presale_discount_amount,platform_payment_discount_amount,shop_payment_discount_amount,delivery_platform_payment_discount_amount,
+        delivery_shop_payment_discount_amount,seller_platform_payment_discount_amount,seller_shop_payment_discount_amount,receive_platform_payment_discount_amount,receive_shop_payment_discount_amount,
+        return_platform_payment_discount_amount,return_shop_payment_discount_amount
+
+    </sql>
+
+</mapper>

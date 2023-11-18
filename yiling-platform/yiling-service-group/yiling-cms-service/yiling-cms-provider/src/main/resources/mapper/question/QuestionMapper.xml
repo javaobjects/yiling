@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.cms.question.dao.QuestionMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.cms.question.entity.QuestionDO">
+    <result column="id" property="id" />
+        <result column="title" property="title" />
+        <result column="description" property="description" />
+        <result column="category_id" property="categoryId" />
+        <result column="view_count" property="viewCount" />
+        <result column="from_user_name" property="fromUserName" />
+        <result column="from_user_id" property="fromUserId" />
+        <result column="from_user_hospital_name" property="fromUserHospitalName" />
+        <result column="to_user_name" property="toUserName" />
+        <result column="to_user_id" property="toUserId" />
+        <result column="reply_flag" property="replyFlag" />
+        <result column="last_reply_time" property="lastReplyTime" />
+        <result column="type" property="type" />
+        <result column="del_flag" property="delFlag" />
+        <result column="create_time" property="createTime" />
+        <result column="create_user" property="createUser" />
+        <result column="update_time" property="updateTime" />
+        <result column="update_user" property="updateUser" />
+        <result column="remark" property="remark" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,
+        title,description, category_id, view_count, from_user_name, from_user_id, from_user_hospital_name,to_user_name, to_user_id, reply_flag, last_reply_time, type, del_flag, create_time, create_user, update_time, update_user, remark
+    </sql>
+
+</mapper>

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.dataflow.relation.dao.FlowGoodsRelationEditTaskMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.dataflow.relation.entity.FlowGoodsRelationEditTaskDO">
+        <result column="id" property="id" />
+        <result column="business_type" property="businessType" />
+        <result column="flow_goods_relation_id" property="flowGoodsRelationId" />
+        <result column="eid" property="eid" />
+        <result column="flow_sale_ids" property="flowSaleIds" />
+        <result column="sync_status" property="syncStatus" />
+        <result column="sync_msg" property="syncMsg" />
+        <result column="del_flag" property="delFlag" />
+        <result column="create_user" property="createUser" />
+        <result column="create_time" property="createTime" />
+        <result column="update_user" property="updateUser" />
+        <result column="update_time" property="updateTime" />
+        <result column="remark" property="remark" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Table_Name">
+        `flow_goods_relation_edit_task`
+    </sql>
+
+    <sql id="Base_Column_List">
+        id,
+        business_type, flow_goods_relation_id, eid, flow_sale_ids, sync_status, sync_msg,
+        del_flag, create_user, create_time, update_user, update_time, remark
+    </sql>
+
+    <select id="page" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM <include refid="Base_Table_Name"/>
+        WHERE del_flag = 0
+        <if test="request.eid != null">
+            AND eid = #{request.eid}
+        </if>
+        <if test="request.businessType != null and request.businessType != ''">
+            AND business_type = #{request.businessType}
+        </if>
+        <if test="request.flowGoodsRelationId != null">
+            AND flow_goods_relation_id = #{request.flowGoodsRelationId}
+        </if>
+        <if test="request.syncStatus != null">
+            AND sync_status = #{request.syncStatus}
+        </if>
+        order by id  desc
+    </select>
+
+    <select id="getCountByEid" resultType="java.lang.Long">
+        SELECT COUNT(*)
+        FROM <include refid="Base_Table_Name"/>
+        WHERE del_flag = 0
+        AND flow_goods_relation_id = #{flowGoodsRelationId}
+        AND sync_status <![CDATA[ <= ]]> #{syncStatus}
+    </select>
+
+    <update id="updateSyncStatusByIdList">
+        UPDATE <include refid="Base_Table_Name"/>
+        SET sync_status = #{syncStatus}, update_time = NOW(), update_user = 0
+        WHERE  del_flag = 0
+        AND id in
+        <foreach item="item" index="index" collection="idList" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+
+</mapper>

@@ -1,0 +1,61 @@
+@import "~@/common/styles/mixin.scss";
+
+.app-container {
+  .common-box {
+    .el-input {
+      width: 220px;
+    }
+    .search-box {
+      position: relative;
+      .box {
+        .title {
+          font-size: $font-size-large;
+          line-height: $font-size-large-lh;
+          color: $font-important-color;
+          margin-bottom: 8px;
+        }
+      }
+
+      .el-select {
+        width: 220px;
+      }
+
+      .bottom-btn {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+      }
+    }
+  }
+  .explain-view{
+    height: 52px;
+    background: #FAFAFA;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 400;
+    color: rgba(0, 0, 0, 0.65);
+    line-height: 52px;
+    padding: 0 16px;
+  }
+
+  // 导出、导入按钮
+  .down-box {
+    width: 100%;
+    margin-top: 24px;
+  }
+  .return-content {
+    .el-input {
+      width: 180px;
+    }
+    .el-select {
+      width: 260px;
+    }
+    .el-textarea {
+      padding-right: 40px;
+    }
+    .el-icon-question {
+      font-size: 18px;
+    }
+  }
+}
+

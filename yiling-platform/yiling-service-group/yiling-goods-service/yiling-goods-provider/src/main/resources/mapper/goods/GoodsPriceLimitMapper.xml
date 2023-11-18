@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.goods.medicine.dao.GoodsPriceLimitMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.goods.medicine.entity.GoodsPriceLimitDO">
+        <result column="id" property="id"/>
+        <result column="goods_id" property="goodsId"/>
+        <result column="customer_type" property="customerType"/>
+        <result column="province_code" property="provinceCode"/>
+        <result column="city_code" property="cityCode"/>
+        <result column="region_code" property="regionCode"/>
+        <result column="price" property="price"/>
+        <result column="del_flag" property="delFlag"/>
+        <result column="create_user" property="createUser"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_user" property="updateUser"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="remark" property="remark"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,
+        goods_id, customer_type, province_code, city_code, price, region_code, del_flag, create_user, create_time, update_user, update_time, remark
+    </sql>
+
+    <select id="pageList" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from goods_price_limit
+        <where>
+            del_flag=0
+            <if test="request.goodsId != null">
+                AND goods_id = #{request.goodsId}
+            </if>
+            <if test="request.customerType != null and request.customerType !=0">
+                AND customer_type = #{request.customerType}
+            </if>
+            <if test="request.provinceCode != null and request.provinceCode !=''">
+                AND province_code = #{request.provinceCode}
+            </if>
+            <if test="request.cityCode != null and request.cityCode !=''">
+                AND city_code = #{request.cityCode}
+            </if>
+            <if test="request.regionCode != null and request.regionCode !=''">
+                AND region_code = #{request.regionCode}
+            </if>
+        </where>
+    </select>
+
+</mapper>

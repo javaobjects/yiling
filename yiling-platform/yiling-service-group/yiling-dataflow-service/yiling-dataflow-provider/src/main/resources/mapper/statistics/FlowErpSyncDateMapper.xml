@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.dataflow.statistics.dao.FlowErpSyncDateMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.dataflow.statistics.entity.FlowErpSyncDateDO">
+    <result column="id" property="id" />
+        <result column="eid" property="eid" />
+        <result column="ename" property="ename" />
+        <result column="task_time" property="taskTime" />
+        <result column="sync_flag" property="syncFlag" />
+        <result column="create_time" property="createTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, eid, ename, task_time, sync_flag, create_time
+    </sql>
+
+    <delete id="deleteByEidAndTaskTime">
+        delete from flow_erp_sync_date
+        where eid = #{eid} AND task_time <![CDATA[ = ]]> #{taskTime}
+    </delete>
+
+    <delete id="deleteByEidListAndTaskTime">
+        delete from flow_erp_sync_date
+        WHERE task_time <![CDATA[ = ]]> #{taskTime}
+        AND eid IN
+        <foreach collection="eidList" item="eid" open="(" close=")" separator=",">
+            #{eid}
+        </foreach>
+    </delete>
+
+    <select id="getMaxTaskTimeByEid" resultType="java.util.Date">
+        SELECT MAX(task_time) AS task_time
+        FROM flow_erp_sync_date
+        WHERE sync_flag = 1 AND eid = #{eid}
+    </select>
+
+</mapper>

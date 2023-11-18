@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.dataflow.statistics.dao.FlowAnalyseDaySaleQuantityMapper">
+
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id
+        ,
+        eid, specification_id, date_time, stock_quantity, del_flag, create_user, create_time, update_user, update_time,
+        remark
+    </sql>
+
+    <delete id="deleteDaySaleQuantity">
+        delete
+        from flow_analyse_day_sale_quantity
+    </delete>
+
+    <select id="selectAvgSaleByEidsAndSpecIds"
+            resultType="com.yiling.dataflow.statistics.bo.DaySaleStatisticsBO">
+        SELECT
+        s.crm_enterprise_id as crmEnterpriseId,
+        s.specification_id as specId,
+        sum(s.so_quantity)/#{day} as quantity
+        FROM
+        flow_analyse_day_sale_quantity s
+        WHERE
+        s.del_flag = 0
+        and specification_id!=0
+        AND specification_id IN
+        <foreach collection="specIds" item="specId" open="(" close=")" separator=",">
+            #{specId}
+        </foreach>
+        AND crm_enterprise_id IN
+        <foreach collection="cEIds" item="ceid" open="(" close=")" separator=",">
+            #{ceid}
+        </foreach>
+        AND date_time >= date_add(DATE_FORMAT(now(), '%Y-%m-%d'), interval -#{day} day)
+        GROUP BY
+        crm_enterprise_id,
+        specification_id
+    </select>
+
+    <select id="selectDaySaleQuantityByEidsAndSpecIds"
+            resultType="com.yiling.dataflow.statistics.bo.DaySaleStatisticsBO">
+        SELECT
+        s.eid as eid,
+        s.crm_enterprise_id as crmEnterpriseId,
+        s.specification_id as specId,
+        sum(s.so_quantity) as quantity,
+        DATE_FORMAT(s.so_time, '%Y-%m-%d') as dateTime
+        FROM
+        flow_sale s
+        WHERE
+        s.del_flag = 0
+        and specification_id!=0
+        AND specification_id IN
+        <foreach collection="specIds" item="specId" open="(" close=")" separator=",">
+            #{specId}
+        </foreach>
+        AND crm_enterprise_id IN
+        <foreach collection="eids" item="ceid" open="(" close=")" separator=",">
+            #{ceid}
+        </foreach>
+        AND so_time >= date_add(DATE_FORMAT(now(), '%Y-%m-%d'), interval -90 day)
+        <![CDATA[ and so_time < DATE_FORMAT(now(), '%Y-%m-%d') ]]>
+        GROUP BY
+        eid,
+        crm_enterprise_id,
+        specification_id,
+        DATE_FORMAT(s.so_time, '%Y-%m-%d')
+    </select>
+    <select id="getPeriodDaySaleQuantity"
+            resultType="com.yiling.dataflow.statistics.bo.PeriodDaySaleQuantityBO">
+        SELECT
+        DATE_FORMAT(flow_sale.date_time,'%Y-%m-%d') as dateTime ,flow_sale.specification_id as specificationId
+        ,SUM(flow_sale.so_quantity ) as soQuantity
+        FROM
+        flow_analyse_day_sale_quantity flow_sale
+        WHERE
+        flow_sale.specification_id = #{request.specificationId}
+        <if test="crmIds !=null and crmIds.size>0">
+            and flow_sale.crm_enterprise_id in
+            <foreach item="crmId" collection="crmIds" separator="," open="(" close=")" index="">
+                #{crmId}
+            </foreach>
+        </if>
+        and flow_sale.date_time&gt;= date_add(DATE_FORMAT(now(), '%Y-%m-%d'), interval -#{request.referenceTime} day)
+        and flow_sale.date_time&lt;= date_add(DATE_FORMAT(now(), '%Y-%m-%d'), interval -1 day)
+        GROUP BY DATE_FORMAT(flow_sale.date_time,'%Y-%m-%d'), flow_sale.specification_id
+    </select>
+    <select id="getAvg90SaleQuantity" resultType="Long">
+        SELECT if(a.so_quantity is null,0,a.so_quantity) as so_quantity
+        from
+        (select floor(SUM(flow_sale.so_quantity )/90) as so_quantity
+        FROM
+        flow_analyse_day_sale_quantity flow_sale
+        WHERE
+        flow_sale.specification_id = #{request.specificationId}
+        <if test="crmIds !=null and crmIds.size>0">
+            and flow_sale.crm_enterprise_id in
+            <foreach item="crmId" collection="crmIds" separator="," open="(" close=")" index="">
+                #{crmId}
+            </foreach>
+        </if>
+        and flow_sale.date_time&gt;= date_add(DATE_FORMAT(now(), '%Y-%m-%d'), interval -90 day)
+        and flow_sale.date_time&lt;= date_add(DATE_FORMAT(now(), '%Y-%m-%d'), interval -1 day)
+
+        ) a
+    </select>
+    <select id="getSaleData" resultType="com.yiling.dataflow.statistics.dto.StockForecastSaleIconDTO">
+        select DATE_FORMAT(b.date_time,'%Y-%m-%d') as pointTime,
+        800 as redValue,
+        if(a.soQuantity is null,0,a.soQuantity) as blueValue
+        from
+        flow_analyse_day b
+        left join (SELECT
+        DATE_FORMAT(flow_sale.date_time,'%Y-%m-%d') as dateTime ,flow_sale.specification_id as specificationId
+        ,SUM(flow_sale.so_quantity ) as soQuantity
+        FROM
+        flow_analyse_day_sale_quantity flow_sale
+
+        WHERE
+        flow_sale.specification_id = #{request.specificationId}
+        <if test="crmIds !=null and crmIds.size>0">
+            and flow_sale.crm_enterprise_id in
+            <foreach item="crmId" collection="crmIds" separator="," open="(" close=")" index="">
+                #{crmId}
+            </foreach>
+        </if>
+        and flow_sale.date_time&gt;= date_add(DATE_FORMAT(now(), '%Y-%m-%d'), interval -#{request.referenceTime} day)
+        and flow_sale.date_time&lt;= date_add(DATE_FORMAT(now(), '%Y-%m-%d'), interval -1 day)
+        GROUP BY DATE_FORMAT(flow_sale.date_time,'%Y-%m-%d'), flow_sale.specification_id
+        ) a on
+        a.dateTime=b.date_time
+        WHERE
+        b.date_time&gt;= date_add(DATE_FORMAT(now(), '%Y-%m-%d'), interval - #{request.referenceTime} day)
+        and b.date_time&lt;= date_add(DATE_FORMAT(now(), '%Y-%m-%d'), interval -1 day)
+        order by b.date_time asc
+    </select>
+
+    <select id="getStockForastDay" resultType="com.yiling.dataflow.statistics.bo.PeriodDaySaleQuantityBO">
+        select DATE_FORMAT(b.date_time,'%Y-%m-%d') as dateTime,
+        #{specificationId} as specificationId,
+        0 as soQuantity
+        from flow_analyse_day b
+        WHERE
+        b.date_time&gt;= date_add(DATE_FORMAT(now(), '%Y-%m-%d'), interval -#{referenceTime} day)
+        and b.date_time&lt;= date_add(DATE_FORMAT(now(), '%Y-%m-%d'), interval -1 day)
+    </select>
+</mapper>

@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.dataflow.report.dao.ReportFlowSaleMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.dataflow.report.entity.ReportFlowSaleDO">
+        <result column="id" property="id"/>
+        <result column="eid" property="eid"/>
+        <result column="ename" property="ename"/>
+        <result column="goods_category" property="goodsCategory"/>
+        <result column="so_time" property="soTime"/>
+        <result column="so_quantity" property="soQuantity"/>
+        <result column="yl_sale_price" property="ylSalePrice"/>
+        <result column="total_amount" property="totalAmount"/>
+        <result column="terminal_amount" property="terminalAmount"/>
+        <result column="terminal_quantity" property="terminalQuantity"/>
+        <result column="del_flag" property="delFlag"/>
+        <result column="create_user" property="createUser"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_user" property="updateUser"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="remark" property="remark"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,
+        eid, ename, goods_category, so_time, so_quantity, yl_sale_price, total_amount,terminal_amount,terminal_quantity, del_flag, create_user, create_time, update_user, update_time, remark
+    </sql>
+
+    <delete id="deleteReportFlowSale">
+        delete from report_flow_sale where so_time>=#{time}
+    </delete>
+
+    <select id="statisticsLhSaleAmount" resultType="com.yiling.dataflow.report.bo.ReportFlowBO">
+        select t.so_time as `time`,SUM(t.total_amount) as `number` from report_flow_sale t
+        where t.del_flag=0
+        <if test="request.startTime != null">
+            AND so_time <![CDATA[ >= ]]> #{request.startTime}
+        </if>
+        <if test="request.endTime != null">
+            AND so_time <![CDATA[ <= ]]> #{request.endTime}
+        </if>
+        <if test="request.eids != null and request.eids.size() > 0">
+            AND eid in
+            <foreach item="item" index="index" collection="request.eids" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="request.goodsCategory != null">
+            and goods_category=#{request.goodsCategory}
+        </if>
+        GROUP BY t.so_time order by t.so_time
+    </select>
+
+
+    <select id="statisticsLhSaleNumber" resultType="com.yiling.dataflow.report.bo.ReportFlowBO">
+        select t.so_time as `time`,SUM(t.so_quantity) as `number` from report_flow_sale t
+        where t.del_flag=0
+        <if test="request.startTime != null">
+            AND so_time <![CDATA[ >= ]]> #{request.startTime}
+        </if>
+        <if test="request.endTime != null">
+            AND so_time <![CDATA[ <= ]]> #{request.endTime}
+        </if>
+        <if test="request.eids != null and request.eids.size() > 0">
+            AND eid in
+            <foreach item="item" index="index" collection="request.eids" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="request.goodsCategory != null">
+            and goods_category=#{request.goodsCategory}
+        </if>
+        GROUP BY t.so_time order by t.so_time
+    </select>
+
+    <select id="statisticsLhAmountAndNumber" resultType="com.yiling.dataflow.report.bo.ReportFlowStatisticsBO">
+        select t.so_time as `time`,SUM(t.so_quantity) as `number`,SUM(t.total_amount) as `amount`,SUM(t.terminal_quantity) as `terminalNumber`,SUM(t.terminal_amount) as `terminalAmount`,COUNT(DISTINCT eid) as `count` from report_flow_sale t
+        where t.del_flag=0
+        <if test="request.startTime != null">
+            AND so_time <![CDATA[ >= ]]> #{request.startTime}
+        </if>
+        <if test="request.endTime != null">
+            AND so_time <![CDATA[ <= ]]> #{request.endTime}
+        </if>
+        <if test="request.eids != null and request.eids.size() > 0">
+            AND eid in
+            <foreach item="item" index="index" collection="request.eids" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="request.goodsCategory != null">
+            and goods_category=#{request.goodsCategory}
+        </if>
+        GROUP BY t.so_time order by t.so_time desc
+    </select>
+
+</mapper>

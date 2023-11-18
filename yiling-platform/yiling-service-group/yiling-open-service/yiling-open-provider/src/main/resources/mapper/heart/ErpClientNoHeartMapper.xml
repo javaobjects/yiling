@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.open.heart.dao.ErpClientNoHeartMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.open.heart.entity.ErpClientNoHeartDO">
+        <id column="id" property="id"/>
+        <result column="su_id" property="suId"/>
+        <result column="su_dept_no" property="suDeptNo"/>
+        <result column="rk_su_id" property="rkSuId"/>
+        <result column="client_name" property="clientName"/>
+        <result column="flow_mode" property="flowMode"/>
+        <result column="install_employee" property="installEmployee"/>
+        <result column="crm_department" property="crmDepartment"/>
+        <result column="crm_province" property="crmProvince"/>
+        <result column="crm_commerce_job_number" property="crmCommerceJobNumber"/>
+        <result column="crm_commerce_liable_person" property="crmCommerceLiablePerson"/>
+        <result column="task_time" property="taskTime"/>
+        <result column="del_flag" property="delFlag"/>
+        <result column="remark" property="remark"/>
+        <result column="create_time" property="createTime"/>
+        <result column="create_user" property="createUser"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="update_user" property="updateUser"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Table_Name">
+        erp_client_no_heart
+    </sql>
+
+    <sql id="Base_Column_List">
+        id, su_id, su_dept_no, rk_su_id, client_name, install_employee, flow_mode,
+        crm_department, crm_province, crm_commerce_job_number, crm_commerce_liable_person,
+        del_flag, remark, create_time, create_user, update_time, update_user, task_time
+    </sql>
+
+    <select id="getByRkSuIdListAndTaskTime" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM <include refid="Base_Table_Name"/>
+        WHERE del_flag = 0
+        <if test="request.rkSuIdList != null and request.rkSuIdList.size() > 0">
+            AND rk_su_id IN
+            <foreach item="item" index="index" collection="request.rkSuIdList" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="request.taskTime != null">
+            AND task_time = #{taskTime}
+        </if>
+        <if test="request.createTime != null">
+            AND create_time <![CDATA[ > ]]> #{createTime}
+        </if>
+    </select>
+
+    <delete id="deleteByTaskTime">
+        DELETE FROM <include refid="Base_Table_Name"/>
+        WHERE task_time = #{taskTime}
+    </delete>
+
+</mapper>

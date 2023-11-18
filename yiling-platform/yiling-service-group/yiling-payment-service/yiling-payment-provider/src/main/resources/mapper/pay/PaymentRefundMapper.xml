@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.payment.pay.dao.PaymentRefundMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.payment.pay.entity.PaymentRefundDO">
+    <result column="id" property="id" />
+        <result column="refund_no" property="refundNo" />
+        <result column="refund_id" property="refundId" />
+        <result column="refund_type" property="refundType" />
+        <result column="pay_no" property="payNo" />
+        <result column="pay_id" property="payId" />
+        <result column="app_order_id" property="appOrderId" />
+        <result column="third_trade_no" property="thirdTradeNo" />
+        <result column="third_fund_no" property="thirdFundNo" />
+        <result column="refund_amount" property="refundAmount" />
+        <result column="refund_state" property="refundState" />
+        <result column="reason" property="reason" />
+        <result column="error_message" property="errorMessage" />
+        <result column="create_user" property="createUser" />
+        <result column="create_time" property="createTime" />
+        <result column="update_user" property="updateUser" />
+        <result column="update_time" property="updateTime" />
+        <result column="refund_date" property="refundDate" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,
+        refund_no, refund_id,refund_type,pay_no, pay_id, app_order_id, third_trade_no, third_fund_no, refund_amount, refund_state, reason, error_message, create_user, create_time, update_user, update_time,refund_date
+    </sql>
+
+</mapper>

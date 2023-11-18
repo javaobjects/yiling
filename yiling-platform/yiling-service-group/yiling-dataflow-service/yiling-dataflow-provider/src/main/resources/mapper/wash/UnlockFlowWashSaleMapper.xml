@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.dataflow.wash.dao.UnlockFlowWashSaleMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.dataflow.wash.entity.UnlockFlowWashSaleDO">
+    <result column="id" property="id" />
+        <result column="flow_sale_wash_id" property="flowSaleWashId" />
+        <result column="ufwt_id" property="ufwtId" />
+        <result column="flow_wash_sale_report_id" property="flowWashSaleReportId" />
+        <result column="so_time" property="soTime" />
+        <result column="so_month" property="soMonth" />
+        <result column="so_year" property="soYear" />
+        <result column="month" property="month" />
+        <result column="year" property="year" />
+        <result column="crm_id" property="crmId" />
+        <result column="ename" property="ename" />
+        <result column="original_enterprise_name" property="originalEnterpriseName" />
+        <result column="customer_crm_id" property="customerCrmId" />
+        <result column="enterprise_name" property="enterpriseName" />
+        <result column="is_chain_flag" property="isChainFlag" />
+        <result column="department" property="department" />
+        <result column="business_department" property="businessDepartment" />
+        <result column="provincial_area" property="provincialArea" />
+        <result column="business_province" property="businessProvince" />
+        <result column="district_county_code" property="districtCountyCode" />
+        <result column="district_county" property="districtCounty" />
+        <result column="superior_supervisor_code" property="superiorSupervisorCode" />
+        <result column="superior_supervisor_name" property="superiorSupervisorName" />
+        <result column="representative_code" property="representativeCode" />
+        <result column="representative_name" property="representativeName" />
+        <result column="post_code" property="postCode" />
+        <result column="post_name" property="postName" />
+        <result column="so_goods_name" property="soGoodsName" />
+        <result column="so_specifications" property="soSpecifications" />
+        <result column="goods_code" property="goodsCode" />
+        <result column="goods_name" property="goodsName" />
+        <result column="goods_spec" property="goodsSpec" />
+        <result column="so_quantity" property="soQuantity" />
+        <result column="sales_price" property="salesPrice" />
+        <result column="so_total_amount" property="soTotalAmount" />
+        <result column="distribution_source" property="distributionSource" />
+        <result column="unlock_sale_rule_id" property="unlockSaleRuleId" />
+        <result column="judgment" property="judgment" />
+        <result column="rule_notes" property="ruleNotes" />
+        <result column="distribution_status" property="distributionStatus" />
+        <result column="operate_status" property="operateStatus" />
+        <result column="create_user" property="createUser" />
+        <result column="create_time" property="createTime" />
+        <result column="update_user" property="updateUser" />
+        <result column="update_time" property="updateTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,
+        flow_sale_wash_id, ufwt_id, flow_wash_sale_report_id, so_time, so_month, so_year, month, year, crm_id, ename, original_enterprise_name, customer_crm_id, enterprise_name, is_chain_flag, department, business_department, provincial_area, business_province, district_county_code, district_county, superior_supervisor_code, superior_supervisor_name, representative_code, representative_name, post_code, post_name, so_goods_name, so_specifications, goods_code, goods_name, goods_spec, so_quantity, sales_price, so_total_amount, distribution_source, unlock_sale_rule_id, judgment, rule_notes, distribution_status, operate_status, create_user, create_time, update_user, update_time
+    </sql>
+
+    <delete id="deleteByUfwtId">
+        delete from unlock_flow_wash_sale where ufwt_id=#{ufwtId}
+    </delete>
+</mapper>

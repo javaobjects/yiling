@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.dataflow.flow.dao.SyncFlowSaleMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.dataflow.flow.entity.SyncFlowSaleDO">
+    <result column="id" property="id" />
+        <result column="flow_sale_id" property="flowSaleId" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,
+        flow_sale_id
+    </sql>
+
+    <delete id="deleteSyncFlowSaleByIds">
+        delete from sync_flow_sale where id in
+        <foreach item="item" index="index" collection="ids" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+    <delete id="deleteByFlowSaleIds">
+        delete from sync_flow_sale where flow_sale_id in
+        <foreach item="item" index="index" collection="flowSaleIds" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+</mapper>

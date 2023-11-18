@@ -1,0 +1,47 @@
+.app-container {
+  .common-box {
+    .drug-agent-info {
+      .drug-agent-item {
+        &:not(:last-child) {
+          margin-bottom: 32px;
+        }
+        .header-bar {
+          height: 22px;
+          line-height: 22px;
+          .sign {
+            margin-right: 5px;
+          }
+          .insurance-order {
+            margin-left: 32px;
+            color: $primary;
+            cursor: pointer;
+          }
+        }
+        .item-info {
+          .el-row {
+            margin-bottom: 8px;
+            .el-col {
+              .item {
+                margin-bottom: 8px;
+                .item-title {
+                  font-size: $font-size-base;
+                  color: #666;
+                }
+                .item-value {
+                  color: #333;
+                  margin-right: 8px;
+                }
+              }
+            }
+          }
+          .total {
+            font-size: $font-size-base;
+            margin-top: 12px;
+            display: flex;
+            justify-content: flex-end;
+          }
+        }
+      }
+    }
+  }
+}

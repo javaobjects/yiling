@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.user.agreementv2.dao.AgreementMainTermsMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.user.agreementv2.entity.AgreementMainTermsDO">
+        <result column="id" property="id"/>
+        <result column="agreement_no" property="agreementNo"/>
+        <result column="eid" property="eid"/>
+        <result column="ename" property="ename"/>
+        <result column="first_type" property="firstType"/>
+        <result column="agreement_type" property="agreementType"/>
+        <result column="second_eid" property="secondEid"/>
+        <result column="second_name" property="secondName"/>
+        <result column="sign_time" property="signTime"/>
+        <result column="start_time" property="startTime"/>
+        <result column="end_time" property="endTime"/>
+        <result column="first_sign_user_id" property="firstSignUserId"/>
+        <result column="first_sign_user_name" property="firstSignUserName"/>
+        <result column="first_sign_user_phone" property="firstSignUserPhone"/>
+        <result column="first_sign_department_id" property="firstSignDepartmentId"/>
+        <result column="first_sign_department_name" property="firstSignDepartmentName"/>
+        <result column="second_sign_user_id" property="secondSignUserId"/>
+        <result column="second_sign_user_name" property="secondSignUserName"/>
+        <result column="second_sign_user_phone" property="secondSignUserPhone"/>
+        <result column="second_sign_department_id" property="secondSignDepartmentId"/>
+        <result column="second_sign_department_name" property="secondSignDepartmentName"/>
+        <result column="main_user" property="mainUser"/>
+        <result column="flow_flag" property="flowFlag"/>
+        <result column="draft_flag" property="draftFlag"/>
+        <result column="margin_flag" property="marginFlag"/>
+        <result column="margin_amount" property="marginAmount"/>
+        <result column="margin_payer" property="marginPayer"/>
+        <result column="business_eid" property="businessEid"/>
+        <result column="margin_back_type" property="marginBackType"/>
+        <result column="margin_back_date" property="marginBackDate"/>
+        <result column="attachment_type" property="attachmentType"/>
+        <result column="auth_status" property="authStatus"/>
+        <result column="auth_user" property="authUser"/>
+        <result column="auth_time" property="authTime"/>
+        <result column="auth_reject_reason" property="authRejectReason"/>
+        <result column="archive_no" property="archiveNo"/>
+        <result column="archive_remark" property="archiveRemark"/>
+        <result column="paper_no" property="paperNo"/>
+        <result column="effect_status" property="effectStatus"/>
+        <result column="del_flag" property="delFlag"/>
+        <result column="create_user" property="createUser"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_user" property="updateUser"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="remark" property="remark"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,agreement_no, eid, ename, first_type, agreement_type, second_eid, second_name, sign_time, start_time, end_time, first_sign_user_id,
+        first_sign_user_name, first_sign_user_phone, first_sign_department_id, first_sign_department_name, second_sign_user_id, second_sign_user_name,
+        second_sign_user_phone, second_sign_department_id, second_sign_department_name, main_user, flow_flag, draft_flag, margin_flag, margin_amount,
+        margin_payer, business_eid, margin_back_type, margin_back_date, attachment_type, auth_status, auth_user, auth_time, auth_reject_reason, archive_no,
+        archive_remark, paper_no, effect_status, del_flag, create_user, create_time, update_user, update_time, remark
+    </sql>
+
+    <select id="queryAgreementPage" resultType="com.yiling.user.agreementv2.bo.AgreementListItemBO">
+        select
+            main.id as id, main.agreement_no as agreementNo, main.ename as ename, main.second_name as secondName, main.create_time as createTime,
+            main.start_time as startTime, main.end_time as endTime, main.auth_time as authTime, main.first_type as firstType, main.main_user_name as mainUserName,
+            main.first_sign_user_name as firstSignUserName, main.first_sign_user_phone as firstSignUserPhone, main.second_sign_user_name as secondSignUserName,
+            main.second_sign_user_phone as secondSignUserPhone, main.agreement_type as agreementType, rebate.rebate_cash_type as rebateCashType,
+            rebate.rebate_cash_time as rebateCashTime, supply.buy_channel as buyChannel, supply.all_level_kinds_flag as allLevelKindsFlag,
+            main.active_flag as activeFlag, main.effect_status as effectStatus
+        from agreement_main_terms main
+                 left join agreement_supply_sales_terms supply on main.id = supply.agreement_id and supply.del_flag = 0
+                 left join agreement_settlement_method settlement on main.id = settlement.agreement_id and settlement.del_flag = 0
+                 left join agreement_rebate_terms rebate on main.id = rebate.agreement_id and rebate.del_flag = 0
+        <where>
+            <if test="request.authStatus != null and request.authStatus != 0">
+                main.auth_status = #{request.authStatus}
+            </if>
+            <if test="request.startTime != null">
+                and main.start_time <![CDATA[ >= ]]> #{request.startTime}
+            </if>
+            <if test="request.endTime != null">
+                and main.start_time <![CDATA[ <= ]]> #{request.endTime}
+            </if>
+            <if test="request.startCreateTime != null">
+                and main.create_time <![CDATA[ >= ]]> #{request.startCreateTime}
+            </if>
+            <if test="request.endCreateTime != null">
+                and main.create_time <![CDATA[ <= ]]> #{request.endCreateTime}
+            </if>
+            <if test="request.secondName != null and request.secondName != ''">
+                and main.second_name like '%${request.secondName}%'
+            </if>
+            <if test="request.rebateStandard != null and request.rebateStandard != 0">
+                and rebate.rebate_standard = #{request.rebateStandard}
+            </if>
+            <if test="request.businessOperatorName != null and request.businessOperatorName != ''">
+                and main.business_operator_name like '%${request.businessOperatorName}%'
+            </if>
+            <if test="request.agreementNo != null and request.agreementNo != ''">
+                and main.agreement_no like '%${request.agreementNo}%'
+            </if>
+            <if test="request.agreementType != null and request.agreementType != 0">
+                and main.agreement_type = #{request.agreementType}
+            </if>
+            <if test="request.goodsId != null and request.goodsId != 0">
+                and exists (select supplyGoods.id from agreement_supply_sales_goods supplyGoods where supplyGoods.agreement_id = main.id
+                                and supplyGoods.del_flag = 0 and supplyGoods.goods_id = #{request.goodsId})
+            </if>
+            <if test="request.activeFlag != null">
+                and main.active_flag = #{request.activeFlag}
+            </if>
+            <if test="request.effectStatus != null and request.effectStatus != 0">
+                <choose>
+                    <when test="request.effectStatus == 2 or request.effectStatus == 3">
+                        and main.effect_status = #{request.effectStatus}
+                    </when>
+                    <when test="request.effectStatus == 1">
+                        and main.effect_status not in (2,3) and main.start_time <![CDATA[ <= ]]> CURDATE() and main.end_time <![CDATA[ >= ]]> CURDATE()
+                    </when>
+                    <when test="request.effectStatus == 4">
+                        and main.effect_status not in (2,3) and main.end_time <![CDATA[ < ]]> CURDATE()
+                    </when>
+                    <when test="request.effectStatus == 5">
+                        and main.effect_status not in (2,3) and main.start_time <![CDATA[ > ]]> CURDATE()
+                    </when>
+                </choose>
+            </if>
+            <if test="request.mainUserName != null and request.mainUserName != ''">
+                and main.main_user_name = #{request.mainUserName}
+            </if>
+            <if test="request.buyChannel != null and request.buyChannel != 0 ">
+                and supply.buy_channel = #{request.buyChannel}
+            </if>
+            <if test="request.ename != null and request.ename != ''">
+                and main.ename like '%${request.ename}%'
+            </if>
+            <if test="request.startAuthPassTime != null">
+                and main.auth_time <![CDATA[ >= ]]> #{request.startAuthPassTime}
+            </if>
+            <if test="request.endAuthPassTime != null">
+                and main.auth_time <![CDATA[ <= ]]> #{request.endAuthPassTime}
+            </if>
+                and main.del_flag = 0
+        </where>
+    </select>
+
+    <select id="queryImportAgreementList" resultType="com.yiling.user.agreementv2.bo.AgreementImportListItemBO">
+        select
+            main.id as id, main.agreement_no as agreementNo, main.eid as eid, main.second_eid as secondEid, main.ename as ename,
+            main.second_name as secondName, main.create_time as createTime, main.sign_time as signTime, main.main_user as mainUser, main.main_user_name as mainUserName,
+            main.start_time as startTime, main.end_time as endTime, main.auth_time as authTime, main.first_type as firstType, main.main_user_name as mainUserName,
+            main.first_sign_user_name as firstSignUserName, main.first_sign_user_id, main.first_sign_user_phone as firstSignUserPhone,
+            main.second_sign_user_id, main.second_sign_user_name as secondSignUserName, main.second_sign_user_phone as secondSignUserPhone,
+            main.flow_flag as flowFlag, main.draft_flag as draftFlag, main.margin_flag as marginFlag, main.margin_amount as marginAmount,
+            main.margin_payer as marginPayer, main.business_eid as businessEid, main.margin_back_type as marginBackType, main.margin_back_date as marginBackDate,
+            main.active_flag as activeFlag, main.business_operator_id as businessOperatorId, main.business_operator_name as businessOperatorName,
+            main.ka_agreement_type as kaAgreementType, main.create_time as createTime,
+            main.agreement_type as agreementType, rebate.rebate_cash_type as rebateCashType, rebate.goods_rebate_rule_type as goodsRebateRuleType,
+            rebate.rebate_cash_time as rebateCashTime, supply.buy_channel as buyChannel
+        from agreement_main_terms main
+                 left join agreement_supply_sales_terms supply on main.id = supply.agreement_id and supply.del_flag = 0
+                 left join agreement_rebate_terms rebate on main.id = rebate.agreement_id and rebate.del_flag = 0
+        <where>
+            <if test="request.authStatusList != null and request.authStatusList.size > 0">
+                main.auth_status in
+                <foreach collection="request.authStatusList" item="authStatus" index="index" open="(" close=")" separator=",">
+                    #{authStatus}
+                </foreach>
+            </if>
+            <if test="request.mainUserId != null">
+                and ( (main.main_user = 1 and main.first_sign_user_id = #{request.mainUserId}) or (main.main_user = 2 and main.second_sign_user_id = #{request.mainUserId}) )
+            </if>
+            <if test="request.ename != null and request.ename != ''">
+                and main.ename like '%${request.ename}%'
+            </if>
+            <if test="request.secondName != null and request.secondName != ''">
+                and main.second_name like '%${request.secondName}%'
+            </if>
+                and main.del_flag = 0
+        </where>
+    </select>
+
+</mapper>

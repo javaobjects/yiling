@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.dataflow.report.dao.FlowWashSaleReportMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.dataflow.report.entity.FlowWashSaleReportDO">
+    <result column="id" property="id" />
+        <result column="flow_sale_wash_id" property="flowSaleWashId" />
+        <result column="flow_key" property="flowKey" />
+        <result column="fmwt_id" property="fmwtId" />
+        <result column="so_time" property="soTime" />
+        <result column="so_month" property="soMonth" />
+        <result column="so_year" property="soYear" />
+        <result column="month" property="month" />
+        <result column="year" property="year" />
+        <result column="record_month" property="recordMonth" />
+        <result column="crm_id" property="crmId" />
+        <result column="ename" property="ename" />
+        <result column="commerce_job_number" property="commerceJobNumber" />
+        <result column="commerce_liable_person" property="commerceLiablePerson" />
+        <result column="flow_department" property="flowDepartment" />
+        <result column="flow_job_number" property="flowJobNumber" />
+        <result column="flow_liable_person" property="flowLiablePerson" />
+        <result column="supplier_level" property="supplierLevel" />
+        <result column="supplier_attribute" property="supplierAttribute" />
+        <result column="general_medicine_level" property="generalMedicineLevel" />
+        <result column="supplier_sale_type" property="supplierSaleType" />
+        <result column="base_supplier_info" property="baseSupplierInfo" />
+        <result column="head_chain_flag" property="headChainFlag" />
+        <result column="chain_attribute" property="chainAttribute" />
+        <result column="chain_ka_flag" property="chainKaFlag" />
+        <result column="supplier_province_name" property="supplierProvinceName" />
+        <result column="supplier_city_name" property="supplierCityName" />
+        <result column="supplier_region_name" property="supplierRegionName" />
+        <result column="original_enterprise_name" property="originalEnterpriseName" />
+        <result column="customer_crm_id" property="customerCrmId" />
+        <result column="enterprise_name" property="enterpriseName" />
+        <result column="is_chain_flag" property="isChainFlag" />
+        <result column="enterprise_cers_id" property="enterpriseCersId" />
+        <result column="organization_cers_id" property="organizationCersId" />
+        <result column="department" property="department" />
+        <result column="business_department" property="businessDepartment" />
+        <result column="provincial_area" property="provincialArea" />
+        <result column="business_province" property="businessProvince" />
+        <result column="district_county_code" property="districtCountyCode" />
+        <result column="district_county" property="districtCounty" />
+        <result column="superior_supervisor_code" property="superiorSupervisorCode" />
+        <result column="superior_supervisor_name" property="superiorSupervisorName" />
+        <result column="representative_code" property="representativeCode" />
+        <result column="representative_name" property="representativeName" />
+        <result column="post_code" property="postCode" />
+        <result column="post_name" property="postName" />
+        <result column="product_group" property="productGroup" />
+        <result column="province_code" property="provinceCode" />
+        <result column="province_name" property="provinceName" />
+        <result column="city_code" property="cityCode" />
+        <result column="city_name" property="cityName" />
+        <result column="region_code" property="regionCode" />
+        <result column="region_name" property="regionName" />
+        <result column="customer_supplier_level" property="customerSupplierLevel" />
+        <result column="customer_general_medicine_level" property="customerGeneralMedicineLevel" />
+        <result column="customer_supplier_attribute" property="customerSupplierAttribute" />
+        <result column="customer_head_chain_flag" property="customerHeadChainFlag" />
+        <result column="customer_chain_attribute" property="customerChainAttribute" />
+        <result column="customer_chain_ka_flag" property="customerChainKaFlag" />
+        <result column="customer_parent_supplier_name" property="customerParentSupplierName" />
+        <result column="customer_parent_supplier_code" property="customerParentSupplierCode" />
+        <result column="customer_supplier_sale_type" property="customerSupplierSaleType" />
+        <result column="customer_base_supplier_info" property="customerBaseSupplierInfo" />
+        <result column="customer_supply_chain_role" property="customerSupplyChainRole" />
+        <result column="customer_medical_nature" property="customerMedicalNature" />
+        <result column="customer_medical_type" property="customerMedicalType" />
+        <result column="customer_yl_level" property="customerYlLevel" />
+        <result column="customer_national_grade" property="customerNationalGrade" />
+        <result column="base_medicine_flag" property="baseMedicineFlag" />
+        <result column="pharmacy_attribute" property="pharmacyAttribute" />
+        <result column="pharmacy_type" property="pharmacyType" />
+        <result column="pharmacy_level" property="pharmacyLevel" />
+        <result column="pharmacy_chain_attribute" property="pharmacyChainAttribute" />
+        <result column="label_attribute" property="labelAttribute" />
+        <result column="target_flag" property="targetFlag" />
+        <result column="so_goods_name" property="soGoodsName" />
+        <result column="so_specifications" property="soSpecifications" />
+        <result column="variety_type" property="varietyType" />
+        <result column="goods_code" property="goodsCode" />
+        <result column="goods_name" property="goodsName" />
+        <result column="goods_spec" property="goodsSpec" />
+        <result column="so_quantity" property="soQuantity" />
+        <result column="so_unit" property="soUnit" />
+        <result column="so_price" property="soPrice" />
+        <result column="sales_price" property="salesPrice" />
+        <result column="final_quantity" property="finalQuantity" />
+        <result column="so_total_amount" property="soTotalAmount" />
+        <result column="so_batch_no" property="soBatchNo" />
+        <result column="flow_classify" property="flowClassify" />
+        <result column="collection_method" property="collectionMethod" />
+        <result column="wash_time" property="washTime" />
+        <result column="file_name" property="fileName" />
+        <result column="complain_type" property="complainType" />
+        <result column="mapping_status" property="mappingStatus" />
+        <result column="is_lock_flag" property="isLockFlag" />
+        <result column="create_user" property="createUser" />
+        <result column="create_time" property="createTime" />
+        <result column="update_user" property="updateUser" />
+        <result column="update_time" property="updateTime" />
+        <result column="lock_time" property="lockTime" />
+        <result column="last_un_lock_time" property="lastUnLockTime" />
+        <result column="province_manager_code" property="provinceManagerCode" />
+        <result column="province_manager_name" property="provinceManagerName" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,
+        flow_sale_wash_id,flow_key,so_time, so_month, so_year, month, year,record_month,crm_id, ename, commerce_job_number, commerce_liable_person, flow_department, flow_job_number, flow_liable_person, supplier_level, supplier_attribute, general_medicine_level, supplier_sale_type, base_supplier_info, head_chain_flag, chain_attribute, chain_ka_flag, supplier_province_name, supplier_city_name, supplier_region_name, original_enterprise_name, customer_crm_id, enterprise_name, is_chain_flag, department,enterprise_cers_id,organization_cers_id,business_department, provincial_area, business_province, district_county_code, district_county, superior_supervisor_code, superior_supervisor_name, representative_code, representative_name, post_code, post_name,product_group,province_code, province_name, city_code, city_name, region_code, region_name, customer_supplier_level, customer_general_medicine_level, customer_supplier_attribute, customer_head_chain_flag, customer_chain_attribute, customer_chain_ka_flag, customer_parent_supplier_name, customer_parent_supplier_code, customer_supplier_sale_type, customer_base_supplier_info, customer_supply_chain_role, customer_medical_nature, customer_medical_type, customer_yl_level, customer_national_grade, base_medicine_flag, pharmacy_attribute, pharmacy_type, pharmacy_level, pharmacy_chain_attribute, label_attribute, target_flag, so_goods_name, so_specifications, variety_type, goods_code, goods_name, goods_spec, so_quantity, so_unit, so_price, sales_price, final_quantity, so_total_amount, so_batch_no, flow_classify, collection_method, wash_time, file_name, complain_type,mapping_status,create_user, create_time, update_user, update_time,lock_time,last_un_lock_time,province_manager_code,province_manager_name,is_lock_flag
+    </sql>
+
+
+    <select id="listCrmIdByCondition" resultType="java.lang.Long">
+
+        select DISTINCT t.crm_id from flow_wash_sale_report t where t.year = #{request.year} and t.month = #{request.month}
+
+        <if test="request.customerEid != null and  request.customerEid != 0 ">
+            AND t.customer_crm_id = #{request.customerEid}
+        </if>
+        <if test="request.mappingStatus != null and  request.mappingStatus != 0 ">
+            AND t.mapping_status = #{request.mappingStatus}
+        </if>
+        <if test="request.isLockFlag != null and  request.isLockFlag != 0 ">
+            AND t.is_lock_flag = #{request.isLockFlag}
+        </if>
+
+        AND t.`flow_classify` IN (1,2,3)
+
+    </select>
+
+    <select id="listCustomerCrmIdByCondition" resultType="java.lang.Long">
+
+        select DISTINCT t.customer_crm_id from flow_wash_sale_report t where t.year = #{request.year} and t.month = #{request.month}
+
+        <if test="request.mappingStatus != null and  request.mappingStatus != 0 ">
+            AND t.mapping_status = #{request.mappingStatus}
+        </if>
+
+    </select>
+
+</mapper>

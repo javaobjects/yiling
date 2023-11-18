@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.dataflow.gb.dao.GbAppealAllocationMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.dataflow.gb.entity.GbAppealAllocationDO">
+    <result column="id" property="id" />
+        <result column="appeal_form_id" property="appealFormId" />
+        <result column="gb_order_id" property="gbOrderId" />
+        <result column="gafr_id" property="gafrId" />
+        <result column="form_id" property="formId" />
+        <result column="gb_no" property="gbNo" />
+        <result column="match_month" property="matchMonth" />
+        <result column="gb_month" property="gbMonth" />
+        <result column="flow_wash_id" property="flowWashId" />
+        <result column="so_time" property="soTime" />
+        <result column="province_code" property="provinceCode" />
+        <result column="crm_id" property="crmId" />
+        <result column="ename" property="ename" />
+        <result column="original_enterprise_name" property="originalEnterpriseName" />
+        <result column="customer_crm_id" property="customerCrmId" />
+        <result column="enterprise_name" property="enterpriseName" />
+        <result column="so_goods_name" property="soGoodsName" />
+        <result column="so_specifications" property="soSpecifications" />
+        <result column="goods_code" property="goodsCode" />
+        <result column="goods_name" property="goodsName" />
+        <result column="quantity" property="quantity" />
+        <result column="price" property="price" />
+        <result column="total_amount" property="totalAmount" />
+        <result column="org_id" property="orgId" />
+        <result column="department" property="department" />
+        <result column="business_org_id" property="businessOrgId" />
+        <result column="business_department" property="businessDepartment" />
+        <result column="provincial_area" property="provincialArea" />
+        <result column="business_province" property="businessProvince" />
+        <result column="district_county_code" property="districtCountyCode" />
+        <result column="district_county" property="districtCounty" />
+        <result column="superior_supervisor_code" property="superiorSupervisorCode" />
+        <result column="superior_supervisor_name" property="superiorSupervisorName" />
+        <result column="representative_code" property="representativeCode" />
+        <result column="representative_name" property="representativeName" />
+        <result column="post_code" property="postCode" />
+        <result column="post_name" property="postName" />
+        <result column="allocation_type" property="allocationType" />
+        <result column="create_user" property="createUser" />
+        <result column="create_time" property="createTime" />
+        <result column="update_user" property="updateUser" />
+        <result column="update_time" property="updateTime" />
+        <result column="flow_key" property="flowKey" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,
+        appeal_form_id, gb_order_id, gafr_id, form_id, gb_no, match_month, gb_month, flow_wash_id, so_time, province_code, crm_id, ename, original_enterprise_name, customer_crm_id, enterprise_name, so_goods_name, so_specifications, goods_code, goods_name, quantity, price, total_amount, org_id, department, business_org_id, business_department, provincial_area, business_province, district_county_code, district_county, superior_supervisor_code, superior_supervisor_name, representative_code, representative_name, post_code, post_name, allocation_type, create_user, create_time, update_user, update_time,
+        flow_key
+    </sql>
+
+</mapper>

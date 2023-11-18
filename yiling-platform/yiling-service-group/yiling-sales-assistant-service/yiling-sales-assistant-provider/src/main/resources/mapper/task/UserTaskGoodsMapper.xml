@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.sales.assistant.task.dao.UserTaskGoodsMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.sales.assistant.task.entity.UserTaskGoodsDO">
+    <result column="id" property="id" />
+        <result column="user_task_id" property="userTaskId" />
+        <result column="task_id" property="taskId" />
+        <result column="goods_id" property="goodsId" />
+        <result column="goods_name" property="goodsName" />
+        <result column="value_type" property="valueType" />
+        <result column="finish_value" property="finishValue" />
+        <result column="goal_value" property="goalValue" />
+        <result column="del_flag" property="delFlag" />
+        <result column="user_id" property="userId" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+        <result column="percent" property="percent" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,
+        user_task_id, task_id, goods_id, goods_name, value_type, finish_value, goal_value, del_flag, user_id, create_time, update_time, percent
+    </sql>
+
+</mapper>

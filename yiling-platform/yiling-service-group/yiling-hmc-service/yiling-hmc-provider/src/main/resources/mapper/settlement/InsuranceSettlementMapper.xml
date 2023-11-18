@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.hmc.settlement.dao.InsuranceSettlementMapper">
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.hmc.settlement.entity.InsuranceSettlementDO">
+        <result column="id" property="id"/>
+        <result column="issue_name" property="issueName"/>
+        <result column="insurance_company_id" property="insuranceCompanyId"/>
+        <result column="insurance_company_name" property="insuranceCompanyName"/>
+        <result column="insurance_record_id" property="insuranceRecordId"/>
+        <result column="policy_no" property="policyNo"/>
+        <result column="third_pay_no" property="thirdPayNo"/>
+        <result column="insurance_settle_status" property="insuranceSettleStatus"/>
+        <result column="account_no" property="accountNo"/>
+        <result column="pay_time" property="payTime"/>
+        <result column="pay_amount" property="payAmount"/>
+        <result column="del_flag" property="delFlag"/>
+        <result column="create_user" property="createUser"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_user" property="updateUser"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="remark" property="remark"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id
+                ,
+        issue_name, insurance_company_id, insurance_company_name, insurance_record_id, third_pay_no, insurance_settle_status, account_no, pay_time, pay_amount, del_flag, create_user, create_time, update_user, update_time, remark
+    </sql>
+
+    <select id="pageList" parameterType="com.yiling.hmc.settlement.dto.request.InsuranceSettlementPageRequest"
+            resultType="com.yiling.hmc.settlement.bo.InsuranceSettlementPageBO">
+        SELECT
+        hs.id AS id,
+        hs.insurance_company_id AS insuranceCompanyId,
+        hs.insurance_company_name AS insuranceCompanyName,
+        hs.pay_time AS payTime,
+        hs.third_pay_no AS thirdPayNo,
+        hs.create_time AS createTime,
+        hs.pay_amount AS payAmount,
+        hs.insurance_record_id AS insuranceRecordId,
+        hs.policy_no AS policyNo
+        FROM
+        hmc_insurance_settlement hs
+        <where>
+            hs.del_flag = 0 and hs.insurance_settle_status = 2
+            <if test="request.insuranceCompanyName != null and request.insuranceCompanyName !=''">
+                and hs.insurance_company_name like "%"#{request.insuranceCompanyName}"%"
+            </if>
+            <if test="request.startTime != null">
+                and hs.pay_time &gt;= #{request.startTime}
+            </if>
+            <if test="request.stopTime != null">
+                and hs.pay_time &lt;= #{request.stopTime}
+            </if>
+        </where>
+        ORDER BY hs.pay_time DESC
+    </select>
+
+    <select id="pageResult" parameterType="com.yiling.hmc.settlement.dto.request.InsuranceSettlementPageRequest"
+            resultType="com.yiling.hmc.settlement.bo.InsuranceSettlementPageResultBO">
+        SELECT
+        count(1) AS totalCount,
+        sum(hs.pay_amount) AS totalAmount
+        FROM
+        hmc_insurance_settlement hs
+        <where>
+            hs.del_flag = 0 and hs.insurance_settle_status = 2
+            <if test="request.insuranceCompanyName != null and request.insuranceCompanyName !=''">
+                and hs.insurance_company_name like "%"#{request.insuranceCompanyName}"%"
+            </if>
+            <if test="request.startTime != null">
+                and hs.pay_time &gt;= #{request.startTime}
+            </if>
+            <if test="request.stopTime != null">
+                and hs.pay_time &lt;= #{request.stopTime}
+            </if>
+        </where>
+    </select>
+</mapper>

@@ -1,0 +1,48 @@
+.app-container {
+  .common-box {
+    .el-input {
+      width: 220px;
+    }
+    .search-box {
+      // padding: 0 16px;
+      position: relative;
+      .box {
+        .title {
+          font-size: $font-size-large;
+          line-height: $font-size-large-lh;
+          color: $font-important-color;
+          margin-bottom: 8px;
+        }
+      }
+
+      .el-select {
+        width: 220px;
+      }
+
+      .bottom-btn {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+      }
+    }
+  }
+
+  // 导出、导入按钮
+  .down-box {
+    width: 100%;
+    margin-top: 24px;
+
+    .btn {
+      float: right;
+    }
+  }
+  .img {
+    width: 82px;
+    height: 82px;
+    display: inline-block;
+  }
+  .dialogTc{
+    padding-top: 20px;
+  }
+}
+

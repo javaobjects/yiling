@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.dataflow.flow.dao.FlowEnterpriseCustomerMappingMapper">
+    <resultMap id="BaseResultMap" type="com.yiling.dataflow.flow.entity.FlowEnterpriseCustomerMappingDO">
+        <result column="id" property="id" />
+        <result column="flow_customer_name" property="flowCustomerName" />
+        <result column="crm_org_id" property="crmOrgId" />
+        <result column="org_name" property="orgName" />
+        <result column="org_license_number" property="orgLicenseNumber" />
+        <result column="enterprise_name" property="enterpriseName" />
+        <result column="crm_enterprise_id" property="crmEnterpriseId" />
+        <result column="province_code" property="provinceCode" />
+        <result column="province" property="province" />
+        <result column="last_upload_time" property="lastUploadTime" />
+        <result column="recommend_org_crm_id" property="recommendOrgCrmId" />
+        <result column="recommend_org_name" property="recommendOrgName" />
+        <result column="recommend_score" property="recommendScore" />
+        <result column="del_flag" property="delFlag" />
+        <result column="create_time" property="createTime" />
+        <result column="create_user" property="createUser" />
+        <result column="update_time" property="updateTime" />
+        <result column="update_user" property="updateUser" />
+        <result column="remark" property="remark" />
+    </resultMap>
+    <sql id="Base_Column_List">
+        id,
+        flow_customer_name,crm_org_id,org_name,org_license_number,enterprise_name,crm_enterprise_id,province_code,province,last_upload_time, recommend_org_crm_id, recommend_org_name, recommend_score,
+        del_flag, create_time, create_user, update_time, update_user, remark
+    </sql>
+</mapper>

@@ -1,0 +1,100 @@
+.app-container {
+  .select-bar {
+    display: flex;
+    margin-bottom: 8px;
+    .item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-right: 16px;
+      cursor: pointer;
+      .item-title {
+        margin-bottom: 5px;
+        font-size: 16px;
+        font-weight: 600;
+        color: $font-light-color;
+        line-height: 22px;
+      }
+      .active {
+        color: $primary;
+      }
+      .item-line {
+        width: 26px;
+        height: 2px;
+        background-color: $primary;
+      }
+    }
+
+  }
+  .box-search {
+    .search-box {
+      position: relative;
+      .box {
+        margin-bottom: 16px;
+        .title {
+          font-size: $font-size-large;
+          line-height: $font-size-base-lh;
+          color: $font-important-color;
+          margin-bottom: 8px;
+        }
+        .el-input {
+          width: 260px;
+        }
+        .el-select {
+          width: 260px;
+        }
+      }
+    }
+    .search-btn-box {
+      margin-top: 16px;
+    }
+  }
+  .down-box {
+    width: 100%;
+    margin-top: 24px;
+    .btn {
+      float: right;
+    }
+  }
+  .total-box {
+    display: flex;
+    align-items: center;
+    font-size: $font-size-base;
+    .item {
+      margin-right: 40px;
+      .title {
+        color: $font-title-color;
+      }
+      .value {
+        color: $success;
+      }
+    }
+  }
+  .detail-dialog {
+    .dialog-content {
+      .info-box-item {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 16px;
+        .insurance-info-item {
+          flex: 1;
+        }
+      }
+      .table-box {
+        .header-bar {
+          height: 22px;
+          line-height: 22px;
+          .sign {
+            margin-right: 5px;
+          }
+        }
+        .order-info {
+          .order {
+            color: $primary;
+            cursor: pointer;
+          }
+        }
+      }
+    }
+  }
+}

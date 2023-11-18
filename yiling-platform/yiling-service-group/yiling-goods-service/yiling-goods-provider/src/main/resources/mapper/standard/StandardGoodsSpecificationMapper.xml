@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.goods.standard.dao.StandardGoodsSpecificationMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.goods.standard.entity.StandardGoodsSpecificationDO">
+    <result column="id" property="id" />
+        <result column="standard_id" property="standardId" />
+        <result column="name" property="name" />
+        <result column="license_no" property="licenseNo" />
+        <result column="manufacturer" property="manufacturer" />
+        <result column="unit" property="unit" />
+        <result column="sell_specifications" property="sellSpecifications" />
+        <result column="barcode" property="barcode" />
+        <result column="ypid_code" property="ypidCode" />
+        <result column="del_flag" property="delFlag" />
+        <result column="create_user" property="createUser" />
+        <result column="create_time" property="createTime" />
+        <result column="update_user" property="updateUser" />
+        <result column="update_time" property="updateTime" />
+        <result column="remark" property="remark" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,
+        standard_id, `name`, license_no, manufacturer, unit, sell_specifications, barcode,ypid_code,del_flag, create_user, create_time, update_user, update_time, remark
+    </sql>
+
+
+    <select id="getIndexStandardGoodsSpecificationInfoPage" resultType="com.yiling.goods.standard.entity.StandardGoodsSpecificationDO">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        standard_goods_specification t
+        <where>
+            and EXISTS (select 1 from goods s,b2b_goods b2,goods_line l2,enterprise_customer c
+            where s.eid in
+            <foreach item="item" index="index" collection="request.includeEids"
+                     open="(" separator="," close=")">
+                #{item}
+            </foreach>
+            and s.sell_specifications_id=t.id and s.audit_status=4 and l2.mall_flag=1 and
+            s.id=l2.goods_id and l2.del_flag=0 and s.id=b2.goods_id and b2.del_flag=0 and b2.goods_status=1
+            and c.eid=s.eid and c.del_flag=0 and c.customer_eid=#{request.buyerEid})
+            <if test="request.name != null and request.name != ''">
+                and name like concat('%',#{request.name},'%')
+            </if>
+        </where>
+    </select>
+    <select id="getSpecificationGoodsInfoPage" resultType="com.yiling.goods.standard.bo.StandardSpecificationGoodsInfoBO">
+        select
+        spec.id,spec.standard_id,standard.goods_type,standard.`name`,standard.license_no,standard.manufacturer,
+        standard.manufacturer_address,spec.unit,spec.sell_specifications,standard.yl_flag
+        FROM standard_goods_specification as spec
+        inner join standard_goods as standard on spec.standard_id = standard.id
+        <where>
+            <if test="request.name != null and request.name != ''">
+                and standard.`name` like concat('%',#{request.name},'%')
+            </if>
+
+            <if test="request.licenseNo != null and request.licenseNo != ''">
+                and standard.license_no like concat('%',#{request.licenseNo},'%')
+            </if>
+
+            <if test="request.manufacturer != null and request.manufacturer != ''">
+                and standard.manufacturer like concat('%',#{request.manufacturer},'%')
+            </if>
+
+            <if test="request.standardId != null and request.standardId != 0">
+                and spec.standard_id = #{request.standardId}
+            </if>
+
+            <if test="request.specIdList != null and request.specIdList.size() > 0">
+                and spec.id in
+                <foreach item="item" index="index" collection="request.specIdList"
+                         open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+
+            <if test="request.ylFlag != null">
+                and standard.yl_flag = #{request.ylFlag}
+            </if>
+            and standard.del_flag = 0
+            and spec.del_flag = 0
+            order by id desc
+        </where>
+    </select>
+    <select id="querySpecificationByB2b" resultType="com.yiling.goods.standard.entity.StandardGoodsSpecificationDO">
+        SELECT
+        spec.id,
+        spec.standard_id, spec.`name`, spec.license_no, spec.manufacturer, spec.unit, spec.sell_specifications, spec.barcode,spec.ypid_code,
+        spec.del_flag, spec.create_user, spec.create_time, spec.update_user, spec.update_time, spec.remark
+        FROM standard_goods_specification spec
+        LEFT JOIN b2b_goods bg on bg.sell_specifications_id = spec.id
+        LEFT JOIN standard_goods standard on standard.id = spec.standard_id
+        WHERE
+        spec.del_flag = 0 and bg.del_flag=0 and standard.del_flag=0
+        and bg.goods_status = 1 and bg.`status`=1
+        <if test="request.includeEids != null and request.includeEids.size() > 0">
+        and bg.eid in
+            <foreach item="item" index="index" collection="request.includeEids"
+                    open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="request.name != null and request.name != ''">
+            AND spec.`name` like concat('%',#{request.name},'%')
+        </if>
+        <if test="request.ylFlag != null">
+            AND standard.yl_flag = #{request.ylFlag}
+        </if>
+        GROUP BY spec.id
+        ORDER BY count(bg.eid) DESC
+    </select>
+
+</mapper>

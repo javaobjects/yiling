@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.dataflow.flow.dao.FlowSaleSummaryDayMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.dataflow.flow.entity.FlowSaleSummaryDayDO">
+        <result column="id" property="id"/>
+        <result column="flow_sale_id" property="flowSaleId"/>
+        <result column="eid" property="eid"/>
+        <result column="so_id" property="soId"/>
+        <result column="so_time" property="soTime"/>
+        <result column="year" property="year"/>
+        <result column="month" property="month"/>
+        <result column="business_code" property="businessCode"/>
+        <result column="business_name" property="businessName"/>
+        <result column="business_department" property="businessDepartment"/>
+        <result column="commercial_business_department" property="commercialBusinessDepartment"/>
+        <result column="commercial_province_area" property="commercialProvinceArea"/>
+        <result column="commercial_business_province" property="commercialBusinessProvince"/>
+        <result column="commercial_area_code" property="commercialAreaCode"/>
+        <result column="commercial_area" property="commercialArea"/>
+        <result column="commercial_manager_code" property="commercialManagerCode"/>
+        <result column="commercial_manager_name" property="commercialManagerName"/>
+        <result column="commercial_representative_code" property="commercialRepresentativeCode"/>
+        <result column="commercial_representative_name" property="commercialRepresentativeName"/>
+        <result column="agreement_level" property="agreementLevel"/>
+        <result column="commercial_attributes" property="commercialAttributes"/>
+        <result column="chain_agreement_type" property="chainAgreementType"/>
+        <result column="sales_type" property="salesType"/>
+        <result column="commercial_province" property="commercialProvince"/>
+        <result column="commercial_city" property="commercialCity"/>
+        <result column="commercial_county" property="commercialCounty"/>
+        <result column="original_organization_name" property="originalOrganizationName"/>
+        <result column="organization_code" property="organizationCode"/>
+        <result column="organization_name" property="organizationName"/>
+        <result column="is_locked" property="isLocked"/>
+        <result column="organization_department" property="organizationDepartment"/>
+        <result column="organization_business_department" property="organizationBusinessDepartment"/>
+        <result column="organization_province_area" property="organizationProvinceArea"/>
+        <result column="organization_business_province" property="organizationBusinessProvince"/>
+        <result column="organization_area_code" property="organizationAreaCode"/>
+        <result column="organization_area" property="organizationArea"/>
+        <result column="manager_code" property="managerCode"/>
+        <result column="manager_name" property="managerName"/>
+        <result column="representative_code" property="representativeCode"/>
+        <result column="representative_name" property="representativeName"/>
+        <result column="institutional_province" property="institutionalProvince"/>
+        <result column="institutional_city_code" property="institutionalCityCode"/>
+        <result column="institutional_city" property="institutionalCity"/>
+        <result column="institutional_county_code" property="institutionalCountyCode"/>
+        <result column="institutional_county" property="institutionalCounty"/>
+        <result column="customer_type_name" property="customerTypeName"/>
+        <result column="terminal_type" property="terminalType"/>
+        <result column="terminal_type_two" property="terminalTypeTwo"/>
+        <result column="organization_level" property="organizationLevel"/>
+        <result column="institutional_country_level" property="institutionalCountryLevel"/>
+        <result column="is_chain" property="isChain"/>
+        <result column="chain_attribute" property="chainAttribute"/>
+        <result column="original_product_name" property="originalProductName"/>
+        <result column="original_product_specification" property="originalProductSpecification"/>
+        <result column="varieties" property="varieties"/>
+        <result column="crm_goods_code" property="crmGoodsCode"/>
+        <result column="crm_goods_name" property="crmGoodsName"/>
+        <result column="crm_goods_spec" property="crmGoodsSpec"/>
+        <result column="price" property="price"/>
+        <result column="original_quantity" property="originalQuantity"/>
+        <result column="original_unit" property="originalUnit"/>
+        <result column="amount_price" property="amountPrice"/>
+        <result column="batch_no" property="batchNo"/>
+        <result column="original_price" property="originalPrice"/>
+        <result column="sign_msg" property="signMsg"/>
+        <result column="goods_possible_error" property="goodsPossibleError"/>
+        <result column="terminal_customer_type" property="terminalCustomerType"/>
+        <result column="department_label" property="departmentLabel"/>
+        <result column="judgment_label" property="judgmentLabel"/>
+        <result column="remark_label" property="remarkLabel"/>
+        <result column="data_tag" property="dataTag"/>
+        <result column="del_flag" property="delFlag"/>
+        <result column="create_user" property="createUser"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_user" property="updateUser"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="remark" property="remark"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,
+        flow_sale_id, eid, so_id, so_time, year, month, business_code, business_name, business_department, commercial_business_department, commercial_province_area, commercial_business_province, commercial_area_code, commercial_area, commercial_manager_code, commercial_manager_name, commercial_representative_code, commercial_representative_name, agreement_level, commercial_attributes, chain_agreement_type, sales_type, commercial_province, commercial_city, commercial_county, original_organization_name, organization_code, organization_name, is_locked, organization_department, organization_business_department, organization_province_area, organization_business_province, organization_area_code, organization_area, manager_code, manager_name, representative_code, representative_name, institutional_province, institutional_city_code, institutional_city, institutional_county_code, institutional_county, customer_type_name, terminal_type, terminal_type_two, organization_level, institutional_country_level, is_chain, chain_attribute, original_product_name, original_product_specification, varieties, crm_goods_code, crm_goods_name, crm_goods_spec, price, original_quantity, original_unit, amount_price, batch_no, original_price, sign_msg, goods_possible_error, terminal_customer_type,department_label,judgment_label, remark_label,data_tag,del_flag, create_user, create_time, update_user, update_time, remark
+    </sql>
+
+    <delete id="deleteFlowSaleSummaryDayByEidAndSoTime">
+        delete from flow_sale_summary_day where eid in
+        <foreach item="item" index="index" collection="eids" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        and so_time <![CDATA[ >= ]]>#{startTime}
+        and so_time<![CDATA[ <= ]]>#{endTime}
+    </delete>
+
+    <update id="updateFlowSaleSummaryDayByTerminalCustomerType">
+        update flow_sale_summary_day set
+        department_label=#{departmentLabel},judgment_label=#{judgmentLabel},remark_label=#{remarkLabel}
+        where eid in
+        <foreach item="item" index="index" collection="eids" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        and so_time <![CDATA[ >= ]]>#{startTime}
+        and so_time<![CDATA[ <= ]]>#{endTime}
+        and crm_goods_code>0
+        and is_locked='否'
+        and judgment_label=''
+        and terminal_customer_type in
+        <foreach item="item" index="index" collection="terminalCustomerTypeList" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+
+</mapper>

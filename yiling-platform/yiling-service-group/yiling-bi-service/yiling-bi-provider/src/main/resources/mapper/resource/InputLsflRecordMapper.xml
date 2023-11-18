@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.bi.resource.dao.InputLsflRecordMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.bi.resource.entity.InputLsflRecordDO">
+    <result column="id" property="id" />
+        <result column="province" property="province" />
+        <result column="bz_code" property="bzCode" />
+        <result column="bz_name" property="bzName" />
+        <result column="customer_type" property="customerType" />
+        <result column="nka_zb" property="nkaZb" />
+        <result column="qd_type" property="qdType" />
+        <result column="xy_type" property="xyType" />
+        <result column="wl_type" property="wlType" />
+        <result column="wl_breed" property="wlBreed" />
+        <result column="wl_code" property="wlCode" />
+        <result column="wl_name" property="wlName" />
+        <result column="account_price" property="accountPrice" />
+        <result column="basic_num" property="basicNum" />
+        <result column="project_fg" property="projectFg" />
+        <result column="project_other" property="projectOther" />
+        <result column="target_num" property="targetNum" />
+        <result column="year_target" property="yearTarget" />
+        <result column="month1_num" property="month1Num" />
+        <result column="month2_num" property="month2Num" />
+        <result column="month3_num" property="month3Num" />
+        <result column="month4_num" property="month4Num" />
+        <result column="month5_num" property="month5Num" />
+        <result column="month6_num" property="month6Num" />
+        <result column="month7_num" property="month7Num" />
+        <result column="month8_num" property="month8Num" />
+        <result column="month9_num" property="month9Num" />
+        <result column="month10_num" property="month10Num" />
+        <result column="month11_num" property="month11Num" />
+        <result column="month12_num" property="month12Num" />
+        <result column="data_timestamp" property="dataTimestamp" />
+        <result column="data_time" property="dataTime" />
+        <result column="data_name" property="dataName" />
+        <result column="data_source" property="dataSource" />
+        <result column="reason" property="reason" />
+        <result column="data_status" property="dataStatus" />
+        <result column="ext01" property="ext01" />
+        <result column="ext02" property="ext02" />
+        <result column="ext03" property="ext03" />
+        <result column="dyear" property="dyear" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,
+        province, bz_code, bz_name, customer_type, nka_zb, qd_type, xy_type, wl_type, wl_breed, wl_code, wl_name, account_price, basic_num, project_fg, project_other, target_num, year_target, month1_num, month2_num, month3_num, month4_num, month5_num, month6_num, month7_num, month8_num, month9_num, month10_num, month11_num, month12_num, data_timestamp, data_time, data_name, data_source, reason, data_status, ext01, ext02, ext03, dyear
+    </sql>
+
+</mapper>

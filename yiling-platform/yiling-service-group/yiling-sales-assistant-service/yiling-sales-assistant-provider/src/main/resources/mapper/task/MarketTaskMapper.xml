@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.sales.assistant.task.dao.MarketTaskMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.sales.assistant.task.entity.MarketTaskDO">
+    <result column="id" property="id" />
+        <result column="task_name" property="taskName" />
+        <result column="task_desc" property="taskDesc" />
+        <result column="sale_type" property="saleType" />
+        <result column="task_type" property="taskType" />
+        <result column="never_expires" property="neverExpires" />
+        <result column="ename" property="ename" />
+        <result column="eid" property="eid" />
+        <result column="task_area" property="taskArea" />
+        <result column="start_time" property="startTime" />
+        <result column="end_time" property="endTime" />
+        <result column="enterprise_type" property="enterpriseType" />
+        <result column="del_flag" property="delFlag" />
+        <result column="task_status" property="taskStatus" />
+        <result column="create_user" property="createUser" />
+        <result column="created_time" property="createdTime" />
+        <result column="update_user" property="updateUser" />
+        <result column="updated_time" property="updatedTime" />
+        <result column="full_cover" property="fullCover" />
+        <result column="task_dept_user" property="taskDeptUser" />
+        <!--<result column="category" property="category" />-->
+        <result column="finish_type" property="finishType" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,
+        task_name, task_desc, sale_type, finish_type, task_type, never_expires, ename, eid, task_area, start_time, end_time, del_flag, task_status, create_user, created_time, update_user, updated_time, full_cover, task_dept_user,enterprise_type
+    </sql>
+    <select id="queryTaskListPage" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"/>  from sa_market_task b
+        <where>
+            <if test="t.taskIds != null">
+                and id in
+                <foreach collection="t.taskIds" item="id" index="index" open="(" close=")" separator=",">
+                    #{id}
+                </foreach>
+            </if>
+            <if test="t.taskName != null and t.taskName !=''">
+                and  task_name  like CONCAT('%',#{t.taskName},'%')
+            </if>
+            <if test="t.taskType != null">
+                and  task_type = #{t.taskType}
+            </if>
+            <if test="t.startcTime != null">
+                and  created_time &gt;= #{t.startcTime}
+            </if>
+            <if test="t.endcTime != null">
+                and  created_time &lt;= #{t.endcTime}
+            </if>
+            <if test="t.startTime != null">
+                and  start_time &gt;= #{t.startTime}
+            </if>
+            <if test="t.endTime != null">
+                and  start_time &lt;= #{t.endTime}
+            </if>
+            <if test="t.starteTime != null">
+                and  end_time &gt;= #{t.starteTime}
+            </if>
+            <if test="t.endeTime != null">
+                and  end_time &lt;= #{t.endeTime}
+            </if>
+            <if test="t.finishType != null ">
+                and finish_type = #{t.finishType}
+            </if>
+            <if test="t.taskStatus != null">
+                and  b.task_status = #{t.taskStatus}
+            </if>
+            and del_flag = 0
+        </where>
+        order by id  desc
+    </select>
+</mapper>

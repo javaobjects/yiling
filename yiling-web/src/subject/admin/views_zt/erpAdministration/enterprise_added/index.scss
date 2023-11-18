@@ -1,0 +1,97 @@
+@import "~@/common/styles/mixin.scss";
+
+.app-container {
+  padding-bottom: 80px;
+  .c-box {
+    padding: 10px 16px;
+    padding-top: 20px;
+    background-color: $white;
+    border-radius: 4px;
+  }
+  .explain{
+    color: #999;
+    font-size: 14px;
+    padding-left: 150px;
+  }
+  .bottom-view {
+    position: fixed;
+    bottom: 0;
+    left: $sideBarWidth;
+    right: 0;
+    height: 64px;
+    background-color: $white;
+    padding: 16px;
+    z-index: 10;
+  }
+  .choice{
+    display: inline-block;
+    color: #1790ff;
+    margin-left: 20px;
+    cursor: pointer;
+  }
+  .demo-ruleForm-form{
+    position: relative;
+  }
+  .drop-down{
+    width: 360px;
+    height: 140px;
+    position: absolute;
+    top: 36px;
+    left: 0;
+    z-index: 999;
+    border: solid 1px #dfe4ed;
+    border-radius: 4px;
+    background-color: #fff;
+    overflow-y: auto;
+  }
+  .drop-down ul{
+    padding: 6px 0;
+    margin: 0;
+   
+  }
+  .drop-down ul li{
+    list-style: none;
+    padding: 0 20px;
+    margin: 0;
+    color: #666;
+    cursor: pointer;
+  }
+  .drop-down ul li:hover {
+    color: #1790ff;
+    background-color: #f5f7fa;
+  }
+  .common-box {
+    .el-input {
+      width: 220px;
+    }
+    .search-box {
+      // padding: 0 16px;
+      position: relative;
+
+      .box {
+        .title {
+          font-size: $font-size-large;
+          line-height: $font-size-large-lh;
+          color: $font-important-color;
+          margin-bottom: 8px;
+        }
+        .el-input {
+          width: 220px;
+        }
+        .el-select {
+          width: 220px;
+        }
+      }
+     
+
+      .bottom-btn {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+      }
+    }
+  }
+  .select-width ::v-deep .el-input {
+    width: 360px;
+  }
+}

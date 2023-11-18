@@ -1,0 +1,372 @@
+@import "~@/common/styles/mixin.scss";
+.app-container {
+  .top-bar-box {
+    display: flex;
+    justify-content: space-between;
+  }
+  .top-btn {
+    position: relative;
+    width: 100%;
+    font-size: $font-size-large;
+    line-height: $font-size-large-lh;
+    margin: 40px 0 8px 0;
+    color: $font-important-color;
+    .right-btn {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+    }
+  }
+
+  .tool {
+    margin: 8px 0 8px 0;
+    //width: 320px;
+  }
+  .common-box {
+    .add-box {
+      margin-bottom: 24px;
+    }
+    .el-input {
+      width: 260px;
+      ::v-deep .el-input__inner::placeholder {
+        color: #C8C9CC;
+      }
+    }
+    .search-box {
+      padding: 0 16px 0 0px;
+      position: relative;
+      .box {
+        .title {
+          font-size: $font-size-large;
+          line-height: $font-size-large-lh;
+          color: $font-important-color;
+          margin-bottom: 8px;
+        }
+      }
+      .el-select {
+        width: 260px;
+      }
+
+      .bottom-btn {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+      }
+    }
+  }
+  .color-666 {
+    color: #666;
+  }
+  .color-green {
+    color: #52c41a;
+  }
+  .color-red {
+    color: #e62412;
+  }
+  .mar-l-32 {
+    margin-left: 32px;
+  }
+  .mar-t-24 {
+    margin-top: 24px;
+  }
+  .line-content {
+    height: 140px;
+  }
+  .bottom-table-view {
+    .tab-box {
+      display: flex;
+      justify-content: space-between;
+      .tab {
+        // width: 100%;
+        height: 40px;
+        border-bottom: 1px solid #DCDEE0;
+        :first-child {
+          border-top-left-radius: 4px;
+        }
+        :last-child {
+          border-top-right-radius: 4px;
+        }
+        .tab-item {
+          width: 112px;
+          height: 40px;
+          line-height: 40px;
+          text-align: center;
+          display: inline-block;
+          line-height: 40px;
+          background: #F7F8FA;
+          border: 1px solid #DCDEE0;
+          font-size: 14px;
+          color: #323233;
+          cursor: pointer;
+          &:not(:last-child) {
+            border-right: none;
+          }
+        }
+        .tab-active {
+          background: #fff;
+          border-bottom: none;
+        }
+      }
+      .btn-box {
+        flex: 1;
+        text-align: right;
+        border-bottom: 1px solid #DCDEE0;
+        .info-text {
+          margin-right: 8px;
+          font-size: 14px;
+          font-weight: 400;
+          color: #7D7E80;
+          line-height: 20px;
+        }
+      }
+    }
+    .prompt{
+      font-weight: 400;
+      color: #7D7E80;
+      span {
+        color: #1AAC75;
+      }
+      .from-erp {
+        color: #F39217;
+      }
+    }
+    .my-table {
+      .products-box {
+        display: flex;
+        align-items: center;
+        .my-image {
+          width: 60px;
+          height: 60px;
+          flex-shrink: 0;
+        }
+        .products-info {
+          // height: 60px;
+          margin-left: 8px;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          .products-name {
+            // height: 20px;
+            max-height: 40px;
+            overflow: hidden;
+            font-size: 14px;
+            font-weight: 600;
+            color: #323233;
+            line-height: 20px;
+          }
+          .basic-info {
+            height: 17px;
+            font-size: 14px;
+            font-weight: 400;
+            color: #7D7E80;
+            line-height: 17px;
+          }
+        }
+      }
+      .specifications-box {
+        .specifications-info {
+          max-height: 40px;
+          line-height: 19px;
+          overflow: hidden;
+        }
+      }
+      .facture-box {
+        .facture-info {
+          max-height: 40px;
+          line-height: 19px;
+          overflow: hidden;
+        }
+      }
+      .mall-flag {
+        .basic-info {
+          height: 17px;
+          font-size: 14px;
+          font-weight: 400;
+          color: #7D7E80;
+          line-height: 17px;
+        }
+      }
+      .audit-status {
+        .status-box {
+          .status {
+            .status-icon-box {
+              display: flex;
+              align-items: center;
+              justify-content: flex-start;
+              .status-icon {
+                width: 6px;
+                height: 6px;
+                margin-right: 8px;
+                border-radius: 50%;
+              }
+              .pass {
+                background: #00B42A;
+              }
+              .pending {
+                background: #1989FA;
+              }
+              .reject {
+                background: #EB4438;
+              }
+              .unjoin {
+                background: #969799;
+              }
+
+            }
+          }
+        }
+      }
+      .category-box {
+        .basic-info {
+          height: 17px;
+          font-size: 14px;
+          font-weight: 400;
+          color: #7D7E80;
+          line-height: 17px;
+        }
+      }
+      .reject-reason-box {
+        display: flex;
+        cursor: pointer;
+        .reason-icon {
+          flex-shrink: 0;
+          margin-right: 12px;
+          margin-top: 7px;
+          width: 6px;
+          height: 6px;
+          border-radius: 50%;
+          background: #EB4438;
+        }
+        .reason-text {
+          max-height: 40px;
+          overflow: hidden;
+          display: -webkit-box;
+          text-overflow: ellipsis;
+          -webkit-box-orient: vertical;
+          -webkit-line-clamp: 2;
+          line-height: 19px;
+        }
+        .reject-btn {
+          margin-left: 4px;
+        }
+      }
+      ::v-deep .operate-column {
+        .cell {
+          padding: 0 16px !important;
+        }
+      }
+      .pad-b-8 {
+        padding-bottom: 8px;
+      }
+      .switch {
+        margin-top: 14px;
+      }
+      ::v-deep .el-table .cell {
+        overflow: auto;
+      }
+      ::v-deep .pagination-box {
+        display: flex;
+        justify-content: flex-end;
+        flex-direction: row;
+        .select-box {
+          flex: 1;
+          .select-text {
+            height: 20px;
+            font-size: 14px;
+            font-weight: 400;
+            color: #7D7E80;
+            line-height: 20px;
+          }
+          .select-num {
+            margin: 0 4px;
+          }
+        }
+      }
+      .el-table--enable-row-hover .el-table__body tr:hover > td {
+        background-color: #F2F4F7 !important;
+      }
+    }
+  }
+  .export-dialog {
+    .export-content {
+      padding: 16px;
+      .export-select {
+        padding: 16px;
+      }
+      .export-info {
+        padding: 16px;
+        background: #F7F8FA;
+        border-radius: 2px;
+        .export-info-title {
+          height: 20px;
+          font-size: 14px;
+          font-weight: 500;
+          color: #646566;
+          line-height: 20px;
+          margin-bottom: 8px;
+        }
+        .info-item {
+          line-height: 20px;
+        }
+        .info-notice {
+          margin-top: 8px;
+          width: 528px;
+          height: 20px;
+          font-size: 14px;
+          font-weight: 400;
+          color: #323233;
+          line-height: 20px;
+        }
+      }
+    }
+  }
+  .export-log-dialog {
+    ::v-deep .el-dialog {
+      display: flex;
+      flex-direction: column;
+      margin:0 !important;
+      position: absolute;
+      top: 50% !important;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      .el-dialog__body {
+        flex: 1;
+        overflow: auto;
+        max-height: 80vh;
+        .export-log-content {
+          padding: 16px 16px 0 16px;
+          .export-title {
+            margin-bottom: 8px;
+            height: 20px;
+            font-size: 14px;
+            font-weight: 400;
+            color: #323233;
+            line-height: 20px;
+          }
+          .export-table-box {
+            .status-box {
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              .status-icon {
+                margin-right: 8px;
+                width: 6px;
+                height: 6px;
+                border-radius: 50%;
+              }
+              .pass {
+                background: #00B42A;
+              }
+              .reject {
+                background: #EB4438;
+              }
+              .pending {
+                background: #1989FA;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

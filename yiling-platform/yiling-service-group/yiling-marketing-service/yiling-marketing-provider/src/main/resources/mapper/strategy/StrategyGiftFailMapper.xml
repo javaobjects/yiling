@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.marketing.strategy.dao.StrategyGiftFailMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.marketing.strategy.entity.StrategyGiftFailDO">
+    <result column="id" property="id" />
+        <result column="marketing_strategy_id" property="marketingStrategyId" />
+        <result column="activity_record_id" property="activityRecordId" />
+        <result column="eid" property="eid" />
+        <result column="type" property="type" />
+        <result column="gift_id" property="giftId" />
+        <result column="count" property="count" />
+        <result column="send_time" property="sendTime" />
+        <result column="del_flag" property="delFlag" />
+        <result column="create_user" property="createUser" />
+        <result column="create_time" property="createTime" />
+        <result column="update_user" property="updateUser" />
+        <result column="update_time" property="updateTime" />
+        <result column="remark" property="remark" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,
+        marketing_strategy_id, activity_record_id, eid, type, gift_id, count, send_time, del_flag, create_user, create_time, update_user, update_time, remark
+    </sql>
+
+</mapper>

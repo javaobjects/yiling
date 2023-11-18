@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.order.order.dao.OrderReturnMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.order.order.entity.OrderReturnDO">
+        <result column="id" property="id"/>
+        <result column="order_id" property="orderId"/>
+        <result column="order_no" property="orderNo"/>
+        <result column="return_no" property="returnNo"/>
+        <result column="return_source" property="returnSource"/>
+        <result column="order_return_type" property="orderReturnType"/>
+        <result column="buyer_eid" property="buyerEid"/>
+        <result column="buyer_ename" property="buyerEname"/>
+        <result column="seller_eid" property="sellerEid"/>
+        <result column="seller_ename" property="sellerEname"/>
+        <result column="distributor_eid" property="distributorEid"/>
+        <result column="distributor_ename" property="distributorEname"/>
+        <result column="invoice_status" property="invoiceStatus"/>
+        <result column="return_type" property="returnType"/>
+        <result column="return_status" property="returnStatus"/>
+        <result column="return_audit_time" property="returnAuditTime"/>
+        <result column="return_audit_user" property="returnAuditUser"/>
+        <result column="fail_reason" property="failReason"/>
+        <result column="return_amount" property="returnAmount"/>
+        <result column="cash_discount_amount" property="cashDiscountAmount"/>
+        <result column="ticket_discount_amount" property="ticketDiscountAmount"/>
+        <result column="platform_coupon_discount_amount" property="platformCouponDiscountAmount"/>
+        <result column="coupon_discount_amount" property="couponDiscountAmount"/>
+        <result column="presale_discount_amount" property="presaleDiscountAmount"/>
+        <result column="platform_payment_discount_amount" property="platformPaymentDiscountAmount"/>
+        <result column="shop_payment_discount_amount" property="shopPaymentDiscountAmount"/>
+        <result column="contacter_id" property="contacterId"/>
+        <result column="contacter_name" property="contacterName"/>
+        <result column="department_id" property="departmentId"/>
+        <result column="erp_push_status" property="erpPushStatus"/>
+        <result column="erp_push_time" property="erpPushTime"/>
+        <result column="erp_push_remark" property="erpPushRemark"/>
+        <result column="del_flag" property="delFlag"/>
+        <result column="create_user" property="createUser"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_user" property="updateUser"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="remark" property="remark"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id
+        ,order_id, order_no, return_no, return_source, order_return_type, buyer_eid, buyer_ename, seller_eid, seller_ename, distributor_eid, distributor_ename, return_type, return_status, return_amount, cash_discount_amount, ticket_discount_amount, platform_coupon_discount_amount, coupon_discount_amount,
+        platform_payment_discount_amount,shop_payment_discount_amount,presale_discount_amount,create_user, create_time, update_user,update_time, remark,return_audit_time, return_audit_user, contacter_id, contacter_name, department_id , erp_push_status, erp_push_time, erp_push_remark,del_flag, fail_reason
+    </sql>
+
+    <select id="selectErpPullReturnOrder"
+            parameterType="com.yiling.order.order.dto.request.OrderReturnPullErpPageRequest" resultMap="BaseResultMap">
+        SELECT t.*
+        FROM order_return t
+        LEFT JOIN `order` d ON t.order_id = d.id
+        <where>
+            t.del_flag=0
+            AND t.erp_push_status = 1
+            AND t.return_type &lt;&gt; 1
+            AND t.return_status = 2
+            AND d.invoice_status in (3, 6)
+            <if test="request.sellerEids != null and request.sellerEids.size() > 0">
+                and t.seller_eid in
+                <foreach item="item" index="index" collection="request.sellerEids"
+                         open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="request.startCreateTime != null">
+                AND t.create_time &gt;= #{request.startCreateTime}
+            </if>
+            <if test="request.endCreateTime != null">
+                AND t.create_time &lt;= #{request.endCreateTime}
+            </if>
+        </where>
+        ORDER BY t.id ASC
+    </select>
+
+    <select id="getOrderReturnDetailByEidAndTime"
+            parameterType="com.yiling.order.order.dto.request.QueryOrderUseAgreementRequest"
+            resultType="com.yiling.order.order.dto.AgreementOrderReturnDetailDTO">
+        SELECT c.id AS id,
+        c.order_id AS orderId,
+        c.return_audit_time AS returnAuditTime,
+        t.goods_id AS goodsId,
+        t.detail_id AS detailId,
+        t.return_amount AS returnAmount,
+        t.return_quantity AS returnQuantity
+        FROM order_return_detail t
+        LEFT JOIN order_return c ON t.return_id = c.id
+        LEFT JOIN `order` d ON c.order_id = d.id
+        <where>
+            t.del_flag=0
+            AND c.return_type &lt;&gt; 1
+            AND c.return_status = 2
+            <if test="request.easAccount != null">
+                AND d.customer_erp_code = #{request.easAccount}
+            </if>
+            <if test="request.distributorEid != null">
+                AND d.distributor_eid = #{request.distributorEid}
+            </if>
+            <if test="request.buyerEids != null and request.buyerEids.size() > 0">
+                AND d.buyer_eid in
+                <foreach item="item" index="index" collection="request.buyerEids"
+                         open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="request.startCreateTime != null">
+                AND c.return_audit_time &gt;= #{request.startCreateTime}
+            </if>
+            <if test="request.endCreateTime != null">
+                AND c.return_audit_time &lt;= #{request.endCreateTime}
+            </if>
+        </where>
+    </select>
+</mapper>

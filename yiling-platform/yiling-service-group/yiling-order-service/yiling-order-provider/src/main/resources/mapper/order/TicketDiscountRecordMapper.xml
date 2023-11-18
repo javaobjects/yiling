@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.order.order.dao.TicketDiscountRecordMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.order.order.entity.TicketDiscountRecordDO">
+    <result column="id" property="id" />
+        <result column="eid" property="eid" />
+        <result column="ename" property="ename" />
+        <result column="seller_erp_code" property="sellerErpCode" />
+        <result column="customer_erp_code" property="customerErpCode" />
+        <result column="ticket_discount_no" property="ticketDiscountNo" />
+        <result column="total_amount" property="totalAmount" />
+        <result column="used_amount" property="usedAmount" />
+        <result column="available_amount" property="availableAmount" />
+        <result column="status" property="status" />
+        <result column="execute_user_code" property="executeUserCode" />
+        <result column="del_flag" property="delFlag" />
+        <result column="create_user" property="createUser" />
+        <result column="create_time" property="createTime" />
+        <result column="update_user" property="updateUser" />
+        <result column="update_time" property="updateTime" />
+        <result column="remark" property="remark" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,
+        eid, ename, seller_erp_code, customer_erp_code, ticket_discount_no, total_amount, used_amount, status, execute_user_code
+        del_flag, create_user, create_time, update_user, update_time, remark
+    </sql>
+    
+    <update id="updateUsedAmount">
+        update
+            ticket_discount_record
+        set
+            used_amount = used_amount + #{usedAmount},
+            available_amount = total_amount - used_amount
+        where
+            ticket_discount_no = #{ticketDiscountNo}
+            and total_amount - used_amount >= #{usedAmount}
+    </update>
+
+    <update id="reduceUsedAmount">
+        update
+            ticket_discount_record
+        set
+            used_amount = used_amount - #{usedAmount},
+            available_amount = total_amount - used_amount
+        where
+            ticket_discount_no = #{ticketDiscountNo}
+            and used_amount >= #{usedAmount}
+    </update>
+
+</mapper>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.cms.content.dao.QaMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.cms.content.entity.QaDO">
+    <result column="id" property="id" />
+        <result column="qa_source" property="qaSource" />
+        <result column="qa_type" property="qaType" />
+        <result column="content_id" property="contentId" />
+        <result column="qa_id" property="qaId" />
+        <result column="line_id" property="lineId" />
+        <result column="show_status" property="showStatus" />
+        <result column="content" property="content" />
+        <result column="del_flag" property="delFlag" />
+        <result column="create_user" property="createUser" />
+        <result column="create_time" property="createTime" />
+        <result column="update_user" property="updateUser" />
+        <result column="update_time" property="updateTime" />
+        <result column="remark" property="remark" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,
+        qa_source, qa_type, content_id, qa_id, line_id, show_status, content, del_flag, create_user, create_time, update_user, update_time, remark
+    </sql>
+
+    <select id="getQaCount" resultType="java.lang.Integer">
+        select count(id)
+        from (select id
+              from cms_qa
+              where show_status = 1
+                and content_id = #{contentId}
+                and qa_type = 1
+              union
+              select son.id
+              from cms_qa father,
+                   cms_qa son
+              where father.id = son.qa_id
+                and father.show_status = 1
+                and son.show_status = 1
+                and son.content_id = #{contentId}
+                and son.qa_type = 2) temp
+    </select>
+
+</mapper>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.order.order.dao.OrderReturnDetailMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.order.order.entity.OrderReturnDetailDO">
+        <result column="id" property="id" />
+        <result column="return_id" property="returnId" />
+        <result column="detail_id" property="detailId" />
+        <result column="standard_id" property="standardId" />
+        <result column="goods_id" property="goodsId" />
+        <result column="goods_sku_id" property="goodsSkuId" />
+        <result column="goods_erp_code" property="goodsErpCode" />
+        <result column="return_quantity" property="returnQuantity" />
+        <result column="return_amount" property="returnAmount" />
+        <result column="return_cash_discount_amount" property="returnCashDiscountAmount" />
+        <result column="return_ticket_discount_amount" property="returnTicketDiscountAmount" />
+        <result column="return_platform_coupon_discount_amount" property="returnPlatformCouponDiscountAmount" />
+        <result column="return_coupon_discount_amount" property="returnCouponDiscountAmount" />
+        <result column="return_presale_discount_amount" property="returnPresaleDiscountAmount" />
+        <result column="return_platform_coupon_discount_amount" property="returnPlatformCouponDiscountAmount" />
+        <result column="return_shop_payment_discount_amount" property="returnShopPaymentDiscountAmount" />
+        <result column="del_flag" property="delFlag" />
+        <result column="create_user" property="createUser" />
+        <result column="update_user" property="updateUser" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+        <result column="remark" property="remark" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,
+        return_id, detail_id, standard_id, goods_id, goods_sku_id, goods_erp_code, return_quantity,del_flag, create_user, update_user, create_time, update_time, remark, return_amount, return_cash_discount_amount, return_ticket_discount_amount, return_platform_coupon_discount_amount, return_coupon_discount_amount,return_presale_discount_amount,return_platform_coupon_discount_amount,return_shop_payment_discount_amount
+    </sql>
+
+</mapper>

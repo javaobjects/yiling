@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.settlement.b2b.dao.SettlementOrderSyncMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.settlement.b2b.entity.SettlementOrderSyncDO">
+    <result column="id" property="id" />
+        <result column="order_id" property="orderId" />
+        <result column="order_no" property="orderNo" />
+        <result column="seller_eid" property="sellerEid" />
+        <result column="buyer_eid" property="buyerEid" />
+        <result column="payment_method" property="paymentMethod" />
+        <result column="payment_amount" property="paymentAmount" />
+        <result column="refund_payment_amount" property="refundPaymentAmount" />
+        <result column="coupon_amount" property="couponAmount" />
+        <result column="refund_coupon_amount" property="refundCouponAmount" />
+        <result column="gift_amount" property="giftAmount" />
+        <result column="refund_gift_amount" property="refundGiftAmount" />
+        <result column="promotion_amount" property="promotionAmount" />
+        <result column="refund_promotion_amount" property="refundPromotionAmount" />
+        <result column="com_pac_amount" property="comPacAmount" />
+        <result column="refund_com_pac_amount" property="refundComPacAmount" />
+        <result column="platform_coupon_id" property="platformCouponId" />
+        <result column="shop_coupon_id" property="shopCouponId" />
+        <result column="platform_coupon_percent" property="platformCouponPercent" />
+        <result column="shop_coupon_percent" property="shopCouponPercent" />
+        <result column="platform_coupon_discount_amount" property="platformCouponDiscountAmount" />
+        <result column="shop_coupon_discount_amount" property="shopCouponDiscountAmount" />
+        <result column="return_platform_coupon_discount_amount" property="returnPlatformCouponDiscountAmount" />
+        <result column="return_coupon_discount_amount" property="returnCouponDiscountAmount" />
+        <result column="presale_deposit_amount" property="presaleDepositAmount" />
+        <result column="presale_discount_amount" property="presaleDiscountAmount" />
+        <result column="refund_pre_amount" property="refundPreAmount" />
+        <result column="pay_discount_amount" property="payDiscountAmount" />
+        <result column="refund_pay_amount" property="refundPayAmount" />
+        <result column="order_create_time" property="orderCreateTime" />
+        <result column="receive_time" property="receiveTime" />
+        <result column="cancel_time" property="cancelTime" />
+        <result column="default_status" property="defaultStatus" />
+        <result column="payment_status" property="paymentStatus" />
+        <result column="order_status" property="orderStatus" />
+        <result column="generate_status" property="generateStatus" />
+        <result column="goods_settlement_status" property="goodsSettlementStatus" />
+        <result column="sale_settlement_status" property="saleSettlementStatus" />
+        <result column="data_status" property="dataStatus" />
+        <result column="status" property="status" />
+        <result column="explication" property="explication" />
+        <result column="del_flag" property="delFlag" />
+        <result column="create_time" property="createTime" />
+        <result column="create_user" property="createUser" />
+        <result column="update_time" property="updateTime" />
+        <result column="update_user" property="updateUser" />
+        <result column="remark" property="remark" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,
+        order_id, order_no, seller_eid, buyer_eid, payment_method, payment_amount, refund_payment_amount, coupon_amount, refund_coupon_amount, gift_amount, refund_gift_amount, promotion_amount, refund_promotion_amount, com_pac_amount, refund_com_pac_amount, platform_coupon_id, shop_coupon_id, platform_coupon_percent, shop_coupon_percent, platform_coupon_discount_amount, shop_coupon_discount_amount, return_platform_coupon_discount_amount, return_coupon_discount_amount, presale_deposit_amount, presale_discount_amount, refund_pre_amount, pay_discount_amount, refund_pay_amount, order_create_time, receive_time, cancel_time, default_status, payment_status, order_status, generate_status, goods_settlement_status, sale_settlement_status, presale_settlement_status, data_status, status, explication, del_flag, create_time, create_user, update_time, update_user, remark
+    </sql>
+
+</mapper>

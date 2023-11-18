@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.cms.evaluate.dao.HealthEvaluateQuestionBmiMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.cms.evaluate.entity.HealthEvaluateQuestionBmiDO">
+    <result column="id" property="id" />
+        <result column="health_evaluate_id" property="healthEvaluateId" />
+        <result column="health_evaluate_question_id" property="healthEvaluateQuestionId" />
+        <result column="range_start_type" property="rangeStartType" />
+        <result column="range_start" property="rangeStart" />
+        <result column="range_end_type" property="rangeEndType" />
+        <result column="range_end" property="rangeEnd" />
+        <result column="if_score_sex" property="ifScoreSex" />
+        <result column="score" property="score" />
+        <result column="score_men" property="scoreMen" />
+        <result column="score_women" property="scoreWomen" />
+        <result column="option_rank" property="optionRank" />
+        <result column="create_user" property="createUser" />
+        <result column="create_time" property="createTime" />
+        <result column="update_user" property="updateUser" />
+        <result column="update_time" property="updateTime" />
+        <result column="remark" property="remark" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,
+        health_evaluate_id, health_evaluate_question_id, range_start_type, range_start, range_end_type, range_end, if_score_sex, score, score_men, score_women, option_rank, create_user, create_time, update_user, update_time, remark
+    </sql>
+
+</mapper>

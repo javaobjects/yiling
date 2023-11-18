@@ -1,0 +1,42 @@
+.app-container {
+  .search-bar {
+    background: #fff;
+    border-radius: 4px;
+    padding: 0 15px 15px 15px;
+    .el-input {
+      width: 260px;
+      margin-right: 10px;
+    }
+    .el-select {
+      width: 260px;
+      margin-right: 10px;
+    }
+  }
+  .down-box {
+    width: 100%;
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    // .btn {
+    //   float: right;
+    // }
+  }
+  .time-form {
+    display: flex;
+    .line {
+      width: 50px;
+      height: 36px;
+      line-height: 36px;
+      margin: 0 10px;
+    }
+  }
+  .dialog-content {
+    .el-select {
+      width: 360px;
+    }
+  }
+}
+.pad-b-100 {
+  padding-bottom: 80px;
+}

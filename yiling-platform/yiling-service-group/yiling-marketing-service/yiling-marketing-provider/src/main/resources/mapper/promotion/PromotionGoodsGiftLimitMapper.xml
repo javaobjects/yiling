@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.marketing.promotion.dao.PromotionGoodsGiftLimitMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.marketing.promotion.entity.PromotionGoodsGiftLimitDO">
+        <result column="id" property="id"/>
+        <result column="promotion_activity_id" property="promotionActivityId"/>
+        <result column="goods_gift_id" property="goodsGiftId"/>
+        <result column="promotion_stock" property="promotionStock"/>
+        <result column="used_stock" property="usedStock"/>
+        <result column="del_flag" property="delFlag"/>
+        <result column="create_user" property="createUser"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_user" property="updateUser"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="remark" property="remark"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, promotion_activity_id, goods_gift_id, promotion_stock, used_stock, del_flag, create_user, create_time, update_user, update_time, remark
+    </sql>
+
+
+    <update id="reducePromotionGoodsGift">
+        update marketing_promotion_goods_gift_limit t
+        set t.used_stock = t.used_stock + #{reduceQuality}
+        where t.promotion_activity_id = #{activityId}
+            and t.goods_gift_id = #{goodsGiftId}
+    </update>
+
+    <select id="pageGiftOrder"
+            parameterType="com.yiling.marketing.promotion.dto.request.PromotionGoodsGiftUsedRequest"
+            resultType="com.yiling.marketing.promotion.dto.PromotionGoodsGiftUsedDTO">
+        SELECT d.id             AS id,
+               g.gift_name      AS giftName,
+               d.order_no       AS orderNo,
+               d.create_user    AS createUser,
+               d.buyer_eid      AS buyerEid
+        FROM `order` d
+            LEFT JOIN order_gift g ON d.id = g.order_id
+        WHERE g.promotion_activity_id = #{request.promotionActivityId}
+        ORDER BY d.create_time DESC
+    </select>
+
+    <update id="reduceActivityGift">
+        update marketing_promotion_goods_gift_limit t
+        set t.promotion_stock = t.promotion_stock - #{reduceQuality},
+            t.update_user       = #{opUserId},
+            t.update_time       = #{opTime}
+        where t.id = #{id}
+    </update>
+
+</mapper>

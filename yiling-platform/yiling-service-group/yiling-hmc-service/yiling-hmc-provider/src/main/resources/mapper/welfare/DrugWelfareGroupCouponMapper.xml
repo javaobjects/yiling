@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.hmc.welfare.dao.DrugWelfareGroupCouponMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.hmc.welfare.entity.DrugWelfareGroupCouponDO">
+        <result column="id" property="id"/>
+        <result column="group_id" property="groupId"/>
+        <result column="drug_welfare_id" property="drugWelfareId"/>
+        <result column="drug_welfare_coupon_id" property="drugWelfareCouponId"/>
+        <result column="coupon_code" property="couponCode"/>
+        <result column="coupon_status" property="couponStatus"/>
+        <result column="requirement_number" property="requirementNumber"/>
+        <result column="give_number" property="giveNumber"/>
+        <result column="coupon_id" property="couponId"/>
+        <result column="active_time" property="activeTime"/>
+        <result column="verify_time" property="verifyTime"/>
+        <result column="del_flag" property="delFlag"/>
+        <result column="create_user" property="createUser"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_user" property="updateUser"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="remark" property="remark"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id ,group_id, drug_welfare_id, drug_welfare_coupon_id, coupon_code, coupon_status, requirement_number, give_number, coupon_id, active_time, verify_time, del_flag, create_user, create_time, update_user, update_time, remark
+    </sql>
+
+    <!--福利券使用统计导出-->
+    <select id="exportStatistics" resultType="com.yiling.hmc.welfare.dto.DrugWelfareGroupCouponStatisticsPageDTO">
+        SELECT
+        c.id,
+        g.user_id,
+        g.drug_welfare_id,
+        g.eid,
+        g.seller_user_id,
+        g.medicine_user_name,
+        g.medicine_user_phone,
+        g.join_group_id,
+        g.create_time,
+        c.group_id,
+        c.drug_welfare_coupon_id,
+        c.coupon_code,
+        c.coupon_status,
+        c.requirement_number,
+        c.give_number,
+        c.coupon_id,
+        c.active_time,
+        c.verify_time
+        FROM
+        hmc_drug_welfare_group_coupon c
+        LEFT JOIN hmc_drug_welfare_group g ON c.group_id = g.id
+        WHERE
+        c.del_flag = 0
+        AND g.del_flag = 0
+        <if test="request.userId != null">
+            and g.user_id = #{request.userId}
+        </if>
+        <if test="request.drugWelfareId != null">
+            and g.drug_welfare_id = #{request.drugWelfareId}
+        </if>
+        <if test="request.eid != null">
+            and g.eid = #{request.eid}
+        </if>
+        <if test="request.sellerUserId != null">
+            and g.seller_user_id = #{request.sellerUserId}
+        </if>
+        <if test="request.medicineUserName != null and request.medicineUserName != '' ">
+            and g.medicine_user_name like concat('%',#{request.medicineUserName},'%')
+        </if>
+        <if test="request.medicineUserPhone != null and request.medicineUserPhone != '' ">
+            and g.medicine_user_phone = #{request.medicineUserPhone}
+        </if>
+        <if test="request.joinGroupId !=null ">
+            and g.join_group_id = #{request.joinGroupId}
+        </if>
+        <if test="request.startTime != null">
+            and g.create_time &gt;= #{request.startTime}
+        </if>
+        <if test="request.endTime != null">
+            and g.create_time &lt;= #{request.endTime}
+        </if>
+    </select>
+
+</mapper>

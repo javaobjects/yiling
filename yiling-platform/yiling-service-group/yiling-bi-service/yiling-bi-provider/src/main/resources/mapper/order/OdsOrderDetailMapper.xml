@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.bi.order.dao.OdsOrderDetailMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.bi.order.entity.OdsOrderDetailDO">
+        <id column="datailid" property="datailid" />
+        <result column="id" property="id" />
+        <result column="order_no" property="orderNo" />
+        <result column="batch_no" property="batchNo" />
+        <result column="buyer_eid" property="buyerEid" />
+        <result column="buyer_ename" property="buyerEname" />
+        <result column="buyer_province_code" property="buyerProvinceCode" />
+        <result column="buyer_city_code" property="buyerCityCode" />
+        <result column="buyer_region_code" property="buyerRegionCode" />
+        <result column="seller_eid" property="sellerEid" />
+        <result column="seller_ename" property="sellerEname" />
+        <result column="seller_erp_code" property="sellerErpCode" />
+        <result column="distributor_eid" property="distributorEid" />
+        <result column="distributor_ename" property="distributorEname" />
+        <result column="customer_erp_code" property="customerErpCode" />
+        <result column="total_amount" property="totalAmount" />
+        <result column="cash_discount_amount" property="cashDiscountAmount" />
+        <result column="ticket_discount_no" property="ticketDiscountNo" />
+        <result column="ticket_discount_amount" property="ticketDiscountAmount" />
+        <result column="freight_amount" property="freightAmount" />
+        <result column="platform_coupon_discount_amount" property="platformCouponDiscountAmount" />
+        <result column="coupon_discount_amount" property="couponDiscountAmount" />
+        <result column="return_amount" property="returnAmount" />
+        <result column="return_cash_dicount_amount" property="returnCashDicountAmount" />
+        <result column="return_ticket_discount_amount" property="returnTicketDiscountAmount" />
+        <result column="return_platform_coupon_discount_amount" property="returnPlatformCouponDiscountAmount" />
+        <result column="return_coupon_discount_amount" property="returnCouponDiscountAmount" />
+        <result column="payment_amount" property="paymentAmount" />
+        <result column="payment_type" property="paymentType" />
+        <result column="payment_method" property="paymentMethod" />
+        <result column="pay_channel" property="payChannel" />
+        <result column="pay_source" property="paySource" />
+        <result column="payment_status" property="paymentStatus" />
+        <result column="payment_time" property="paymentTime" />
+        <result column="order_type" property="orderType" />
+        <result column="order_status" property="orderStatus" />
+        <result column="customer_confirm_status" property="customerConfirmStatus" />
+        <result column="customer_confirm_time" property="customerConfirmTime" />
+        <result column="order_source" property="orderSource" />
+        <result column="order_note" property="orderNote" />
+        <result column="delivery_type" property="deliveryType" />
+        <result column="delivery_company" property="deliveryCompany" />
+        <result column="delivery_no" property="deliveryNo" />
+        <result column="contacter_id" property="contacterId" />
+        <result column="contacter_name" property="contacterName" />
+        <result column="department_id" property="departmentId" />
+        <result column="province_manager_id" property="provinceManagerId" />
+        <result column="province_manager_code" property="provinceManagerCode" />
+        <result column="create_user" property="createUser" />
+        <result column="create_time" property="createTime" />
+        <result column="audit_status" property="auditStatus" />
+        <result column="audit_user" property="auditUser" />
+        <result column="audit_time" property="auditTime" />
+        <result column="audit_reject_reason" property="auditRejectReason" />
+        <result column="erp_push_status" property="erpPushStatus" />
+        <result column="erp_push_time" property="erpPushTime" />
+        <result column="erp_push_remark" property="erpPushRemark" />
+        <result column="erp_order_no" property="erpOrderNo" />
+        <result column="erp_delivery_no" property="erpDeliveryNo" />
+        <result column="erp_receivable_no" property="erpReceivableNo" />
+        <result column="erp_receivable_status" property="erpReceivableStatus" />
+        <result column="delivery_user" property="deliveryUser" />
+        <result column="delivery_time" property="deliveryTime" />
+        <result column="receive_user" property="receiveUser" />
+        <result column="receive_time" property="receiveTime" />
+        <result column="finish_time" property="finishTime" />
+        <result column="invoice_time" property="invoiceTime" />
+        <result column="invoice_status" property="invoiceStatus" />
+        <result column="invoice_amount" property="invoiceAmount" />
+        <result column="audit_modify_flag" property="auditModifyFlag" />
+        <result column="audit_modify_time" property="auditModifyTime" />
+        <result column="erp_delivery_status" property="erpDeliveryStatus" />
+        <result column="erp_delivery_time" property="erpDeliveryTime" />
+        <result column="erp_delivery_remark" property="erpDeliveryRemark" />
+        <result column="erp_purchase_status" property="erpPurchaseStatus" />
+        <result column="erp_purchase_time" property="erpPurchaseTime" />
+        <result column="erp_purchase_remark" property="erpPurchaseRemark" />
+        <result column="is_settlement_order" property="isSettlementOrder" />
+        <result column="goods_settlement_status" property="goodsSettlementStatus" />
+        <result column="sale_settlement_status" property="saleSettlementStatus" />
+        <result column="contract_number" property="contractNumber" />
+        <result column="order_id" property="orderId" />
+        <result column="detail_id" property="detailId" />
+        <result column="standard_id" property="standardId" />
+        <result column="goods_sku_id" property="goodsSkuId" />
+        <result column="goods_id" property="goodsId" />
+        <result column="goods_erp_code" property="goodsErpCode" />
+        <result column="goods_name" property="goodsName" />
+        <result column="goods_price" property="goodsPrice" />
+        <result column="goods_quantity" property="goodsQuantity" />
+        <result column="goods_amount" property="goodsAmount" />
+        <result column="changecash_discount_amount" property="changecashDiscountAmount" />
+        <result column="changeticket_discount_amount" property="changeticketDiscountAmount" />
+        <result column="changeplatform_coupon_discount_amount" property="changeplatformCouponDiscountAmount" />
+        <result column="changecoupon_discount_amount" property="changecouponDiscountAmount" />
+        <result column="delivery_quantity" property="deliveryQuantity" />
+        <result column="delivery_amount" property="deliveryAmount" />
+        <result column="delivery_cash_discount_amount" property="deliveryCashDiscountAmount" />
+        <result column="delivery_ticket_discount_amount" property="deliveryTicketDiscountAmount" />
+        <result column="delivery_platform_coupon_discount_amount" property="deliveryPlatformCouponDiscountAmount" />
+        <result column="delivery_coupon_discount_amount" property="deliveryCouponDiscountAmount" />
+        <result column="seller_return_quantity" property="sellerReturnQuantity" />
+        <result column="seller_return_amount" property="sellerReturnAmount" />
+        <result column="seller_return_cash_discount_amount" property="sellerReturnCashDiscountAmount" />
+        <result column="seller_return_ticket_discount_amount" property="sellerReturnTicketDiscountAmount" />
+        <result column="seller_platform_coupon_discount_amount" property="sellerPlatformCouponDiscountAmount" />
+        <result column="seller_coupon_discount_amount" property="sellerCouponDiscountAmount" />
+        <result column="receive_quantity" property="receiveQuantity" />
+        <result column="receive_amount" property="receiveAmount" />
+        <result column="receive_cash_discount_amount" property="receiveCashDiscountAmount" />
+        <result column="receive_ticket_discount_amount" property="receiveTicketDiscountAmount" />
+        <result column="receive_coupon_discount_amount" property="receiveCouponDiscountAmount" />
+        <result column="receive_platform_coupon_discount_amount" property="receivePlatformCouponDiscountAmount" />
+        <result column="return_quantity" property="returnQuantity" />
+        <result column="changereturn_amount" property="changereturnAmount" />
+        <result column="return_cash_discount_amount" property="returnCashDiscountAmount" />
+        <result column="changereturn_ticket_discount_amount" property="changereturnTicketDiscountAmount" />
+        <result column="changereturn_platform_coupon_discount_amount" property="changereturnPlatformCouponDiscountAmount" />
+        <result column="changereturn_coupon_discount_amount" property="changereturnCouponDiscountAmount" />
+        <result column="extract_time" property="extractTime" />
+        <result column="changedetail_id" property="changedetailId" />
+        <result column="flagfield" property="flagfield" />
+        <result column="datailorder_id" property="datailorderId" />
+        <result column="datailorder_no" property="datailorderNo" />
+        <result column="datailstandard_id" property="datailstandardId" />
+        <result column="goods_type" property="goodsType" />
+        <result column="distributor_goods_id" property="distributorGoodsId" />
+        <result column="datailgoods_id" property="datailgoodsId" />
+        <result column="goods_code" property="goodsCode" />
+        <result column="datailgoods_erp_code" property="datailgoodsErpCode" />
+        <result column="datailgoods_name" property="datailgoodsName" />
+        <result column="goods_common_name" property="goodsCommonName" />
+        <result column="goods_license_no" property="goodsLicenseNo" />
+        <result column="datailgoods_specification" property="datailgoodsSpecification" />
+        <result column="goods_manufacturer" property="goodsManufacturer" />
+        <result column="datailgoods_price" property="datailgoodsPrice" />
+        <result column="original_price" property="originalPrice" />
+        <result column="limit_price" property="limitPrice" />
+        <result column="datailgoods_quantity" property="datailgoodsQuantity" />
+        <result column="datailgoods_amount" property="datailgoodsAmount" />
+        <result column="datailcash_discount_amount" property="datailcashDiscountAmount" />
+        <result column="datailgoods_sku_id" property="datailgoodsSkuId" />
+        <result column="promotion_activity_id" property="promotionActivityId" />
+        <result column="promotion_goods_price" property="promotionGoodsPrice" />
+        <result column="promotion_activity_type" property="promotionActivityType" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, order_no, batch_no, buyer_eid, buyer_ename, buyer_province_code, buyer_city_code, buyer_region_code, seller_eid, seller_ename, seller_erp_code, distributor_eid,
+            distributor_ename, customer_erp_code, total_amount, cash_discount_amount, ticket_discount_no, ticket_discount_amount, freight_amount, platform_coupon_discount_amount,
+            coupon_discount_amount, return_amount, return_cash_dicount_amount, return_ticket_discount_amount, return_platform_coupon_discount_amount, return_coupon_discount_amount,
+            payment_amount, payment_type, payment_method, pay_channel, pay_source, payment_status, payment_time, order_type, order_status, customer_confirm_status, customer_confirm_time,
+            order_source, order_note, delivery_type, delivery_company, delivery_no, contacter_id, contacter_name, department_id, province_manager_id, province_manager_code, create_user,
+            create_time, audit_status, audit_user, audit_time, audit_reject_reason, erp_push_status, erp_push_time, erp_push_remark, erp_order_no, erp_delivery_no, erp_receivable_no,
+            erp_receivable_status, delivery_user, delivery_time, receive_user, receive_time, finish_time, invoice_time, invoice_status, invoice_amount, audit_modify_flag,
+            audit_modify_time, erp_delivery_status, erp_delivery_time, erp_delivery_remark, erp_purchase_status, erp_purchase_time, erp_purchase_remark, is_settlement_order,
+            goods_settlement_status, sale_settlement_status, contract_number, order_id, detail_id, standard_id, goods_sku_id, goods_id, goods_erp_code, goods_name, goods_price,
+            goods_quantity, goods_amount, changecash_discount_amount, changeticket_discount_amount, changeplatform_coupon_discount_amount, changecoupon_discount_amount, delivery_quantity,
+            delivery_amount, delivery_cash_discount_amount, delivery_ticket_discount_amount, delivery_platform_coupon_discount_amount, delivery_coupon_discount_amount,
+            seller_return_quantity, seller_return_amount, seller_return_cash_discount_amount, seller_return_ticket_discount_amount, seller_platform_coupon_discount_amount,
+            seller_coupon_discount_amount, receive_quantity, receive_amount, receive_cash_discount_amount, receive_ticket_discount_amount, receive_coupon_discount_amount,
+            receive_platform_coupon_discount_amount, return_quantity, changereturn_amount, return_cash_discount_amount, changereturn_ticket_discount_amount, changereturn_platform_coupon_discount_amount,
+            changereturn_coupon_discount_amount, extract_time, changedetail_id, flagfield, datailid, datailorder_id, datailorder_no, datailstandard_id, goods_type, distributor_goods_id,
+            datailgoods_id, goods_code, datailgoods_erp_code, datailgoods_name, goods_common_name, goods_license_no, datailgoods_specification, goods_manufacturer, datailgoods_price,
+            original_price, limit_price, datailgoods_quantity, datailgoods_amount, datailcash_discount_amount, datailgoods_sku_id, promotion_activity_id, promotion_goods_price, promotion_activity_type
+    </sql>
+
+    <sql id="Backup_Column_List">
+        datailid, order_no, buyer_eid, buyer_ename, seller_eid, seller_ename, create_time, order_status, payment_method, goods_id, goods_name, delivery_quantity, return_quantity, extract_time
+    </sql>
+
+    <select id="getByOrderMonth" resultMap="BaseResultMap">
+        select
+            <include refid="Backup_Column_List"/>
+            from ods_order_detail where DATE_FORMAT(extract_time, '%Y-%m') = #{monthStr}
+    </select>
+
+    <select id="getCountByOrderMonth" resultType="java.lang.Integer">
+        select count(1) from ods_order_detail where DATE_FORMAT(extract_time, '%Y-%m') = #{monthStr}
+    </select>
+
+    <select id="getCountByGeExtractTime" resultType="java.lang.Integer">
+            select count(1) from ods_order_detail where extract_time >= #{extractTime}
+        </select>
+
+    <select id="getGeExtractTime" resultType="com.yiling.bi.order.entity.OdsOrderDetailDO">
+        select
+            <include refid="Backup_Column_List"/>
+            from ods_order_detail where  extract_time >= #{extractTime}
+            order by datailid
+    </select>
+
+    <select id="getMinExtractTime" resultType="java.lang.String">
+        select min(extract_time) from ods_order_detail
+    </select>
+
+</mapper>

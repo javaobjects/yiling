@@ -1,0 +1,186 @@
+@import "~@/common/styles/mixin.scss";
+
+.app-container {
+  position: relative;
+  .app-container-content{
+    margin-bottom: 82px;
+  }
+  .order-total {
+    font-size: $font-size-base;
+    height: 90px;
+    .box {
+      width: 380px;
+      height: 70px;
+      display: inline-block;
+      text-align: center;
+      .svg-icon {
+        font-size: 24px;
+        width: 24px;
+        margin-right: 8px;
+      }
+      .title {
+        height: 40px;
+        font-size: 28px;
+        color: $font-important-color;
+        text-align: left;
+        line-height: 34px;
+        padding-left: 30px;
+      }
+      .flex-row-center {
+        display: inline-block;
+      }
+      .flex-row-center span {
+        font-size: 14px;
+        color: #666;
+        vertical-align: top;
+        padding-top: 5px;
+        display: inline-block;
+      }
+    }
+  }
+  .common-box {
+    .el-input {
+      width: 220px;
+    }
+    .search-box {
+      position: relative;
+      .box {
+        .title {
+          font-size: $font-size-large;
+          line-height: $font-size-large-lh;
+          color: $font-important-color;
+          margin-bottom: 8px;
+        }
+      }
+      .el-select {
+        width: 220px;
+      }
+      .bottom-btn {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+      }
+    }
+  }
+   // 导出、导入按钮
+  .down-box {
+    width: 100%;
+    height: 36px;
+    line-height: 36px;
+    margin-top: 24px;
+    .down-box-left{
+      display: inline-block;
+      padding-left: 10px;
+      color: #999;
+      font-size: 16px;
+      span{
+        padding-right: 40px;
+      }
+    }
+    .btn {
+      float: right
+    }
+  }
+  // 底部列表
+  .table-view {
+    width: 100%;
+    background: #f2f3f4;
+    height: 142px;
+    padding-bottom: 16px;
+    .session {
+      padding: 0 16px;
+      box-sizing: border-box;
+      height: 32px;
+      background: #FAFAFA;
+      border-top-left-radius: 4px;
+      border-top-right-radius: 4px;
+      .left {
+        width: 270px;
+        margin-left: 10px;
+        display: inline-block;
+      }
+      .center {
+        width: 255px;
+        display: inline-block;
+      }
+      .reason {
+        width: 60px;
+        color: #15AD31;
+        padding-left: 10px;
+        cursor: pointer;
+      }
+      .right {
+        float: right;
+      }
+      span {
+        color: #999999;
+        line-height: 32px;
+      }
+      .enable {
+        color: #15AD31;
+      }
+      .disable {
+        color: #E62412;
+      }
+    }
+    .content {
+      height: 94px;
+      background: $white;
+      padding: 23px 16px;
+      .content-left {
+        font-size: 18px;
+        width: 390px;
+        font-weight: 600;
+        color: #333333;
+        padding-right: 16px;
+        @include clamp(2);
+      }
+      .content-left-title {
+        width: 390px;
+        height: 28px;
+        overflow:hidden;
+        text-overflow:ellipsis;
+        white-space: nowrap;
+      }
+      .content-center {
+        min-width: 255px;
+        :last-child {
+          margin-bottom: 0;
+        }
+      }
+      .content-center-1 {
+        :last-child {
+          margin-bottom: 0
+        }
+      }
+      .item {
+        margin-bottom: 8px;
+        height: 20px;
+      }
+      .remark {
+        width: 100%;
+        @include clamp(1);
+      }
+      .content-right {
+        width: 120px;
+      }
+    }
+  }
+  // 弹窗
+  .dialogTc {
+    padding: 10px 16px;
+    .dialogTc-row{
+      margin: 10px 0;
+    }
+    .title {
+      font-size: 14px;
+    }
+    .bottom-btn {
+      margin: 20px 0;
+      text-align: right;
+    }
+  }
+  .table-button::v-deep .el-button--medium {
+    padding: 6px 20px;
+  }
+}

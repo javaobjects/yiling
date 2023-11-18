@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.cms.content.dao.B2bContentMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.cms.content.entity.B2bContentDO">
+        <result column="id" property="id"/>
+        <result column="content_id" property="contentId"/>
+        <result column="line_id" property="lineId"/>
+        <result column="module_id" property="moduleId"/>
+        <result column="category_id" property="categoryId"/>
+        <result column="category_rank" property="categoryRank"/>
+        <result column="view" property="view"/>
+        <result column="top_flag" property="topFlag"/>
+        <result column="refer_status" property="referStatus"/>
+        <result column="del_flag" property="delFlag"/>
+        <result column="create_user" property="createUser"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_user" property="updateUser"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="remark" property="remark"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id
+        ,
+        content_id, line_id, module_id, category_id, category_rank, view, top_flag, refer_status, del_flag, create_user, create_time, update_user, update_time, remark
+    </sql>
+
+    <select id="listPage" resultType="com.yiling.cms.content.dto.HMCContentDTO">
+        select
+        b2b.id as id,
+        b2b.content_id as contentId,
+        b2b.line_id as lineId,
+        b2b.module_id as moduleId,
+        b2b.category_id as categoryId,
+        category.category_name as categoryName,
+        b2b.category_rank as categoryRank,
+        b2b.`view` as `view`,
+        b2b.top_flag as topFlag,
+        b2b.refer_status as referStatus,
+        b2b.create_user as createUser,
+        b2b.create_time as createTime,
+        b2b.update_user as updateUser,
+        b2b.update_time as updateTime,
+        b2b.remark as remark,
+        content.title as title,
+        content.doc_id as docId,
+        content.content_type as contentType,
+        content.status as status,
+        content.create_source as createSource
+        from cms_b2b_content b2b, cms_content content, cms_category category
+        <where>
+            b2b.content_id = content.id
+            and b2b.category_id = category.id
+            and b2b.line_id = 7
+            and b2b.del_flag = 0
+            and content.del_flag = 0
+            and category.del_flag = 0
+            <if test="request.title != null and request.title != '' ">
+                and content.title like concat('%',#{request.title},'%')
+            </if>
+            <if test="request.moduleId != null and request.moduleId != 0">
+                and b2b.module_id = #{request.moduleId}
+            </if>
+            <if test="request.categoryId != null and request.categoryId != 0">
+                and b2b.category_id = #{request.categoryId}
+            </if>
+            <if test="request.contentType != null and request.contentType != 0">
+                and content.content_type = #{request.contentType}
+            </if>
+            <if test="request.handRankFlag != null and request.handRankFlag == 1">
+                and b2b.category_rank != 0
+            </if>
+            <if test="request.handRankFlag != null and request.handRankFlag == 0">
+                and b2b.category_rank = 0
+            </if>
+            <if test="request.docId != null and request.docId != 0">
+                and content.doc_id = #{request.docId}
+            </if>
+            <if test="request.status != null and request.status != 0">
+                and content.status = #{request.status}
+            </if>
+            <if test="request.topFlag != null">
+                and b2b.top_flag = #{request.topFlag}
+            </if>
+            <if test="request.createSource != null and request.createSource != 0">
+                and content.create_source = #{request.createSource}
+            </if>
+            <if test="request.startTime != null ">
+                and b2b.create_time >= #{request.startTime}
+            </if>
+            <if test="request.endTime != null ">
+                and #{request.endTime} >= b2b.create_time
+            </if>
+            order by b2b.create_time desc
+        </where>
+    </select>
+</mapper>

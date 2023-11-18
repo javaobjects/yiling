@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.sales.assistant.task.dao.AccompanyingBillMatchMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.sales.assistant.task.entity.AccompanyingBillMatchDO">
+    <result column="id" property="id" />
+        <result column="accompanying_bill_id" property="accompanyingBillId" />
+        <result column="result" property="result" />
+        <result column="erp_result" property="erpResult" />
+        <result column="crm_result" property="crmResult" />
+        <result column="erp_match_time" property="erpMatchTime" />
+        <result column="crm_match_time" property="crmMatchTime" />
+        <result column="erp_delivery_time" property="erpDeliveryTime" />
+        <result column="erp_distributor_eid" property="erpDistributorEid" />
+        <result column="upload_time" property="uploadTime" />
+        <result column="erp_distributor_name" property="erpDistributorName" />
+        <result column="erp_recv_name" property="erpRecvName" />
+        <result column="del_flag" property="delFlag" />
+        <result column="create_user" property="createUser" />
+        <result column="create_time" property="createTime" />
+        <result column="update_user" property="updateUser" />
+        <result column="update_time" property="updateTime" />
+        <result column="remark" property="remark" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,
+        accompanying_bill_id, result, erp_result, crm_result, erp_match_time, crm_match_time, erp_delivery_time, erp_distributor_eid, upload_time, erp_distributor_name, erp_recv_name, del_flag, create_user, create_time, update_user, update_time, remark
+    </sql>
+
+</mapper>

@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.user.enterprise.dao.EnterpriseEmployeeMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.user.enterprise.entity.EnterpriseEmployeeDO">
+    <result column="id" property="id" />
+        <result column="eid" property="eid" />
+        <result column="user_id" property="userId" />
+        <result column="code" property="code" />
+        <result column="type" property="type" />
+        <result column="parent_id" property="parentId" />
+        <result column="position_id" property="positionId" />
+        <result column="admin_flag" property="adminFlag" />
+        <result column="status" property="status" />
+        <result column="del_flag" property="delFlag" />
+        <result column="create_user" property="createUser" />
+        <result column="create_time" property="createTime" />
+        <result column="update_user" property="updateUser" />
+        <result column="update_time" property="updateTime" />
+        <result column="remark" property="remark" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,
+        eid, user_id, code, type, parent_id, position_id, admin_flag, status, del_flag, create_user, create_time, update_user, update_time, remark
+    </sql>
+
+    <select id="pageList" resultType="com.yiling.user.enterprise.dto.EnterpriseEmployeeDTO">
+        select
+            ee.id, ee.user_id, ee.eid, ee.code, ee.type, ee.parent_id, ee.position_id, ee.admin_flag, ee.status,
+            ee.create_user, ee.create_time, ee.update_user, ee.update_time, ee.remark
+        from enterprise_employee ee
+        inner join user u on u.id = ee.user_id
+        <if test="request.departmentId != null and request.departmentId != 0">
+        left join enterprise_employee_department eed on eed.eid = ee.eid and eed.user_id = ee.user_id and eed.del_flag = 0
+        </if>
+        <where>
+            <if test="request.eid != null and request.eid != 0">
+                and ee.eid = #{request.eid}
+            </if>
+            <if test="request.userId != null and request.userId != 0">
+                and u.id = #{request.userId}
+            </if>
+            <if test="request.name != null and request.name != ''">
+                and u.name like concat('%',#{request.name},'%')
+            </if>
+            <if test="request.mobile != null and request.mobile != ''">
+                and u.mobile like concat('%',#{request.mobile},'%')
+            </if>
+            <if test="request.code != null and request.code != ''">
+                and ee.code like concat('%',#{request.code},'%')
+            </if>
+            <if test="request.type != null and request.type != 0">
+                and ee.type = #{request.type}
+            </if>
+            <if test="request.status != null and request.status != 0">
+                and ee.status = #{request.status}
+            </if>
+            <if test="request.departmentId != null and request.departmentId != 0">
+                and eed.department_id = #{request.departmentId}
+            </if>
+            <if test="request.positionId != null and request.positionId != 0">
+                and ee.position_id = #{request.positionId}
+            </if>
+            and ee.del_flag = 0
+            and u.status != 9
+        </where>
+    </select>
+
+    <select id="mrPageList" resultType="com.yiling.user.system.bo.MrBO">
+        select
+            u.id as userId, u.name, u.mobile,
+            ee.eid, ee.id, ee.code, ee.status
+        from enterprise_employee ee
+        inner join user u on u.id = ee.user_id
+        <where>
+            ee.eid = #{request.eid} and ee.type = 2 and u.status != 9
+            <if test="request.name != null and request.name != ''">
+                and u.name like concat('%',#{request.name},'%')
+            </if>
+            <if test="request.mobile != null and request.mobile != ''">
+                and u.mobile like concat('%',#{request.mobile},'%')
+            </if>
+            <if test="request.code != null and request.code != ''">
+                and ee.code like concat('%',#{request.code},'%')
+            </if>
+            <if test="request.status != null and request.status != 0">
+                and ee.status = #{request.status}
+            </if>
+        </where>
+        and ee.del_flag = 0
+    </select>
+
+</mapper>

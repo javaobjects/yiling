@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.cms.content.dao.IHDoctorContentMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.cms.content.entity.IHDoctorContentDO">
+    <result column="id" property="id" />
+        <result column="content_id" property="contentId" />
+        <result column="line_id" property="lineId" />
+        <result column="module_id" property="moduleId" />
+        <result column="category_id" property="categoryId" />
+        <result column="category_rank" property="categoryRank" />
+        <result column="view" property="view" />
+        <result column="content_auth" property="contentAuth" />
+        <result column="top_flag" property="topFlag" />
+        <result column="refer_status" property="referStatus" />
+        <result column="del_flag" property="delFlag" />
+        <result column="create_user" property="createUser" />
+        <result column="create_time" property="createTime" />
+        <result column="update_user" property="updateUser" />
+        <result column="update_time" property="updateTime" />
+        <result column="remark" property="remark" />
+    </resultMap>
+
+    <resultMap id="IHDocBaseResultMap" type="com.yiling.cms.content.dto.IHDocContentDTO">
+        <result column="id" property="id"/>
+        <result column="content_id" property="contentId"/>
+        <result column="title" property="title"/>
+        <result column="line_id" property="lineId"/>
+        <result column="module_id" property="moduleId"/>
+        <result column="category_id" property="categoryId"/>
+        <result column="category_rank" property="categoryRank"/>
+        <result column="view" property="view"/>
+        <result column="top_flag" property="topFlag"/>
+        <result column="refer_status" property="referStatus" />
+        <result column="create_user" property="createUser"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_user" property="updateUser"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="remark" property="remark"/>
+        <result column="doc_id" property="docId"/>
+        <result column="content_type" property="contentType"/>
+        <result column="status" property="status"/>
+        <result column="create_source" property="createSource"/>
+        <result column="content_auth" property="contentAuth" />
+    </resultMap>
+
+    <resultMap id="appContentResultMap" type="com.yiling.cms.content.dto.AppContentDTO">
+        <result column="id" property="id"/>
+        <result column="content_id" property="contentId"/>
+        <result column="title" property="title"/>
+        <result column="cover" property="cover"/>
+        <result column="page_view" property="pageView"/>
+        <result column="publish_time" property="publishTime"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="doc_id" property="docId"/>
+        <result column="vedio_file_url" property="vedioFileUrl"/>
+        <result column="speaker" property="speaker"/>
+        <result column="content_type" property="contentType"/>
+        <result column="line_id" property="lineId"/>
+        <result column="module_id" property="moduleId"/>
+        <result column="category_id" property="categoryId"/>
+        <result column="content_auth" property="contentAuth"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, content_id, line_id, module_id, category_id, category_rank, view, content_auth, top_flag, del_flag, create_user, create_time, update_user, update_time, remark
+    </sql>
+
+    <sql id="Page_Base_Column_List">
+        ih_doc.id,ih_doc.content_id, ih_doc.line_id, ih_doc.module_id, ih_doc.category_id, category.category_name,
+        ih_doc.category_rank, ih_doc.`view`, ih_doc.top_flag, ih_doc.refer_status, ih_doc.del_flag, ih_doc.create_user, ih_doc.create_time, ih_doc.update_user,
+        ih_doc.update_time, ih_doc.remark, ih_doc.content_auth, content.title, content.doc_id, content.content_type,content.status, content.create_source
+    </sql>
+
+    <select id="listPage" resultMap="IHDocBaseResultMap">
+        select
+        <include refid="Page_Base_Column_List"/>
+        from cms_content content, cms_ih_doctor_content ih_doc, cms_category category
+        <where>
+            ih_doc.content_id = content.id
+            and ih_doc.category_id = category.id
+            and ih_doc.line_id = 2
+            and ih_doc.del_flag = 0
+            and content.del_flag = 0
+            and category.del_flag = 0
+            <if test="request.moduleId != null and request.moduleId != 0">
+                and ih_doc.module_id = #{request.moduleId}
+            </if>
+            <if test="request.categoryId != null and request.categoryId != 0">
+                and ih_doc.category_id = #{request.categoryId}
+            </if>
+            <if test="request.handRankFlag != null and request.handRankFlag == 1">
+                and ih_doc.category_rank != 0
+            </if>
+            <if test="request.handRankFlag != null and request.handRankFlag == 0">
+                and ih_doc.category_rank = 0
+            </if>
+            <if test="request.topFlag != null">
+                and ih_doc.top_flag = #{request.topFlag}
+            </if>
+            <if test="request.startTime != null ">
+                and ih_doc.create_time >= #{request.startTime}
+            </if>
+            <if test="request.title != null and request.title != ''">
+                and content.title like concat('%',#{request.title},'%')
+            </if>
+            <if test="request.contentType != null and request.contentType != 0">
+                and content.content_type = #{request.contentType}
+            </if>
+            <if test="request.docId != null and request.docId != 0">
+                and content.doc_id = #{request.docId}
+            </if>
+            <if test="request.status != null and request.status != 0">
+                and content.status = #{request.status}
+            </if>
+            <if test="request.createSource != null and request.createSource != 0">
+                and content.create_source = #{request.createSource}
+            </if>
+            <if test="request.endTime != null ">
+                and #{request.endTime} >= ih_doc.create_time
+            </if>
+            order by ih_doc.create_time desc
+        </where>
+    </select>
+
+
+    <sql id="App_Base_Column_List">
+        content.title, content.subtitle, content.cover, content.`source`, content.author, content.is_top, content.publish_now,
+        content.page_view, content.is_draft, content.content, content.publish_time, content.doc_id,content.like_count,content.vedio_file_url,
+        content.speaker, content.content_type ,content.update_time,
+        ihDoc.id, ihDoc.content_id, ihDoc.line_id, ihDoc.module_id, ihDoc.category_id, ihDoc.content_auth, ihDoc.category_rank,
+        content.create_time
+    </sql>
+
+    <select id="listAppContentPageBySql" resultMap="appContentResultMap">
+        select <include refid="App_Base_Column_List"/>
+        from cms_content content, cms_ih_doctor_content ihDoc
+        <where>
+            content.id = ihDoc.content_id
+            and content.del_flag = 0
+            and ihDoc.del_flag = 0
+            and ihDoc.line_id = #{request.lineId}
+            and content.status = 2
+            and content.is_open = 1
+            and ihDoc.refer_status = 1
+            <if test="request.title != null and request.title != '' ">
+                and content.title like concat('%',#{request.title},'%')
+            </if>
+            <if test="request.contentType != null and request.contentType != 0">
+                and content.content_type = #{request.contentType}
+            </if>
+            <if test="request.moduleId != null and request.moduleId != 0">
+                and ihDoc.module_id = #{request.moduleId}
+            </if>
+            <if test="request.categoryId != null and request.categoryId != 0">
+                and ihDoc.category_id = #{request.categoryId}
+            </if>
+            <if test="request.doctorId != null and request.doctorId != 0">
+                and content.doc_id = #{request.doctorId}
+            </if>
+            <if test="request.isMeetingVideo != null and request.isMeetingVideo == 1">
+                and content.meeting_id > 0
+            </if>
+            <if test="request.moduleId == null">
+                order by content.create_time desc
+            </if>
+            <if test="request.moduleId != null and request.moduleId==2 ">
+                order by ihDoc.category_rank desc, content.create_time desc
+            </if>
+
+            <if test="request.moduleId != null and (request.moduleId==1 or request.moduleId==3) ">
+                order by ihDoc.top_flag desc, ihDoc.category_rank desc, content.create_time desc
+            </if>
+
+        </where>
+
+    </select>
+
+
+</mapper>

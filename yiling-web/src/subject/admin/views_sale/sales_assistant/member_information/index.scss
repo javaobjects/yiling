@@ -1,0 +1,187 @@
+@import "~@/common/styles/mixin.scss";
+
+.app-container {
+  position: relative;
+  .app-container-content{
+    margin-bottom: 82px;
+    .task-racking-top{
+      width: 100%;
+      background: #fff;
+      position: relative;
+      // height: 138px;
+      // border: 1px solid red;
+    }
+    .box-bg{
+      width: 100%;
+      height: 100%;
+      // height: 138px;
+      padding: 16px;
+      // position: relative;
+      // border: 1px solid gold;
+    }
+    .item{
+      margin-bottom: 12px;
+      .line-view{
+        width: 2px;
+        height: 14px;
+        background: #1790FF;
+        margin-right: 4px;
+      }
+    }
+    .item-text{
+      margin-bottom: 4px;
+      margin-left: 5px;
+      &:last-child{
+        margin-bottom: 0;
+      }
+    }
+    .item-text span{
+      display: inline-block;
+      color: #1790FF;
+    }
+    .item-text div{
+      display: inline-block;
+    }
+    .box-bg2{
+      width: 578px;
+      height: 100px;
+      // padding-top: 8px;
+      // border: 1px solid red;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%,-50%);
+      margin-left: 320px
+    }
+    .box-bg-table{
+      min-width: 280px;
+      height: 92px;
+      padding: 26px 19px;
+    }
+    .box-bg-table img{
+      width: 40px;
+      height: 40px;
+      display: inline-block;
+    }
+    .box-bg-table-col1{
+      background: #FFF7EB;
+    }
+    .box-bg-table-col2{
+      background:#EDFFEF;
+    }
+    .box-bg-table-conter{
+      display: inline-block;
+      height: 40px;
+      vertical-align: top;
+      padding-left: 12px;
+      p{
+        padding: 0;
+        margin: 0;
+        height: 20px;
+        color: #333333;
+        font-size: 20px;
+        font-weight: 500;
+      }
+      span{
+        color: #8C8C8C;
+        font-size: 12px;
+      }
+    }
+    // 中部搜索
+    .common-box {
+      margin-top: 8px;
+      .el-input {
+        width: 365px;
+      }
+      .search-box {
+        // padding: 0 16px;
+        position: relative;
+        .box {
+          .title {
+            font-size: $font-size-large;
+            line-height: $font-size-large-lh;
+            color: $font-important-color;
+            margin-bottom: 8px;
+          }
+        }
+        .el-select {
+          width: 168px;
+        }
+        .bottom-btn {
+          position: absolute;
+          bottom: 0;
+          right: 0;
+        }
+      }
+    }
+    // 底部 承接人员明细
+    .task-racking-bottom{
+      width: 100%;
+    }
+    .task-bottom-title{
+      width: 100%;
+      // height: 46px;
+      color: #333333;
+      font-size: 16px;
+      font-weight: 600;
+      line-height: 22px;
+    }
+    .table-row{
+      line-height: 30px;
+    }
+    .table-row p{
+      height: 24px;
+      margin: 0;
+      padding: 0;
+      color: #8C8C8C;
+      font-size: 12px;
+
+    }
+    .table-row span{
+      font-size: 14px;
+      color: #333333;
+    }
+    .table-row-progress{
+      // padding: 0 26px;
+      margin: 6px auto;
+      text-align: center;
+    }
+    .table-view-jd{
+      width: 700px;
+      margin:0 auto;
+      text-align: left;
+    }
+  }
+  .fixed-row-center{
+    height: 80px;
+    line-height: 80px;
+    position: fixed;
+    right: 30px;
+    bottom: 15px;
+    z-index: 10;
+    background: #fff;
+    text-align: center;
+    border-top: 2px solid #f4f4f4;
+  }
+  .fixed-row-center1 {
+    width: calc( 100% - 228px );
+  }
+  .fixed-row-center2 {
+    width: calc( 100% - 100px );
+  }
+  .flex-row-title{
+    padding: 10px 16px 0;
+  }
+   // 底部 返回 以及 发布任务按钮
+   .bottom-view {
+    position: fixed;
+    bottom: 0;
+    left: $sideBarWidth;
+    right: 0;
+    height: 64px;
+    background-color: $white;
+    padding: 16px;
+    box-shadow: 0px -2px 9px 0px rgba(182, 182, 182, 0.16);
+    z-index: 10;
+  }
+}

@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.settlement.report.dao.ReportDetailFlowMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.settlement.report.entity.ReportDetailFlowDO">
+    <result column="id" property="id" />
+        <result column="report_id" property="reportId" />
+        <result column="seller_eid" property="sellerEid" />
+        <result column="so_id" property="soId" />
+        <result column="so_no" property="soNo" />
+        <result column="so_source" property="soSource" />
+        <result column="so_time" property="soTime" />
+        <result column="goods_name" property="goodsName" />
+        <result column="so_specifications" property="soSpecifications" />
+        <result column="so_batch_no" property="soBatchNo" />
+        <result column="enterprise_inner_code" property="enterpriseInnerCode" />
+        <result column="enterprise_name" property="enterpriseName" />
+        <result column="so_quantity" property="soQuantity" />
+        <result column="so_unit" property="soUnit" />
+        <result column="so_price" property="soPrice" />
+        <result column="so_total_amount" property="soTotalAmount" />
+        <result column="so_manufacturer" property="soManufacturer" />
+        <result column="so_product_time" property="soProductTime" />
+        <result column="so_effective_time" property="soEffectiveTime" />
+        <result column="goods_in_sn" property="goodsInSn" />
+        <result column="so_license" property="soLicense" />
+        <result column="province_code" property="provinceCode" />
+        <result column="province_name" property="provinceName" />
+        <result column="city_code" property="cityCode" />
+        <result column="city_name" property="cityName" />
+        <result column="region_code" property="regionCode" />
+        <result column="region_name" property="regionName" />
+        <result column="yl_goods_id" property="ylGoodsId" />
+        <result column="yl_goods_name" property="ylGoodsName" />
+        <result column="yl_goods_specification" property="ylGoodsSpecification" />
+        <result column="supply_price" property="supplyPrice" />
+        <result column="out_price" property="outPrice" />
+        <result column="purchase_channel" property="purchaseChannel" />
+        <result column="sales_amount" property="salesAmount" />
+        <result column="threshold_count" property="thresholdCount" />
+        <result column="ladder_name" property="ladderName" />
+        <result column="ladder_amount" property="ladderAmount" />
+        <result column="ladder_start_time" property="ladderStartTime" />
+        <result column="ladder_end_time" property="ladderEndTime" />
+        <result column="xsy_name" property="xsyName" />
+        <result column="xsy_price" property="xsyPrice" />
+        <result column="xsy_amount" property="xsyAmount" />
+        <result column="xsy_reward_type" property="xsyRewardType" />
+        <result column="xsy_start_time" property="xsyStartTime" />
+        <result column="xsy_end_time" property="xsyEndTime" />
+        <result column="act_first_name" property="actFirstName" />
+        <result column="act_first_amount" property="actFirstAmount" />
+        <result column="act_first_start_time" property="actFirstStartTime" />
+        <result column="act_first_end_time" property="actFirstEndTime" />
+        <result column="act_second_name" property="actSecondName" />
+        <result column="act_second_amount" property="actSecondAmount" />
+        <result column="act_second_start_time" property="actSecondStartTime" />
+        <result column="act_second_end_time" property="actSecondEndTime" />
+        <result column="act_third_name" property="actThirdName" />
+        <result column="act_third_amount" property="actThirdAmount" />
+        <result column="act_third_start_time" property="actThirdStartTime" />
+        <result column="act_third_end_time" property="actThirdEndTime" />
+        <result column="act_fourth_name" property="actFourthName" />
+        <result column="act_fourth_amount" property="actFourthAmount" />
+        <result column="act_fourth_start_time" property="actFourthStartTime" />
+        <result column="act_fourth_end_time" property="actFourthEndTime" />
+        <result column="act_fifth_name" property="actFifthName" />
+        <result column="act_fifth_amount" property="actFifthAmount" />
+        <result column="act_fifth_start_time" property="actFifthStartTime" />
+        <result column="act_fifth_end_time" property="actFifthEndTime" />
+        <result column="identification_status" property="identificationStatus" />
+        <result column="abnormal_reason" property="abnormalReason" />
+        <result column="abnormal_described" property="abnormalDescribed" />
+        <result column="sub_rebate" property="subRebate" />
+        <result column="rebate_status" property="rebateStatus" />
+        <result column="del_flag" property="delFlag" />
+        <result column="create_user" property="createUser" />
+        <result column="create_time" property="createTime" />
+        <result column="update_user" property="updateUser" />
+        <result column="update_time" property="updateTime" />
+        <result column="remark" property="remark" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,
+        report_id, seller_eid, so_id, so_no, so_source, so_time, goods_name, so_specifications, so_batch_no, enterprise_inner_code, enterprise_name, so_quantity, so_unit, so_price, so_total_amount, so_manufacturer, so_product_time, so_effective_time, goods_in_sn, so_license, province_code, province_name, city_code, city_name, region_code, region_name, yl_goods_id, yl_goods_name, yl_goods_specification, supply_price, out_price, purchase_channel, sales_amount, threshold_count, ladder_name, ladder_amount, ladder_start_time, ladder_end_time, xsy_name, xsy_price, xsy_amount, xsy_reward_type, xsy_start_time, xsy_end_time, act_first_name, act_first_amount, act_first_start_time, act_first_end_time, act_second_name, act_second_amount, act_second_start_time, act_second_end_time, act_third_name, act_third_amount, act_third_start_time, act_third_end_time, act_fourth_name, act_fourth_amount, act_fourth_start_time, act_fourth_end_time, act_fifth_name, act_fifth_amount, act_fifth_start_time, act_fifth_end_time, identification_status, abnormal_reason, sub_rebate, rebate_status, abnormal_described, del_flag, create_user, create_time, update_user, update_time, remark
+    </sql>
+
+    <select id="queryReportFlowOrderPageGroupByOrder" resultType="java.lang.String" parameterType="com.yiling.settlement.report.dto.request.QueryReportDetailFlowPageRequest">
+        SELECT
+            so_no
+        FROM
+            report_detail_flow
+        WHERE
+            del_flag = 0
+            <if test="request.reportIdList != null and request.reportIdList.size() > 0">
+               AND report_id IN
+               <foreach item="item" index="index" collection="request.reportIdList"
+                        open="(" separator="," close=")">
+                   #{item}
+               </foreach>
+             </if>
+             <if test="request.enterpriseName != null and request.enterpriseName != ''">
+                AND enterprise_name LIKE CONCAT('%',#{request.enterpriseName},'%')
+             </if>
+             <if test="request.startSoTime != null">
+                 AND so_time &gt;=#{request.startSoTime}
+             </if>
+             <if test="request.endSoTime != null">
+                 AND so_time &lt;= #{request.endSoTime}
+             </if>
+             <if test="request.identificationStatus != null and request.identificationStatus != 0">
+                 AND identification_status = #{request.identificationStatus}
+             </if>
+             <if test="request.rebateStatus != null and request.rebateStatus != 0">
+                 AND rebate_status = #{request.rebateStatus}
+             </if>
+        GROUP BY
+            so_no
+    </select>
+
+    <select id="queryRebateGoods" resultType="com.yiling.settlement.report.bo.RebatedGoodsCountBO" parameterType="com.yiling.settlement.report.dto.request.QueryStockOccupyPageRequest">
+ 	 SELECT
+ 	    detail.seller_eid AS 'eid',
+        detail.yl_goods_id,
+        sum( detail.so_quantity ) AS 'quantity',
+        detail.goods_in_sn,
+        detail.purchase_channel
+     FROM
+        report_detail_flow detail
+        LEFT JOIN report ON detail.report_id = report.id
+     WHERE
+        <if test="request == null or request.size() == 0">
+            AND 1 != 1
+        </if>
+        <if test="request != null and request.size() > 0">
+            <foreach item="item" index="index" collection="request" open="(" separator="OR" close=")">
+                (detail.seller_eid = #{item.eid} AND detail.yl_goods_id = #{item.ylGoodsId} AND detail.goods_in_sn = #{item.goodsInSn} AND detail.purchase_channel=#{item.purchaseChannel})
+            </foreach>
+            AND report.del_flag = 0
+            AND report.`status` IN ( 1, 2, 3 )
+        </if>
+     GROUP BY
+        detail.seller_eid,
+        detail.yl_goods_id,
+        detail.goods_in_sn,
+        detail.purchase_channel
+    </select>
+
+</mapper>

@@ -1,0 +1,80 @@
+@import "~@/common/styles/mixin.scss";
+
+.app-container {
+
+  .top-bar {
+    background: $white;
+    padding: 16px;
+    border-radius: 4px;
+    margin-bottom: 16px;
+    .header-renative{
+      position: relative;
+      margin-bottom: 16px;
+      .des-label{
+        margin-left: 20px;
+        font-size: 14px;
+        font-weight: 400;
+        color: rgba(0, 0, 0, 0.65);
+      }
+      .edit-btn{
+        position: absolute;
+        right: 0;
+      }
+    }
+    .content-box{
+      padding: 0 8px;
+      .explain{
+        color: #999;
+        font-size: 14px;
+      }
+      .active{
+        color: #F52922;
+      }
+      .section-view{
+        background: #FAFAFA;
+        padding-left: 24px;
+        margin-left: 110px;
+        box-sizing: border-box;
+      }
+      .show-word-limit{
+        ::v-deep .el-input__inner{
+          padding-right: 46px;
+        }
+      }
+      .el-form-item{
+        label{
+          font-weight: 400 !important;
+        }
+        .el-input{
+          width: 256px;
+        }
+        .el-select{
+          width: 256px;
+        }
+      }
+      // 多阶梯
+      .Gradients-item{
+        padding: 16px;
+        padding-bottom: 0;
+        border-radius: 4px;
+        border: 1px solid rgba(23, 144, 255, 0.5);
+      }
+
+      .activity-form-item{
+        color: $font-title-color;
+        .el-input{
+          width: 200px;
+        }
+        .tip-text{
+          margin-left: 20px;
+          color: #2C2C2C;
+          .red-text{
+            color: #F52922;
+          }
+        }
+      }
+
+    }
+  }
+
+}

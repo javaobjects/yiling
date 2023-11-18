@@ -1,0 +1,258 @@
+package com.yiling.admin.cms.content.vo;
+
+import com.yiling.admin.cms.goods.vo.GoodsInfoVO;
+import com.yiling.framework.common.base.BaseVO;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.experimental.Accessors;
+
+import java.util.Date;
+import java.util.List;
+
+/**
+ * <p>
+ * 内容
+ * </p>
+ *
+ * @author gxl
+ * @date 2022-03-24
+ */
+@Data
+@EqualsAndHashCode(callSuper = true)
+@Accessors(chain = true)
+@ApiModel(value = "患者端、医生端内容对象")
+public class ClientContentVO extends BaseVO {
+
+
+    @ApiModelProperty(value = "栏目id")
+    private Long categoryId;
+
+    @ApiModelProperty(value = "栏目名称")
+    private Long categoryName;
+
+    /**
+     * 标题
+     */
+    @ApiModelProperty(value = "标题")
+    private String title;
+
+    /**
+     * 副标题
+     */
+    @ApiModelProperty(value = "副标题")
+    private String subtitle;
+
+    /**
+     * 封面
+     */
+    @ApiModelProperty(value = "封面")
+    private String cover;
+    @ApiModelProperty(value = "封面oss key")
+    private String coverKey;
+
+    /**
+     * 来源
+     */
+    @ApiModelProperty(value = "来源")
+    private String source;
+
+    /**
+     * 作者
+     */
+    @ApiModelProperty(value = "作者")
+    private String author;
+
+    /**
+     * 点击量
+     */
+    @ApiModelProperty(value = "点击量")
+    private Integer pageView;
+
+    /**
+     * 2C用户侧浏览量
+     */
+    @ApiModelProperty(value = "2C用户侧浏览量")
+    private Integer hmcView;
+
+    /**
+     * 医生端浏览量
+     */
+    @ApiModelProperty(value = "医生端浏览量")
+    private Integer ihDocView;
+
+    /**
+     * 1-是 0-否
+     */
+    @ApiModelProperty(value = "1-是 0-否")
+    private Integer isDraft;
+    /**
+     * 状态 1未发布 2发布
+     */
+    @ApiModelProperty(value = "状态 1未发布 2发布")
+    private Integer status;
+
+    /**
+     * 内容
+     */
+    @ApiModelProperty(value = "内容")
+    private String content;
+
+    /**
+     * 发布时间
+     */
+    @ApiModelProperty(value = "发布时间")
+    private Date publishTime;
+
+    @ApiModelProperty(value = "创建人")
+    private String createUserName;
+
+    /**
+     * 创建时间
+     */
+    @ApiModelProperty(value = "创建时间")
+    private Date createTime;
+
+    /**
+     * 修改人
+     */
+    @ApiModelProperty(value = "修改人")
+    private String updateUserName;
+
+    /**
+     * 修改时间
+     */
+    @ApiModelProperty(value = "修改时间")
+    private Date updateTime;
+
+    /**
+     * 备注
+     */
+    @ApiModelProperty(value = "备注")
+    private String remark;
+
+    @ApiModelProperty(value = "显示产品线")
+    private List<Long> displayLines;
+
+
+    private Long createUser;
+
+
+    /**
+     * 修改人
+     */
+    private Long updateUser;
+
+
+    /**
+     * 是否公开：0-否 1-是
+     */
+    @ApiModelProperty(value = "是否公开：0-否 1-是")
+    private Integer isOpen;
+
+    /**
+     * 视频oss key
+     */
+    @ApiModelProperty(value = "视频url")
+    private String vedioFileUrl;
+
+    @ApiModelProperty(value = "视频oss key")
+    private String vedioFileUrlKey;
+
+
+    /**
+     * 会议id
+     */
+    @ApiModelProperty(value = "会议id")
+    private Long meetingId;
+
+    @ApiModelProperty(value = "会议名称")
+    private String meetingName;
+
+    /**
+     * 科室
+     */
+    @ApiModelProperty(value = "疾病id列表")
+    private List<Integer> deptIdList;
+    /**
+     * 疾病
+     */
+    @ApiModelProperty(hidden = true)
+    private List<Integer> diseaseIdList;
+
+    @ApiModelProperty(value = "疾病")
+    private List<DiseaseVO> diseaseVOList;
+
+    @ApiModelProperty(value = "主讲人")
+    private String speaker;
+
+    /**
+     * 类型:1-文章 2-视频
+     */
+    private Integer contentType;
+
+    @ApiModelProperty(value = "关联商品")
+    private List<GoodsInfoVO> standardGoodsList;
+
+    @ApiModelProperty(value = "科室")
+    private List<HospitalDeptVO> hospitalDeptVOS;
+
+    @ApiModelProperty(value = "内容权限 1-仅登录 2-需认证通过")
+    private Integer viewLimit;
+
+    @ApiModelProperty(value = "所属医生id")
+    private Long docId;
+
+    @ApiModelProperty(value = "所属医生名称")
+    private String docName;
+
+    /**
+     * 所在医疗机构
+     */
+    @ApiModelProperty(value = "所在医疗机构")
+    private String hospitalName;
+
+    /**
+     * 所在医疗机构科室
+     */
+    @ApiModelProperty(value = "所在医疗机构科室")
+    private String hospitalDepartment;
+
+
+    /**
+     * 是否院方文章 0-否，1-是
+     */
+    @ApiModelProperty(value = "是否院方文章 0-否，1-是")
+    private Integer ihFlag;
+
+    /**
+     * 模块Id
+     */
+    @ApiModelProperty(value = "模块Id")
+    private Long moduleId;
+
+    /**
+     * 模块名称
+     */
+    @ApiModelProperty(value = "模块名称")
+    private String moduleName;
+
+    /**
+     * 栏目排序
+     */
+    @ApiModelProperty(value = "栏目排序")
+    private Integer categoryRank;
+
+    /**
+     * 精选排序
+     */
+    @ApiModelProperty(value = "精选排序")
+    private Integer choseRank;
+
+    /**
+     * 是否置顶 0-否，1-是
+     */
+    @ApiModelProperty(value = "是否置顶 0-否，1-是")
+    private Integer topFlag;
+}

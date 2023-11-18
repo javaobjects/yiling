@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.dataflow.report.dao.FlowWashPharmacyPurchaseReportMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.dataflow.report.entity.FlowWashPharmacyPurchaseReportDO">
+    <result column="id" property="id" />
+        <result column="enterprise_cers_id" property="enterpriseCersId" />
+        <result column="so_month" property="soMonth" />
+        <result column="crm_id" property="crmId" />
+        <result column="name" property="name" />
+        <result column="goods_code" property="goodsCode" />
+        <result column="goods_name" property="goodsName" />
+        <result column="specifications" property="specifications" />
+        <result column="inner_purchase_qty" property="innerPurchaseQty" />
+        <result column="fleeing_purchase_qty" property="fleeingPurchaseQty" />
+        <result column="fleeing_purchase_reduce_qty" property="fleeingPurchaseReduceQty" />
+        <result column="purchase_reverse" property="purchaseReverse" />
+        <result column="outter_purchase_sum" property="outterPurchaseSum" />
+        <result column="purchase_sum" property="purchaseSum" />
+        <result column="purchase_sum_money" property="purchaseSumMoney" />
+        <result column="price" property="price" />
+        <result column="province_name" property="provinceName" />
+        <result column="city_name" property="cityName" />
+        <result column="region_name" property="regionName" />
+        <result column="province_code" property="provinceCode" />
+        <result column="city_code" property="cityCode" />
+        <result column="region_code" property="regionCode" />
+        <result column="provincial_area" property="provincialArea" />
+        <result column="business_province" property="businessProvince" />
+        <result column="department" property="department" />
+        <result column="business_department" property="businessDepartment" />
+        <result column="district_county" property="districtCounty" />
+        <result column="superior_supervisor_code" property="superiorSupervisorCode" />
+        <result column="superior_supervisor_name" property="superiorSupervisorName" />
+        <result column="representative_code" property="representativeCode" />
+        <result column="representative_name" property="representativeName" />
+        <result column="post_code" property="postCode" />
+        <result column="post_name" property="postName" />
+        <result column="product_group" property="productGroup" />
+        <result column="pharmacy_attribute" property="pharmacyAttribute" />
+        <result column="pharmacy_type" property="pharmacyType" />
+        <result column="parent_supplier_name" property="parentSupplierName" />
+        <result column="parent_supplier_code" property="parentSupplierCode" />
+        <result column="pharmacy_level" property="pharmacyLevel" />
+        <result column="pharmacy_chain_attribute" property="pharmacyChainAttribute" />
+        <result column="label_attribute" property="labelAttribute" />
+        <result column="target_flag" property="targetFlag" />
+        <result column="create_user" property="createUser" />
+        <result column="create_time" property="createTime" />
+        <result column="update_user" property="updateUser" />
+        <result column="update_time" property="updateTime" />
+        <result column="lock_time" property="lockTime" />
+        <result column="last_un_lock_time" property="lastUnLockTime" />
+        <result column="province_manager_code" property="provinceManagerCode" />
+        <result column="province_manager_name" property="provinceManagerName" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,
+        enterprise_cers_id, so_month, crm_id, name, goods_code, goods_name, specifications, inner_purchase_qty, fleeing_purchase_qty, fleeing_purchase_reduce_qty, purchase_reverse, outter_purchase_sum, purchase_sum, purchase_sum_money, price, province_name, city_name, region_name,province_code,city_code,region_code,provincial_area, business_province, department, business_department, district_county, superior_supervisor_code, superior_supervisor_name, representative_code, representative_name, post_code, post_name, product_group, pharmacy_attribute, pharmacy_type, parent_supplier_name, parent_supplier_code, pharmacy_level, pharmacy_chain_attribute, label_attribute, target_flag, create_user, create_time, update_user, update_time,lock_time,last_un_lock_time,province_manager_code,province_manager_name
+    </sql>
+
+</mapper>

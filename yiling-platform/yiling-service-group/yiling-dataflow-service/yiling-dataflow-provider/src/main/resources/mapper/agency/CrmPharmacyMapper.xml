@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.dataflow.agency.dao.CrmPharmacyMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.dataflow.agency.entity.CrmPharmacyDO">
+        <result column="id" property="id"/>
+        <result column="crm_enterprise_id" property="crmEnterpriseId"/>
+        <result column="pharmacy_attribute" property="pharmacyAttribute"/>
+        <result column="pharmacy_type" property="pharmacyType"/>
+        <result column="pharmacy_level" property="pharmacyLevel"/>
+        <result column="agreement" property="agreement"/>
+        <result column="parent_company_name" property="parentCompanyName"/>
+        <result column="parent_company_code" property="parentCompanyCode"/>
+        <result column="chain_attribute" property="chainAttribute"/>
+        <result column="medical_insurance" property="medicalInsurance"/>
+        <result column="label_attribute" property="labelAttribute"/>
+        <result column="target_flag" property="targetFlag"/>
+        <result column="store_manager" property="storeManager"/>
+        <result column="turnover" property="turnover"/>
+        <result column="yl_annual_sales" property="ylAnnualSales"/>
+        <result column="business_area" property="businessArea"/>
+        <result column="county_customer_code" property="countyCustomerCode"/>
+        <result column="county_customer_name" property="countyCustomerName"/>
+        <result column="parity" property="parity"/>
+        <result column="base_medicine_flag" property="baseMedicineFlag"/>
+        <result column="mnemonic_code" property="mnemonicCode"/>
+        <result column="contract_flag" property="contractFlag"/>
+        <result column="del_flag" property="delFlag"/>
+        <result column="create_user" property="createUser"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_user" property="updateUser"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="remark" property="remark"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id
+        ,
+        crm_enterprise_id, pharmacy_attribute, pharmacy_type, pharmacy_level, agreement, parent_company_name, parent_company_code, chain_attribute, medical_insurance, label_attribute, target_flag, store_manager, turnover, yl_annual_sales, business_area, county_customer_code, county_customer_name, parity, base_medicine_flag, mnemonic_code, contract_flag
+        , del_flag, create_user, create_time, update_user, update_time, remark
+    </sql>
+
+</mapper>

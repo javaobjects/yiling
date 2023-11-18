@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.dataflow.crm.dao.CrmGoodsInfoMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.dataflow.crm.entity.CrmGoodsInfoDO">
+    <result column="id" property="id" />
+        <result column="goods_code" property="goodsCode" />
+        <result column="goods_group" property="goodsGroup" />
+        <result column="goods_name" property="goodsName" />
+        <result column="goods_spec" property="goodsSpec" />
+        <result column="goods_name_abbr" property="goodsNameAbbr" />
+        <result column="packing" property="packing" />
+        <result column="brand" property="brand" />
+        <result column="unit" property="unit" />
+        <result column="supply_price" property="supplyPrice" />
+        <result column="dosage_form" property="dosageForm" />
+        <result column="is_prescription" property="isPrescription" />
+        <result column="conversion_factor" property="conversionFactor" />
+        <result column="is_target" property="isTarget" />
+        <result column="start_time" property="startTime" />
+        <result column="end_time" property="endTime" />
+        <result column="ex_factory_price" property="exFactoryPrice" />
+        <result column="purchase_price" property="purchasePrice" />
+        <result column="sales_price" property="salesPrice" />
+        <result column="assessment_price" property="assessmentPrice" />
+        <result column="variety_type" property="varietyType" />
+        <result column="is_group_purchase" property="isGroupPurchase" />
+        <result column="category_id" property="categoryId" />
+        <result column="status" property="status" />
+        <result column="del_flag" property="delFlag" />
+        <result column="create_time" property="createTime" />
+        <result column="create_user" property="createUser" />
+        <result column="update_time" property="updateTime" />
+        <result column="update_user" property="updateUser" />
+        <result column="remark" property="remark" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,
+        goods_code, goods_group, goods_name, goods_spec, goods_name_abbr, packing, brand, unit, supply_price, dosage_form, is_prescription, conversion_factor, is_target, start_time, end_time, ex_factory_price, purchase_price, sales_price, assessment_price, variety_type,is_group_purchase,category_id,status,
+        del_flag,create_time,create_user,update_time,update_user,remark
+    </sql>
+
+    <sql id="Alias_Column_List">
+        g.id,
+        g.goods_code, g.goods_group, g.goods_name, g.goods_spec, g.goods_name_abbr, g.packing, g.brand, g.unit, g.supply_price, g.dosage_form, g.is_prescription, g.conversion_factor, g.is_target, g.start_time, g.end_time, g.ex_factory_price, g.purchase_price, g.sales_price, g.assessment_price, g.variety_type,g.is_group_purchase,g.category_id,g.status,
+        g.del_flag,g.create_time,g.create_user,g.update_time,g.update_user,g.remark
+    </sql>
+
+    <select id="getPopupPage" resultMap="BaseResultMap">
+        select
+        <include refid="Alias_Column_List"/>
+        from crm_goods_info g
+        <if test="request.category != null and request.category!=''">
+            left join crm_goods_category gc on g.category_id = gc.id and gc.del_flag=0
+        </if>
+        <where>
+            g.del_flag=0
+            <if test="request.goodsCode != null and request.goodsCode >0">
+                and g.goods_code = #{request.goodsCode}
+            </if>
+            <if test="request.goodsName != null and request.goodsName !=''">
+                and g.goods_name like concat('%',#{request.goodsName},'%')
+            </if>
+            <if test="request.categoryId != null and request.categoryId >0">
+                and g.category_id = #{request.categoryId}
+            </if>
+            <if test="request.category != null and request.category!=''">
+                and gc.`name` like concat('%',#{request.category},'%')
+            </if>
+            <if test="request.status != null">
+                and g.status = #{request.status}
+            </if>
+            <if test="request.isGroupPurchase != null">
+                and g.is_group_purchase = #{request.isGroupPurchase}
+            </if>
+        </where>
+    </select>
+
+</mapper>

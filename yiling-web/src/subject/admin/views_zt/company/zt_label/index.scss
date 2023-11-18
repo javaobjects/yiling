@@ -1,0 +1,39 @@
+@import "~@/common/styles/mixin.scss";
+
+.app-container {
+  .common-box {
+    .search-box {
+      // padding: 0 16px;
+      position: relative;
+      .box {
+        .title {
+          font-size: $font-size-large;
+          line-height: $font-size-large-lh;
+          color: $font-important-color;
+          margin-bottom: 8px;
+        }
+      }
+      .el-select {
+        width: 220px;
+      }
+      .el-input {
+        width: 220px;
+      }
+      .bottom-btn {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+      }
+    }
+  }
+  .down-box {
+    .down-box-left {
+      display: inline-block;
+      padding-left: 10px;
+      // border: 1px solid red;
+    }
+    .btn {
+      float: right;
+    }
+  }
+}

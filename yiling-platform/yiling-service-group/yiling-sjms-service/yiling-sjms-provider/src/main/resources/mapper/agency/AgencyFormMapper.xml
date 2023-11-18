@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.sjms.agency.dao.AgencyFormMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.sjms.agency.entity.AgencyFormDO">
+        <result column="id" property="id"/>
+        <result column="form_id" property="formId"/>
+        <result column="crm_enterprise_id" property="crmEnterpriseId"/>
+        <result column="name" property="name"/>
+        <result column="license_number" property="licenseNumber"/>
+        <result column="before_name" property="beforeName"/>
+        <result column="before_license_number" property="beforeLicenseNumber"/>
+        <result column="supply_chain_role" property="supplyChainRole"/>
+        <result column="distribution_license_number" property="distributionLicenseNumber"/>
+        <result column="institution_practice_license" property="institutionPracticeLicense"/>
+        <result column="province_code" property="provinceCode"/>
+        <result column="province_name" property="provinceName"/>
+        <result column="city_code" property="cityCode"/>
+        <result column="city_name" property="cityName"/>
+        <result column="region_code" property="regionCode"/>
+        <result column="region_name" property="regionName"/>
+        <result column="address" property="address"/>
+        <result column="provincial_area" property="provincialArea"/>
+        <result column="phone" property="phone"/>
+        <result column="opt_type" property="optType"/>
+        <result column="change_item" property="changeItem"/>
+        <result column="notes" property="notes"/>
+        <result column="archive_status" property="archiveStatus"/>
+        <result column="enter_database" property="enterDatabase"/>
+        <result column="fail_enter_message" property="failEnterMessage"/>
+        <result column="del_flag" property="delFlag"/>
+        <result column="create_user" property="createUser"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_user" property="updateUser"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="remark" property="remark"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id
+        ,
+        form_id, crm_enterprise_id, name, license_number, before_name, before_license_number, supply_chain_role, distribution_license_number, institution_practice_license, province_code, province_name, city_code, city_name, region_code, region_name, address, provincial_area, phone, opt_type, change_item, notes, archive_status, enter_database, fail_enter_message, del_flag, create_user, create_time, update_user, update_time, remark
+    </sql>
+
+    <select id="pageList"
+            parameterType="com.yiling.sjms.agency.dto.request.QueryAgencyFormPageRequest" resultMap="BaseResultMap">
+        SELECT af.* FROM agency_form af
+        LEFT JOIN form f ON af.form_id=f.id
+        <where>
+            af.del_flag=0
+            AND f.del_flag=0
+            AND f.status=10
+            <if test="request.optType != null and request.optType != 0">
+                AND af.opt_type = #{request.optType}
+            </if>
+        </where>
+        ORDER BY af.create_time DESC
+    </select>
+</mapper>

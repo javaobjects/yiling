@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.sjms.crm.dao.HospitalDrugstoreRelationFormMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.sjms.crm.entity.HospitalDrugstoreRelationFormDO">
+    <result column="id" property="id" />
+        <result column="form_id" property="formId" />
+        <result column="drugstore_org_id" property="drugstoreOrgId" />
+        <result column="drugstore_org_name" property="drugstoreOrgName" />
+        <result column="hospital_org_id" property="hospitalOrgId" />
+        <result column="hospital_org_name" property="hospitalOrgName" />
+        <result column="category_name" property="categoryName" />
+        <result column="crm_goods_code" property="crmGoodsCode" />
+        <result column="crm_goods_name" property="crmGoodsName" />
+        <result column="crm_goods_spec" property="crmGoodsSpec" />
+        <result column="effect_start_time" property="effectStartTime" />
+        <result column="effect_end_time" property="effectEndTime" />
+        <result column="sync_data" property="syncData" />
+        <result column="sync_err_msg" property="syncErrMsg" />
+        <result column="del_flag" property="delFlag" />
+        <result column="create_time" property="createTime" />
+        <result column="create_user" property="createUser" />
+        <result column="update_time" property="updateTime" />
+        <result column="update_user" property="updateUser" />
+        <result column="remark" property="remark" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,
+        form_id, drugstore_org_id, drugstore_org_name, hospital_org_id, hospital_org_name, category_name, crm_goods_code, crm_goods_name, crm_goods_spec, effect_start_time, effect_end_time, sync_data, sync_err_msg, del_flag, create_time, create_user, update_time, update_user, remark
+    </sql>
+
+    <select id="selectDrugOrgIdFormIdByHosOrgId" resultType="java.lang.Long">
+        select drugstore_org_id from hospital_drugstore_relation_form
+             where del_flag = 0
+                and form_id = #{formId}
+              and hospital_org_id = #{hospitalOrgId} and effect_end_time <![CDATA[ >= ]]> date_format(now(), '%Y-%m-%d%')
+              group by drugstore_org_id
+    </select>
+
+</mapper>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.settlement.yee.dao.YeeSettleSyncRecordMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.settlement.yee.entity.YeeSettleSyncRecordDO">
+    <result column="id" property="id" />
+        <result column="parent_merchant_no" property="parentMerchantNo" />
+        <result column="merchant_no" property="merchantNo" />
+        <result column="summary_no" property="summaryNo" />
+        <result column="settle_amount" property="settleAmount" />
+        <result column="real_fee" property="realFee" />
+        <result column="real_amount" property="realAmount" />
+        <result column="status" property="status" />
+        <result column="status_desc" property="statusDesc" />
+        <result column="settle_type" property="settleType" />
+        <result column="sync_time" property="syncTime" />
+        <result column="del_flag" property="delFlag" />
+        <result column="create_user" property="createUser" />
+        <result column="create_time" property="createTime" />
+        <result column="update_user" property="updateUser" />
+        <result column="update_time" property="updateTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,
+        parent_merchant_no, merchant_no, summary_no, settle_amount, real_fee, real_amount, status, status_desc, settle_type, sync_time, del_flag, create_user, create_time, update_user, update_time
+    </sql>
+
+</mapper>

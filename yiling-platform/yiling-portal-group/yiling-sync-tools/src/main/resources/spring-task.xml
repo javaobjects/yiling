@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:task="http://www.springframework.org/schema/task"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+		http://www.springframework.org/schema/task
+    	http://www.springframework.org/schema/task/spring-task-3.2.xsd">
+
+	<task:scheduler id="rxyxScheduler" pool-size="10"/>
+	<!-- DISCARD_OLDEST:丢弃最旧的任务 -->
+	<task:executor id="rxyxExecutor" pool-size="5-10" queue-capacity="100" keep-alive="1200" rejection-policy="DISCARD_OLDEST" />
+	<task:annotation-driven executor="rxyxExecutor" scheduler="rxyxScheduler"/>
+</beans>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.marketing.couponactivityautoget.dao.CouponActivityAutoGetMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.marketing.couponactivityautoget.entity.CouponActivityAutoGetDO">
+    <result column="id" property="id" />
+        <result column="name" property="name" />
+        <result column="begin_time" property="beginTime" />
+        <result column="end_time" property="endTime" />
+        <result column="condition_enterprise_type" property="conditionEnterpriseType" />
+        <result column="condition_enterprise_type_value" property="conditionEnterpriseTypeValue" />
+        <result column="condition_user_type" property="conditionUserType" />
+        <result column="status" property="status" />
+        <result column="del_flag" property="delFlag" />
+        <result column="create_user" property="createUser" />
+        <result column="create_time" property="createTime" />
+        <result column="update_user" property="updateUser" />
+        <result column="update_time" property="updateTime" />
+        <result column="remark" property="remark" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Table_Name">
+        `marketing_coupon_activity_auto_get`
+    </sql>
+
+    <sql id="Base_Column_List">
+        id, name, begin_time, end_time, condition_enterprise_type, condition_enterprise_type_value, condition_user_type,
+        status, del_flag, create_user, create_time, update_user, update_time, remark
+    </sql>
+
+    <select id="getIdByName" resultType="java.lang.Long">
+        SELECT
+        id
+        FROM
+        <include refid="Base_Table_Name"/>
+        WHERE
+        name = #{request.name}
+        AND status in (1,2)
+        AND del_flag = 0
+        LIMIT 1
+    </select>
+    <select id="getAvailableAutogetAcouponByActivityId"
+            resultType="com.yiling.marketing.couponactivityautoget.entity.CouponActivityAutoGetCouponDO">
+        SELECT distinct ca.id as couponActivityId,augt.id
+        FROM marketing_coupon_activity_auto_get augt
+                 LEFT JOIN marketing_coupon_activity_auto_get_coupon agcu ON augt.id = agcu.coupon_activity_auto_get_id
+                 left join marketing_coupon_activity ca on agcu.coupon_activity_id = ca.id
+        WHERE ca.end_time > NOW()
+        AND ca.`status`=1 and augt.`status`=1 and augt.end_time>NOW()
+        and agcu.coupon_activity_id in
+        <foreach collection="request" open="(" close=")" item="item" separator=",">
+            #{item}
+        </foreach>
+    </select>
+
+</mapper>

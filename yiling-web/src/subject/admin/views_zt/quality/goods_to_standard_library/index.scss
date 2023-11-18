@@ -1,0 +1,66 @@
+.app-container {
+  .common-box {
+    .search-box {
+      position: relative;
+      .box {
+        .title {
+          font-size: $font-size-large;
+          line-height: $font-size-large-lh;
+          color: $font-important-color;
+          margin-bottom: 8px;
+        }
+      }
+      .el-select {
+        width: 220px;
+      }
+      .el-input {
+        width: 220px;
+      }
+
+      .bottom-btn {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+      }
+    }
+  }
+  .header-bar{
+    margin-top: 24px;
+  }
+  .down-box {
+    width: 100%;
+    height: 30px;
+    .btn {
+      float: right;
+    }
+  }
+  .normls {
+    background: #eee;
+  }
+  .normls-title {
+    display: flex;
+    padding: 20px 20px 20px 20px;
+    color: #333;
+    p {
+      padding: 0;
+      margin: 0;
+      margin-bottom: 16px;
+    }
+    div {
+      &:first-child {
+        width: 80px;
+        margin-right: 8px;
+      }
+    }
+    .normls-title-s {
+      min-width: 100px;
+    }
+  }
+  .spce {
+    display: flex;
+    justify-content: space-between;
+  }
+  .txtLine ::v-deep.el-form-item__label{
+    line-height: 20px;
+  }
+}

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.marketing.lotteryactivity.dao.LotteryActivityHitRandomGenerateMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.marketing.lotteryactivity.entity.LotteryActivityHitRandomGenerateDO">
+    <result column="id" property="id" />
+        <result column="lottery_activity_id" property="lotteryActivityId" />
+        <result column="platform_type" property="platformType" />
+        <result column="uname" property="uname" />
+        <result column="level" property="level" />
+        <result column="reward_type" property="rewardType" />
+        <result column="reward_name" property="rewardName" />
+        <result column="show_name" property="showName" />
+        <result column="reward_number" property="rewardNumber" />
+        <result column="del_flag" property="delFlag" />
+        <result column="create_time" property="createTime" />
+        <result column="create_user" property="createUser" />
+        <result column="update_time" property="updateTime" />
+        <result column="update_user" property="updateUser" />
+        <result column="remark" property="remark" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,
+        lottery_activity_id, platform_type, uname, level, reward_type, reward_name, show_name, reward_number, del_flag, create_time, create_user, update_time, update_user, remark
+    </sql>
+
+</mapper>

@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.open.erp.dao.ErpFlowControlMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.open.erp.entity.ErpFlowControlDO">
+        <result column="id" property="id"/>
+        <result column="su_id" property="suId"/>
+        <result column="su_dept_no" property="suDeptNo"/>
+        <result column="task_code" property="taskCode"/>
+        <result column="file_time" property="fileTime"/>
+        <result column="file_md5" property="fileMd5"/>
+        <result column="file_key" property="fileKey"/>
+        <result column="success_number" property="successNumber"/>
+        <result column="failed_number" property="failedNumber"/>
+        <result column="data_md5" property="dataMd5"/>
+        <result column="add_time" property="addTime"/>
+        <result column="edit_time" property="editTime"/>
+        <result column="oper_type" property="operType"/>
+        <result column="sync_status" property="syncStatus"/>
+        <result column="sync_time" property="syncTime"/>
+        <result column="sync_msg" property="syncMsg"/>
+        <result column="failed_count" property="failedCount"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,
+        su_id,su_dept_no, task_code, file_time, file_md5, file_key,success_number,failed_number, data_md5, add_time, edit_time, oper_type, sync_status, sync_time, sync_msg, failed_count
+    </sql>
+
+    <select id="queryBySuIdAndSuDeptNo" resultMap="BaseResultMap">
+        SELECT id,su_id,su_dept_no,file_md5,data_md5,oper_type FROM erp_flow_control WHERE su_id = #{suId}
+        <if test="suDeptNo != null and suDeptNo != ''">
+            AND su_dept_no = #{suDeptNo}
+        </if>
+        LIMIT #{start},#{count}
+    </select>
+
+    <select id="queryHistoryList" resultMap="BaseResultMap">
+        SELECT id,su_id,su_dept_no,file_md5,oper_type
+        FROM erp_flow_control
+        WHERE su_id = #{suId}
+        <if test="suDeptNoSet != null and suDeptNoSet.size() > 0">
+            AND su_dept_no IN
+            <foreach item="item" index="index" collection="suDeptNoSet"
+                     open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="erpPrimaryKeySet != null and erpPrimaryKeySet.size() > 0">
+            AND file_md5 IN
+            <foreach item="item" index="index" collection="erpPrimaryKeySet"
+                     open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+    </select>
+
+    <insert id="batchInsert" parameterType="com.yiling.open.erp.entity.ErpFlowControlDO" useGeneratedKeys="true"
+            keyProperty="id">
+        INSERT INTO erp_flow_control (
+        `id`,
+        `su_id`,
+        `su_dept_no`,
+        `task_code`,
+        `file_time`,
+        `file_md5`,
+        `file_key`,
+        `success_number`,
+        `failed_number`,
+        `data_md5`,
+        `add_time`,
+        `oper_type`,
+        `sync_status`,
+        `sync_msg`,
+        `failed_count`
+        )
+        VALUES
+        <foreach collection="list" item="item" index="index"
+                 separator=",">
+            (
+            #{item.id},
+            #{item.suId},
+            #{item.suDeptNo},
+            #{item.taskCode},
+            #{item.fileTime},
+            #{item.fileMd5},
+            #{item.fileKey},
+            #{item.successNumber},
+            #{item.failedNumber},
+            #{item.dataMd5},
+            NOW(),
+            1,
+            1,
+            #{item.syncMsg},
+            #{item.failedCount}
+            )
+        </foreach>
+    </insert>
+
+    <update id="updateByPrimaryKey" parameterType="com.yiling.open.erp.entity.ErpFlowControlDO">
+        UPDATE erp_flow_control
+        SET
+        <if test="suId != null">
+            `su_id` = #{suId},
+        </if>
+        <if test="suDeptNo != null and suDeptNo != ''">
+            `su_dept_no` = #{suDeptNo},
+        </if>
+        <if test="taskCode != null">
+            `task_code` = #{taskCode},
+        </if>
+        <if test="fileTime != null">
+            `file_time` = #{fileTime},
+        </if>
+        <if test="fileMd5 != null and fileMd5 != ''">
+            `file_md5` = #{fileMd5},
+        </if>
+        <if test="fileKey != null and fileKey != ''">
+            `file_key` = #{fileKey},
+        </if>
+        <if test="successNumber != null">
+            `success_number` = #{successNumber},
+        </if>
+        <if test="failedNumber != null">
+            `failed_number` = #{failedNumber},
+        </if>
+        <if test="dataMd5 != null and dataMd5 != ''">
+            `data_md5` = #{dataMd5},
+        </if>
+        <if test="syncMsg != null and syncMsg != ''">
+            `sync_msg` = #{syncMsg},
+        </if>
+        <if test="syncStatus != null">
+            `sync_status` = #{syncStatus},
+        </if>
+        <if test="failedCount != null">
+            `failed_count` = #{failedCount},
+        </if>
+        `edit_time` = NOW(),
+        `update_count` = update_count + 1,
+        `oper_type` = 2
+        WHERE id = #{id}
+    </update>
+
+    <update id="updateSyncInfoByPrimaryKey" parameterType="com.yiling.open.erp.entity.ErpFlowControlDO">
+        UPDATE erp_flow_control
+        SET
+        `sync_status` = #{syncStatus},
+        `sync_msg` = #{syncMsg}
+        WHERE id = #{id}
+    </update>
+
+    <update id="deleteByPrimaryKey" parameterType="com.yiling.open.erp.entity.ErpFlowControlDO">
+        UPDATE erp_flow_control
+        SET
+        `edit_time` = NOW(),
+        `oper_type` = 3,
+        `sync_status` = #{syncStatus},
+        `sync_msg` = #{syncMsg}
+        WHERE `id` = #{id}
+        AND oper_type &lt; 3
+    </update>
+
+    <update id="deleteByPrimaryKeys">
+        UPDATE erp_flow_control
+        SET
+        `edit_time` = NOW(),
+        `oper_type` = 3,
+        `sync_status` = 1
+        WHERE id IN
+        <foreach item="item" index="index" collection="list" open="("
+                 separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+
+
+    <!--=================================================================================================-->
+    <update id="updateSyncStatusByStatusAndId">
+        update
+        `erp_flow_control` set
+        `sync_status`=#{syncStatus},`sync_time`=Now(),`sync_msg` = #{syncMsg}
+        where
+        `id` = #{id} and
+        `sync_status`=#{oldSyncStatus}
+    </update>
+
+    <!-- 更改同步状态,同步信息 -->
+    <update id="updateSyncStatusAndMsg">
+        update `erp_flow_control` set
+        `sync_status` = #{syncStatus},
+        `sync_msg`=#{syncMsg},
+        `sync_time`=Now()
+        where `id` = #{id}
+    </update>
+
+    <select id="syncFlowControl" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM erp_flow_control t
+        WHERE  t.sync_status = 0
+        AND (t.su_id, t.su_dept_no) IN (
+        SELECT
+        c.su_id,
+        c.su_dept_no
+        FROM
+        erp_client c
+        WHERE
+        c.client_status = 1
+        AND c.sync_status = 1) LIMIT 1000
+    </select>
+
+    <select id="syncFlowControlPage" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM erp_flow_control t
+        WHERE t.sync_status = 0
+        <if test="requestList != null and requestList.size() != 0">
+            AND (t.su_id, t.su_dept_no) IN
+            <foreach item="item" index="index" collection="requestList" open="("
+                     separator="," close=")">
+                (#{item.suId},#{item.suDeptNo})
+            </foreach>
+        </if>
+        limit 100
+    </select>
+
+    <update id="updateSyncStatusAndMsgAndFailnumber">
+        update `erp_flow_control` set
+        `sync_status` = #{request.syncStatus},
+        `sync_msg` = #{request.syncMsg},
+        `success_number` = #{request.successNumber},
+        `failed_number` = #{request.failedNumber},
+        `sync_time` = Now()
+        where `id` = #{request.id}
+    </update>
+
+    <delete id="deleteByfileTime">
+        DELETE FROM erp_flow_control
+        WHERE su_id = #{suId} AND file_time <![CDATA[ <= ]]> #{fileTimeEnd}
+    </delete>
+
+    <select id="page" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from erp_flow_control
+        where file_time <![CDATA[ <= ]]> #{request.fileTime}
+    </select>
+
+    <select id="getInitDateBySuIdAndSuDeptNo" resultType="date">
+        select min(add_time) from erp_flow_control where su_id=#{suId} and su_dept_no=#{suDeptNo}
+    </select>
+
+</mapper>

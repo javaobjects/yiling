@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.goods.standard.dao.StandardGoodsMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.goods.standard.entity.StandardGoodsDO">
+    <result column="id" property="id" />
+        <result column="goods_type" property="goodsType" />
+        <result column="goods_status" property="goodsStatus" />
+        <result column="name" property="name" />
+        <result column="common_name" property="commonName" />
+        <result column="license_no" property="licenseNo" />
+        <result column="manufacturer" property="manufacturer" />
+        <result column="manufacturer_address" property="manufacturerAddress" />
+        <result column="standard_category_id1" property="standardCategoryId1" />
+        <result column="standard_category_id2" property="standardCategoryId2" />
+        <result column="standard_category_name1" property="standardCategoryName1" />
+        <result column="standard_category_name2" property="standardCategoryName2" />
+        <result column="alias_name" property="aliasName" />
+        <result column="is_cn" property="isCn" />
+        <result column="gdf_name" property="gdfName" />
+        <result column="gdf_specifications" property="gdfSpecifications" />
+        <result column="otc_type" property="otcType" />
+        <result column="is_yb" property="isYb" />
+        <result column="control_type" property="controlType" />
+        <result column="goods_code" property="goodsCode" />
+        <result column="ingredient" property="ingredient" />
+        <result column="special_composition" property="specialComposition" />
+        <result column="quality_type" property="qualityType" />
+        <result column="goods_source" property="goodsSource" />
+        <result column="rough_weight" property="roughWeight" />
+        <result column="goods_grade" property="goodsGrade" />
+        <result column="executive_standard" property="executiveStandard" />
+        <result column="product_classification" property="productClassification" />
+        <result column="product_standard_code" property="productStandardCode" />
+        <result column="business_scope" property="businessScope" />
+        <result column="registrant" property="registrant" />
+        <result column="registrant_address" property="registrantAddress" />
+        <result column="agent" property="agent" />
+        <result column="agent_address" property="agentAddress" />
+        <result column="changes" property="changes" />
+        <result column="yl_flag" property="ylFlag" />
+        <result column="del_flag" property="delFlag" />
+        <result column="create_user" property="createUser" />
+        <result column="create_time" property="createTime" />
+        <result column="update_user" property="updateUser" />
+        <result column="update_time" property="updateTime" />
+        <result column="remark" property="remark" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,
+         goods_type, goods_status, name, common_name, license_no, manufacturer, manufacturer_address, standard_category_id1, standard_category_id2, standard_category_name1,standard_category_name2, alias_name, is_cn, gdf_name, gdf_specifications, otc_type, is_yb, control_type, goods_code, ingredient, special_composition, quality_type, goods_source, rough_weight, goods_grade, executive_standard, product_classification, product_standard_code,business_scope,registrant,registrant_address,agent,agent_address,changes,yl_flag, del_flag, create_user, create_time, update_user, update_time, remark
+    </sql>
+
+    <select id="standardGoodsInfoPage" resultType="com.yiling.goods.standard.entity.StandardGoodsDO">
+
+        SELECT
+        <if test="request.tagIds != null and request.tagIds.size > 0">
+            distinct
+        </if>
+        s.id,
+        s.goods_type, s.goods_status, s.`name`, s.common_name,
+        s.license_no, s.manufacturer, s.manufacturer_address, s.standard_category_id1,
+        s.standard_category_id2, s.standard_category_name1,s.standard_category_name2,
+        s.alias_name, s.is_cn, s.gdf_name, s.gdf_specifications, s.otc_type, s.is_yb,
+        s.control_type, s.goods_code, s.ingredient, s.special_composition, s.quality_type,
+        s.goods_source, s.rough_weight, s.goods_grade, s.executive_standard, s.product_classification,
+        s.product_standard_code,s.business_scope,s.registrant,s.registrant_address,
+        s.agent,s.agent_address,s.changes,s.yl_flag, s.del_flag, s.create_user,
+        s.create_time, s.update_user, s.update_time, s.remark
+        FROM
+        standard_goods s
+        <if test="request.tagIds != null and request.tagIds.size > 0">
+            inner join standard_goods_tag_rel t on t.standard_id = s.id and t.del_flag = 0
+        </if>
+        <where>
+            <if test="request.standardId !=null and request.standardId > 0">
+                and s.id = #{request.standardId}
+            </if>
+            <if test="request.standardIds != null and request.standardIds.size > 0">
+                and s.id in (
+                <foreach collection="request.standardIds" item="item" separator=",">
+                    #{item}
+                </foreach>
+                )
+            </if>
+            <if test="request.name != null and request.name != ''">
+                and (name like concat('%',#{request.name},'%') or alias_name like concat('%',#{request.name},'%') )
+            </if>
+
+            <if test="request.licenseNo != null and request.licenseNo != ''">
+                and license_no like concat('%',#{request.licenseNo},'%')
+            </if>
+
+            <if test="request.manufacturer != null and request.manufacturer != ''">
+                and manufacturer like concat('%',#{request.manufacturer},'%')
+            </if>
+
+            <if test="request.manufacturerAddress != null and request.manufacturerAddress != ''">
+                and manufacturer_address like concat('%',#{request.manufacturerAddress},'%')
+            </if>
+
+            <if test="request.standardCategoryId1 != null ">
+                and standard_category_id1 = #{request.standardCategoryId1}
+            </if>
+
+            <if test="request.standardCategoryId2 != null ">
+                and standard_category_id2 = #{request.standardCategoryId2}
+            </if>
+
+            <if test="request.goodsType != null and request.goodsType != 0">
+                and goods_type = #{request.goodsType}
+            </if>
+            <if test="request.goodsTypes != null and request.goodsTypes.size > 0">
+                and s.goods_type in (
+                <foreach collection="request.goodsTypes" item="type" separator=",">
+                    #{type}
+                </foreach>
+                )
+            </if>
+            <if test="request.otcType != null and request.otcType != 0">
+                and otc_type = #{request.otcType}
+            </if>
+
+            <if test="request.isYb != null and request.isYb != 0">
+                and is_yb = #{request.isYb}
+            </if>
+
+            <if test="request.controlType != null and request.controlType != 0 ">
+                and control_type = #{request.controlType}
+            </if>
+
+            <if test="request.specialComposition != null and request.specialComposition != 0">
+                and special_composition = #{request.specialComposition}
+            </if>
+            <if test="request.ylFlag != null and request.ylFlag == 1">
+                and yl_flag = 1
+            </if>
+            <if test="request.tagIds != null and request.tagIds.size > 0">
+                and t.tag_id in (
+                <foreach collection="request.tagIds" item="tagId" separator=",">
+                    #{tagId}
+                </foreach>
+                )
+            </if>
+
+            and s.del_flag = 0
+
+            <if test="request.pictureFlag != null and request.pictureFlag == 1">
+                AND  EXISTS(SELECT 1 from standard_goods_pic n WHERE n.del_flag = 0 and s.id=n.standard_id )
+            </if>
+
+            <if test="request.pictureFlag != null and request.pictureFlag == 2">
+                AND  not EXISTS(SELECT 1 from standard_goods_pic n WHERE n.del_flag = 0 and s.id=n.standard_id )
+            </if>
+
+        </where>
+
+
+    </select>
+
+
+</mapper>

@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.order.order.dao.OrderRefundMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.order.order.entity.OrderRefundDO">
+        <result column="id" property="id"/>
+        <result column="refund_no" property="refundNo"/>
+        <result column="order_id" property="orderId"/>
+        <result column="order_no" property="orderNo"/>
+        <result column="buyer_ename" property="buyerEname"/>
+        <result column="buyer_eid" property="buyerEid"/>
+        <result column="seller_eid" property="sellerEid"/>
+        <result column="seller_ename" property="sellerEname"/>
+        <result column="payment_amount" property="paymentAmount"/>
+        <result column="total_amount" property="totalAmount"/>
+        <result column="pay_way" property="payWay"/>
+        <result column="return_id" property="returnId"/>
+        <result column="return_no" property="returnNo"/>
+        <result column="refund_type" property="refundType"/>
+        <result column="refund_source" property="refundSource"/>
+        <result column="refund_amount" property="refundAmount"/>
+        <result column="real_refund_amount" property="realRefundAmount"/>
+        <result column="refund_status" property="refundStatus"/>
+        <result column="refund_time" property="refundTime"/>
+        <result column="operate_user" property="operateUser"/>
+        <result column="operate_time" property="operateTime"/>
+        <result column="fail_reason" property="failReason"/>
+        <result column="del_flag" property="delFlag"/>
+        <result column="create_user" property="createUser"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_user" property="updateUser"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="third_trade_no" property="thirdTradeNo"/>
+        <result column="third_fund_no" property="thirdFundNo"/>
+        <result column="pay_no" property="payNo"/>
+        <result column="trade_type" property="tradeType"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id
+        ,
+        refund_no, order_id, order_no,buyer_ename,buyer_eid,seller_eid,seller_ename,payment_amount,total_amount,pay_way,return_id, return_no, refund_type,refund_source,refund_amount, real_refund_amount, refund_status, refund_time, operate_user, operate_time, fail_reason, del_flag, create_user, create_time, update_user, update_time, remark,third_trade_no,third_fund_no,pay_no,trade_type
+    </sql>
+    <select id="pageList"
+            parameterType="com.yiling.order.order.dto.request.RefundPageRequest"
+            resultType="com.yiling.order.order.dto.PageOrderRefundDTO">
+        SELECT
+        f.id AS id,
+        f.refund_no AS refundNo,
+        f.refund_status AS refundStatus,
+        f.fail_reason AS failReason,
+        f.seller_eid AS sellerEid,
+        f.seller_ename AS sellerEname,
+        f.buyer_eid AS buyerEid,
+        f.buyer_ename AS buyerEname,
+        f.refund_type AS refundType,
+        f.refund_source AS refundSource,
+        f.order_id AS orderId,
+        f.order_no AS orderNo,
+        f.return_id AS returnId,
+        f.return_no AS returnNo,
+        f.pay_way AS payWay,
+        f.total_amount AS totalAmount,
+        f.payment_amount AS paymentAmount,
+        f.refund_amount AS refundAmount,
+        f.update_time AS updateTime,
+        f.create_time AS createTime,
+        f.refund_time AS refundTime,
+        t.return_amount AS returnAmount,
+        t.platform_coupon_discount_amount AS platformCouponDiscountAmount,
+        t.coupon_discount_amount AS couponDiscountAmount,
+        f.third_trade_no as thirdTradeNo,
+        f.third_fund_no as thirdFundNo,
+        f.update_user AS updateUser,
+        f.operate_user AS operateUser,
+        f.operate_time AS operateTime
+        FROM
+        order_refund f
+        LEFT JOIN order_return t ON f.return_id = t.id
+        <where>
+            f.del_flag = 0
+            <if test="request.orderNo != null and request.orderNo != ''">
+                AND f.order_no = #{request.orderNo}
+            </if>
+            <if test="request.sellerName != null and request.sellerName != ''">
+                AND f.seller_ename LIKE CONCAT('%',#{request.sellerName},'%')
+            </if>
+            <if test="request.buyerName != null and request.buyerName != ''">
+                AND f.buyer_ename LIKE CONCAT('%',#{request.buyerName},'%')
+            </if>
+            <if test="request.refundStatus != null and request.refundStatus != 0">
+                AND f.refund_status = #{request.refundStatus}
+            </if>
+            <if test="request.refundType != null and request.refundType != 0">
+                AND f.refund_type = #{request.refundType}
+            </if>
+            <if test="request.refundSource != null and request.refundSource != 0">
+                AND f.refund_source = #{request.refundSource}
+            </if>
+            <if test="request.createStartTime != null">
+                AND f.create_time &gt;= #{request.createStartTime}
+            </if>
+            <if test="request.createStopTime != null">
+                AND f.create_time &lt;= #{request.createStopTime}
+            </if>
+        </where>
+        ORDER BY f.create_time DESC
+    </select>
+</mapper>

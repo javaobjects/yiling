@@ -1,0 +1,60 @@
+.app-container {
+  .common-box {
+    .search-box {
+      // padding: 0 16px;
+      position: relative;
+      .box {
+        .title {
+          font-size: $font-size-large;
+          line-height: $font-size-large-lh;
+          color: $font-important-color;
+          margin-bottom: 8px;
+        }
+      }
+      .el-select {
+        width: 220px;
+      }
+      .el-input {
+        width: 220px;
+      }
+
+      .bottom-btn {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+      }
+    }
+  }
+  .down-box {
+    width: 100%;
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .time-form {
+    display: flex;
+    .line {
+      width: 50px;
+      height: 36px;
+      line-height: 36px;
+      margin: 0 10px;
+    }
+  }
+  .dialog-content {
+    .el-select {
+      width: 360px;
+    }
+    .input-with-select {
+      .el-select {
+        width: 100px;
+      }
+    }
+    ::v-deep .input-with-select .el-input-group__append {
+      background-color: #fff;
+    }
+  }
+  .pad-b-100 {
+    padding-bottom: 80px;
+  }
+}

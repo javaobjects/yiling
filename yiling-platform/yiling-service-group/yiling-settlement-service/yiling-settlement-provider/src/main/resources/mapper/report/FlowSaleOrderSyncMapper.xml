@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.settlement.report.dao.FlowSaleOrderSyncMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.settlement.report.entity.FlowSaleOrderSyncDO">
+    <result column="id" property="id" />
+        <result column="eid" property="eid" />
+        <result column="flow_id" property="flowId" />
+        <result column="ename" property="ename" />
+        <result column="so_id" property="soId" />
+        <result column="so_no" property="soNo" />
+        <result column="enterprise_inner_code" property="enterpriseInnerCode" />
+        <result column="enterprise_name" property="enterpriseName" />
+        <result column="license_number" property="licenseNumber" />
+        <result column="so_time" property="soTime" />
+        <result column="goods_in_sn" property="goodsInSn" />
+        <result column="goods_name" property="goodsName" />
+        <result column="so_specifications" property="soSpecifications" />
+        <result column="so_batch_no" property="soBatchNo" />
+        <result column="so_product_time" property="soProductTime" />
+        <result column="so_effective_time" property="soEffectiveTime" />
+        <result column="so_quantity" property="soQuantity" />
+        <result column="so_unit" property="soUnit" />
+        <result column="so_price" property="soPrice" />
+        <result column="so_total_amount" property="soTotalAmount" />
+        <result column="so_manufacturer" property="soManufacturer" />
+        <result column="so_license" property="soLicense" />
+        <result column="so_source" property="soSource" />
+        <result column="province_code" property="provinceCode" />
+        <result column="province_name" property="provinceName" />
+        <result column="city_code" property="cityCode" />
+        <result column="city_name" property="cityName" />
+        <result column="region_code" property="regionCode" />
+        <result column="region_name" property="regionName" />
+        <result column="sell_specifications_id" property="sellSpecificationsId" />
+        <result column="yl_goods_id" property="ylGoodsId" />
+        <result column="yl_goods_id_update_time" property="ylGoodsIdUpdateTime" />
+        <result column="yl_goods_id_old" property="ylGoodsIdOld" />
+        <result column="report_id" property="reportId" />
+        <result column="report_sett_status" property="reportSettStatus" />
+        <result column="report_status" property="reportStatus" />
+        <result column="identification_status" property="identificationStatus" />
+        <result column="abnormal_reason" property="abnormalReason" />
+        <result column="abnormal_described" property="abnormalDescribed" />
+        <result column="del_flag" property="delFlag" />
+        <result column="create_user" property="createUser" />
+        <result column="create_time" property="createTime" />
+        <result column="update_user" property="updateUser" />
+        <result column="update_time" property="updateTime" />
+        <result column="remark" property="remark" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,
+        flow_id, eid, ename, so_id, so_no, enterprise_inner_code, enterprise_name, license_number, so_time, goods_in_sn, goods_name, so_specifications, so_batch_no, so_product_time, so_effective_time, so_quantity, so_unit, so_price, so_total_amount, so_manufacturer, so_license, so_source, province_code, province_name, city_code, city_name, region_code, region_name, sell_specifications_id, yl_goods_id, yl_goods_id_update_time, yl_goods_id_old, report_id, report_sett_status, report_status, identification_status, abnormal_reason, abnormal_described, del_flag, create_user, create_time, update_user, update_time, remark
+    </sql>
+
+    <select id="queryFlowOrderPageList" parameterType="com.yiling.settlement.report.dto.request.QueryFlowOrderPageListRequest" resultType="com.yiling.settlement.report.dto.ReportFlowSaleOrderSyncDTO">
+        SELECT
+            id
+        FROM
+            report_flow_sale_order_sync
+        WHERE
+          del_flag = 0
+          AND so_source NOT IN (1)
+          <if test="request.idList != null and request.idList.size() > 0">
+            AND id IN
+            <foreach item="item" index="index" collection="request.idList"
+                     open="(" separator="," close=")">
+                #{item}
+            </foreach>
+          </if>
+          <if test="request.filterInvalidOrder != null and request.filterInvalidOrder == 1">
+            AND identification_status != 2
+          </if>
+          <if test="request.eidList != null and request.eidList.size() > 0">
+              AND eid IN
+              <foreach item="item" index="index" collection="request.eidList"
+                       open="(" separator="," close=")">
+                  #{item}
+              </foreach>
+          </if>
+          <if test="request.soSourceList != null and request.soSourceList.size() > 0">
+              AND so_source IN
+              <foreach item="item" index="index" collection="request.soSourceList"
+                       open="(" separator="," close=")">
+                  #{item}
+              </foreach>
+          </if>
+          <if test="request.reportStatusList != null and request.reportStatusList.size() > 0">
+              AND report_status IN
+              <foreach item="item" index="index" collection="request.reportStatusList"
+                       open="(" separator="," close=")">
+                  #{item}
+              </foreach>
+           </if>
+           <if test="request.startSoTime != null">
+              AND so_time &gt;=#{request.startSoTime}
+           </if>
+           <if test="request.endSoTime != null">
+              AND so_time &lt;= #{request.endSoTime}
+           </if>
+           <if test="request.identificationStatus != null and request.identificationStatus != 0">
+              AND identification_status = #{request.identificationStatus}
+           </if>
+    </select>
+
+    <select id="queryFlowOrderList" resultType="com.yiling.settlement.report.dto.ReportFlowSaleOrderSyncDTO">
+        SELECT
+            id,
+            flow_id,
+            report_status
+        FROM
+            report_flow_sale_order_sync
+        WHERE
+          del_flag = 0
+          <if test="flowIdList == null and flowIdList.size() == 0">
+              AND id = 1
+          </if>
+          <if test="flowIdList != null and flowIdList.size() > 0">
+              AND flow_id IN
+              <foreach item="item" index="index" collection="flowIdList"
+                       open="(" separator="," close=")">
+                  #{item}
+              </foreach>
+          </if>
+
+    </select>
+    <select id="querySyncByFlowIdList" resultType="java.lang.Long">
+        SELECT
+            flow_id
+        FROM
+            report_flow_sale_order_sync
+        WHERE
+          del_flag = 0
+          <if test="flowIdList == null and flowIdList.size() == 0">
+              AND id = 1
+          </if>
+          <if test="flowIdList != null and flowIdList.size() > 0">
+              AND flow_id IN
+              <foreach item="item" index="index" collection="flowIdList"
+                       open="(" separator="," close=")">
+                  #{item}
+              </foreach>
+          </if>
+
+    </select>
+
+    <select id="queryOrderCount" parameterType="com.yiling.settlement.report.dto.request.QueryFlowOrderPageListRequest" resultType="java.lang.Long">
+        SELECT
+        	count( 0 )
+        FROM
+        	(
+            SELECT
+                so_no
+            FROM
+                report_flow_sale_order_sync
+            WHERE
+              del_flag = 0
+              AND so_source NOT IN (1)
+              <if test="request.filterInvalidOrder != null and request.filterInvalidOrder == 1">
+                AND identification_status != 2
+              </if>
+              <if test="request.eidList != null and request.eidList.size() > 0">
+                  AND eid IN
+                  <foreach item="item" index="index" collection="request.eidList"
+                           open="(" separator="," close=")">
+                      #{item}
+                  </foreach>
+              </if>
+              <if test="request.soSourceList != null and request.soSourceList.size() > 0">
+                  AND so_source IN
+                  <foreach item="item" index="index" collection="request.soSourceList"
+                           open="(" separator="," close=")">
+                      #{item}
+                  </foreach>
+              </if>
+              <if test="request.reportStatusList != null and request.reportStatusList.size() > 0">
+                  AND report_status IN
+                  <foreach item="item" index="index" collection="request.reportStatusList"
+                           open="(" separator="," close=")">
+                      #{item}
+                  </foreach>
+               </if>
+               <if test="request.startSoTime != null">
+                  AND so_time &gt;=#{request.startSoTime}
+               </if>
+               <if test="request.endSoTime != null">
+                  AND so_time &lt;= #{request.endSoTime}
+               </if>
+               <if test="request.identificationStatus != null and request.identificationStatus != 0">
+                  AND identification_status = #{request.identificationStatus}
+               </if>
+                group by so_no
+        ) temp
+    </select>
+
+
+</mapper>

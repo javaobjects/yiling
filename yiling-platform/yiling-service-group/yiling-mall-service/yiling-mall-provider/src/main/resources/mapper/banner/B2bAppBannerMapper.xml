@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.mall.banner.dao.B2bAppBannerMapper">
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.mall.banner.entity.B2bAppBannerDO">
+        <result column="id" property="id"/>
+        <result column="eid" property="eid"/>
+        <result column="title" property="title"/>
+        <result column="pic" property="pic"/>
+        <result column="banner_source" property="bannerSource"/>
+        <result column="usage_scenario" property="usageScenario"/>
+        <result column="sort" property="sort"/>
+        <result column="banner_status" property="bannerStatus"/>
+        <result column="start_time" property="startTime"/>
+        <result column="stop_time" property="stopTime"/>
+        <result column="link_type" property="linkType"/>
+        <result column="activity_links" property="activityLinks"/>
+        <result column="del_flag" property="delFlag"/>
+        <result column="create_user" property="createUser"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_user" property="updateUser"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="remark" property="remark"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id
+        ,
+        eid, title, pic, banner_source, usage_scenario, sort, banner_status, start_time, stop_time, link_type, activity_links, del_flag, create_user, create_time, update_user, update_time, remark
+    </sql>
+
+    <select id="listByScenarioAndSourceAndEid" resultType="com.yiling.mall.banner.dto.B2bAppBannerDTO">
+        SELECT
+        ab.*
+        FROM
+        b2b_app_banner_enterprise_limit abel
+        LEFT JOIN b2b_app_banner ab ON abel.banner_id = ab.id
+        <where>
+            abel.del_flag=0 and ab.del_flag=0
+            and ab.banner_status=1
+            and ab.start_time &lt;= (SELECT NOW())
+            and ab.stop_time &gt;= (SELECT NOW())
+            <if test="usageScenario !=null and usageScenario != 0">
+                and ab.usage_scenario = #{usageScenario}
+            </if>
+            <if test="bannerSource !=null and bannerSource !=0">
+                and ab.banner_source = #{bannerSource}
+            </if>
+            <if test="eid !=null and eid !=0">
+                and abel.eid = #{eid}
+            </if>
+        </where>
+        ORDER BY ab.sort DESC, ab.stop_time ASC, ab.start_time ASC, ab.create_time DESC
+        <if test="count !=null and count > 0">
+            limit #{count}
+        </if>
+    </select>
+</mapper>

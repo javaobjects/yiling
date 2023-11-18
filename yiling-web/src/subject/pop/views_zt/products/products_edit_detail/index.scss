@@ -1,0 +1,217 @@
+@import "~@/common/styles/mixin.scss";
+
+.app-container {
+  padding-bottom: 80px;
+  .reject-view {
+    margin-bottom: 16px;
+    .textarea {
+      width: 550px;
+      color: $font-title-color;
+      background: #f7f7f7;
+      border-radius: 4px;
+      border: 1px solid rgba(38, 38, 38, 0.08);
+      padding: 11px 12px;
+      .desc {
+        width: 528px;
+        height: 53px;
+        overflow-x: hidden;
+        overflow-y: scroll;
+        &::-webkit-scrollbar {
+          display: none;
+        }
+      }
+    }
+  }
+  .top-bar {
+    background: $white;
+    padding: 16px;
+    border-radius: 4px;
+    .intro {
+      color: $font-important-color;
+      font-size: $font-size-base;
+      line-height: $font-size-base-lh;
+      margin-bottom: 8px;
+      padding: 0 10px;
+      span {
+        color: $font-title-color;
+      }
+    }
+  }
+  .box-1 {
+    color: $font-important-color;
+    font-size: $font-size-large;
+    line-height: $font-size-large-lh;
+    .input-view {
+      width: 100%;
+      margin-top: 10px;
+      margin-left: 16px;
+      .input-1 {
+        .el-input {
+          margin-top: 10px;
+          width: 190px;
+        }
+      }
+      .input-2 {
+        margin-left: 190px;
+        .el-input {
+          margin-top: 10px;
+          width: 320px;
+        }
+      }
+      .pak-box {
+        .flex-wrap {
+          margin-top: 12px;
+        }
+        .el-input {
+          margin-top: 10px;
+          width: 320px;
+        }
+        .box {
+          position: relative;
+          width: 103px;
+          height: 32px;
+          background: #ffffff;
+          border-radius: 16px;
+          border: 1px solid #d8d8d8;
+          color: $font-title-color;
+          line-height: 32px;
+          font-size: 16px;
+          margin-right: 16px;
+          i {
+            position: absolute;
+            right: 5px;
+            top: 8px;
+            font-size: 16px;
+            color: $font-light-color;
+            cursor: pointer;
+          }
+          .not-touch {
+            cursor: not-allowed;
+          }
+        }
+      }
+    }
+    .img-box {
+      margin-top: 7px;
+      margin-bottom: 31px;
+      .imgs {
+        margin-bottom: 16px;
+        .img {
+          width: 100px;
+          height: 100px;
+          margin-left: 8px;
+          margin-right: 16px;
+          border-radius: 4px;
+          border: 1px solid #d8d8d8;
+        }
+      }
+      .intro-box {
+        margin-left: 8px;
+        margin-bottom: 16px;
+        // margin-top: 44px;
+        .box-view {
+          overflow: hidden;
+          width: 506px;
+          height: 61px;
+          background: #f7f7f7;
+          border-radius: 4px;
+          padding: 10px 12px 11px 12px;
+          border: 1px solid rgba(38, 38, 38, 0.08);
+          .box {
+            width: 482px;
+            height: 40px;
+            overflow-x: hidden;
+            overflow-y: scroll;
+            &::-webkit-scrollbar {
+              display: none;
+            }
+          }
+        }
+        .marr150 {
+          margin-right: 150px;
+        }
+        .marb8 {
+          margin-bottom: 8px;
+        }
+      }
+    }
+  }
+  .box-3 {
+    margin-top: 16px;
+    color: $font-important-color;
+    font-size: $font-size-large;
+    line-height: $font-size-large-lh;
+    .select-box {
+      padding: 10px 16px;
+      .select {
+        flex: 1;
+        span {
+          padding-bottom: 8px;
+          margin-right: 16px;
+        }
+        .el-input,
+        .el-select {
+          width: 280px;
+        }
+      }
+    }
+  }
+  .bottom-view {
+    position: fixed;
+    bottom: 0;
+    left: $sideBarWidth;
+    right: 0;
+    height: 64px;
+    background-color: $white;
+    padding: 16px;
+    z-index: 10;
+    box-shadow: 0px -2px 9px 0px rgba(182, 182, 182, 0.16);
+  }
+}
+.unit-box {
+  display: flex;
+}
+.unit-content {
+  display: flex;
+}
+.unit-list {
+  display: flex;
+  align-items: center;
+  height: 49px;
+  padding: 0 12px;
+  background: #fafafa;
+  color: #666;
+  ::v-deep .el-input__inner {
+    height: 32px;
+    border-radius: 0;
+  }
+}
+.mar-l-35 {
+  margin-left: 35px;
+}
+
+.unit-label {
+  &::before {
+    content: "*";
+    color: #eb1616;
+    // margin-right: 4px;
+  }
+}
+.unit-icon {
+  width: 23px;
+  height: 49px;
+  display: flex;
+  align-items: center;
+  margin-left: 11px;
+  cursor: pointer;
+  img {
+    width: 23px;
+    height: 23px;
+  }
+}
+.color-333 {
+  color: #333;
+}
+.goodsInstructionsInfo .el-textarea {
+  width: 70% !important;
+}

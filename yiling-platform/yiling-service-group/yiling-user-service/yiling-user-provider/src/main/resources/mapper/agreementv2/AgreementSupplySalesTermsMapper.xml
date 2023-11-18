@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.user.agreementv2.dao.AgreementSupplySalesTermsMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.user.agreementv2.entity.AgreementSupplySalesTermsDO">
+    <result column="id" property="id" />
+        <result column="agreement_id" property="agreementId" />
+        <result column="buy_channel" property="buyChannel" />
+        <result column="pull_order_flag" property="pullOrderFlag" />
+        <result column="distribution_agreement_flag" property="distributionAgreementFlag" />
+        <result column="all_level_kinds_flag" property="allLevelKindsFlag" />
+        <result column="control_sale_type" property="controlSaleType" />
+        <result column="del_flag" property="delFlag" />
+        <result column="create_user" property="createUser" />
+        <result column="create_time" property="createTime" />
+        <result column="update_user" property="updateUser" />
+        <result column="update_time" property="updateTime" />
+        <result column="remark" property="remark" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,
+        agreement_id, buy_channel, pull_order_flag, distribution_agreement_flag, all_level_kinds_flag, control_sale_type, del_flag, create_user, create_time, update_user, update_time, remark
+    </sql>
+
+</mapper>

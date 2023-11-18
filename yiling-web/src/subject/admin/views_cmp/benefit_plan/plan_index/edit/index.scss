@@ -1,0 +1,33 @@
+.app-container {
+  padding-bottom: 80px;
+  .c-box {
+    padding: 10px 16px;
+    padding-top: 20px;
+    background-color: $white;
+    border-radius: 4px;
+  }
+  .explain{
+    color: #999;
+    font-size: 14px;
+    padding-left: 150px;
+  }
+  .bottom-view {
+    position: fixed;
+    bottom: 0;
+    left: $sideBarWidth;
+    right: 0;
+    height: 64px;
+    background-color: $white;
+    padding: 16px;
+    z-index: 10;
+  }
+  .conter_div{
+    width: 600px;
+    .conter_div_table{
+      margin-bottom: 12px;
+    }
+    .el_input{
+      width: 150px;
+    }
+  }
+}

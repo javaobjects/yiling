@@ -1,0 +1,463 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.goods.medicine.dao.PopGoodsMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.goods.medicine.entity.PopGoodsDO">
+        <result column="id" property="id"/>
+        <result column="goods_id" property="goodsId"/>
+        <result column="goods_status" property="goodsStatus"/>
+        <result column="out_reason" property="outReason"/>
+        <result column="is_patent" property="isPatent"/>
+        <result column="status" property="status"/>
+        <result column="eid" property="eid"/>
+        <result column="sell_specifications_id" property="sellSpecificationsId"/>
+        <result column="standard_id" property="standardId"/>
+        <result column="del_flag" property="delFlag"/>
+        <result column="create_user" property="createUser"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_user" property="updateUser"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="remark" property="remark"/>
+    </resultMap>
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="PopGoodsResultMap" type="com.yiling.goods.medicine.bo.GoodsListItemBO">
+        <result column="id" property="id"/>
+        <result column="eid" property="eid"/>
+        <result column="standard_id" property="standardId"/>
+        <result column="sell_specifications_id" property="sellSpecificationsId"/>
+        <result column="audit_status" property="auditStatus"/>
+        <result column="out_reason" property="outReason"/>
+        <result column="name" property="name"/>
+        <result column="ename" property="ename"/>
+        <result column="license_no" property="licenseNo"/>
+        <result column="manufacturer" property="manufacturer"/>
+        <result column="sell_specifications" property="sellSpecifications"/>
+        <result column="sell_unit" property="sellUnit"/>
+        <result column="specifications" property="specifications"/>
+        <result column="unit" property="unit"/>
+        <result column="price" property="price"/>
+        <result column="middle_package" property="middlePackage"/>
+        <result column="big_package" property="bigPackage"/>
+        <result column="can_split" property="canSplit"/>
+        <result column="manufacturer_address" property="manufacturerAddress"/>
+        <result column="is_patent" property="isPatent"/>
+        <result column="goods_type" property="goodsType"/>
+        <result column="over_sold_type" property="overSoldType"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,
+        goods_id, goods_status, out_reason, price, is_patent,status,eid,sell_specifications_id,standard_id, del_flag, create_user, create_time, update_user, update_time, remark
+    </sql>
+
+    <select id="queryPopGoodsPageList" resultMap="PopGoodsResultMap">
+        SELECT
+        g.id,
+        g.eid,
+        g.ename,
+        g.standard_id,
+        g.sell_specifications_id,
+        g.`name`,
+        p.goods_status,
+        p.out_reason,
+        g.license_no,
+        g.sell_specifications,
+        g.sell_unit,
+        g.specifications,
+        g.unit,
+        g.manufacturer,
+        g.manufacturer_address,
+        g.price,
+        g.can_split,
+        g.middle_package,
+        g.big_package,
+        p.is_patent,
+        g.goods_type,
+        g.over_sold_type
+        FROM
+        goods g
+        inner join pop_goods p on p.goods_id=g.id and p.del_flag=0
+        <where>
+            <if test="request.eidList != null and request.eidList.size() > 0">
+                and g.eid in
+                <foreach item="item" index="index" collection="request.eidList"
+                         open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="request.goodsId != null">
+                AND g.id = #{request.goodsId}
+            </if>
+            <if test="request.isPatent != null and request.isPatent != 0">
+                AND p.is_patent = #{request.isPatent}
+            </if>
+            <if test="request.standardId != null">
+                AND g.standard_id = #{request.standardId}
+            </if>
+            <if test="request.name != null and request.name != ''">
+                AND g.`name` like concat('%',#{request.name},'%')
+            </if>
+            <if test="request.licenseNo != null and request.licenseNo != ''">
+                AND g.license_no like concat(#{request.licenseNo},'%')
+            </if>
+            <if test="request.sellSpecifications != null and request.sellSpecifications != ''">
+                AND g.specifications like concat('%',#{request.sellSpecifications},'%')
+            </if>
+            <if test="request.manufacturer != null and request.manufacturer != ''">
+                AND g.manufacturer like concat('%',#{request.manufacturer},'%')
+            </if>
+            <if test="request.overSoldType != null">
+                AND g.over_sold_type = #{request.overSoldType}
+            </if>
+            <if test="request.standardCategoryId1 != null and request.standardCategoryId1 != 0">
+                AND EXISTS (select 1
+                FROM standard_goods st
+                WHERE st.id=g.standard_id and st.standard_category_id1=#{request.standardCategoryId1})
+            </if>
+            <if test="request.standardCategoryId2 != null and request.standardCategoryId2 != 0">
+                AND EXISTS (select 1
+                FROM standard_goods st
+                WHERE st.id=g.standard_id and st.standard_category_id2=#{request.standardCategoryId2})
+            </if>
+            <if test="request.goodsStatus != null and request.goodsStatus!=0">
+                AND p.goods_status=#{request.goodsStatus}
+            </if>
+            <if test="request.outReason != null and request.outReason != 0">
+                AND p.out_reason = #{request.outReason}
+            </if>
+            and g.audit_status=4
+            and p.status=1
+            AND g.del_flag=0
+        </where>
+    </select>
+
+    <select id="queryPopStatusCountListByCondition" resultType="com.yiling.goods.medicine.bo.QueryStatusCountBO">
+        SELECT
+        p.goods_status,
+        COUNT( 1 ) AS 'count'
+        FROM
+        goods g
+        inner join pop_goods p on p.goods_id=g.id and p.del_flag=0
+        <where>
+            <if test="request.eidList != null and request.eidList.size() > 0">
+                and g.eid in
+                <foreach item="item" index="index" collection="request.eidList"
+                         open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="request.goodsId != null">
+                AND g.id = #{request.goodsId}
+            </if>
+            <if test="request.isPatent != null and request.isPatent != 0">
+                AND p.is_patent = #{request.isPatent}
+            </if>
+            <if test="request.standardId != null">
+                AND g.standard_id = #{request.standardId}
+            </if>
+            <if test="request.name != null and request.name != ''">
+                AND g.`name` like concat('%',#{request.name},'%')
+            </if>
+            <if test="request.licenseNo != null and request.licenseNo != ''">
+                AND g.license_no like  concat(#{request.licenseNo},'%')
+            </if>
+            <if test="request.sellSpecifications != null and request.sellSpecifications != ''">
+                AND g.specifications like concat('%',#{request.sellSpecifications},'%')
+            </if>
+            <if test="request.manufacturer != null and request.manufacturer != ''">
+                AND g.manufacturer like concat('%',#{request.manufacturer},'%')
+            </if>
+            <if test="request.overSoldType != null">
+                AND g.over_sold_type = #{request.overSoldType}
+            </if>
+            <if test="request.standardCategoryId1 != null and request.standardCategoryId1 != 0">
+                AND EXISTS (select 1
+                FROM standard_goods st
+                WHERE st.id=g.standard_id and st.standard_category_id1=#{request.standardCategoryId1})
+            </if>
+            <if test="request.standardCategoryId2 != null and request.standardCategoryId2 != 0">
+                AND EXISTS (select 1
+                FROM standard_goods st
+                WHERE st.id=g.standard_id and st.standard_category_id2=#{request.standardCategoryId2})
+            </if>
+            <if test="request.goodsStatus != null and request.goodsStatus!=0">
+                AND p.goods_status=#{request.goodsStatus}
+            </if>
+            <if test="request.outReason != null and request.outReason != 0">
+                AND p.out_reason = #{request.outReason}
+            </if>
+            and g.audit_status=4
+            and p.status=1
+            AND g.del_flag=0
+        </where>
+        GROUP BY
+        p.goods_status
+    </select>
+
+    <select id="queryPopStatusCountList" resultType="com.yiling.goods.medicine.bo.QueryStatusCountBO">
+        SELECT
+        p.goods_status,
+        COUNT( 1 ) AS 'count'
+        FROM
+        goods g,pop_goods p
+        where p.goods_id=g.id and p.status=1 and g.del_flag=0 and p.del_flag=0
+        and g.audit_status=4
+        and g.eid in
+        <foreach item="item" index="index" collection="eidList"
+                 open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        GROUP BY
+        p.goods_status
+    </select>
+    <select id="getStandardCountByEid" resultType="java.lang.Long">
+        SELECT count(distinct g.standard_id)
+        FROM goods g INNER JOIN pop_goods pop on pop.goods_id= g.id
+        WHERE g.eid= #{eid}
+        AND g.audit_status=4
+        AND g.del_flag=0
+        AND pop.goods_status=1
+        AND pop.del_flag=0
+        AND pop.status=1
+    </select>
+    <select id="getSellSpecificationCountByEid" resultType="java.lang.Long">
+         SELECT count(distinct g.sell_specifications_id)
+        FROM goods g INNER JOIN pop_goods pop on pop.goods_id= g.id
+        WHERE g.eid= #{eid}
+        AND g.audit_status=4
+        AND g.del_flag=0
+        AND pop.goods_status=1
+        AND pop.del_flag=0
+        AND pop.status=1
+    </select>
+    <select id="queryPopGoodsBySpecificationIdAndEid" resultType="com.yiling.goods.medicine.bo.GoodsListItemBO">
+        SELECT
+        g.id,
+        g.eid,
+        g.ename,
+        g.standard_id,
+        g.sell_specifications_id,
+        g.`name`,
+        p.goods_status,
+        p.out_reason,
+        g.license_no,
+        g.sell_specifications,
+        g.sell_unit,
+        g.specifications,
+        g.unit,
+        g.manufacturer,
+        g.manufacturer_address,
+        g.price,
+        g.can_split,
+        g.middle_package,
+        g.big_package,
+        p.is_patent,
+        g.goods_type,
+        g.over_sold_type
+        FROM
+        goods g
+        inner join pop_goods p on p.goods_id=g.id and p.del_flag=0
+        <where>
+        g.eid in
+        <foreach item="item" index="index" collection="eidList"
+                 open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        and g.sell_specifications_id=#{specId}
+        and g.audit_status=4
+        and p.status=1
+        and g.del_flag=0
+        </where>
+    </select>
+    <select id="findGoodsBySpecificationIdListAndEidList" resultType="com.yiling.goods.medicine.bo.GoodsListItemBO">
+        SELECT
+        g.id,
+        g.eid,
+        g.ename,
+        g.standard_id,
+        g.sell_specifications_id,
+        g.`name`,
+        p.goods_status,
+        p.out_reason,
+        g.license_no,
+        g.sell_specifications,
+        g.sell_unit,
+        g.specifications,
+        g.unit,
+        g.manufacturer,
+        g.manufacturer_address,
+        g.price,
+        g.can_split,
+        g.middle_package,
+        g.big_package,
+        p.is_patent,
+        g.goods_type,
+        g.over_sold_type
+        FROM
+        goods g
+        inner join pop_goods p on p.goods_id=g.id and p.del_flag=0
+        <where>
+        g.eid in
+        <foreach item="item" index="index" collection="eidList"
+                 open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        and g.sell_specifications_id in
+        <foreach item="item" index="index" collection="specificationIdList"
+                 open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        <if test="null!=goodsStatus and goodsStatus>0">
+            and p.goods_status=#{goodsStatus}
+        </if>
+        and g.audit_status=4
+        and p.status=1
+        and g.del_flag=0
+        </where>
+    </select>
+    <select id="queryPopGoods" resultType="com.yiling.goods.medicine.entity.PopGoodsDO">
+        SELECT
+        p.id,
+        p.goods_id,
+        p.goods_status,
+        p.out_reason,
+        p.is_patent,
+        p.status,
+        p.eid,
+        p.sell_specifications_id,
+        p.standard_id,
+        p.del_flag,
+        p.create_user,
+        p.create_time,
+        p.update_user,
+        p.update_time,
+        p.remark
+        FROM
+        goods g
+        inner join pop_goods p on p.goods_id=g.id and p.del_flag=0
+        <where>
+            <if test="request.eidList != null and request.eidList.size() > 0">
+                and g.eid in
+                <foreach item="item" index="index" collection="request.eidList"
+                         open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="request.goodsId != null">
+                AND g.id = #{request.goodsId}
+            </if>
+            <if test="request.standardId != null">
+                AND g.standard_id = #{request.standardId}
+            </if>
+            <if test="request.name != null and request.name != ''">
+                AND g.`name` like concat('%',#{request.name},'%')
+            </if>
+            <if test="request.licenseNo != null and request.licenseNo != ''">
+                AND g.license_no like concat(#{request.licenseNo},'%')
+            </if>
+            <if test="request.sellSpecifications != null and request.sellSpecifications != ''">
+                AND g.specifications like concat('%',#{request.sellSpecifications},'%')
+            </if>
+            <if test="request.manufacturer != null and request.manufacturer != ''">
+                AND g.manufacturer like concat('%',#{request.manufacturer},'%')
+            </if>
+            <if test="request.goodsStatus != null and request.goodsStatus!=0">
+                AND p.goods_status=#{request.goodsStatus}
+            </if>
+            <if test="request.includeSellSpecificationsIds != null and request.includeSellSpecificationsIds.size() > 0">
+                and g.sell_specifications_id in
+                <foreach item="item" index="index" collection="request.includeSellSpecificationsIds"
+                         open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            and g.audit_status=4
+            and p.status=1
+            AND g.del_flag=0
+        </where>
+    </select>
+    <select id="queryPopGoodsList" resultType="com.yiling.goods.medicine.bo.GoodsListItemBO">
+        SELECT
+        g.id,
+        g.eid,
+        g.ename,
+        g.standard_id,
+        g.sell_specifications_id,
+        g.`name`,
+        p.goods_status,
+        p.out_reason,
+        g.license_no,
+        g.sell_specifications,
+        g.sell_unit,
+        g.specifications,
+        g.unit,
+        g.manufacturer,
+        g.manufacturer_address,
+        g.price,
+        g.can_split,
+        g.middle_package,
+        g.big_package,
+        p.is_patent,
+        g.goods_type,
+        g.over_sold_type
+        FROM
+        goods g
+        inner join pop_goods p on p.goods_id=g.id and p.del_flag=0
+        <where>
+            <if test="request.eidList != null and request.eidList.size() > 0">
+                and g.eid in
+                <foreach item="item" index="index" collection="request.eidList"
+                         open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="request.goodsId != null">
+                AND g.id = #{request.goodsId}
+            </if>
+            <if test="request.isPatent != null and request.isPatent != 0">
+                AND p.is_patent = #{request.isPatent}
+            </if>
+            <if test="request.standardId != null">
+                AND g.standard_id = #{request.standardId}
+            </if>
+            <if test="request.name != null and request.name != ''">
+                AND g.`name` like concat('%',#{request.name},'%')
+            </if>
+            <if test="request.licenseNo != null and request.licenseNo != ''">
+                AND g.license_no like concat(#{request.licenseNo},'%')
+            </if>
+            <if test="request.sellSpecifications != null and request.sellSpecifications != ''">
+                AND g.specifications like concat('%',#{request.sellSpecifications},'%')
+            </if>
+            <if test="request.manufacturer != null and request.manufacturer != ''">
+                AND g.manufacturer like concat('%',#{request.manufacturer},'%')
+            </if>
+            <if test="request.overSoldType != null">
+                AND g.over_sold_type = #{request.overSoldType}
+            </if>
+            <if test="request.standardCategoryId1 != null and request.standardCategoryId1 != 0">
+                AND EXISTS (select 1
+                FROM standard_goods st
+                WHERE st.id=g.standard_id and st.standard_category_id1=#{request.standardCategoryId1})
+            </if>
+            <if test="request.standardCategoryId2 != null and request.standardCategoryId2 != 0">
+                AND EXISTS (select 1
+                FROM standard_goods st
+                WHERE st.id=g.standard_id and st.standard_category_id2=#{request.standardCategoryId2})
+            </if>
+            <if test="request.goodsStatus != null and request.goodsStatus!=0">
+                AND p.goods_status=#{request.goodsStatus}
+            </if>
+            <if test="request.outReason != null and request.outReason != 0">
+                AND p.out_reason = #{request.outReason}
+            </if>
+            and g.audit_status=4
+            and p.status=1
+            AND g.del_flag=0
+        </where>
+    </select>
+
+</mapper>

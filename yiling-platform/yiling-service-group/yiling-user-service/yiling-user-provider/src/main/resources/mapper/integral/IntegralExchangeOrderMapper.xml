@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.user.integral.dao.IntegralExchangeOrderMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.user.integral.entity.IntegralExchangeOrderDO">
+    <result column="id" property="id" />
+        <result column="order_no" property="orderNo" />
+        <result column="submit_time" property="submitTime" />
+        <result column="exchange_goods_id" property="exchangeGoodsId" />
+        <result column="goods_type" property="goodsType" />
+        <result column="goods_id" property="goodsId" />
+        <result column="goods_name" property="goodsName" />
+        <result column="exchange_num" property="exchangeNum" />
+        <result column="order_integral" property="orderIntegral" />
+        <result column="status" property="status" />
+        <result column="platform" property="platform" />
+        <result column="uid" property="uid" />
+        <result column="uname" property="uname" />
+        <result column="exchange_time" property="exchangeTime" />
+        <result column="del_flag" property="delFlag" />
+        <result column="create_user" property="createUser" />
+        <result column="create_time" property="createTime" />
+        <result column="update_user" property="updateUser" />
+        <result column="update_time" property="updateTime" />
+        <result column="remark" property="remark" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,
+        order_no, submit_time, exchange_goods_id, goods_type, goods_id, goods_name, exchange_num, order_integral, status, platform, uid, uname, exchange_time, del_flag, create_user, create_time, update_user, update_time, remark
+    </sql>
+
+</mapper>

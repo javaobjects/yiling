@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.dataflow.sale.dao.SaleDepartmentSubTargetMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.dataflow.sale.entity.SaleDepartmentSubTargetDO">
+    <result column="id" property="id" />
+        <result column="sale_target_id" property="saleTargetId" />
+        <result column="depart_id" property="departId" />
+        <result column="type" property="type" />
+        <result column="rel_id" property="relId" />
+        <result column="rel_name" property="relName" />
+        <result column="last_target" property="lastTarget" />
+        <result column="last_target_ratio" property="lastTargetRatio" />
+        <result column="current_target" property="currentTarget" />
+        <result column="current_target_ratio" property="currentTargetRatio" />
+        <result column="del_flag" property="delFlag" />
+        <result column="create_user" property="createUser" />
+        <result column="create_time" property="createTime" />
+        <result column="update_user" property="updateUser" />
+        <result column="update_time" property="updateTime" />
+        <result column="remark" property="remark" />
+        <result column="current_increase" property="currentIncrease" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,
+        sale_target_id, depart_id, type, rel_id, rel_name, last_target, last_target_ratio, current_target, current_target_ratio, del_flag, create_user, create_time, update_user, update_time, remark, current_increase
+    </sql>
+
+</mapper>

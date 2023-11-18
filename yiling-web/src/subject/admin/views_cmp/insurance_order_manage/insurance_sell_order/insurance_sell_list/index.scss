@@ -1,0 +1,91 @@
+
+@import "~@/common/styles/mixin.scss";
+.app-container {
+  .select-bar {
+    display: flex;
+    margin-bottom: 8px;
+    .item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-right: 16px;
+      cursor: pointer;
+      .item-title {
+        margin-bottom: 5px;
+        font-size: 16px;
+        font-weight: 600;
+        color: $font-light-color;
+        line-height: 22px;
+      }
+      .active {
+        color: $primary;
+      }
+      .item-line {
+        width: 26px;
+        height: 2px;
+        background-color: $primary;
+      }
+    }
+
+  }
+  .box-search {
+    .search-box {
+      position: relative;
+      .box {
+        margin-bottom: 16px;
+        .title {
+          font-size: $font-size-large;
+          line-height: $font-size-base-lh;
+          color: $font-important-color;
+          margin-bottom: 8px;
+        }
+        .el-input {
+          width: 260px;
+        }
+        .el-select {
+          width: 260px;
+        }
+      }
+    }
+    .search-btn-box {
+      margin-top: 16px;
+    }
+  }
+  .down-box {
+    width: 100%;
+    margin-top: 24px;
+    .btn {
+      float: right;
+    }
+  }
+  .table-box {
+    .insurancce-detail-wrap {
+      .title {
+        font-size: $font-size-large;
+        font-weight: 600;
+        color: $font-important-color;
+        line-height: 25px;
+        text-align: left;
+      }
+      .insurancce-detail {
+        margin-top: 12px;
+        display: flex;
+        .list-col {
+          flex: 1;
+          .list-item {
+            font-size: $font-size-base;
+            font-weight: 400;
+            color: $font-title-color;
+            line-height: 20px;
+            &:not(:last-child) {
+              margin-bottom: 8px;
+            }
+            .list-content {
+              color: $font-important-color;
+            }
+          }
+        }
+      }
+    }
+  }
+}

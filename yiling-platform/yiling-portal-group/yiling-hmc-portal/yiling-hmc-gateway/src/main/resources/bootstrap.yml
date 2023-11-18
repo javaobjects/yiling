@@ -1,0 +1,39 @@
+# 由命令行参数进行覆盖
+nacos:
+  server-address: nacos.comm.yl.local:18003
+  namespace: dev
+
+spring:
+  application:
+    name: hmc-gateway
+  profiles:
+    active: dev-connect
+  cloud:
+    nacos:
+      discovery:
+        server-addr: ${nacos.server-address}
+        namespace: ${nacos.namespace}
+      config:
+        server-addr: ${nacos.server-address}
+        namespace: ${nacos.namespace}
+        group: ${spring.application.name}
+        prefix: application
+        file-extension: yml
+        extension-configs[0]:
+          data-id: common.yml
+          group: DEFAULT_GROUP
+          refresh: false
+        extension-configs[1]:
+          data-id: common-refresh.yml
+          group: DEFAULT_GROUP
+          refresh: true
+
+logging:
+  file:
+    path: /yl/logs/deploy/java/yiling-hmc-gateway
+
+server:
+  port: 9951
+  tomcat:
+    accesslog:
+      directory: ${logging.file.path}

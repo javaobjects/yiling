@@ -1,0 +1,141 @@
+.app-container {
+  .top-btn {
+    position: relative;
+    width: 100%;
+    font-size: $font-size-large;
+    line-height: $font-size-large-lh;
+    margin: 40px 0 8px 0;
+    color: $font-important-color;
+    .right-btn {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+    }
+  }
+  .tool {
+    margin: 8px 0 8px 0;
+  }
+  .common-box {
+    .el-input {
+      width: 90%;
+    }
+    .search-box {
+      margin-top: 16px;
+      padding: 0 16px 0 0px;
+      position: relative;
+      .box {
+        .title {
+          font-size: $font-size-large;
+          line-height: $font-size-large-lh;
+          color: $font-important-color;
+          margin-bottom: 8px;
+        }
+      }
+      .el-select {
+        width: 90%;
+      }
+
+      .bottom-btn {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+      }
+    }
+  }
+  .my-table {
+    .my-image {
+      width: 100px;
+      height: 100px;
+    }
+   
+    .pad-b-8 {
+      padding-bottom: 8px;
+    }
+    .switch {
+      margin-top: 14px;
+    }
+    ::v-deep .el-table .cell {
+      overflow: auto;
+    }
+  }
+  .products-box {
+    position: relative;
+    display: flex;
+    padding-top: 36px;
+    padding-bottom: 8px;
+  }
+  .products-info {
+    margin-left: 17px;
+  }
+  .products-id {
+    position: absolute;
+    top: 5px;
+    left: 0;
+  }
+  .table-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: 36px;
+    padding-bottom: 8px;
+  }
+
+  .color-666 {
+    color: #666;
+  }
+  .color-green {
+    color: #52c41a;
+  }
+  .mar-l-32 {
+    margin-left: 32px;
+  }
+  .mar-t-24 {
+    margin-top: 24px;
+  }
+  .mar-t-10 {
+    margin-top: 10px;
+  }
+  .tab {
+    display: flex;
+    height: 30px;
+    align-items: center;
+    font-size: 14px;
+    color: #999;
+    padding-left: 16px;
+    .tab-item {
+      height: 30px;
+      line-height: 30px;
+      margin-right: 32px;
+      cursor: pointer;
+    }
+    .tab-active {
+      position: relative;
+      color: #1790ff;
+      font-weight: 600;
+      &::before {
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        margin-left: -17px;
+        content: "";
+        width: 34px;
+        height: 2px;
+        background: #1790ff;
+      }
+    }
+  }
+  .dialog-title {
+    font-weight: bold;
+    line-height: 40px;
+  }
+  .mar-b-0 {
+    margin-bottom: 0;
+  }
+  .dia-repertory {
+    &::v-deep .el-table--enable-row-hover .el-table__body tr {
+      &:hover > td{
+        background-color: #e8f4ff !important;
+      }
+    }
+  }
+}

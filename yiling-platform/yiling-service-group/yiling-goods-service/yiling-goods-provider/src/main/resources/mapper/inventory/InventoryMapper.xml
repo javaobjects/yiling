@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.goods.inventory.dao.InventoryMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.goods.inventory.entity.InventoryDO">
+        <result column="id" property="id" />
+        <result column="gid" property="gid" />
+        <result column="qty" property="qty" />
+        <result column="frozen_qty" property="frozenQty" />
+        <result column="over_sold_type" property="overSoldType"/>
+<!--        <result column="batch_number" property="batchNumber"/>-->
+<!--        <result column="expiry_date" property="expiryDate"/>-->
+        <result column="del_flag" property="delFlag" />
+        <result column="create_user" property="createUser" />
+        <result column="create_time" property="createTime" />
+        <result column="update_user" property="updateUser" />
+        <result column="update_time" property="updateTime" />
+        <result column="remark" property="remark" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,
+        gid, qty, frozen_qty,over_sold_type,del_flag, create_user, create_time, update_user, update_time, remark
+    </sql>
+    <update id="addHmcFrozenQty">
+        update goods_inventory
+        set frozen_qty=#{request.frozenQty} + frozen_qty,
+        update_user=#{request.opUserId},
+        update_time=#{request.opTime}
+        where id=#{request.inventoryId}
+    </update>
+
+    <update id="addFrozenQty">
+        update goods_inventory
+        set frozen_qty=#{request.frozenQty} + frozen_qty,
+        update_user=#{request.opUserId},
+        update_time=#{request.opTime}
+        where id=#{request.inventoryId}
+        and (over_sold_type=1 or (over_sold_type=0 and qty-frozen_qty>=#{request.frozenQty}))
+    </update>
+
+    <update id="subtractFrozenQtyAndQty">
+        update goods_inventory
+        set frozen_qty= frozen_qty - #{request.frozenQty},
+        qty = if(#{request.qty}>qty,0,qty - #{request.qty}),
+        update_user=#{request.opUserId},
+        update_time=#{request.opTime}
+        where id=#{request.inventoryId} and frozen_qty-#{request.frozenQty}>=0
+    </update>
+
+    <update id="subtractFrozenQty">
+        update goods_inventory
+        set frozen_qty= frozen_qty - #{request.frozenQty},
+        update_user=#{request.opUserId},
+        update_time=#{request.opTime}
+        where id=#{request.inventoryId}
+    </update>
+
+    <update id="backFrozenQtyAndQty">
+        update goods_inventory
+        set frozen_qty= frozen_qty + #{request.frozenQty},
+        qty = qty + #{request.qty},
+        update_user=#{request.opUserId},
+        update_time=#{request.opTime}
+        where id=#{request.inventoryId}
+    </update>
+
+</mapper>

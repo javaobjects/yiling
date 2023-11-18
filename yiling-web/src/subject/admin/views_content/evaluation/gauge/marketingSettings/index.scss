@@ -1,0 +1,78 @@
+.c-box {
+  padding: 10px 16px;
+  padding-top: 20px;
+  background-color: $white;
+  border-radius: 4px;
+  .title {
+    margin-bottom: 20px;
+    font-size: 16px;
+  }
+  .c-box-title {
+    font-size: 16px;
+    color: #333333;
+    font-weight: bold;
+    margin: 10px 0;
+    span {
+      width: 2px;
+      height: 14px;
+      display: inline-block;
+      background: #1790FF;
+      margin-right: 4px;
+      padding-top: 2px;
+    }
+  }
+  .c-box-content {
+    width: 100%;
+    height: 100%;
+    margin: 17px 0;
+    .c-box-item {
+      width: 100%;
+      min-height: 160px;
+      border-radius: 4px;
+      background: #FAFAFA;
+      margin-bottom: 20px;
+      position: relative;
+    }
+    .result-for {
+      width: 94%;
+      padding-top: 16px;
+    }
+    .button-margin {
+      margin-left: 10px; 
+    }
+    .item-input {
+      max-width: 100%;
+    }
+    .item-details {
+      width: 28px;
+      height: 30px;
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      display: inline-block;
+      cursor: pointer;
+      .icon_style {
+        color: #1790ff;
+        font-size: 24px;
+      }
+    }
+    .explain{
+      color: #999;
+      font-size: 14px;
+      margin: 0;
+      display: inline-block;
+    }
+    .add-button { 
+      text-align: right;
+    }
+  }
+  .item-more {
+    display: inline-block;
+  }
+  .item-more ::v-deep .el-form-item__label {
+    width: 120px !important;
+  }
+  .item-more ::v-deep .el-form-item__content {
+    margin-left: 120px !important;
+  }
+}

@@ -1,0 +1,375 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.open.erp.dao.ErpClientMapper">
+    <resultMap id="BaseResultMap" type="com.yiling.open.erp.entity.ErpClientDO">
+        <!--@mbg.generated-->
+        <!--@Table erp_client-->
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="crm_enterprise_id" jdbcType="VARCHAR" property="crmEnterpriseId"/>
+        <result column="crm_province_code" jdbcType="VARCHAR" property="crmProvinceCode"/>
+        <result column="license_number" jdbcType="VARCHAR" property="licenseNumber"/>
+        <result column="su_id" jdbcType="INTEGER" property="suId"/>
+        <result column="su_dept_no" jdbcType="VARCHAR" property="suDeptNo"/>
+        <result column="rk_su_id" jdbcType="INTEGER" property="rkSuId"/>
+        <result column="client_key" jdbcType="VARCHAR" property="clientKey"/>
+        <result column="client_secret" jdbcType="VARCHAR" property="clientSecret"/>
+        <result column="client_name" jdbcType="VARCHAR" property="clientName"/>
+        <result column="client_status" jdbcType="BOOLEAN" property="clientStatus"/>
+        <result column="sync_status" property="syncStatus"/>
+        <result column="sync_status_time" property="syncStatusTime"/>
+        <result column="data_init_status" property="dataInitStatus"/>
+        <result column="depth" property="depth"/>
+        <result column="flow_level" property="flowLevel"/>
+        <result column="depth_time" property="depthTime"/>
+        <result column="flow_mode" property="flowMode"/>
+        <result column="install_employee" property="installEmployee"/>
+        <result column="erp_brand" property="erpBrand"/>
+        <result column="business_employee" property="businessEmployee"/>
+        <result column="technology_employee" property="technologyEmployee"/>
+        <result column="technology_employee_phone" property="technologyEmployeePhone"/>
+        <result column="goods_number_rule" property="goodsNumberRule"/>
+        <result column="goods_status_rule" property="goodsStatusRule"/>
+        <result column="command" property="command"/>
+        <result column="monitor_status" property="monitorStatus"/>
+        <result column="heart_beat_time" property="heartBeatTime"/>
+        <result column="versions" property="versions"/>
+        <result column="bi_status" property="biStatus"/>
+        <result column="command_status" property="commandStatus"/>
+        <result column="command_time" property="commandTime"/>
+        <result column="lastest_collect_date" property="lastestCollectDate"/>
+        <result column="lastest_flow_date" property="lastestFlowDate"/>
+        <result column="remark" property="remark"/>
+        <result column="create_time" property="createTime"/>
+        <result column="create_user" property="createUser"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="update_user" property="updateUser"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        <!--@mbg.generated-->
+        id, crm_enterprise_id, crm_province_code, license_number, su_id, su_dept_no, rk_su_id, client_key, client_secret, client_name, client_status, `sync_status`,
+        sync_status_time, data_init_status,
+        `depth`,
+        `flow_level`,
+        `depth_time`,
+        `install_employee`,
+        `erp_brand`,
+        `business_employee`,
+        `technology_employee` ,
+        `technology_employee_phone`,
+        `goods_number_rule`,
+        `goods_status_rule`,
+        `command`,
+        `monitor_status`,
+        `heart_beat_time`,
+        versions,
+        bi_status,
+        command_status,
+        command_time, lastest_collect_date, lastest_flow_date,
+        flow_mode,
+        `remark`,
+        `create_time`,
+        `create_user`,
+        `update_time`,
+        `update_user`
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        <!--@mbg.generated-->
+        select
+        <include refid="Base_Column_List"/>
+        from erp_client
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        <!--@mbg.generated-->
+        delete from erp_client
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.yiling.open.erp.entity.ErpClientDO"
+            useGeneratedKeys="true">
+        <!--@mbg.generated-->
+        insert into erp_client
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="suId != null">
+                su_id,
+            </if>
+            <if test="clientKey != null">
+                client_key,
+            </if>
+            <if test="clientSecret != null">
+                client_secret,
+            </if>
+            <if test="clientName != null">
+                client_name,
+            </if>
+            <if test="clientStatus != null">
+                client_status,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="suId != null">
+                #{suId,jdbcType=INTEGER},
+            </if>
+            <if test="clientKey != null">
+                #{clientKey,jdbcType=VARCHAR},
+            </if>
+            <if test="clientSecret != null">
+                #{clientSecret,jdbcType=VARCHAR},
+            </if>
+            <if test="clientName != null">
+                #{clientName,jdbcType=VARCHAR},
+            </if>
+            <if test="clientStatus != null">
+                #{clientStatus,jdbcType=BOOLEAN},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.yiling.open.erp.entity.ErpClientDO">
+        <!--@mbg.generated-->
+        update erp_client
+        <set>
+            <if test="suId != null">
+                su_id = #{suId,jdbcType=INTEGER},
+            </if>
+            <if test="clientKey != null">
+                client_key = #{clientKey,jdbcType=VARCHAR},
+            </if>
+            <if test="clientSecret != null">
+                client_secret = #{clientSecret,jdbcType=VARCHAR},
+            </if>
+            <if test="clientName != null">
+                client_name = #{clientName,jdbcType=VARCHAR},
+            </if>
+            <if test="clientStatus != null">
+                client_status = #{clientStatus,jdbcType=BOOLEAN},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.yiling.open.erp.entity.ErpClientDO">
+        <!--@mbg.generated-->
+        update erp_client
+        set su_id = #{suId,jdbcType=INTEGER},
+        client_key = #{clientKey,jdbcType=VARCHAR},
+        client_secret = #{clientSecret,jdbcType=VARCHAR},
+        client_name = #{clientName,jdbcType=VARCHAR},
+        client_status = #{clientStatus,jdbcType=BOOLEAN},
+        create_time = #{createTime,jdbcType=TIMESTAMP}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <select id="selectByClientKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from erp_client
+        where client_key = #{key} and client_status = 1 limit 1
+    </select>
+
+    <select id="selectByClientSecret" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from erp_client
+        where client_secret = #{secret} and client_status = 1 limit 1
+    </select>
+
+    <select id="getParentPage" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from erp_client
+        where client_status = 1
+        and su_id = rk_su_id
+        <if test="request.rkSuId != null and request.rkSuId != 0">
+            and rk_su_id = #{request.rkSuId, jdbcType=INTEGER}
+        </if>
+        <if test="request.clientName != null and request.clientName != ''">
+            and client_name like CONCAT('%',#{request.clientName},'%')
+        </if>
+    </select>
+
+    <select id="getErpMonitorClientStatusCount" resultType="com.yiling.open.erp.bo.ErpMonitorCountStatisticsBO">
+        select
+        count(1) AS closedCount
+        from erp_client
+        where
+        monitor_status = 1
+        and client_status = 0
+    </select>
+
+    <select id="getErpMonitorNoHartBeatCount" resultType="com.yiling.open.erp.bo.ErpMonitorCountStatisticsBO">
+        select
+        count(1) AS noHeartCount
+        from erp_client
+        where
+        monitor_status = 1
+        and TIMESTAMPDIFF(HOUR,heart_beat_time, NOW()) <![CDATA[ > ]]> 24
+    </select>
+
+    <select id="deployInterfaceCount" resultType="java.lang.Integer">
+        select
+        count(1) AS deployInterfaceCount
+        from erp_client
+        <where>
+            <if test="licenseNumberList != null and licenseNumberList.size() > 0">
+                license_number in
+                <foreach item="item" index="index" collection="licenseNumberList" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+    </select>
+
+    <select id="getSyncStatusOffCountByRkSuIdList" resultType="java.lang.Integer">
+        select
+        count(1) AS syncStatusOffCount
+        from erp_client
+        <where>
+            sync_status = 0
+            <if test="licenseNumberList != null and licenseNumberList.size() > 0">
+                and license_number in
+                <foreach item="item" index="index" collection="licenseNumberList" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+    </select>
+
+    <select id="getClientStatusOffCountByRkSuIdList" resultType="java.lang.Integer">
+        select
+        count(1) AS clientStatusOffCount
+        from erp_client
+        <where>
+            client_status = 0
+            <if test="licenseNumberList != null and licenseNumberList.size() > 0">
+                and license_number in
+                <foreach item="item" index="index" collection="licenseNumberList" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+    </select>
+
+    <select id="getRunningCountByRkSuIdList" resultType="java.lang.Integer">
+        select
+        count(1) AS runningCount
+        from erp_client
+        <where>
+            client_status = 1
+            and sync_status = 1
+            and flow_level in (1,2)
+            <if test="licenseNumberList != null and licenseNumberList.size() > 0">
+                and license_number in
+                <foreach item="item" index="index" collection="licenseNumberList" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+    </select>
+
+    <select id="getNoDatCountByRkSuIdListAndFlowDate" resultType="java.lang.Integer">
+        select
+        count(1) AS noDataMoreThanParamDaysCount
+        from erp_client
+        <where>
+            client_status = 1
+            and sync_status = 1
+            and flow_level in (1,2)
+            and lastest_flow_date <![CDATA[ <= ]]> #{lastestFlowDateEnd}
+            <if test="licenseNumberList != null and licenseNumberList.size() > 0">
+                and license_number in
+                <foreach item="item" index="index" collection="licenseNumberList" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+    </select>
+
+    <select id="getNoDatCountByRkSuIdListAndFlowDateByCrmIds" resultType="java.lang.Integer">
+        select
+        count(1) AS noDataMoreThanParamDaysCount
+        from erp_client
+        <where>
+            <!--client_status = 1-->
+            <!--and sync_status = 1-->
+            crm_enterprise_id > 0
+            and flow_level in (1,2)
+            and lastest_collect_date <![CDATA[ <= ]]> #{lastestCollectDateEnd}
+            <if test="userDatascopeBO != null and userDatascopeBO.orgDatascope == 2">
+                and (
+                <choose>
+                    <when test="userDatascopeBO.orgPartDatascopeBO.crmEids != null and userDatascopeBO.orgPartDatascopeBO.crmEids.size()>0 and userDatascopeBO.orgPartDatascopeBO.provinceCodes != null and userDatascopeBO.orgPartDatascopeBO.provinceCodes.size()>0">
+                        crm_enterprise_id in
+                        <foreach collection="userDatascopeBO.orgPartDatascopeBO.crmEids" item="crmEnterpriseId" open="(" close=")"
+                                 separator=",">
+                            #{crmEnterpriseId}
+                        </foreach>
+                        or crm_province_code in
+                        <foreach collection="userDatascopeBO.orgPartDatascopeBO.provinceCodes" item="crmProvinceCode" open="(" close=")" separator=",">
+                            #{crmProvinceCode}
+                        </foreach>
+                    </when>
+                    <when test="userDatascopeBO.orgPartDatascopeBO.crmEids != null and userDatascopeBO.orgPartDatascopeBO.crmEids.size()>0 ">
+                        crm_enterprise_id in
+                        <foreach collection="userDatascopeBO.orgPartDatascopeBO.crmEids" item="crmEnterpriseId" open="(" close=")"
+                                 separator=",">
+                            #{crmEnterpriseId}
+                        </foreach>
+                    </when>
+                    <when test="userDatascopeBO.orgPartDatascopeBO.provinceCodes != null and userDatascopeBO.orgPartDatascopeBO.provinceCodes.size()>0">
+                        crm_province_code in
+                        <foreach collection="userDatascopeBO.orgPartDatascopeBO.provinceCodes" item="crmProvinceCode" open="(" close=")" separator=",">
+                            #{crmProvinceCode}
+                        </foreach>
+                    </when>
+                </choose>
+                )
+            </if>
+        </where>
+    </select>
+
+    <select id="getNoDataSyncCountByRkSuIdListAndLastestFlowDate" resultType="java.lang.Integer">
+        select
+        count(1)
+        from erp_client
+        <where>
+            client_status = 1
+            and sync_status = 1
+            and flow_level in (1,2)
+            and lastest_flow_date <![CDATA[ <= ]]> #{lastestFlowDateEnd}
+            <if test="licenseNumberList != null and licenseNumberList.size() > 0">
+                and license_number in
+                <foreach item="item" index="index" collection="licenseNumberList" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+    </select>
+
+    <select id="getNoDataSyncEnterpriseListByRkSuIdListAndEndDate" resultType="com.yiling.open.erp.bo.SjmsFlowMonitorNoDataSyncEnterpriseBO">
+        select
+        rk_su_id AS rkSuId, client_name AS clientName, flow_mode AS flowMode, TIMESTAMPDIFF(DAY, lastest_flow_date, #{lastestFlowDateBegin}) AS noDataSyncDaysCount
+        from erp_client
+        <where>
+            client_status = 1
+            and sync_status = 1
+            and flow_level in (1,2)
+            and lastest_flow_date <![CDATA[ < ]]> #{lastestFlowDateBegin}
+            <if test="licenseNumberList != null and licenseNumberList.size() > 0">
+                and license_number in
+                <foreach item="item" index="index" collection="licenseNumberList" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+        ORDER BY noDataSyncDaysCount desc
+        limit 10
+    </select>
+
+</mapper>

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.bi.order.dao.BiOrderBackupMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.bi.order.entity.BiOrderBackupDO">
+        <id column="id" property="id" />
+        <result column="ods_detail_id" property="odsDetailId" />
+        <result column="task_id" property="taskId" />
+        <result column="order_no" property="orderNo" />
+        <result column="buyer_eid" property="buyerEid" />
+        <result column="buyer_ename" property="buyerEname" />
+        <result column="seller_eid" property="sellerEid" />
+        <result column="seller_ename" property="sellerEname" />
+        <result column="order_time" property="orderTime" />
+        <result column="order_status" property="orderStatus" />
+        <result column="payment_method" property="paymentMethod" />
+        <result column="goods_id" property="goodsId" />
+        <result column="goods_name" property="goodsName" />
+        <result column="delivery_quantity" property="deliveryQuantity" />
+        <result column="return_quantity" property="returnQuantity" />
+        <result column="extract_time" property="extractTime"/>
+        <result column="match_flag" property="matchFlag" />
+        <result column="match_crm_id" property="matchCrmId" />
+        <result column="del_flag" property="delFlag" />
+        <result column="create_time" property="createTime" />
+        <result column="create_user" property="createUser" />
+        <result column="update_time" property="updateTime" />
+        <result column="update_user" property="updateUser" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, ods_detail_id, task_id, order_no, buyer_eid, buyer_ename, seller_eid, seller_ename, order_time, order_status, payment_method, goods_id, goods_name, delivery_quantity, return_quantity, extract_time, match_flag, match_crm_id, del_flag, create_time, create_user, update_time, update_user
+    </sql>
+
+
+
+    <select id="getByOrderExtractMonth" resultType="com.yiling.bi.order.entity.BiOrderBackupDO">
+        select
+            <include refid="Base_Column_List"/>
+            from bi_order_backup where DATE_FORMAT(extract_time, '%Y-%m') = #{monthStr}
+    </select>
+
+    <select id="getMaxExtractTime" resultType="java.lang.String">
+        select max(extract_time) from bi_order_backup
+    </select>
+
+    <select id="getCountByOrderExtractMonth" resultType="java.lang.Integer">
+        select count(1) from bi_order_backup where DATE_FORMAT(extract_time, '%Y-%m') = #{monthStr}
+    </select>
+
+    <insert id="batchIgnoreInsert"  parameterType="com.yiling.bi.order.entity.BiOrderBackupDO">
+        INSERT ignore INTO bi_order_backup (
+            ods_detail_id,
+             task_id,
+             order_no,
+             buyer_eid,
+             buyer_ename,
+             seller_eid,
+             seller_ename,
+             order_time,
+             order_status,
+             payment_method,
+             goods_id,
+             goods_name,
+             delivery_quantity,
+             return_quantity,
+             extract_time )
+        VALUES
+            <foreach collection="list" item="item"  separator=",">
+            (
+             #{item.odsDetailId},
+             #{item.taskId},
+             #{item.orderNo},
+             #{item.buyerEid},
+             #{item.buyerEname},
+             #{item.sellerEid},
+             #{item.sellerEname},
+             #{item.orderTime},
+             #{item.orderStatus},
+             #{item.paymentMethod},
+             #{item.goodsId},
+             #{item.goodsName},
+             #{item.deliveryQuantity},
+             #{item.returnQuantity},
+             #{item.extractTime}
+             )
+            </foreach>
+
+    </insert>
+
+</mapper>

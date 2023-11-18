@@ -1,0 +1,87 @@
+@import '~@/common/styles/mixin.scss';
+
+.app-container {
+  .top-btn {
+    position: relative;
+    width: 100%;
+    font-size: $font-size-large;
+    line-height: $font-size-large-lh;
+    margin: 32px 0 16px 0;
+    color: $font-important-color;
+
+    .right-btn {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+    }
+  }
+
+  .common-box {
+    .el-input {
+      width: 220px;
+    }
+    .search-box {
+      .box {
+        .title {
+          font-size: $font-size-large;
+          line-height: $font-size-large-lh;
+          color: $font-important-color;
+          margin-bottom: 8px;
+        }
+      }
+
+      .el-select {
+        width: 220px;
+      }
+
+      .bottom-btn {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+      }
+    }
+  }
+
+  // 导出、导入按钮
+  .down-box {
+    width: 100%;
+    margin-top: 24px;
+
+    .btn {
+      float: right;
+    }
+  }
+
+  // 底部列表
+  .order-table-view {
+    width: 100%;
+    position: relative;
+    .item {
+      padding-bottom: 16px;
+      margin-top: 16px;
+      .title {
+        height: 25px;
+        color: $font-important-color;
+        margin-bottom: 12px;
+      }
+      .pad-title {
+        margin-top: 37px;
+        padding-bottom: 30px;
+      }
+      &-text {
+        margin-bottom: 8px;
+        height: 20px;
+        color: $font-important-color;
+        span {
+          color: $font-light-color;
+        }
+      }
+    }
+  }
+  .order-audit-content {
+    padding: 20px;
+    .info-view {
+      margin-bottom: 20px;
+    }
+  }
+}

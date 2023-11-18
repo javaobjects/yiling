@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.order.order.dao.OrderDeviceInfoMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.order.order.entity.OrderDeviceInfoDO">
+    <result column="id" property="id" />
+        <result column="batch_no" property="batchNo" />
+        <result column="ip" property="ip" />
+        <result column="ip_location" property="ipLocation" />
+        <result column="ip_province_name" property="ipProvinceName" />
+        <result column="ip_city_name" property="ipCityName" />
+        <result column="ip_region_name" property="ipRegionName" />
+        <result column="ip_operator_name" property="ipOperatorName" />
+        <result column="user_agent" property="userAgent" />
+        <result column="mobile_flag" property="mobileFlag" />
+        <result column="terminal_type" property="terminalType" />
+        <result column="manufacturer" property="manufacturer" />
+        <result column="brand" property="brand" />
+        <result column="model" property="model" />
+        <result column="os_version" property="osVersion" />
+        <result column="sdk_version" property="sdkVersion" />
+        <result column="screen_size" property="screenSize" />
+        <result column="resolution" property="resolution" />
+        <result column="udid" property="udid" />
+        <result column="app_version" property="appVersion" />
+        <result column="channel_code" property="channelCode" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,
+        batch_no, ip, ip_location, ip_province_name, ip_city_name, ip_region_name, ip_operator_name, user_agent, mobile_flag, terminal_type, manufacturer, brand, model, os_version, sdk_version, screen_size, resolution, udid, app_version, channel_code
+    </sql>
+
+</mapper>

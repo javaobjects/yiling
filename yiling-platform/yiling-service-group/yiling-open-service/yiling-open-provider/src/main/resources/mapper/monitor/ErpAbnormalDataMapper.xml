@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.open.monitor.dao.MonitorAbnormalDataMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.open.monitor.entity.MonitorAbnormalDataDO">
+    <result column="id" property="id" />
+        <result column="eid" property="eid" />
+        <result column="ename" property="ename" />
+        <result column="upload_time" property="uploadTime" />
+        <result column="flow_time" property="flowTime" />
+        <result column="so_id" property="soId" />
+        <result column="so_no" property="soNo" />
+        <result column="control_id" property="controlId" />
+        <result column="parent_id" property="parentId" />
+        <result column="data_type" property="dataType" />
+        <result column="oper_type" property="operType" />
+        <result column="del_flag" property="delFlag" />
+        <result column="create_user" property="createUser" />
+        <result column="create_time" property="createTime" />
+        <result column="update_user" property="updateUser" />
+        <result column="update_time" property="updateTime" />
+        <result column="remark" property="remark" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,
+        eid, ename, upload_time, flow_time, so_id, so_no, control_id, parent_id,data_type,oper_type, del_flag, create_user, create_time, update_user, update_time, remark
+    </sql>
+
+    <sql id="Base_Table_Name">
+        monitor_abnormal_data
+    </sql>
+
+    <select id="getSaleExceptionCount" resultType="java.lang.Long">
+        SELECT COUNT(*)
+        FROM <include refid="Base_Table_Name"/>
+        WHERE del_flag = 0
+        AND data_type = 1
+        <if test="startTime != null">
+            AND flow_time <![CDATA[ >= ]]> #{startTime}
+        </if>
+        <if test="endTime != null">
+            AND flow_time <![CDATA[ <= ]]> #{endTime}
+        </if>
+    </select>
+
+</mapper>

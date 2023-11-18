@@ -1,0 +1,57 @@
+@import "~@/common/styles/mixin.scss";
+.app-container {
+  .down-box {
+    width: 100%;
+    margin-top: 16px;
+
+    .btn {
+      float: right;
+    }
+  }
+  .common-box {
+    .el-input {
+      width: 365px;
+    }
+
+    .search-box {
+      position: relative;
+
+      .box {
+        .title {
+          font-size: $font-size-large;
+          line-height: $font-size-large-lh;
+          color: $font-important-color;
+          margin-bottom: 8px;
+        }
+      }
+      .radio-group {
+        height: 22px;
+      }
+
+      .bottom-btn {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+      }
+
+      &:last-child {
+        margin-top: 24px;
+      }
+    }
+  }
+  // 底部列表
+  .table-view{
+    margin-top: 8px;
+    .role-desc {
+      @include clamp(3);
+    }
+  }
+  .new-role {
+    padding: 16px;
+    .el-textarea,
+    .el-input {
+      width: 365px;
+    }
+  }
+}
+

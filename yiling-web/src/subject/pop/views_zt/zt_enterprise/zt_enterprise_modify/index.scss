@@ -1,0 +1,182 @@
+@import "~@/common/styles/mixin.scss";
+
+.app-container {
+  .search-bar {
+    background: $white;
+    padding: 16px;
+    border-radius: 4px;
+    // .intro {
+    //   color: $font-important-color;
+    //   font-size: $font-size-base;
+    //   line-height: $font-size-base-lh;
+    //   margin-bottom: 8px;
+    //   padding: 0 10px;
+    //   span {
+    //     color: $font-title-color;
+    //   }
+    // }
+    // .add-title{
+    //   width: 360px;
+    // }
+  }
+  .top-bar {
+    background: $white;
+    padding: 16px;
+    border-radius: 4px;
+    margin-bottom: 16px;
+    .header-renative{
+      position: relative;
+      margin-bottom: 16px;
+      .edit-btn{
+        position: absolute;
+        right: 0;
+      }
+    }
+    .content-box{
+      padding: 0 8px;
+      .red-text{
+        color: #F52922;
+      }
+      .search-box {
+        // margin-top: 14px;
+        .box {
+          .title {
+            font-size: $font-size-base;
+            line-height: $font-size-large-lh;
+            color: $font-important-color;
+            margin-bottom: 8px;
+            .red-text{
+              color: #F52922;
+            }
+          }
+          .box-conter{
+            width: 220px;
+            margin: 0;
+            border: 1px solid #dcdfe6;
+            padding: 0 15px;
+            border-radius: 4px;
+            background: #F7F7F7;
+            color: #BFBFBF;
+          }
+          .el-radio-group{
+            width: 100%;
+            .el-radio{
+              line-height: 36px;
+            }
+          }
+        }
+        .el-input {
+          width: 220px;
+        }
+        .el-select {
+          width: 220px;
+        }
+      }
+      
+    }
+  }
+
+  .bottom-box {
+    // margin-top: 16px;
+    background: $white;
+    padding: 16px;
+    border-radius: 4px;
+    .header-bar {
+      margin-bottom: 12px;
+    }
+    .img-view {
+      position: relative;
+      width: 100%;
+      padding: 0 23px;
+      overflow: hidden;
+      .flex-wrap-div{
+        width: 100%;
+      }
+      .item {
+        width: 239px;
+        vertical-align: top;
+        margin-right: 18px;
+        border: 1px solid rgb(237,237,236);
+        margin:0 26px 26px 0;
+        display: inline-block;
+        position: relative;
+        border-radius: 4px;
+        .img-box {
+          width: 239px;
+          height: 159px;
+          // background: #FAFAFA;
+          position: relative;
+          img {
+            width: auto;
+            height: 159px;
+            cursor: pointer;
+          }
+          // .grad {
+          //   width: 100%;
+          //   height: 33px;
+          //   margin: 0;
+          //   position: absolute;
+          //   left: 0;
+          //   bottom: 0;
+          //   background-image: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.6) 100%);
+          //   opacity: 0.77;
+          //   text-align: right;
+          // }
+        }
+        .item-bottom {
+          width: 100%;
+          height: 111px;
+          padding: 8px 7px;
+          font-size: $font-size-base;
+          color: #222222;
+          .pic-desc {
+            width: 100%;
+            color: $font-title-color;
+            font-weight: 400;
+            font-size: $font-size-base;
+            span{
+              display: inline-block;
+              vertical-align: top;
+            }
+          }
+          .pic-desc span:nth-child(1) {
+            width: 70%;
+            overflow:hidden;
+            text-overflow:ellipsis;
+            white-space: nowrap;
+          }
+          .pic-desc span:nth-child(2) {
+            width: 30%;
+            text-align: right;
+            color: #1790FF;
+            cursor: pointer;
+          }
+          .pic-desc-time{
+            width: 239px;
+          }
+          .pic-desc-bottom{
+            width: 220px;
+            height: 80px;
+          }
+          .pic-desc-radio{
+            margin-top: 4px;
+          }
+          .pic-desc-radio span{
+            font-size: 12px;
+            color: #666;
+          }
+          .pic-desc-radio-span{
+            font-size: 12px;
+            color: #666;
+          }
+        }
+      }
+    }
+  }
+  .asterisk{
+    font-size: 16px;
+    color: #ee0a24;
+  }
+  
+}
+

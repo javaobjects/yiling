@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.marketing.promotion.dao.PromotionSpecialActivityMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.marketing.promotion.entity.PromotionSpecialActivityDO">
+        <result column="id" property="id"/>
+        <result column="special_activity_name" property="specialActivityName"/>
+        <result column="start_time" property="startTime"/>
+        <result column="end_time" property="endTime"/>
+        <result column="type" property="type"/>
+        <result column="status" property="status"/>
+        <result column="del_flag" property="delFlag"/>
+        <result column="create_user" property="createUser"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_user" property="updateUser"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="remark" property="remark"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id
+        ,
+        special_activity_name, start_time, end_time, create_time, create_user, mobile, type, status, del_flag, update_user, update_time, remark
+    </sql>
+    <select id="pageActivityInfo" resultType="com.yiling.marketing.promotion.dto.SpecialActivityEnterpriseDTO">
+        select enterprise.eid,
+        enterprise.ename as enterpriseName,
+        promotion.id as promotionActivityId,
+        promotion.name as promotionActivityName,
+        promotion.begin_time as startTime,
+        promotion.end_time as endTime
+        from
+        marketing_promotion_activity promotion
+        LEFT JOIN marketing_promotion_enterprise_limit enterprise
+        on promotion.id=enterprise.promotion_activity_id
+        <where>
+            promotion.`status`=1 and promotion.del_flag=0
+            and (promotion.begin_time>=NOW() OR (promotion.begin_time<![CDATA[ <= ]]>NOW() AND promotion.end_time>NOW()))
+            <if test="request.eName != null and request.eName != ''">
+                AND enterprise.ename LIKE CONCAT('%',#{request.eName},'%')
+            </if>
+            <if test="request.type != null and request.type != 0">
+                AND promotion.type= #{request.type}
+            </if>
+            <if test="request.startTime != null">
+                and promotion.begin_time>=#{request.startTime} and promotion.end_time<![CDATA[ <= ]]>#{request.endTime}
+            </if>
+
+        </where>
+
+        GROUP BY enterprise.eid,promotion.begin_time,promotion.id
+    </select>
+
+    <select id="pageSpecialActivityAppointmentInfo"
+            resultType="com.yiling.marketing.promotion.dto.PromotionSpecialActivityAppointmentPageDTO">
+
+        SELECT
+        promotion.id as specialActivityId,
+        promotion.special_activity_name as specialActivityName,
+        promotion.start_time as startTime,
+        promotion.end_time endTime,
+        appointment.appointment_time as appointmentTime,
+        appointment.appointment_user_id as appointmentUserId,
+        appointment.appointment_user_name as appointmentUserName,
+        enterprise.eid as specialActivityEnterpriseId,
+        promotion.type,
+        promotion.status,
+        appointment.appointment_user_eid as appointmentUserEid
+        FROM
+        marketing_promotion_special_activity promotion,
+        marketing_promotion_special_activity_enterprise enterprise,
+        marketing_promotion_special_appointment appointment
+        <where>
+            appointment.special_activity_id = promotion.id
+            AND appointment.special_activity_enterprise_id = enterprise.id
+            AND promotion.id = enterprise.special_activity_id
+            and promotion.del_flag=0
+            and enterprise.del_flag=0
+            and appointment.del_flag=0
+            <if test="request.specialActivityName != null and request.specialActivityName != ''">
+                AND promotion.special_activity_name like concat('%',#{request.specialActivityName},'%')
+            </if>
+            <if test="request.status != null and request.status != 0">
+                AND promotion.status=#{request.status}
+            </if>
+            <if test="request.startTime != null ">
+                AND ((promotion.start_time >=#{request.start_time} AND promotion.start_time <![CDATA[ <= ]]>#{request.end_time}) OR
+                (promotion.start_time <![CDATA[ <= ]]>#{request.start_time} AND promotion.end_time >=#{end_time}) OR (promotion.end_time
+                >=#{request.start_time} AND promotion.end_time <![CDATA[ <= ]]>#{request.end_time}))
+            </if>
+            <if test="request.startTime != null ">
+                AND (appointment.appointment_time BETWEEN #{request.appointmentStartTime} AND #{request.appointmentEndTime})
+            </if>
+            <if test="request.appointmentUserName != null and request.appointmentUserName != ''">
+                AND appointment.appointment_user_name like concat('%',#{request.appointmentUserName},'%')
+            </if>
+            <if test="request.type != null and request.type != 0">
+                AND promotion.type=#{request.type}
+            </if>
+            <if test="request.ename != null and request.ename != ''">
+                AND enterprise.ename like concat('%',#{request.ename},'%')
+            </if>
+        </where>
+    </select>
+
+    <select id="activityCenter" resultType="com.yiling.marketing.promotion.dto.SpecialActivityPageDTO">
+        select activity.id,activity.start_time as startTime,activity.create_time as createTime,activity.id,activity.special_activity_name as specialActivityName, enterprise.eid,activity.type
+        from marketing_promotion_special_activity activity
+        join marketing_promotion_special_activity_enterprise  enterprise
+        on enterprise.special_activity_id=activity.id
+        join marketing_promotion_activity promotion
+        on promotion.id=enterprise.promotion_activity_id
+        where activity.del_flag=0 and activity.status=1 and enterprise.del_flag=0
+        and promotion.end_time>NOW()
+        and  ((activity.end_time>NOW() and activity.start_time<![CDATA[ < ]]>NOW()))
+       order by activity.start_time
+    </select>
+    <select id="pageSpecialActivityInfo" resultType="com.yiling.marketing.promotion.dto.SpecialAvtivityItemInfoDTO">
+        SELECT
+        promotion.begin_time as startTime,
+        promotion.end_time as endTime,
+        activity.id as specialActivityId,
+        enterprise.eid,
+        activity.special_activity_name as specialActivityName,
+        enterprise.id as specialActivityEnterpriseId,
+        enterprise.promotion_activity_id as promotionActivityId,
+        promotion.name as promotionActivityName,
+        enterprise.pic
+        FROM
+        marketing_promotion_special_activity activity
+        JOIN marketing_promotion_special_activity_enterprise enterprise ON activity.id = enterprise.special_activity_id
+        join marketing_promotion_activity promotion on promotion.id=enterprise.promotion_activity_id
+        <where>
+            (activity.end_time>=NOW() and activity.start_time<![CDATA[ <= ]]>NOW())
+            and enterprise.del_flag=0
+            and activity.del_flag=0
+            and activity.status=1
+            and promotion.status=1  and promotion.del_flag=0
+            and promotion.end_time>=NOW()
+            <if test="request.type != null and request.type != 0">
+                AND activity.type=#{request.type}
+            </if>
+            <if test="request.eids != null and request.eids.size() > 0">
+                and enterprise.eid in
+                <foreach item="item" index="index" collection="request.eids"
+                         open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+        ORDER BY
+        activity.start_time DESC
+    </select>
+    <select id="pageSpecialActivityEidInfo" resultType="java.lang.Long">
+        SELECT enterprise.eid
+        from marketing_promotion_special_activity_enterprise enterprise
+                 join marketing_promotion_special_activity activity
+                      ON activity.id = enterprise.special_activity_id
+        where activity.del_flag = 0
+          and activity.end_time >= NOW()
+          and activity.status = 1
+          and enterprise.del_flag = 0
+        <if test="request.type != null and request.type != 0">
+            AND activity.type=#{request.type}
+        </if>
+        GROUP BY enterprise.eid
+    </select>
+    <select id="queryMyAppointment" resultType="com.yiling.marketing.promotion.dto.SpecialAvtivityAppointmentItemDTO">
+        SELECT
+        DISTINCT
+        activity.type,
+        appointment.special_activity_enterprise_id as specialActivityEnterpriseId,
+        activity.id as specialActivityId,
+        activity.special_activity_name as specialActivityName,
+        promotion.begin_time as startTime,
+        promotion.end_time as endTime
+        FROM
+        marketing_promotion_special_appointment appointment
+        JOIN marketing_promotion_special_activity activity ON activity.id = appointment.special_activity_id
+        JOIN marketing_promotion_special_activity_enterprise  enterprise on enterprise.special_activity_id=activity.id
+        JOIN marketing_promotion_activity promotion on promotion.id=enterprise.promotion_activity_id
+        <where>
+        appointment.special_activity_enterprise_id=enterprise.id and
+        <if test="request.type != null and request.type != 0 and request.type ==1">
+            activity.status=1 and activity.del_flag=0 and activity.end_time > NOW() and promotion.status=1 and promotion.del_flag=0 and promotion.begin_time<![CDATA[ > ]]> NOW()
+        </if>
+        <if test="request.type != null and request.type != 0  and request.type ==2">
+            activity.status=1 and activity.del_flag=0 and( activity.start_time<![CDATA[ <= ]]> NOW() and activity.end_time>=NOW())  and promotion.status=1 and promotion.del_flag=0 and promotion.begin_time<![CDATA[ <= ]]> NOW() and promotion.end_time>=NOW()
+        </if>
+        <if test="request.type != null and request.type != 0  and request.type ==3">
+            (activity.status=2 OR activity.del_flag=1 OR activity.end_time<![CDATA[ < ]]> NOW()  or promotion.status=2 or promotion.del_flag=1 or activity.end_time<![CDATA[ < ]]> NOW())
+        </if>
+        AND appointment.appointment_user_eid=#{userId}
+        </where>
+    </select>
+    <select id="selectEnterpriseBySpecialActivityId" resultType="com.yiling.marketing.promotion.entity.PromotionSpecialActivityEnterpriseDO">
+
+        SELECT
+            id,
+            special_activity_id,
+            eid,
+            promotion_activity_id,
+            pic,
+            create_time,
+            create_user,
+            del_flag,
+            update_user,
+            update_time,
+            remark
+        FROM
+            marketing_promotion_special_activity_enterprise
+        WHERE
+            special_activity_id = #{request.id}
+        <if test="request.delFlag != null and request.delFlag != 0 ">
+            and del_flag =#{request.delFlag}
+        </if>
+
+    </select>
+    <select id="getSpecialActivityInfo" resultType="com.yiling.marketing.promotion.entity.PromotionSpecialActivityDO">
+        SELECT activity.* FROM marketing_promotion_special_activity_enterprise  enterprise
+                                   join  marketing_promotion_special_activity  activity on activity.id=enterprise.special_activity_id
+     where enterprise.eid=#{eid} and enterprise.promotion_activity_id=#{promotionActivityId}
+    </select>
+
+</mapper>

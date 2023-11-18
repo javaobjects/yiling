@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.payment.pay.dao.PaymentMergeOrderMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.payment.pay.entity.PaymentMergeOrderDO">
+    <result column="id" property="id" />
+        <result column="pay_id" property="payId" />
+        <result column="pay_no" property="payNo" />
+        <result column="buyer_eid" property="buyerEid" />
+        <result column="seller_eid" property="sellerEid" />
+        <result column="user_id" property="userId" />
+        <result column="app_order_id" property="appOrderId" />
+        <result column="app_order_no" property="appOrderNo" />
+        <result column="app_order_status" property="appOrderStatus" />
+        <result column="order_platform" property="orderPlatform" />
+        <result column="pay_way" property="payWay" />
+        <result column="pay_source" property="paySource" />
+        <result column="trade_type" property="tradeType" />
+        <result column="pay_amount" property="payAmount" />
+        <result column="goods_amount" property="goodsAmount" />
+        <result column="refund_state" property="refundState" />
+        <result column="refund_amount" property="refundAmount" />
+        <result column="create_time" property="createTime" />
+        <result column="create_user" property="createUser" />
+        <result column="update_time" property="updateTime" />
+        <result column="update_user" property="updateUser" />
+        <result column="limit_time" property="limitTime" />
+        <result column="pay_date" property="payDate" />
+        <result column="content" property="content" />
+        <result column="is_duplicate" property="isDuplicate" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,pay_id, pay_no,buyer_eid,seller_eid,user_id, app_order_id, app_order_no, app_order_status,order_platform,pay_way,pay_source,trade_type, pay_amount,goods_amount,refund_state, refund_amount, create_time, create_user, update_time, update_user,limit_time,pay_date,content,is_duplicate
+    </sql>
+
+</mapper>

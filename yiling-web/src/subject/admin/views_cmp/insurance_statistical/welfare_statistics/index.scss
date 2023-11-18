@@ -1,0 +1,57 @@
+.app-container {
+  .common-box {
+    .el-input {
+      width: 220px;
+    }
+    .search-box {
+      .box {
+        .title {
+          font-size: $font-size-large;
+          line-height: $font-size-large-lh;
+          color: $font-important-color;
+          margin-bottom: 8px;
+        }
+      }
+    }
+  }
+  // 导出、导入按钮
+  .down-box {
+    width: 100%;
+    margin-top: 24px;
+    text-align: right;
+  }
+  .search-bar {
+    background: #fff;
+    border-radius: 4px;
+    .img {
+      width: 82px;
+      height: 82px;
+      display: inline-block;
+      ::v-deep .image-slot {
+        width: 82px;
+        height: 82px;
+        line-height: 82px;
+        display: inline-block;
+        background: #f5f7fa;
+        i {
+          font-size: 22px;
+        }
+      }
+    }
+    .user-right {
+      height: 82px;
+      display: inline-block;
+      text-align: left;
+      margin-left: 10px;
+      line-height: 28px;
+      vertical-align: top;
+      span {
+        color: #666666;
+      }
+      p {
+        padding: 0;
+        margin: 0;
+      }
+    }
+  }
+}

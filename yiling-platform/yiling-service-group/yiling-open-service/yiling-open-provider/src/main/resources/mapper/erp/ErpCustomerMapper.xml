@@ -1,0 +1,391 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.open.erp.dao.ErpCustomerMapper">
+    <resultMap id="ErpCustomerResult" type="com.yiling.open.erp.entity.ErpCustomerDO">
+        <result property="id" column="id" />
+        <result property="suId" column="su_id" />
+        <result property="suDeptNo" column="su_dept_no" />
+        <result property="innerCode" column="inner_code" />
+        <result property="sn" column="sn" />
+        <result property="name" column="name" />
+        <result property="groupName" column="group_name" />
+        <result property="licenseNo" column="license_no" />
+        <result property="customerType" column="customer_type" />
+        <result property="contact" column="contact" />
+        <result property="phone" column="phone" />
+        <result property="province" column="province" />
+        <result property="city" column="city" />
+        <result property="region" column="region" />
+        <result property="address" column="address" />
+        <result property="dataMd5" column="data_md5" />
+        <result property="addTime" column="add_time" />
+        <result property="editTime" column="edit_time" />
+        <result property="operType" column="oper_type"/>
+        <result property="syncStatus" column="sync_status"/>
+        <result property="syncMsg" column="sync_msg"/>
+        <result property="failedCount" column="failed_count"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,su_id,su_dept_no,inner_code,sn,`name`,group_name,license_no,customer_type,contact,phone,
+		province,city,region,address,data_md5,add_time,edit_time,oper_type,sync_status,sync_msg,failed_count
+    </sql>
+    <!-- select公共部分 -->
+    <sql id="selectSql">
+		t.id,
+		t.su_id,
+		t.su_dept_no,
+		t.inner_code,
+		t.sn,
+		t.name,
+		t.group_name,
+		t.license_no,
+		t.customer_type,
+		t.contact,
+		t.phone,
+		t.province,
+		t.city,
+		t.region,
+		t.address,
+		t.data_md5,
+		t.add_time,
+		t.edit_time,
+		t.oper_type,
+		t.sync_status,
+		t.sync_msg,
+		t.failed_count
+	</sql>
+
+    <!-- WHERE公共部分 -->
+    <sql id="whereSql">
+        <where>
+            <if test="id != null ">AND t.id = #{id} </if>
+            <if test="suId != null ">AND t.su_id = #{suId} </if>
+            <if test="suDeptNo != null and suDeptNo != ''">AND t.su_dept_no = #{suDeptNo} </if>
+            <if test="innerCode != null and innerCode != ''">AND t.inner_code = #{innerCode} </if>
+            <if test="sn != null and sn != ''">AND t.sn = #{sn} </if>
+            <if test="name != null and name != ''">AND t.name = #{name} </if>
+            <if test="groupName != null and groupName != ''">AND t.group_name = #{groupName} </if>
+            <if test="licenseNo != null and licenseNo != ''">AND t.license_no = #{licenseNo} </if>
+            <if test="customerType != null and customerType != ''">AND t.customer_type = #{customerType} </if>
+            <if test="contact != null and contact != ''">AND t.contact = #{contact} </if>
+            <if test="phone != null and phone != ''">AND t.phone = #{phone} </if>
+            <if test="province != null and province != ''">AND t.province = #{province} </if>
+            <if test="city != null and city != ''">AND t.city = #{city} </if>
+            <if test="region != null and region != ''">AND t.region = #{region} </if>
+            <if test="address != null and address != ''">AND t.address = #{address} </if>
+            <if test="dataMd5 != null and dataMd5 != ''">AND t.data_md5 = #{dataMd5} </if>
+            <if test="addTime != null ">AND t.add_time = #{addTime} </if>
+            <if test="editTime != null ">AND t.edit_time = #{editTime} </if>
+            <if test="operType != null ">AND t.oper_type = #{operType} </if>
+            <if test="syncStatus != null ">AND t.sync_status = #{syncStatus} </if>
+            <if test="syncMsg != null and syncMsg != ''">AND t.sync_msg = #{syncMsg} </if>
+            <if test="failedCount != null ">AND t.failed_count = #{failedCount} </if>
+        </where>
+    </sql>
+
+    <update id="updateSyncStatusByStatusAndId">
+		update
+		`erp_customer` set
+		`sync_status`=#{syncStatus},`sync_time`=Now(),sync_msg=#{syncMsg}
+		where
+		`id` = #{id} and
+		`sync_status`=#{oldSyncStatus}
+	</update>
+
+    <select id="queryBySuIdAndSuDeptNo" resultMap="ErpCustomerResult">
+        SELECT id,su_id,su_dept_no,inner_code,data_md5,oper_type FROM erp_customer WHERE su_id = #{suId}
+        <if test="suDeptNo != null and suDeptNo != ''">
+            AND su_dept_no = #{suDeptNo}
+        </if>
+        LIMIT #{start},#{count}
+    </select>
+
+    <select id="queryHistoryList" resultMap="ErpCustomerResult">
+        SELECT id,su_id,su_dept_no,inner_code,oper_type
+        FROM erp_customer
+        WHERE su_id = #{suId}
+        <if test="suDeptNoSet != null and suDeptNoSet.size() > 0">
+            AND su_dept_no IN
+            <foreach item="item" index="index" collection="suDeptNoSet"
+                     open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="erpPrimaryKeySet != null and erpPrimaryKeySet.size() > 0">
+            AND inner_code IN
+            <foreach item="item" index="index" collection="erpPrimaryKeySet"
+                     open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+    </select>
+
+    <insert id="batchInsert" parameterType="com.yiling.open.erp.entity.ErpCustomerDO" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO erp_customer (
+        `id`,
+        `su_id`,
+        `su_dept_no`,
+        `inner_code`,
+        `sn`,
+        `name`,
+        `group_name`,
+        `license_no`,
+        `customer_type`,
+        `contact`,
+        `phone`,
+        `province`,
+        `city`,
+        `region`,
+        `address`,
+        `data_md5`,
+        `add_time`,
+        `oper_type`,
+        `sync_status`,
+        `sync_msg`,
+        `failed_count`
+        )
+        VALUES
+        <foreach collection="list" item="item" index="index"
+                 separator=",">
+            (
+            #{item.id},
+            #{item.suId},
+            #{item.suDeptNo},
+            #{item.innerCode},
+            #{item.sn},
+            #{item.name},
+            #{item.groupName},
+            #{item.licenseNo},
+            #{item.customerType},
+            #{item.contact},
+            #{item.phone},
+            #{item.province},
+            #{item.city},
+            #{item.region},
+            #{item.address},
+            #{item.dataMd5},
+            NOW(),
+            1,
+            1,
+            #{item.syncMsg},
+            0
+            )
+        </foreach>
+    </insert>
+
+    <update id="updateByPrimaryKey" parameterType="com.yiling.open.erp.entity.ErpCustomerDO">
+        UPDATE erp_customer
+        SET
+        <if test="suId != null">
+            `su_id` = #{suId},
+        </if>
+        <if test="suDeptNo != null and suDeptNo != ''">
+            `su_dept_no` = #{suDeptNo},
+        </if>
+        <if test="innerCode != null and innerCode != ''">
+            `inner_code` = #{innerCode},
+        </if>
+        <if test="sn != null and sn != ''">
+            `sn` = #{sn},
+        </if>
+        <if test="name != null and name != ''">
+            `name` = #{name},
+        </if>
+        <if test="groupName != null and groupName != ''">
+            `group_name` = #{groupName},
+        </if>
+        <if test="licenseNo != null and licenseNo != ''">
+            `license_no` = #{licenseNo},
+        </if>
+        <if test="customerType != null and customerType != ''">
+            `customer_type` = #{customerType},
+        </if>
+        <if test="contact != null and contact != ''">
+            `contact` = #{contact},
+        </if>
+        <if test="phone != null and phone != ''">
+            `phone` = #{phone},
+        </if>
+        <if test="province != null and province != ''">
+            `province` = #{province},
+        </if>
+        <if test="city != null and city != ''">
+            `city` = #{city},
+        </if>
+        <if test="region != null and region != ''">
+            `region` = #{region},
+        </if>
+        <if test="address != null and address != ''">
+            `address` = #{address},
+        </if>
+        <if test="dataMd5 != null and dataMd5 != ''">
+            `data_md5` = #{dataMd5},
+        </if>
+        `edit_time` = NOW(),
+        `oper_type` = 2,
+        `sync_status` = #{syncStatus},
+        <if test="syncMsg != null and syncMsg != ''">
+            `sync_msg` = #{syncMsg},
+        </if>
+        `failed_count` = 0
+        WHERE id = #{id}
+    </update>
+
+    <update id="updateSyncInfoByPrimaryKey" parameterType="com.yiling.open.erp.entity.ErpCustomerDO">
+		UPDATE erp_customer
+		SET
+		`sync_status` = #{syncStatus},
+		`sync_msg` = #{syncMsg}
+		WHERE `id` = #{id}
+	</update>
+
+    <update id="deleteByPrimaryKey" parameterType="com.yiling.open.erp.entity.ErpCustomerDO">
+		UPDATE erp_customer
+		SET
+		 `edit_time` = NOW(),
+		 `oper_type` = 3,
+		 `sync_status` = #{syncStatus},
+		 `sync_msg` = #{syncMsg}
+		WHERE `id` = #{id}
+		AND oper_type &lt; 3
+	</update>
+
+    <update id="deleteByPrimaryKeys">
+        UPDATE erp_customer
+        SET
+        `edit_time` = NOW(),
+        `oper_type` = 3,
+        `sync_status` = 1
+        WHERE id IN
+        <foreach item="item" index="index" collection="list" open="("
+                 separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+
+    <!-- 更改同步状态,同步信息 -->
+    <update id="updateSyncStatusAndMsg">
+		update `erp_customer` set
+		`sync_status` = #{syncStatus},
+		`sync_msg`=#{syncMsg},
+		`sync_time`=Now()
+		where `id` = #{id}
+	</update>
+
+    <select id="findErpCustomerByIds" resultMap="ErpCustomerResult">
+        SELECT
+        <include refid="selectSql"/>
+        from erp_customer t
+        WHERE id IN
+        <foreach item="item" index="index" collection="ids" open="("
+                 separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <select id="findMd5BySuId" resultMap="ErpCustomerResult">
+        SELECT
+        <include refid="selectSql" />
+        from
+        erp_customer t
+        where   su_id=#{suId} and oper_type!=3 and sync_status=2
+    </select>
+
+    <select id="findBySyncStatusAndInSnList" resultMap="ErpCustomerResult">
+        SELECT
+        <include refid="selectSql" />
+        from
+        erp_customer t
+        where   su_id=#{suId} and `sync_status`!=1
+        <if test="suDeptNo != null and suDeptNo != ''">
+            and su_dept_no=#{suDeptNo}
+        </if>
+        and  `inner_code` IN
+        <foreach collection="list" item="inSn" index="index" open="("
+                 close=")" separator=",">
+            #{innerCode}
+        </foreach>
+    </select>
+
+    <select id="syncCustomer" resultMap="ErpCustomerResult">
+        SELECT
+        <include refid="selectSql"/>
+        FROM erp_customer t
+        WHERE  t.sync_status = 0
+        AND (t.su_id, t.su_dept_no) IN (
+        SELECT
+        c.su_id,
+        c.su_dept_no
+        FROM
+        erp_client c
+        WHERE
+        c.client_status = 1
+        AND c.sync_status = 1) LIMIT 1000
+    </select>
+    <select id="getErpCustomerIdList" resultType="java.lang.Long">
+        SELECT
+        t.`id`
+        FROM erp_customer t
+        <where>
+            <if test="request.syncStatus != null">
+                AND t.sync_status = #{request.syncStatus}
+            </if>
+            <if test="request.name != null and request.name != ''">
+                AND t.`name` like concat('%',#{request.name},'%')
+            </if>
+            <if test="request.customerType != null and request.customerType != ''">
+                AND t.`customer_type` like concat('%',#{request.customerType},'%')
+            </if>
+            <if test="request.licenseNo != null and request.licenseNo != ''">
+                AND t.license_no like concat('%',#{request.licenseNo},'%')
+            </if>
+            <if test="request.suId != null and request.suId != ''">
+                AND t.su_id = #{request.suId}
+            </if>
+            <if test="request.syncMsg != null and request.syncMsg != ''">
+                AND t.sync_msg = #{request.syncMsg}
+            </if>
+        </where>
+        order by t.`id` desc
+        <if test="request.queryLimit != null and request.queryLimit > 0">
+            limit #{request.queryLimit}
+        </if>
+    </select>
+    <select id="getPageListErpCustomerId" resultType="java.lang.Long">
+        SELECT
+        t.`id`
+        FROM erp_customer t
+        <where>
+            <if test="request.syncStatus != null">
+                AND t.sync_status = #{request.syncStatus}
+            </if>
+            <if test="request.name != null and request.name != ''">
+                AND t.`name` like concat('%',#{request.name},'%')
+            </if>
+            <if test="request.customerType != null and request.customerType != ''">
+                AND t.`customer_type` like concat('%',#{request.customerType},'%')
+            </if>
+            <if test="request.licenseNo != null and request.licenseNo != ''">
+                AND t.license_no like concat('%',#{request.licenseNo},'%')
+            </if>
+            <if test="request.suId != null and request.suId != ''">
+                AND t.su_id = #{request.suId}
+            </if>
+            <if test="request.syncMsg != null and request.syncMsg != ''">
+                AND t.sync_msg = #{request.syncMsg}
+            </if>
+        </where>
+        order by t.`id` desc
+    </select>
+
+    <update id="updateOperTypeGoodsBatchFlowBySuId">
+        update `erp_customer` set
+        `edit_time` = NOW(),
+        `sync_status` = 0,
+        `oper_type` = 3,
+         failed_count = 0
+        where `su_id` = #{suId}
+    </update>
+
+</mapper>

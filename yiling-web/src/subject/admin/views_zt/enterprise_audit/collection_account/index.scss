@@ -1,0 +1,218 @@
+@import "~@/common/styles/mixin.scss";
+
+.app-container {
+  .order-total {
+    font-size: $font-size-base;
+    background: #fff;
+    height: 90px;
+    .box {
+      width: 216px;
+      height: 70px;
+      display: inline-block;
+      .svg-icon {
+        font-size: 24px;
+        width: 24px;
+        margin-right: 8px;
+
+      }
+      .title {
+        height: 40px;
+        padding-left: 89px;
+        font-size: 28px;
+        color: $font-important-color;
+        line-height: 34px;
+      }
+      &:nth-child(3) {
+        width: 244px;
+        .title {
+          padding-left: 96px;
+        }
+      }
+    }
+  }
+  .order-ticket-check {
+    padding: 15px 27px 30px 15px;
+    .order-content {
+      padding-left: 5px;
+    }
+  }
+  .top-btn {
+    position: relative;
+    width: 100%;
+    font-size: $font-size-large;
+    line-height: $font-size-large-lh;
+    margin: 32px 0 16px 0;
+    color: $font-important-color;
+
+    .right-btn {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+    }
+  }
+
+  .common-box {
+    .el-input {
+      width: 220px;
+    }
+    .search-box {
+      //padding: 0 16px;
+      position: relative;
+
+      .box {
+        .title {
+          font-size: $font-size-large;
+          line-height: $font-size-large-lh;
+          color: $font-important-color;
+          margin-bottom: 8px;
+        }
+      }
+
+      .el-select {
+        width: 220px;
+      }
+
+      .bottom-btn {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+      }
+    }
+  }
+
+  // 导出、导入按钮
+  .down-box {
+    width: 100%;
+    margin-top: 24px;
+
+    .btn {
+      float: right;
+    }
+  }
+
+  // 底部列表
+  .table-view {
+    height: 200px;
+    width: 100%;
+    background: #F4F4F4;
+    overflow: hidden;
+    .session {
+      padding: 0 16px;
+      box-sizing: border-box;
+      height: 32px;
+      background: #FAFAFA;
+      border-top-left-radius: 4px;
+      border-top-right-radius: 4px;
+      overflow: hidden;
+      span {
+        color: #999999;
+        line-height: 32px;
+      }
+
+      .enable {
+        color: #15AD31;
+      }
+
+      .disable {
+        color: #E62412;
+      }
+
+    }
+
+    .content {
+      height: 186px;
+      background: #FFFFFF;
+      border-bottom-left-radius: 4px;
+      border-bottom-right-radius: 4px;
+      display: flex;
+      justify-content: flex-start;
+
+      .content-left {
+        width: 400px;
+        height: 100%;
+        border-right: 1px solid #EEEEEE;
+        box-sizing: border-box;
+        padding: 16px;
+        padding-bottom: 30px;
+      }
+
+      .table-item {
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: flex-start;
+        display: -webkit-flex;
+        // align-items: center;
+        justify-content: center;
+        // div {
+        //   width: 100%;
+        // }
+
+        .item {
+          @include clamp(2);
+        }
+      }
+
+      .content-center {
+        width: 397px;
+        height: 100%;
+        border-right: 1px solid #EEEEEE;
+        box-sizing: border-box;
+
+        .content-center-top {
+          height: 93px;
+          border-bottom: 1px solid #EEEEEE;
+          box-sizing: border-box;
+          padding: 10px 16px;
+          p{
+            width: 100%;
+            // height: 40px;
+            // border: 1px solid red;
+            font-size: 14px;
+            font-weight: bold;
+            color: #000;
+            // overflow:hidden;
+            // text-overflow:ellipsis;
+            // white-space: nowrap;
+            padding: 0;
+            margin: 0;
+            display: -webkit-box;-webkit-box-orient: vertical;-webkit-line-clamp: 2;overflow: hidden;
+          }
+          .line-view {
+            width: 2px;
+            height: 14px;
+            background: #1790FF;
+            margin-right: 4px;
+          }
+
+          .tool-tip-icon {
+            color: #1790FF;
+          }
+        }
+
+        .content-center-bottom {
+          height: 93px;
+          // display: flex;
+          // flex-direction: column;
+          // justify-content: space-around;
+          padding: 10px 16px;
+          // border: 1px solid red;
+          
+          p{
+            margin: 0;
+            padding: 0;
+            font-size: 14px;
+            font-weight: bold;
+            color: #000;
+            display: -webkit-box;-webkit-box-orient: vertical;-webkit-line-clamp: 2;overflow: hidden;
+          }
+        }
+      }
+
+      .content-right {
+        min-width: 150px;
+        margin: 0 auto;
+      }
+    }
+  }
+}
+

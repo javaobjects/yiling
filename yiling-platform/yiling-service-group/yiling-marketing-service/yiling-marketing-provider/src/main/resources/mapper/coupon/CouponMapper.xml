@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.marketing.coupon.dao.CouponMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.marketing.coupon.entity.CouponDO">
+        <result column="id" property="id"/>
+        <result column="coupon_activity_id" property="couponActivityId"/>
+        <result column="coupon_activity_name" property="couponActivityName"/>
+        <result column="eid" property="eid"/>
+        <result column="ename" property="ename"/>
+        <result column="get_type" property="getType"/>
+        <result column="coupon_activity_auto_id" property="couponActivityAutoId"/>
+        <result column="coupon_activity_auto_name" property="couponActivityAutoName"/>
+        <result column="coupon_activity_business_auto_id" property="couponActivityBusinessAutoId"/>
+        <result column="get_user_id" property="getUserId"/>
+        <result column="get_user_name" property="getUserName"/>
+        <result column="get_time" property="getTime"/>
+        <result column="user_id" property="userId"/>
+        <result column="user_name" property="userName"/>
+        <result column="use_time" property="useTime"/>
+        <result column="begin_time" property="beginTime"/>
+        <result column="end_time" property="endTime"/>
+        <result column="used_status" property="usedStatus"/>
+        <result column="status" property="status"/>
+        <result column="del_flag" property="delFlag"/>
+        <result column="create_user" property="createUser"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_user" property="updateUser"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="remark" property="remark"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,
+        coupon_activity_id, coupon_activity_name, eid, ename, get_type, coupon_activity_auto_id, coupon_activity_auto_name, coupon_activity_business_auto_id, get_user_id, get_user_name, get_time, user_id, user_name, use_time, begin_time, end_time, used_status, status, del_flag, create_user, create_time, update_user, update_time, remark
+    </sql>
+
+    <sql id="Base_c_Column_List">
+        c.id, c.coupon_activity_id, c.coupon_activity_name, c.eid, c.ename, c.get_type, c.coupon_activity_auto_id,
+        c.coupon_activity_auto_name, c.coupon_activity_business_auto_id,c.get_user_id, c.get_user_name, c.get_time, c.user_id, c.user_name, c.use_time, c.begin_time,
+        c.end_time, c.used_status, c.status, c.del_flag, c.create_user, c.create_time, c.update_user, c.update_time, c.remark
+    </sql>
+
+    <sql id="Base_Table_Name">
+        `marketing_coupon`
+    </sql>
+
+    <select id="getGiveCountByCouponActivityId" resultType="java.util.HashMap">
+        select
+        coupon_activity_id as couponActivityId, count(1) as giveCount
+        from
+        <include refid="Base_Table_Name"/>
+        where
+        coupon_activity_id in
+        <foreach item="item" index="index" collection="couponActivityIdList" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        and status = 1
+        and del_flag = 0
+        GROUP BY coupon_activity_id
+    </select>
+
+    <select id="getCountByCouponActivityAutoIdList" resultType="java.util.HashMap">
+        select
+        coupon_activity_auto_id as couponActivityId, count(1) as giveCount
+        from
+        <include refid="Base_Table_Name"/>
+        where
+        get_type = #{getType}
+        and coupon_activity_auto_id in
+        <foreach item="item" index="index" collection="autoIdList" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        and status = 1
+        and del_flag = 0
+        GROUP BY coupon_activity_auto_id
+    </select>
+
+    <select id="getEffectiveCountByCouponActivityId" resultType="java.lang.Integer">
+        select
+        count(1)
+        from
+        <include refid="Base_Table_Name"/>
+        where
+        coupon_activity_id = #{couponActivityId}
+        AND status = 1
+        and del_flag = 0
+    </select>
+
+    <select id="getEffectiveCountByEid" resultType="java.lang.Integer">
+        SELECT
+        count(1)
+        FROM marketing_coupon c
+        WHERE
+        c.eid = #{eid}
+        AND c.del_flag = 0
+        AND c.status = 1
+        AND c.used_status = 1
+       AND c.begin_time <![CDATA[ < ]]> now() and c.end_time>now()
+    </select>
+
+    <select id="getEffectiveCountWithoutScrapByEid" resultType="java.lang.Integer">
+        select
+        count(1)
+        from
+        <include refid="Base_Table_Name"/>
+        where
+        eid = #{eid}
+        AND coupon_activity_id = #{couponActivityId}
+        <if test="businessType != null and businessType == 1">
+            AND coupon_activity_auto_id = #{autoGetOrRulesId}
+        </if>
+        <if test="businessType != null and businessType == 2">
+            AND coupon_activity_business_auto_id = #{autoGetOrRulesId}
+        </if>
+        AND status = 1
+        AND del_flag = 0
+    </select>
+
+    <select id="getEffectiveCanUseListByEid" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_c_Column_List"/>
+        FROM marketing_coupon c
+        INNER JOIN marketing_coupon_activity ca on c.coupon_activity_id = ca.id
+        WHERE
+        c.del_flag = 0
+        AND c.eid = #{currentEid}
+        AND c.used_status = 1
+        AND c.status = 1
+        AND c.begin_time <![CDATA[ <= ]]> NOW()
+        AND c.end_time <![CDATA[ > ]]> NOW()
+        AND ca.del_flag = 0
+        AND ca.status in (1,2)
+        ORDER BY c.create_time DESC
+    </select>
+
+    <select id="getUseCountByCouponActivityId" resultType="java.util.HashMap">
+        select
+        c.coupon_activity_id as couponActivityId, count(c.id) as useCount
+        from
+        marketing_coupon c
+        inner join order_coupon_use cu on cu.coupon_id = c.id
+        where
+        c.coupon_activity_id in
+        <foreach item="item" index="index" collection="couponActivityIdList" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        and c.status = 1
+        and c.del_flag = 0
+        and cu.is_return = 1
+        GROUP BY c.coupon_activity_id
+    </select>
+
+    <!-- 优惠券使用查询映射结果 -->
+    <resultMap id="OrderCountUseResultMap" type="com.yiling.marketing.coupon.bo.CouponUseOrderBO">
+        <result column="id" property="couponId"/>
+        <result column="coupon_activity_id" property="couponActivityId"/>
+        <result column="eid" property="eid"/>
+        <result column="get_type" property="getType"/>
+        <result column="get_time" property="getTime"/>
+        <result column="user_id" property="userId"/>
+        <result column="use_time" property="useTime"/>
+        <result column="order_id" property="orderId"/>
+        <result column="amount" property="amount"/>
+    </resultMap>
+    <select id="getOrderCountUsePageByActivityId" resultMap="OrderCountUseResultMap">
+        SELECT
+        mc.id, mc.coupon_activity_id, mc.eid, mc.get_type, mc.get_time, mc.use_time, mc.user_id, ocu.order_id, IFNULL(ocu.amount,0) AS amount
+        FROM marketing_coupon mc
+        LEFT JOIN order_coupon_use ocu ON mc.id = ocu.coupon_id AND ocu.is_return = 1
+        WHERE mc.del_flag = 0
+        AND mc.used_status = 2
+        AND mc.`status` = 1
+        and mc.coupon_activity_id = #{couponActivityId}
+        ORDER BY mc.id DESC
+    </select>
+    <select id="getHasGiveCountByCouponActivityList" resultType="com.yiling.marketing.coupon.dto.CouponDTO">
+        select coupon_activity_id as couponActivityId,count(1) as num from marketing_coupon where del_flag=0 and coupon_activity_id in
+        <foreach item="item" index="index" collection="ids" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        GROUP BY couponActivityId;
+    </select>
+    <select id="getHasGiveCountByEidList" resultType="com.yiling.marketing.coupon.dto.CouponDTO">
+        select eid,count(1) as num from marketing_coupon where del_flag=0
+        and coupon_activity_id=#{couponActivityId}
+        and eid in
+        <foreach item="item" index="index" collection="eids" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        GROUP BY eid;
+    </select>
+    <select id="getHasGiveCountByCouponActivityIdList" resultType="com.yiling.marketing.coupon.dto.CouponDTO">
+        select coupon_activity_auto_id as couponActivityAutoId,count(1) as num from marketing_coupon where
+        coupon_activity_auto_id in
+        <foreach item="item" index="index" collection="ids" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        GROUP BY couponActivityAutoId;
+    </select>
+
+</mapper>

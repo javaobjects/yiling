@@ -1,0 +1,28 @@
+.app-container {
+  .common-box {
+    .el-input {
+      width: 240px;
+    }
+    .search-box {
+      .box {
+        .title {
+          font-size: $font-size-large;
+          line-height: $font-size-large-lh;
+          color: $font-important-color;
+          margin-bottom: 8px;
+        }
+      }
+    }
+  }
+  .table-p {
+    text-align: left;
+    p {
+      margin: 0;
+      span {
+        display: inline-block;
+        width: 90px;
+      }
+    }
+  }
+  
+}

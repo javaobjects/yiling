@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.dataflow.flowcollect.dao.FlowCollectDataStatisticsDetailMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.dataflow.flowcollect.entity.FlowCollectDataStatisticsDetailDO">
+    <result column="id" property="id" />
+        <result column="fcds_id" property="fcdsId" />
+        <result column="date_time" property="dateTime" />
+        <result column="flow_status" property="flowStatus" />
+        <result column="del_flag" property="delFlag" />
+        <result column="create_time" property="createTime" />
+        <result column="create_user" property="createUser" />
+        <result column="update_time" property="updateTime" />
+        <result column="update_user" property="updateUser" />
+        <result column="remark" property="remark" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,
+        fcds_id, date_time, flow_status, del_flag, create_time, create_user, update_time, update_user, remark
+    </sql>
+    <select id="listDetailsByFchsIds" resultType="com.yiling.dataflow.flowcollect.bo.FlowDayHeartStatisticsDetailBO">
+        SELECT
+        t.id as id ,
+        t.fcds_id as fchId,
+        DATE_FORMAT(t.date_time,'%Y-%m-%d') as dataTime,
+        t.flow_status as flowStatus
+        FROM
+        flow_collect_data_statistics_detail t
+        WHERE
+        t.del_flag =0 and t.fcds_id in
+        <foreach collection="fchIds" item="fchId" open="(" close=")" separator=",">
+            #{fchId}
+        </foreach>
+    </select>
+
+    <delete id="deleteDetailByFchIds">
+        delete from flow_collect_data_statistics_detail where fcds_id in
+        <foreach collection="fcdIds" item="fchId" open="(" close=")" separator=",">
+            #{fchId}
+        </foreach>
+    </delete>
+</mapper>

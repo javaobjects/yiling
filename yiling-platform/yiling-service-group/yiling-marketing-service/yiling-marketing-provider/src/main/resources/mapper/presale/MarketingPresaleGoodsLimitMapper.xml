@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.marketing.presale.dao.MarketingPresaleGoodsLimitMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.marketing.presale.entity.MarketingPresaleGoodsLimitDO">
+    <result column="id" property="id" />
+        <result column="marketing_strategy_id" property="marketingStrategyId" />
+        <result column="goods_id" property="goodsId" />
+        <result column="goods_name" property="goodsName" />
+        <result column="eid" property="eid" />
+        <result column="ename" property="ename" />
+        <result column="presale_amount" property="presaleAmount" />
+        <result column="deposit_ratio" property="depositRatio" />
+        <result column="presale_type" property="presaleType" />
+        <result column="expansion_multiplier" property="expansionMultiplier" />
+        <result column="final_pay_discount_amount" property="finalPayDiscountAmount" />
+        <result column="min_num" property="minNum" />
+        <result column="max_num" property="maxNum" />
+        <result column="all_num" property="allNum" />
+        <result column="del_flag" property="delFlag" />
+        <result column="create_user" property="createUser" />
+        <result column="create_time" property="createTime" />
+        <result column="update_user" property="updateUser" />
+        <result column="update_time" property="updateTime" />
+        <result column="remark" property="remark" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,
+        marketing_strategy_id, goods_id, goods_name, eid, ename, presale_amount, deposit_ratio, presale_type, expansion_multiplier, final_pay_discount_amount, min_num, max_num, all_num, del_flag, create_user, create_time, update_user, update_time, remark
+    </sql>
+    <select id="pageList" resultType="com.yiling.marketing.presale.entity.MarketingPresaleActivityDO">
+        SELECT
+        sa.*
+        FROM marketing_presale_activity sa
+        LEFT JOIN `user` u ON sa.create_user = u.id
+        <if test="request.eid != null and request.eid != ''">
+            LEFT JOIN marketing_presale_goods_limit ssl ON sa.id = ssl.marketing_presale_id
+        </if>
+        <where>
+            sa.del_flag = 0
+            and sa.status!=4
+            <if test="request.type != null and request.type != 0">
+                AND sa.type = #{request.type}
+            </if>
+            <if test="request.name != null and request.name != ''">
+                AND sa.name LIKE CONCAT('%',#{request.name},'%')
+            </if>
+            <if test="request.status != null and request.status != 0">
+                AND sa.status = #{request.status}
+            </if>
+            <if test="request.sponsorType != null and request.sponsorType != 0">
+                AND sa.sponsor_type = #{request.sponsorType}
+            </if>
+            <if test="request.progress != null and request.progress == 1">
+                AND sa.begin_time &gt; (SELECT NOW())
+                AND sa.status = 1
+            </if>
+            <if test="request.progress != null and request.progress == 2">
+                AND sa.begin_time &lt;= (SELECT NOW())
+                AND sa.end_time &gt;= (SELECT NOW())
+                AND sa.status = 1
+            </if>
+            <if test="request.progress != null and request.progress == 3">
+                AND (sa.end_time &lt;= (SELECT NOW()) OR sa.status != 1)
+            </if>
+            <if test="request.eid != null and request.eid != ''">
+                AND ssl.eid = #{request.eid}
+            </if>
+            <if test="request.createUserName != null and request.createUserName != ''">
+                AND u.name LIKE CONCAT('%',#{request.createUserName},'%')
+            </if>
+            <if test="request.createTel != null and request.createTel != ''">
+                AND u.mobile LIKE CONCAT('%',#{request.createTel},'%')
+            </if>
+            <if test="request.startTime != null">
+                AND sa.create_time &gt;= #{request.startTime}
+            </if>
+            <if test="request.stopTime != null">
+                AND sa.create_time &lt;= #{request.stopTime}
+            </if>
+            <if test="request.operatingRemark != null and request.operatingRemark != ''">
+                AND sa.operating_remark LIKE CONCAT('%',#{request.operatingRemark},'%')
+            </if>
+        </where>
+        ORDER BY sa.ID DESC
+    </select>
+    <select id="getBuyerNumber" resultType="java.lang.Integer">
+        select count(*) from marketing_presale_buyer_limit where del_flag=0 and marketing_presale_id=#{id}
+    </select>
+
+    <select id="getMemberNumber" resultType="java.lang.Integer">
+        select count(*) from marketing_presale_member_limit where del_flag=0 and marketing_presale_id=#{id}
+    </select>
+
+    <select id="getPromoterNumber" resultType="java.lang.Integer">
+        select count(*) from marketing_presale_promoter_member_limit where del_flag=0 and marketing_presale_id=#{id}
+    </select>
+</mapper>

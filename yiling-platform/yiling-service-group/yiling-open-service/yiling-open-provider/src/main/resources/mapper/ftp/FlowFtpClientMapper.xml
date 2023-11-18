@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiling.open.ftp.dao.FlowFtpClientMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yiling.open.ftp.entity.FlowFtpClientDO">
+    <result column="id" property="id" />
+        <result column="su_id" property="suId" />
+        <result column="ftp_user_name" property="ftpUserName" />
+        <result column="ftp_pass_word" property="ftpPassWord" />
+        <result column="flow_day" property="flowDay" />
+        <result column="shop_sale_day" property="shopSaleDay"/>
+        <result column="ftp_ip" property="ftpIp" />
+        <result column="ftp_port" property="ftpPort" />
+        <result column="install_employee" property="installEmployee" />
+        <result column="file_type" property="fileType"/>
+        <result column="start_time" property="startTime" />
+        <result column="end_time" property="endTime" />
+        <result column="sync_status" property="syncStatus" />
+        <result column="sync_msg" property="syncMsg" />
+        <result column="remark" property="remark" />
+        <result column="create_time" property="createTime" />
+        <result column="create_user" property="createUser" />
+        <result column="update_time" property="updateTime" />
+        <result column="update_user" property="updateUser" />
+        <result column="del_flag" property="delFlag" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,
+        su_id, ftp_user_name, ftp_pass_word, remark, create_time, create_user, update_time, update_user, del_flag
+    </sql>
+
+</mapper>
