@@ -65,3 +65,8 @@ nbdist/
 
 *.log
 tmp/
+
+### 源码
+
+yiling-platform
+yiling-web
