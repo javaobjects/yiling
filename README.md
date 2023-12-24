@@ -332,12 +332,6 @@
 
 + 链接：https://admin-dev.59yi.com/#/period/buyer_list
 
-<!-- 
-```
-manager
-888888
-```
--->
 
 ### 截图
 

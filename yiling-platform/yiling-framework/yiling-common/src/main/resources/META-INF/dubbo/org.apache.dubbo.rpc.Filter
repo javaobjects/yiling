@@ -1,2 +1,0 @@
-dubboExceptionFilter=com.yiling.framework.common.dubbo.filter.DubboExceptionFilter
-globalTraceFilter=com.yiling.framework.common.dubbo.filter.GlobalTraceFilter
